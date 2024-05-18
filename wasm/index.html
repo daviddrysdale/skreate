@@ -22,6 +22,7 @@
         await init();
 
         // And afterwards we can use all the functionality defined in wasm.
+        initialize();
         const result = generate("abcd");
         console.log(`message = ${result}`);
       }

@@ -1,7 +1,7 @@
 //! Wasm to Javascript interaction code.
-
 #![warn(missing_docs)]
 
+use log::info;
 use wasm_bindgen::prelude::*;
 
 // Javascript functionality invoked from Rust.
@@ -16,26 +16,21 @@ extern "C" {
 /// Perform initialization. Safe to be invoked more than once.
 #[wasm_bindgen]
 pub fn initialize() {
-    alert("Calling set_panic_hook");
+    wasm_logger::init(wasm_logger::Config::default());
+    info!("initialize: set panic hook");
     set_panic_hook();
 }
 
 /// Generate output.
 #[wasm_bindgen]
 pub fn generate(input: &str) -> String {
-    alert(&format!("In generate('{input}')"));
+    info!("In generate('{input}')");
     format!("output from {input}")
 }
 
 // Rust interactions with WASM.
 
 fn set_panic_hook() {
-    // When the `console_error_panic_hook` feature is enabled, we can call the
-    // `set_panic_hook` function at least once during initialization, and then
-    // we will get better error messages if our code ever panics.
-    //
-    // For more details see
-    // https://github.com/rustwasm/console_error_panic_hook#readme
     #[cfg(feature = "console_error_panic_hook")]
     console_error_panic_hook::set_once();
 }
