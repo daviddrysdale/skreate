@@ -52,6 +52,7 @@
     <script src="third_party/js/underscore-umd-1.13.6.min.js"></script>
 
     <script type="text/javascript">
+      import("../wasm/index.js").catch(e => console.error("Error importing `index.js`:", e));
 
       function setup_editor(div) {
         var editor_div = div.find(".editor");
