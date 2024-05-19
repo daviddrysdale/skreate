@@ -1,6 +1,15 @@
 //! Skating diagram creator.
 #![warn(missing_docs)]
 
+use log::info;
+use svg::{
+    node::{
+        element::{Circle, Description, Group, Line, Polyline, Title, Use},
+        Comment, Text,
+    },
+    Document,
+};
+
 /// Error in parsing input.
 #[derive(Debug, Clone)]
 pub struct ParseError {
@@ -19,6 +28,25 @@ impl std::fmt::Display for ParseError {
 }
 impl std::error::Error for ParseError {}
 
+impl From<std::io::Error> for ParseError {
+    fn from(err: std::io::Error) -> ParseError {
+        ParseError {
+            row: 0,
+            col: 0,
+            msg: format!("{err}"),
+        }
+    }
+}
+impl From<std::string::FromUtf8Error> for ParseError {
+    fn from(err: std::string::FromUtf8Error) -> ParseError {
+        ParseError {
+            row: 0,
+            col: 0,
+            msg: format!("{err}"),
+        }
+    }
+}
+
 mod direction;
 
 /// Position, in metres.
@@ -31,26 +59,104 @@ struct Move {}
 
 /// Generate SVG for the given input.
 pub fn generate(_input: &str) -> Result<String, ParseError> {
-    let svg = r##"<svg width="140" height="170"
-  xmlns="http://www.w3.org/2000/svg"
-  xmlns:xlink="http://www.w3.org/1999/xlink">
-  <title>Cat</title>
-  <desc>Stick Figure of a Cat</desc>
+    let doc = Document::new()
+        .set("width", 140)
+        .set("height", 170)
+        .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
+        .add(Title::new("Cat"))
+        .add(Description::new().add(Text::new("Stick Figure of a Cat")))
+        .add(
+            Circle::new()
+                .set("cx", 70)
+                .set("cy", 95)
+                .set("r", 50)
+                .set("style", "stroke: black; fill: none;"),
+        )
+        .add(
+            Circle::new()
+                .set("cx", 55)
+                .set("cy", 80)
+                .set("r", 5)
+                .set("stroke", "blue")
+                .set("fill", "#339933"),
+        )
+        .add(
+            Circle::new()
+                .set("cx", 85)
+                .set("cy", 80)
+                .set("r", 5)
+                .set("stroke", "black")
+                .set("fill", "#339933"),
+        )
+        .add(
+            Group::new()
+                .set("id", "whiskers")
+                .add(
+                    Line::new()
+                        .set("x1", 75)
+                        .set("y1", 95)
+                        .set("x2", 135)
+                        .set("y2", 85)
+                        .set("style", "stroke: black;"),
+                )
+                .add(
+                    Line::new()
+                        .set("x1", 75)
+                        .set("y1", 95)
+                        .set("x2", 135)
+                        .set("y2", 105)
+                        .set("style", "stroke: black;"),
+                ),
+        )
+        .add(
+            Use::new()
+                .set("xlink:href", "#whiskers")
+                .set("transform", "scale(-1 1) translate(-140 0)"),
+        )
+        .add(Comment::new("ears"))
+        .add(
+            Polyline::new()
+                .set("points", "108 62,  90 10,  70 45,  50, 10,  32, 62")
+                .set("style", "stroke: black; fill: none;"),
+        )
+        .add(Comment::new("mouth"))
+        .add(
+            Polyline::new()
+                .set("points", "35 110, 45 120, 95 120, 105, 110")
+                .set("style", "stroke: black; fill: none;"),
+        );
 
-  <circle cx="70" cy="95" r="50" style="stroke: black; fill: none;"/>
-  <circle cx="55" cy="80" r="5" stroke="blue" fill="#339933"/>
-  <circle cx="85" cy="80" r="5" stroke="black" fill="#339933"/>
-  <g id="whiskers">
-    <line x1="75" y1="95" x2="135" y2="85" style="stroke: black;"/>
-    <line x1="75" y1="95" x2="135" y2="105" style="stroke: black;"/>
-  </g>
-  <use xlink:href="#whiskers" transform="scale(-1 1) translate(-140 0)"/>
-  <!-- ears -->
-  <polyline points="108 62,  90 10,  70 45,  50, 10,  32, 62"
-    style="stroke: black; fill: none;" />
-  <!-- mouth -->
-  <polyline points="35 110, 45 120, 95 120, 105, 110"
-      style="stroke: black; fill: none;" />
+    let mut svg = Vec::new();
+    svg::write(&mut svg, &doc)?;
+    let svg = String::from_utf8(svg)?;
+    info!("{svg}");
+    Ok(svg)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_generate() {
+        let want = r##"<svg height="170" width="140" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Cat</title>
+<desc>Stick Figure of a Cat</desc>
+<circle cx="70" cy="95" r="50" style="stroke: black; fill: none;"/>
+<circle cx="55" cy="80" fill="#339933" r="5" stroke="blue"/>
+<circle cx="85" cy="80" fill="#339933" r="5" stroke="black"/>
+<g id="whiskers">
+<line style="stroke: black;" x1="75" x2="135" y1="95" y2="85"/>
+<line style="stroke: black;" x1="75" x2="135" y1="95" y2="105"/>
+</g>
+<use transform="scale(-1 1) translate(-140 0)" xlink:href="#whiskers"/>
+<!-- ears -->
+<polyline points="108 62,  90 10,  70 45,  50, 10,  32, 62" style="stroke: black; fill: none;"/>
+<!-- mouth -->
+<polyline points="35 110, 45 120, 95 120, 105, 110" style="stroke: black; fill: none;"/>
 </svg>"##;
-    Ok(svg.to_string())
+
+        let got = generate("xyzzy").unwrap();
+        assert_eq!(want, got);
+    }
 }
