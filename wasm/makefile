@@ -1,6 +1,8 @@
 CRATE=skreate
 all:
 
+build: target/wasm32-unknown-unknown/release/$(CRATE)_wasm.wasm
+
 serve: pkg/$(CRATE)_wasm.js
 	http
 
