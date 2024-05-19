@@ -12,6 +12,7 @@ default = ["console_error_panic_hook"]
 
 [dependencies]
 log = "0.4.21"
+skreate = "*"
 wasm-bindgen = "0.2.84"
 wasm-logger = "0.2.0"
 

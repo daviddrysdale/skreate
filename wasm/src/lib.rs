@@ -21,25 +21,6 @@ pub fn initialize() {
     set_panic_hook();
 }
 
-// TODO: move this over to inner library
-/// Error in parsing input.
-#[derive(Debug, Clone)]
-pub struct ParseError {
-    /// Row of input with error.
-    pub row: usize,
-    /// Column of input with error.
-    pub col: usize,
-    /// Error information.
-    pub msg: String,
-}
-
-impl std::fmt::Display for ParseError {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}:{}: {}", self.row + 1, self.col + 1, self.msg)
-    }
-}
-impl std::error::Error for ParseError {}
-
 /// Generate output.
 #[wasm_bindgen]
 pub fn generate(input: &str) -> Result<String, JsError> {
