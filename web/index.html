@@ -72,13 +72,8 @@
 
         // And afterwards we can use all the functionality defined in wasm.
         initialize();
-        const result = generate("abcd");
-        console.log(`message = ${result}`);
       }
-
-      run();
-    </script>
-    <script type="text/javascript">
+      await run();
 
       function setup_editor(div) {
         var editor_div = div.find(".editor");
@@ -104,7 +99,7 @@
 
         function on_change() {
           try {
-            var diagram = Diagram.parse(editor.getValue());
+            var diagram_svg = generate(editor.getValue());
 
             // Clear out old diagram and editor annotations.
             editor.getSession().setAnnotations([]);
@@ -112,8 +107,7 @@
 
             var options = { scale: 1 };
 
-            // Ask the diagram object to draw itself into the relevant div.
-            diagram.drawSVG(diagram_div.get(0), options);
+            diagram_div.html(diagram_svg);
 
           } catch(err) {
             var annotation = {
@@ -122,10 +116,12 @@
               row: 0,
               text: err.message
             };
-            if (err instanceof Diagram.Error) {
-              annotation.row    = err.loc.first_line - 1;
-              annotation.column = err.loc.first_column;
-            }
+            /* TODO: join up error types
+            if (err instanceof ParseError) {
+              annotation.row    = err.row;
+              annotation.column = err.col;
+              }
+            */
             editor.getSession().setAnnotations([annotation]);
             throw err;
           }
