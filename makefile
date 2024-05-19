@@ -11,7 +11,7 @@ prereqs:
 	cargo install wasm-bindgen-cli
 	cargo install https # for local webserver
 
-target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm: wasm/src/lib.rs
+target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm: wasm/src/lib.rs lib/src/*.rs
 	cargo build --lib --release --target wasm32-unknown-unknown
 
 pkg:
