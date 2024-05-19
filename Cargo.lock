@@ -70,6 +70,13 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e1cf6437eb19a8f4a6cc0f7dca544973b0b78843adbfeb3683d1a94a0024a294"
 
 [[package]]
+name = "skreate"
+version = "0.1.0"
+dependencies = [
+ "svg",
+]
+
+[[package]]
 name = "skreate-wasm"
 version = "0.1.0"
 dependencies = [
@@ -79,6 +86,12 @@ dependencies = [
  "wasm-bindgen-test",
  "wasm-logger",
 ]
+
+[[package]]
+name = "svg"
+version = "0.17.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "700efb40f3f559c23c18b446e8ed62b08b56b2bb3197b36d57e0470b4102779e"
 
 [[package]]
 name = "syn"

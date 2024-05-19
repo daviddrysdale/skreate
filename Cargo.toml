@@ -1,0 +1,14 @@
+[workspace]
+members = [
+  "lib",
+  "wasm",
+]
+resolver = "2"
+
+[patch.crates-io]
+skreate = { path = "lib" }
+skreate-wasm = { path = "wasm" }
+
+[profile.release]
+# Tell `rustc` to optimize for small code size.
+opt-level = "s"
