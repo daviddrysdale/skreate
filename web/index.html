@@ -30,7 +30,8 @@
             </div>
             <a href="#" class="download">Download as SVG</a>
             </td>
-            <td class="diagram">Is Javascript enabled?</td>
+            <td class="diagram">Is Javascript enabled?
+            </td>
           </tr>
         </table>
       </section>
@@ -44,11 +45,12 @@
       </div>
     </footer>
 
+    <!-- jQuery for $ and friends -->
     <script src="third_party/js/jquery-3.7.1.min.js"></script>
-
-
     <!-- Use Ace as the text editor -->
     <script src="third_party/js/ace-1.33.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Borrow debounce from underscore -->
+    <script src="third_party/js/underscore-fragments-1.13.6.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
@@ -77,62 +79,6 @@
       run();
     </script>
     <script type="text/javascript">
-      // Taken from underscore 1.13.6
-      function restArguments(func, startIndex) {
-        startIndex = startIndex == null ? func.length - 1 : +startIndex;
-        return function() {
-          var length = Math.max(arguments.length - startIndex, 0),
-              rest = Array(length),
-              index = 0;
-          for (; index < length; index++) {
-            rest[index] = arguments[index + startIndex];
-          }
-          switch (startIndex) {
-            case 0: return func.call(this, rest);
-            case 1: return func.call(this, arguments[0], rest);
-            case 2: return func.call(this, arguments[0], arguments[1], rest);
-          }
-          var args = Array(startIndex + 1);
-          for (index = 0; index < startIndex; index++) {
-            args[index] = arguments[index];
-          }
-          args[startIndex] = rest;
-          return func.apply(this, args);
-        };
-      }
-      function debounce(func, wait, immediate) {
-        var timeout, previous, args, result, context;
-
-        var later = function() {
-          var passed = now() - previous;
-          if (wait > passed) {
-            timeout = setTimeout(later, wait - passed);
-          } else {
-            timeout = null;
-            if (!immediate) result = func.apply(context, args);
-            // This check is needed because `func` can recursively invoke `debounced`.
-            if (!timeout) args = context = null;
-          }
-        };
-
-        var debounced = restArguments(function(_args) {
-          context = this;
-          args = _args;
-          previous = now();
-          if (!timeout) {
-            timeout = setTimeout(later, wait);
-            if (immediate) result = func.apply(context, args);
-          }
-          return result;
-        });
-
-        debounced.cancel = function() {
-          clearTimeout(timeout);
-          timeout = args = context = null;
-        };
-
-        return debounced;
-      }
 
       function setup_editor(div) {
         var editor_div = div.find(".editor");
