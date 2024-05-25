@@ -6,6 +6,9 @@ build: pkg/$(WASM_CRATE).js
 serve: build
 	http
 
+open:
+	open http://localhost:8000/web
+
 prereqs:
 	rustup target add wasm32-unknown-unknown
 	cargo install wasm-bindgen-cli
