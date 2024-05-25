@@ -74,10 +74,13 @@
       }
       await run();
 
-      function setup_editor(div) {
+      function setup_editor(div, autofocus) {
         var editor_div = div.find(".editor");
         var editor = ace.edit(editor_div.get(0));
         editor.getSession().on('change', debounce(on_change, 100));
+        if (autofocus) {
+            editor.focus();
+        }
 
         var download_link = div.find('.download');
         download_link.click(function(ev) {
@@ -128,7 +131,7 @@
       }
 
       $(document).ready(function() {
-        setup_editor($('#demo'));
+        setup_editor($('#demo'), true);
       });
     </script>
   </body>
