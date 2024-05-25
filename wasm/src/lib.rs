@@ -54,8 +54,8 @@ impl ParseError {
 impl From<skreate::ParseError> for ParseError {
     fn from(err: skreate::ParseError) -> ParseError {
         ParseError {
-            row: err.row,
-            col: err.col,
+            row: err.pos.row,
+            col: err.pos.col,
             msg: err.msg,
         }
     }

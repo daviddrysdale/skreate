@@ -53,13 +53,13 @@ header h2 {
   color: #202020;
 }
 .editor {
-  width: 380px;
-  height: 210px;
+  width: 600px;
+  height: 310px;
   font-size: 14px;
 }
 .editor-wrapper {
-  width: 380px;
-  height: 210px;
+  width: 600px;
+  height: 310px;
   border: solid 1px #000000;
 }
 .inner {
@@ -74,5 +74,7 @@ header h2 {
   text-align: center;
 }
 .diagram {
+  width: 500px;
+  height: 310px;
   border: solid 1px #000000;
 }
