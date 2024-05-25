@@ -26,7 +26,9 @@
             <td>
             <h3>Demo. Try editing me below</h3>
             <div class="editor-wrapper">
-              <div class="editor">text goes here</div>
+              <div class="editor">text goes here
+more
+more</div>
             </div>
             <a href="#" class="download">Download as SVG</a>
             </td>
@@ -60,7 +62,7 @@
       // will "boot" the module and make it ready to use. Currently browsers
       // don't support natively imported WebAssembly as an ES module, but
       // eventually the manual initialization won't be required!
-      import init, { initialize, generate } from '../pkg/skreate_wasm.js';
+      import init, { initialize, generate, ParseError } from '../pkg/skreate_wasm.js';
 
       async function run() {
         // First up we need to actually load the wasm file, so we use the
@@ -118,14 +120,12 @@
               row: 0,
               text: err.message
             };
-            /* TODO: join up error types
             if (err instanceof ParseError) {
               annotation.row    = err.row;
               annotation.column = err.col;
-              }
-            */
+              annotation.text   = err.msg;
+            }
             editor.getSession().setAnnotations([annotation]);
-            throw err;
           }
         }
       }

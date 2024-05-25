@@ -58,7 +58,15 @@ struct Position {
 struct Move {}
 
 /// Generate SVG for the given input.
-pub fn generate(_input: &str) -> Result<String, ParseError> {
+pub fn generate(input: &str) -> Result<String, ParseError> {
+    let lines = input.split('\n').collect::<Vec<_>>();
+    if lines.len() > 3 {
+        return Err(ParseError {
+            row: 2,
+            col: 3,
+            msg: "fake error".to_string(),
+        });
+    }
     let doc = Document::new()
         .set("width", 140)
         .set("height", 170)
