@@ -20,6 +20,9 @@ target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm: wasm/src/lib.rs lib/sr
 cli: cli/src/main.rs
 	cargo build --manifest-path cli/Cargo.toml
 
+test:
+	cargo test
+
 pkg:
 	mkdir -p $@
 pkg/$(WASM_CRATE).js: target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm | pkg
