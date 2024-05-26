@@ -2,13 +2,13 @@ const DEGREES: i32 = 360;
 
 /// Rotation, in degrees.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-struct Rotation(i32);
+pub struct Rotation(i32);
 
 /// Direction, in degrees.
 ///
 /// Invariant: value in [0, DEGREES).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-struct Direction(u32);
+pub struct Direction(u32);
 
 impl Direction {
     pub fn new(mut dir: i32) -> Self {
@@ -23,6 +23,19 @@ impl std::ops::Add<Rotation> for Direction {
     type Output = Self;
     fn add(self, other: Rotation) -> Self {
         Self::new(self.0 as i32 + other.0)
+    }
+}
+
+impl std::ops::AddAssign<Rotation> for Direction {
+    fn add_assign(&mut self, other: Rotation) {
+        self.0 = Direction::new(self.0 as i32 + other.0).0;
+    }
+}
+
+impl std::ops::Sub<Direction> for Direction {
+    type Output = Rotation;
+    fn sub(self, other: Direction) -> Rotation {
+        Rotation(self.0 as i32 - other.0 as i32)
     }
 }
 
