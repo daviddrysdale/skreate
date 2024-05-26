@@ -2,13 +2,13 @@ const DEGREES: i32 = 360;
 
 /// Rotation, in degrees.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Rotation(i32);
+pub struct Rotation(pub i32);
 
 /// Direction, in degrees.
 ///
 /// Invariant: value in [0, DEGREES).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub struct Direction(u32);
+pub struct Direction(pub u32);
 
 impl Direction {
     pub fn new(mut dir: i32) -> Self {

@@ -1,33 +1,38 @@
-use crate::{Input, Move, RenderOptions, Skater};
-use svg::{node::element::Path, Document};
+use crate::direction::Rotation;
+use crate::{Foot, Input, Move, Position, RenderOptions, Transition};
+use svg::node::element::{Group, Path};
 
 pub struct Lf {
     input: String,
 }
 
 impl Lf {
+    const ID: &'static str = "lf";
+
     pub fn new(input: &Input) -> Self {
         Self {
             input: input.text.to_string(),
         }
     }
 }
+
 impl Move for Lf {
-    fn transition(&self, start: &Skater) -> Skater {
-        let mut end = start.clone();
-        end.pos.y += 100;
-        end
+    fn transition(&self) -> Transition {
+        Transition {
+            delta: Position { x: 0, y: 100 },
+            rotate: Rotation(45),
+            foot: Foot::Left,
+        }
     }
 
-    fn render(&self, doc: Document, start: &Skater, _opts: &RenderOptions) -> Document {
-        // TODO: don't want to deal with translation and rotation on every move, need
-        // to make it so that each move renders as if it's at (0, 0) with direction 0.
-        // Either with code helpers or with SVG translation/transformation.
-        doc.add(
-            Path::new()
-                .set("d", format!("M {} {} l 0 100", start.pos.x, start.pos.y))
-                .set("stroke", "black"), // TODO: from opts, persist?
-        )
+    fn def(&self, _opts: &RenderOptions) -> Group {
+        Group::new()
+            .set("stroke", "black")
+            .add(Path::new().set("d", format!("M 0 0 l 0 100")))
+    }
+
+    fn def_id(&self) -> &'static str {
+        Self::ID
     }
 
     fn text(&self) -> String {
