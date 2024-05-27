@@ -226,14 +226,14 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             dir: skater.dir + transition.rotate,
             foot: transition.foot,
         };
-        info!("{skater} == {transition} ==> {after}");
+        debug!("{skater} == {transition} ==> {after}");
         skater = after;
     }
 
     let mut svg = Vec::new();
     svg::write(&mut svg, &doc)?;
     let svg = String::from_utf8(svg)?;
-    info!("{svg}");
+    info!("emit SVG:\n{svg}");
     Ok(svg)
 }
 

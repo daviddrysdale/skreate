@@ -1,7 +1,7 @@
 //! Wasm to Javascript interaction code.
 #![warn(missing_docs)]
 
-use log::info;
+use log::{info, trace};
 use wasm_bindgen::prelude::*;
 
 // Rust functionality invoked from Javascript.
@@ -20,7 +20,7 @@ pub fn initialize() {
 /// Generate output.
 #[wasm_bindgen]
 pub fn generate(input: &str) -> Result<String, ParseError> {
-    info!("In generate('{input}')");
+    trace!("In generate('{input}')");
     Ok(skreate::generate(input)?)
 }
 
