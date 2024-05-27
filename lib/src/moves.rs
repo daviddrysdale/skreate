@@ -1,5 +1,5 @@
 use crate::direction::Rotation;
-use crate::{Foot, Input, Move, ParseError, Position, RenderOptions, Transition};
+use crate::{Foot, Input, Move, OwnedInput, ParseError, Position, RenderOptions, Transition};
 use log::info;
 use svg::node::element::{Group, Path};
 
@@ -16,13 +16,13 @@ pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 macro_rules! standard_move {
     { $name:ident, $start_foot:ident, $end_foot:ident, $def_id:literal, $text:literal, $transition:block, $def:block } => {
         struct $name {
-            input: String,
+            input: OwnedInput,
         }
         impl $name {
             const ID: &'static str = $def_id;
 
             pub fn new(input: &Input) -> Self {
-                Self { input: input.text.to_string(), }
+                Self { input: input.owned(), }
             }
         }
         impl Move for $name {
@@ -30,7 +30,7 @@ macro_rules! standard_move {
             fn end_foot(&self) -> Foot { Foot::$end_foot }
             fn def_id(&self) -> &'static str { Self::ID }
             fn text(&self) -> String { $text.to_string() }
-            fn input_text(&self) -> Option<String> { Some(self.input.clone()) }
+            fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
             fn transition(&self) -> Transition { $transition }
             fn def(&self, _opts: &RenderOptions) -> Group { $def }
         }

@@ -190,22 +190,26 @@ trait Move {
     fn render(&self, doc: Document, start: &Skater, _opts: &RenderOptions) -> Document {
         // Default implementation uses the definition, suitable translated and rotated.
         let def_id = self.def_id();
-        doc.add(Use::new().set("xlink:href", format!("#{def_id}")).set(
+        let mut use_link = Use::new().set("xlink:href", format!("#{def_id}")).set(
             "transform",
             format!(
                 "translate({} {}) rotate({})",
                 start.pos.x, start.pos.y, start.dir.0
             ),
-        ))
+        );
+        if let Some(input) = self.input() {
+            use_link = use_link.set("id", input.unique_id());
+        }
+        doc.add(use_link)
     }
 
     /// Emit text that describes the move.  Feeding this text into `moves::factory` should result in the
     /// same `Move` (although it may have different `input_text`).
     fn text(&self) -> String;
 
-    /// Emit the text that was used to originally create the move, if available.  This may be different
+    /// Emit the input that was used to originally create the move, if available.  This may have different text
     /// (e.g. longer, using alias forms) than the result of [`text`].
-    fn input_text(&self) -> Option<String>;
+    fn input(&self) -> Option<OwnedInput>;
 }
 
 /// Generate SVG for the given input.
@@ -240,6 +244,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     }
     doc = doc.add(defs);
 
+    // Second pass: render all the moves.
     let mut skater = Skater {
         pos: Position { x: 300, y: 0 },
         dir: Direction::new(0),
@@ -267,6 +272,32 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 struct Input<'a> {
     pos: TextPosition,
     text: &'a str,
+}
+
+impl<'a> Input<'a> {
+    fn owned(&self) -> OwnedInput {
+        OwnedInput {
+            pos: self.pos,
+            text: self.text.to_string(),
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+struct OwnedInput {
+    pos: TextPosition,
+    text: String,
+}
+
+impl OwnedInput {
+    fn unique_id(&self) -> String {
+        format!(
+            "r_{}_c_{}_{}",
+            self.pos.row,
+            self.pos.col,
+            self.pos.col + self.text.chars().count()
+        )
+    }
 }
 
 fn split_inputs(input: &str) -> Result<Vec<Input>, ParseError> {
