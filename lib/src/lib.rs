@@ -16,6 +16,8 @@ use svg::{
 mod direction;
 mod moves;
 
+const MARGIN: i64 = 100;
+
 /// Position in input text.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct TextPosition {
@@ -72,6 +74,60 @@ impl From<std::string::FromUtf8Error> for ParseError {
 struct Position {
     x: i64,
     y: i64,
+}
+
+impl Display for Position {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "({},{})", self.x, self.y)
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct Bounds {
+    top_left: Position,
+    bottom_right: Position,
+}
+
+impl Display for Bounds {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{} -> {}", self.top_left, self.bottom_right)
+    }
+}
+
+impl Bounds {
+    fn new() -> Self {
+        Self {
+            top_left: Position { x: 0, y: 0 },
+            bottom_right: Position { x: 0, y: 0 },
+        }
+    }
+    fn encompass(&mut self, pos: &Position) {
+        if pos.x > self.bottom_right.x {
+            self.bottom_right.x = pos.x;
+        }
+        if pos.x < self.top_left.x {
+            self.top_left.x = pos.x;
+        }
+        if pos.y > self.bottom_right.y {
+            self.bottom_right.y = pos.y;
+        }
+        if pos.y < self.top_left.y {
+            self.top_left.y = pos.y;
+        }
+        trace!("encompass {pos} in bounds => {self}");
+    }
+    fn add_margin(&mut self, margin: i64) {
+        self.top_left.x -= margin;
+        self.top_left.y -= margin;
+        self.bottom_right.x += margin;
+        self.bottom_right.y += margin;
+    }
+    fn width(&self) -> i64 {
+        self.bottom_right.x - self.top_left.x
+    }
+    fn height(&self) -> i64 {
+        self.bottom_right.y - self.top_left.y
+    }
 }
 
 /// Effect of a move on a skater.
@@ -220,8 +276,6 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .collect::<Result<Vec<_>, ParseError>>()?;
 
     let mut doc = Document::new()
-        .set("width", 400)
-        .set("height", 250)
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
@@ -241,9 +295,37 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     }
     doc = doc.add(defs);
 
-    // Second pass: render all the moves.
+    // Second pass: figure out a bounding box.
     let mut skater = Skater {
-        pos: Position { x: 30, y: 0 },
+        pos: Position { x: 0, y: 0 },
+        dir: Direction::new(0),
+        foot: Foot::Both,
+    };
+    let mut bounds = Bounds::new();
+    for mv in &moves {
+        let pre_transition = mv.pre_transition(skater.foot);
+        let before = skater + pre_transition;
+        bounds.encompass(&before.pos);
+        let transition = mv.transition();
+        let after = before + transition;
+        bounds.encompass(&after.pos);
+        skater = after;
+    }
+    let mut outer_bounds = bounds;
+    outer_bounds.add_margin(MARGIN);
+    doc = doc
+        .set("width", outer_bounds.width())
+        .set("height", outer_bounds.height());
+    info!("inner bounds {bounds}, add {MARGIN} to get {outer_bounds}");
+
+    // Third pass: render all the moves.
+    let start_pos = Position {
+        x: MARGIN - bounds.top_left.x,
+        y: MARGIN - bounds.top_left.y,
+    };
+    info!("start at {start_pos}");
+    let mut skater = Skater {
+        pos: start_pos,
         dir: Direction::new(0),
         foot: Foot::Both,
     };
