@@ -17,7 +17,7 @@ mod direction;
 mod moves;
 
 /// Position in input text.
-#[derive(Debug, Clone, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct TextPosition {
     /// Row of input with error, zero-indexed.
     pub row: usize,
@@ -32,6 +32,15 @@ pub struct ParseError {
     pub pos: TextPosition,
     /// Error information.
     pub msg: String,
+}
+
+impl ParseError {
+    fn from_input(input: &Input, msg: &str) -> Self {
+        Self {
+            pos: input.pos,
+            msg: msg.to_string(),
+        }
+    }
 }
 
 impl Display for ParseError {
@@ -146,18 +155,13 @@ trait Move {
         ))
     }
 
-    /// Emit text that describes the move.  Feeding this text into `move_factory` should result in the
+    /// Emit text that describes the move.  Feeding this text into `moves::factory` should result in the
     /// same `Move` (although it may have different `input_text`).
     fn text(&self) -> String;
 
     /// Emit the text that was used to originally create the move, if available.  This may be different
     /// (e.g. longer, using alias forms) than the result of [`text`].
     fn input_text(&self) -> Option<String>;
-}
-
-fn move_factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
-    info!("parse '{input:?}' into move");
-    Ok(Box::new(moves::Lf::new(input)))
 }
 
 /// Generate SVG for the given input.
@@ -167,7 +171,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 
     let moves = inputs
         .iter()
-        .map(|input| move_factory(input))
+        .map(|input| moves::factory(input))
         .collect::<Result<Vec<_>, ParseError>>()?;
 
     let mut doc = Document::new()
