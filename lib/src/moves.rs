@@ -14,6 +14,14 @@ pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 
 /// Macro to populate standard boilerplate for moves.
 macro_rules! standard_move {
+    { $name:ident, $start_foot:ident, $end_foot:ident, $text:literal, $transition:block, $def:block } => {
+        standard_move_with_id!($name, $start_foot, $end_foot, $text, $text, $transition, $def);
+    }
+}
+
+/// Macro to populate standard boilerplate for moves, but with an shared move ID that differs from the text form
+/// (e.g. because it's not valid in an XML attribute).
+macro_rules! standard_move_with_id {
     { $name:ident, $start_foot:ident, $end_foot:ident, $def_id:literal, $text:literal, $transition:block, $def:block } => {
         struct $name {
             input: OwnedInput,
@@ -41,7 +49,6 @@ standard_move!(
     Lf,
     Left,
     Left,
-    "lf",
     "LF",
     {
         Transition {
@@ -61,7 +68,6 @@ standard_move!(
     Rf,
     Right,
     Right,
-    "rf",
     "RF",
     {
         Transition {
