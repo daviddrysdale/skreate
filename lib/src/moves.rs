@@ -1,6 +1,6 @@
 use crate::direction::Rotation;
 use crate::{Foot, Input, Move, OwnedInput, ParseError, Position, RenderOptions, Transition};
-use log::info;
+use log::{error, info};
 use svg::node::element::{Group, Path};
 
 pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
@@ -12,6 +12,7 @@ pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
         "lfi" | "LFI" => Ok(Box::new(Lfi::new(input))),
         "rfo" | "RFO" => Ok(Box::new(Rfo::new(input))),
         "rfi" | "RFI" => Ok(Box::new(Rfi::new(input))),
+        "xf-rfi" | "xf-RFI" => Ok(Box::new(XfRfi::new(input))),
         m => Err(ParseError::from_input(input, &format!("unknown move {m}"))),
     }
 }
@@ -19,14 +20,23 @@ pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 /// Macro to populate standard boilerplate for moves.
 macro_rules! standard_move {
     { $name:ident, $start_foot:ident => $end_foot:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
-        standard_move_with_id!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path);
+        move_definition!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path, pre_transition);
+    }
+}
+macro_rules! xf_move {
+    { $name:ident, $start_foot:ident => $end_foot:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+        move_definition!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path, cross_transition);
+    }
+}
+macro_rules! xb_move {
+    { $name:ident, $start_foot:ident => $end_foot:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+        move_definition!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path, cross_transition);
     }
 }
 
-/// Macro to populate standard boilerplate for moves, but with an shared move ID that differs from the text form
-/// (e.g. because it's not valid in an XML attribute).
-macro_rules! standard_move_with_id {
-    { $name:ident, $start_foot:ident => $end_foot:ident, $def_id:literal, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+/// Macro to populate a structure that implements [`Move`].
+macro_rules! move_definition {
+    { $name:ident, $start_foot:ident => $end_foot:ident, $def_id:literal, $text:literal, $pos:expr, $rotate:expr, $path:literal, $pre_trans:ident } => {
         struct $name {
             input: OwnedInput,
         }
@@ -42,6 +52,9 @@ macro_rules! standard_move_with_id {
             fn def_id(&self) -> &'static str { Self::ID }
             fn text(&self) -> String { $text.to_string() }
             fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
+            fn pre_transition(&self, from: Foot) -> Transition {
+                $pre_trans(from, self.start_foot())
+            }
             fn transition(&self) -> Transition {
                 Transition {
                     delta: $pos,
@@ -84,7 +97,7 @@ standard_move!(
 
 standard_move!(
     Lfo, Left => Left, "LFO",
-    Position { x: -200, y: 200 }, Rotation(90),
+    Position { x: 200, y: 200 }, Rotation(-90),
     "c 0 100 100 200 200 200"
 );
 
@@ -102,23 +115,57 @@ standard_move!(
 
 standard_move!(
     Rfi, Right => Right, "RFI",
-    Position { x: 180, y: 180 }, Rotation(90),
+    Position { x: 180, y: 180 }, Rotation(-90),
     "c 0 90 90 180 180 180"
 );
 
-pub fn pre_transition(from: Foot, to: Foot) -> Transition {
+xf_move!(
+    XfRfi, Right => Right, "xf-RFI",
+    Position { x: 180, y: 180 }, Rotation(-90),
+    "c 0 90 90 180 180 180"
+);
+
+/// Standard pre-transition is just to change foot.
+fn pre_transition(from: Foot, to: Foot) -> Transition {
+    let x = match (from, to) {
+        (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => 0,
+        (Foot::Both, _) => 0,
+        (Foot::Left, Foot::Right) => -36,
+        (Foot::Left, Foot::Both) => -18,
+        (Foot::Right, Foot::Left) => 36,
+        (Foot::Right, Foot::Both) => 18,
+    };
     Transition {
-        delta: Position {
-            x: match (from, to) {
-                (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => 0,
-                (Foot::Both, _) => 0,
-                (Foot::Left, Foot::Right) => -36,
-                (Foot::Left, Foot::Both) => -18,
-                (Foot::Right, Foot::Left) => 36,
-                (Foot::Right, Foot::Both) => 18,
-            },
-            y: 0,
-        },
+        delta: Position { x, y: 0 },
+        rotate: Rotation(0),
+        foot: to,
+    }
+}
+
+/// Standard pre-transition is just to change foot.
+fn cross_transition(from: Foot, to: Foot) -> Transition {
+    let (x, y) = match (from, to) {
+        (Foot::Left, Foot::Right) => (18, 18),
+        (Foot::Right, Foot::Left) => (-18, 18),
+        (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {
+            error!("XF transition but no foot change ({from}->{to})!");
+            (0, 0)
+        }
+        (Foot::Both, _) => {
+            error!("XF transition from two feet ({from}->{to})!");
+            (0, 0)
+        }
+        (Foot::Left, Foot::Both) => {
+            error!("XF transition to two feet ({from}->{to})!");
+            (-18, 0)
+        }
+        (Foot::Right, Foot::Both) => {
+            error!("XF transition to two feet ({from}->{to})!");
+            (18, 0)
+        }
+    };
+    Transition {
+        delta: Position { x, y },
         rotate: Rotation(0),
         foot: to,
     }

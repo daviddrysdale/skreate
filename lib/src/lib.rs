@@ -171,10 +171,7 @@ trait Move {
     fn end_foot(&self) -> Foot;
 
     /// Transition needed before starting the move, starting from `Direction(0)`.
-    fn pre_transition(&self, from: Foot) -> Transition {
-        // Default implementation just changes foot.
-        moves::pre_transition(from, self.start_foot())
-    }
+    fn pre_transition(&self, from: Foot) -> Transition;
 
     /// Transition as a result of the move, starting from `Direction(0)`, and assuming that [`pre_transition`] has
     /// already happened.
@@ -246,7 +243,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 
     // Second pass: render all the moves.
     let mut skater = Skater {
-        pos: Position { x: 300, y: 0 },
+        pos: Position { x: 30, y: 0 },
         dir: Direction::new(0),
         foot: Foot::Both,
     };
