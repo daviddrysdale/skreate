@@ -2,7 +2,7 @@
 #![warn(missing_docs)]
 
 use crate::direction::{Direction, Rotation};
-use log::{debug, info};
+use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
@@ -128,13 +128,56 @@ impl Display for Skater {
     }
 }
 
+impl std::ops::Add<Transition> for Skater {
+    type Output = Self;
+    fn add(self, transition: Transition) -> Self {
+        // Start position
+        let start_x = self.pos.x as f64;
+        let start_y = self.pos.y as f64;
+
+        // Delta in coords if we were aligned with `Direction(0)` ...
+        let delta_x = transition.delta.x as f64;
+        let delta_y = transition.delta.y as f64;
+
+        // ... but we're not, we're moving at an angle:
+        let angle = self.dir.0 as f64 * std::f64::consts::PI / 180.0;
+        let dx = delta_x * angle.cos() - delta_y * angle.sin();
+        let dy = delta_y * angle.cos() + delta_x * angle.sin();
+        trace!("  ({delta_x:+.1},{delta_y:+.1}) at {angle} radians => move ({dx:+.1},{dy:+.1})");
+
+        let new_x = start_x + dx;
+        let new_y = start_y + dy;
+
+        Skater {
+            pos: Position {
+                x: new_x as i64,
+                y: new_y as i64,
+            },
+            dir: self.dir + transition.rotate,
+            foot: transition.foot,
+        }
+    }
+}
 // TODO
 #[derive(Debug, Clone, Copy)]
 struct RenderOptions {}
 
 /// Trait describing the external behavior of a move.
 trait Move {
-    /// Transition as a result of the move, starting from `Direction(0)`.
+    /// Foot that the move starts on.
+    fn start_foot(&self) -> Foot;
+
+    /// Foot that the move ends on.
+    fn end_foot(&self) -> Foot;
+
+    /// Transition needed before starting the move, starting from `Direction(0)`.
+    fn pre_transition(&self, from: Foot) -> Transition {
+        // Default implementation just changes foot.
+        moves::pre_transition(from, self.start_foot())
+    }
+
+    /// Transition as a result of the move, starting from `Direction(0)`, and assuming that [`pre_transition`] has
+    /// already happened.
     fn transition(&self) -> Transition;
 
     /// Emit SVG group definition for the move.
@@ -145,6 +188,7 @@ trait Move {
 
     /// Render the move into the given SVG document, assuming the existence of groups included in the output from [`defs`].
     fn render(&self, doc: Document, start: &Skater, _opts: &RenderOptions) -> Document {
+        // Default implementation uses the definition, suitable translated and rotated.
         let def_id = self.def_id();
         doc.add(Use::new().set("xlink:href", format!("#{def_id}")).set(
             "transform",
@@ -202,35 +246,13 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         foot: Foot::Both,
     };
     for mv in &moves {
-        doc = mv.render(doc, &skater, &opts);
+        let pre_transition = mv.pre_transition(skater.foot);
+        let before = skater + pre_transition;
+        debug!("pre:  {skater} == {pre_transition} ==> {before}");
+        doc = mv.render(doc, &before, &opts);
         let transition = mv.transition();
-
-        // Start position
-        let start_x = skater.pos.x as f64;
-        let start_y = skater.pos.y as f64;
-
-        // Delta in coords if we were aligned with `Direction(0)` ...
-        let delta_x = transition.delta.x as f64;
-        let delta_y = transition.delta.y as f64;
-
-        // ... but we're not, we're moving at an angle:
-        let angle = skater.dir.0 as f64 * std::f64::consts::PI / 180.0;
-        let dx = -delta_x * angle.cos() - delta_y * angle.sin();
-        let dy = delta_y * angle.cos() - delta_x * angle.sin();
-        debug!("move ({delta_x:+.1},{delta_y:+.1}) at {angle} radians => move ({dx:+.1},{dy:+.1})");
-
-        let new_x = start_x + dx;
-        let new_y = start_y + dy;
-
-        let after = Skater {
-            pos: Position {
-                x: new_x as i64,
-                y: new_y as i64,
-            },
-            dir: skater.dir + transition.rotate,
-            foot: transition.foot,
-        };
-        debug!("{skater} == {transition} ==> {after}");
+        let after = before + transition;
+        debug!("post: {before} == {transition} ==> {after}");
         skater = after;
     }
 

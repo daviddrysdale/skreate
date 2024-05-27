@@ -14,7 +14,7 @@ pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 
 /// Macro to populate standard boilerplate for moves.
 macro_rules! standard_move {
-    { $name:ident, $def_id:literal, $text:literal, $transition:block, $def:block } => {
+    { $name:ident, $start_foot:ident, $end_foot:ident, $def_id:literal, $text:literal, $transition:block, $def:block } => {
         struct $name {
             input: String,
         }
@@ -26,6 +26,8 @@ macro_rules! standard_move {
             }
         }
         impl Move for $name {
+            fn start_foot(&self) -> Foot { Foot::$start_foot }
+            fn end_foot(&self) -> Foot { Foot::$end_foot }
             fn def_id(&self) -> &'static str { Self::ID }
             fn text(&self) -> String { $text.to_string() }
             fn input_text(&self) -> Option<String> { Some(self.input.clone()) }
@@ -37,6 +39,8 @@ macro_rules! standard_move {
 
 standard_move!(
     Lf,
+    Left,
+    Left,
     "lf",
     "LF",
     {
@@ -55,6 +59,8 @@ standard_move!(
 
 standard_move!(
     Rf,
+    Right,
+    Right,
     "rf",
     "RF",
     {
@@ -70,3 +76,21 @@ standard_move!(
             .add(Path::new().set("d", "M 0 0 l 0 100"))
     }
 );
+
+pub fn pre_transition(from: Foot, to: Foot) -> Transition {
+    Transition {
+        delta: Position {
+            x: match (from, to) {
+                (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => 0,
+                (Foot::Both, _) => 0,
+                (Foot::Left, Foot::Right) => -36,
+                (Foot::Left, Foot::Both) => -18,
+                (Foot::Right, Foot::Left) => 36,
+                (Foot::Right, Foot::Both) => 18,
+            },
+            y: 0,
+        },
+        rotate: Rotation(0),
+        foot: to,
+    }
+}
