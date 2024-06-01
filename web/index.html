@@ -26,12 +26,8 @@
             <td>
             <h3>Demo. Try editing me below</h3>
             <div class="editor-wrapper">
-              <div class="editor">LFO          # text after a hash is ignored
-xf-RFI       # put each move on its own line
-LFO; xf-RFO  # or use a semi-colon to separate moves
-
-# blank lines are ignored
-LFO</div>
+              <div class="editor">
+              </div>
             </div>
             <a href="#" class="download">Download as SVG</a>
             </td>
@@ -79,8 +75,9 @@ LFO</div>
       }
       await run();
 
-      function setup_editor(div, autofocus) {
+      function setup_editor(div, autofocus, text) {
         var editor_div = div.find(".editor");
+        editor_div.html(text);
         var editor = ace.edit(editor_div.get(0));
         editor.getSession().on('change', debounce(on_change, 100));
         if (autofocus) {
@@ -134,7 +131,17 @@ LFO</div>
       }
 
       $(document).ready(function() {
-        setup_editor($('#demo'), true);
+        var text = `LFO          # text after a hash is ignored
+xf-RFI       # put each move on its own line
+LFO; xf-RFO  # or use a semi-colon to separate moves
+
+# blank lines are ignored
+LFO`
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('text')) {
+          text = urlParams.get('text');
+        }
+        setup_editor($('#demo'), true, text);
       });
     </script>
   </body>
