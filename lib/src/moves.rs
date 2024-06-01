@@ -1,7 +1,9 @@
 //! Skating move definitions.
 
 use crate::direction::Rotation;
-use crate::{Foot, Input, Move, OwnedInput, ParseError, Position, RenderOptions, Transition};
+use crate::{
+    Foot, Input, Move, MoveData, OwnedInput, ParseError, Position, RenderOptions, Transition,
+};
 use log::{error, info};
 use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
@@ -43,13 +45,15 @@ macro_rules! move_definition {
             input: OwnedInput,
         }
         impl $name {
-            const ID: &'static str = $def_id;
             pub fn new(input: &Input) -> Self {
                 Self { input: input.owned() }
             }
             pub fn new_box(input: &Input) -> Box<dyn Move> {
                 Box::new(Self::new(input))
             }
+        }
+        impl MoveData for $name {
+            const ID: &'static str = $text;
         }
         impl Move for $name {
             fn start_foot(&self) -> Foot { Foot::$start_foot }
@@ -132,23 +136,23 @@ xf_move!(
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
-    { $ids:ident, $m:ident, $name:literal, $typ:ident } => {
-        $ids.insert($name.to_string());
-        $m.insert($name.to_string(), $typ::new_box as Constructor);
-        $m.insert($name.to_lowercase(), $typ::new_box as Constructor);
+    { $ids:ident, $m:ident, $typ:ident } => {
+        $ids.insert($typ::ID.to_string());
+        $m.insert($typ::ID.to_string(), $typ::new_box as Constructor);
+        $m.insert($typ::ID.to_lowercase(), $typ::new_box as Constructor);
     }
 }
 
 fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     let mut m = HashMap::new();
     let mut ids = HashSet::new();
-    register!(ids, m, "LF", Lf);
-    register!(ids, m, "RF", Rf);
-    register!(ids, m, "LFO", Lfo);
-    register!(ids, m, "LFI", Lfi);
-    register!(ids, m, "RFO", Rfo);
-    register!(ids, m, "RFI", Rfi);
-    register!(ids, m, "xf-RFI", XfRfi);
+    register!(ids, m, Lf);
+    register!(ids, m, Rf);
+    register!(ids, m, Lfo);
+    register!(ids, m, Lfi);
+    register!(ids, m, Rfo);
+    register!(ids, m, Rfi);
+    register!(ids, m, XfRfi);
     (ids, m)
 }
 

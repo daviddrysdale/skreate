@@ -218,6 +218,13 @@ impl std::ops::Add<Transition> for Skater {
 #[derive(Debug, Clone, Copy)]
 struct RenderOptions {}
 
+/// Trait for holding fixed data about a move (i.e. things that don't change with a particular instance).
+pub trait MoveData {
+    /// An identifier for the move. This should also be a valid input that generates an instance of the move with
+    /// default values for any parameters.
+    const ID: &'static str;
+}
+
 /// Trait describing the external behavior of a move.
 trait Move {
     /// Foot that the move starts on.
