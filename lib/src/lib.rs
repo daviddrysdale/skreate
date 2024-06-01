@@ -265,6 +265,19 @@ trait Move {
     fn input(&self) -> Option<OwnedInput>;
 }
 
+/// Generate canonicalized / minimized input.
+pub fn canonicalize(input: &str) -> Result<String, ParseError> {
+    // Convert the input into a list of move input strings.
+    let inputs = split_inputs(input)?;
+
+    let moves = inputs
+        .iter()
+        .map(|input| moves::factory(input))
+        .collect::<Result<Vec<_>, ParseError>>()?;
+    let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
+    Ok(min_inputs.join(";"))
+}
+
 /// Generate SVG for the given input.
 pub fn generate(input: &str) -> Result<String, ParseError> {
     // Convert the input into a list of move input strings.
