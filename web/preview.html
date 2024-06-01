@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+    <title>Diagram</title>
+    <link rel="canonical" href="https://lurklurk.org/skreate/" />
+  </head>
+
+  <body>
+    <section id="main">
+      <table align="center" class="inner">
+        <tr>
+          <td class="diagram"></td>
+        </tr>
+        <tr>
+          <td>
+          <a href="#" class="download">Download as SVG</a>
+          </td>
+        </tr>
+      </table>
+    </section>
+    <footer>
+      <hr />
+      <div class="inner">
+        <a href="https://lurklurk.org">David Drysdale<a> - <a href="https://github.com/daviddrysdale">GitHub</a>
+      </div>
+    </footer>
+
+    <!-- jQuery for $ and friends -->
+    <script src="third_party/js/jquery-3.7.1.min.js"></script>
+    <!-- Use Ace as the text editor -->
+    <script src="third_party/js/ace-1.33.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Borrow debounce from underscore -->
+    <script src="third_party/js/underscore-fragments-1.13.6.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- Note the usage of `type=module` here as this is an ES6 module -->
+    <script type="module">
+      import {set_svg, setup_download} from './skreate.js';
+
+      $(document).ready(function() {
+        var div = $('#main');
+        var diagram_div = div.find(".diagram");
+
+        var urlParams = new URLSearchParams(window.location.search);
+        var text = urlParams.get('text');
+        set_svg(text, diagram_div);
+        function getValue() {
+          return text;
+        }
+        setup_download(div, diagram_div, getValue);
+      });
+    </script>
+  </body>
+</html>
