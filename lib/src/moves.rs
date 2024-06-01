@@ -1,11 +1,13 @@
+//! Skating move definitions.
+
 use crate::direction::Rotation;
 use crate::{Foot, Input, Move, OwnedInput, ParseError, Position, RenderOptions, Transition};
 use log::{error, info};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
-pub fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
     if let Some(factory) = registry().get(input.text) {
         Ok(factory(input))
@@ -128,30 +130,41 @@ xf_move!(
     "c 0 90 90 180 180 180"
 );
 
-/// Function that constructs a move from an [`Input`].
-type Constructor = fn(&Input) -> Box<dyn Move>;
-
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
-    { $m:ident, $name:literal, $typ:ident } => {
+    { $ids:ident, $m:ident, $name:literal, $typ:ident } => {
+        $ids.insert($name.to_string());
         $m.insert($name.to_string(), $typ::new_box as Constructor);
         $m.insert($name.to_lowercase(), $typ::new_box as Constructor);
     }
 }
 
+fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
+    let mut m = HashMap::new();
+    let mut ids = HashSet::new();
+    register!(ids, m, "LF", Lf);
+    register!(ids, m, "RF", Rf);
+    register!(ids, m, "LFO", Lfo);
+    register!(ids, m, "LFI", Lfi);
+    register!(ids, m, "RFO", Rfo);
+    register!(ids, m, "RFI", Rfi);
+    register!(ids, m, "xf-RFI", XfRfi);
+    (ids, m)
+}
+
+/// Function that constructs a move from an [`Input`].
+type Constructor = fn(&Input) -> Box<dyn Move>;
+
+/// Registry of move names and name-or-alias to constructor mapping.
+static REGISTRY: OnceLock<(HashSet<String>, HashMap<String, Constructor>)> = OnceLock::new();
+
+/// Return the set of move names.
+pub fn ids() -> &'static HashSet<String> {
+    &REGISTRY.get_or_init(|| initialize()).0
+}
+
 fn registry() -> &'static HashMap<String, Constructor> {
-    static REGISTRY: OnceLock<HashMap<String, Constructor>> = OnceLock::new();
-    REGISTRY.get_or_init(|| {
-        let mut m = HashMap::new();
-        register!(m, "LF", Lf);
-        register!(m, "RF", Rf);
-        register!(m, "LFO", Lfo);
-        register!(m, "LFI", Lfi);
-        register!(m, "RFO", Rfo);
-        register!(m, "RFI", Rfi);
-        register!(m, "xf-RFI", XfRfi);
-        m
-    })
+    &REGISTRY.get_or_init(|| initialize()).1
 }
 
 /// Standard pre-transition is just to change foot.

@@ -14,7 +14,7 @@ use svg::{
 };
 
 mod direction;
-mod moves;
+pub mod moves;
 
 const MARGIN: i64 = 100;
 
