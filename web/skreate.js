@@ -19,6 +19,11 @@ async function run() {
 }
 await run();
 
+export function set_svg(text, div) {
+  var diagram_svg = generate(text);
+  div.html(diagram_svg);
+}
+
 export function setup_editor(div, autofocus, text) {
   var editor_div = div.find(".editor");
   editor_div.html(text);
@@ -47,16 +52,13 @@ export function setup_editor(div, autofocus, text) {
 
   function on_change() {
     try {
-      var diagram_svg = generate(editor.getValue());
-
       // Clear out old diagram and editor annotations.
       editor.getSession().setAnnotations([]);
       diagram_div.html('');
 
       var options = { scale: 1 };
 
-      diagram_div.html(diagram_svg);
-
+      set_svg(editor.getValue(), diagram_div);
     } catch(err) {
       var annotation = {
         type: "error", // also warning and information
