@@ -24,6 +24,21 @@ export function set_svg(text, div) {
   div.html(diagram_svg);
 }
 
+export function setup_download(div, diagram_div, get_value) {
+  var download_link = div.find('.download');
+  download_link.click(function(ev) {
+    var svg = diagram_div.find('svg')[0];
+    var width = parseInt(svg.width.baseVal.value);
+    var height = parseInt(svg.height.baseVal.value);
+    var data = get_value();
+    var xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" xmlns:xlink="http://www.w3.org/1999/xlink"><source><![CDATA[' + data + ']]></source>' + svg.innerHTML + '</svg>';
+
+    var a = $(this);
+    a.attr("download", "diagram.svg");
+    a.attr("href", "data:image/svg+xml," + encodeURIComponent(xml));
+  });
+}
+
 export function setup_editor(div, autofocus, text) {
   var editor_div = div.find(".editor");
   editor_div.html(text);
@@ -32,21 +47,12 @@ export function setup_editor(div, autofocus, text) {
   if (autofocus) {
       editor.focus();
   }
-
-  var download_link = div.find('.download');
-  download_link.click(function(ev) {
-    var svg = diagram_div.find('svg')[0];
-    var width = parseInt(svg.width.baseVal.value);
-    var height = parseInt(svg.height.baseVal.value);
-    var data = editor.getValue();
-    var xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" xmlns:xlink="http://www.w3.org/1999/xlink"><source><![CDATA[' + data + ']]></source>' + svg.innerHTML + '</svg>';
-
-    var a = $(this);
-    a.attr("download", "diagram.svg");
-    a.attr("href", "data:image/svg+xml," + encodeURIComponent(xml));
-  });
-
+  function getValue() {
+    return editor.getValue();
+  }
   var diagram_div = div.find(".diagram");
+
+  setup_download(div, diagram_div, getValue);
 
   on_change();
 
