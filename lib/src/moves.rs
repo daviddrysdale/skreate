@@ -217,4 +217,27 @@ fn cross_transition(from: Foot, to: Foot) -> Transition {
     }
 }
 
-// TODO: check consistency .. transition.foot should equal end_foot
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_move_consistency() {
+        for name in ids() {
+            let constructor = registry().get(name).unwrap();
+            let input = Input {
+                pos: Default::default(),
+                text: name,
+            };
+            let mv = constructor(&input);
+            assert_eq!(
+                mv.pre_transition(Foot::Both).foot,
+                mv.start_foot(),
+                "for '{name}'"
+            );
+            assert_eq!(mv.transition().foot, mv.end_foot(), "for '{name}'");
+            assert_eq!(mv.input(), Some(input.owned()));
+            assert_eq!(mv.text(), *name);
+        }
+    }
+}
