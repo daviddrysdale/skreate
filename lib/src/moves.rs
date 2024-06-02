@@ -120,14 +120,32 @@ standard_move!(
     "c 0 100 100 200 200 200"
 );
 
+cross_move!(
+    XfLfo, LFO => LFO, "xf-LFO",
+    Position { x: 200, y: 200 }, Rotation(-90),
+    "c 0 100 100 200 200 200"
+);
+
 standard_move!(
     Lfi, LFI => LFI, "LFI",
     Position { x: -180, y: 180 }, Rotation(90),
     "c 0 90 -90 180 -180 180"
 );
 
+cross_move!(
+    XfLfi, LFI => LFI, "xf-LFI",
+    Position { x: -180, y: 180 }, Rotation(90),
+    "c 0 90 -90 180 -180 180"
+);
+
 standard_move!(
     Rfo, RFO => RFO, "RFO",
+    Position { x: -200, y: 200 }, Rotation(90),
+    "c 0 100 -100 200 -200 200"
+);
+
+cross_move!(
+    XfRfo, RFO => RFO, "xf-RFO",
     Position { x: -200, y: 200 }, Rotation(90),
     "c 0 100 -100 200 -200 200"
 );
@@ -161,8 +179,11 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     register!(ids, m, Lb);
     register!(ids, m, Rb);
     register!(ids, m, Lfo);
+    register!(ids, m, XfLfo);
     register!(ids, m, Lfi);
+    register!(ids, m, XfLfi);
     register!(ids, m, Rfo);
+    register!(ids, m, XfRfo);
     register!(ids, m, Rfi);
     register!(ids, m, XfRfi);
     (ids, m)

@@ -19,7 +19,8 @@ fn test_compare() {
             outfile.write_all(&got.into_bytes()).unwrap();
         } else {
             debug!("compare output with '{path:?}'");
-            let want = fs::read_to_string(path).unwrap();
+            let want = fs::read_to_string(path)
+                .unwrap_or_else(|_e| panic!("failed to find file for {name}"));
             assert_eq!(got.trim(), want.trim(), "for '{name}'");
         }
     }
