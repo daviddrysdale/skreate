@@ -166,6 +166,66 @@ impl Display for Foot {
     }
 }
 
+/// Direction of skating.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum SkatingDirection {
+    Forward,
+    Backward,
+    Stopped,
+}
+
+/// Blade edge in use.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Edge {
+    Outside,
+    Inside,
+    Flat,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+struct Code {
+    foot: Foot,
+    dir: SkatingDirection,
+    edge: Edge,
+}
+
+impl Display for Code {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match &self.foot {
+            Foot::Left => write!(f, "L"),
+            Foot::Right => write!(f, "R"),
+            Foot::Both => write!(f, "B"),
+        }?;
+        match &self.dir {
+            SkatingDirection::Forward => write!(f, "F"),
+            SkatingDirection::Backward => write!(f, "B"),
+            SkatingDirection::Stopped => write!(f, "x"),
+        }?;
+        match &self.edge {
+            Edge::Outside => write!(f, "O"),
+            Edge::Inside => write!(f, "I"),
+            Edge::Flat => write!(f, "F"),
+        }
+    }
+}
+
+/// Create a [`Code`] instance from a short code.
+#[macro_export]
+macro_rules! code {
+    { LF } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Flat } };
+    { LFO } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Outside } };
+    { LFI } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Inside } };
+    { LB } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Flat } };
+    { LBO } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Outside } };
+    { LBI } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Inside } };
+    { RF } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Flat } };
+    { RFO } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Outside } };
+    { RFI } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Inside } };
+    { RB } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Flat } };
+    { RBO } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Outside } };
+    { RBI } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Inside } };
+}
+
 /// Description of current skater state.
 #[derive(Debug, Clone, Copy)]
 struct Skater {
@@ -227,11 +287,11 @@ pub trait MoveData {
 
 /// Trait describing the external behavior of a move.
 trait Move {
-    /// Foot that the move starts on.
-    fn start_foot(&self) -> Foot;
+    /// Start of the move.
+    fn start(&self) -> Code;
 
-    /// Foot that the move ends on.
-    fn end_foot(&self) -> Foot;
+    /// End of the move.
+    fn end(&self) -> Code;
 
     /// Transition needed before starting the move, starting from `Direction(0)`.
     fn pre_transition(&self, from: Foot) -> Transition;
@@ -566,5 +626,17 @@ mod tests {
             let got = strip_comment(line);
             assert_eq!(got, want, "for input: {line}");
         }
+    }
+
+    #[test]
+    fn test_code() {
+        assert_eq!(
+            code!(LFO),
+            Code {
+                foot: Foot::Left,
+                dir: SkatingDirection::Forward,
+                edge: Edge::Outside
+            }
+        );
     }
 }

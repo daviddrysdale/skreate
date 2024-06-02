@@ -2,7 +2,8 @@
 
 use crate::direction::Rotation;
 use crate::{
-    Foot, Input, Move, MoveData, OwnedInput, ParseError, Position, RenderOptions, Transition,
+    code, Code, Edge, Foot, Input, Move, MoveData, OwnedInput, ParseError, Position, RenderOptions,
+    SkatingDirection, Transition,
 };
 use log::{error, info};
 use std::collections::{HashMap, HashSet};
@@ -23,28 +24,25 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 
 /// Macro to populate standard boilerplate for moves.
 macro_rules! standard_move {
-    { $name:ident, $start_foot:ident => $end_foot:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
-        move_definition!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path, pre_transition);
+    { $name:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
     }
 }
-macro_rules! xf_move {
-    { $name:ident, $start_foot:ident => $end_foot:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
-        move_definition!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path, cross_transition);
-    }
-}
-macro_rules! xb_move {
-    { $name:ident, $start_foot:ident => $end_foot:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
-        move_definition!($name, $start_foot => $end_foot, $text, $text, $pos, $rotate, $path, cross_transition);
+macro_rules! cross_move {
+    { $name:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, cross_transition);
     }
 }
 
 /// Macro to populate a structure that implements [`Move`].
 macro_rules! move_definition {
-    { $name:ident, $start_foot:ident => $end_foot:ident, $def_id:literal, $text:literal, $pos:expr, $rotate:expr, $path:literal, $pre_trans:ident } => {
+    { $name:ident, $start:expr => $end:expr, $def_id:literal, $text:literal, $pos:expr, $rotate:expr, $path:literal, $pre_trans:ident } => {
         struct $name {
             input: OwnedInput,
         }
         impl $name {
+            const START: Code = $start;
+            const END: Code = $end;
             pub fn new(input: &Input) -> Self {
                 Self { input: input.owned() }
             }
@@ -56,19 +54,19 @@ macro_rules! move_definition {
             const ID: &'static str = $text;
         }
         impl Move for $name {
-            fn start_foot(&self) -> Foot { Foot::$start_foot }
-            fn end_foot(&self) -> Foot { Foot::$end_foot }
+            fn start(&self) -> Code { Self::START }
+            fn end(&self) -> Code { Self::END }
             fn def_id(&self) -> &'static str { Self::ID }
             fn text(&self) -> String { $text.to_string() }
             fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
             fn pre_transition(&self, from: Foot) -> Transition {
-                $pre_trans(from, self.start_foot())
+                $pre_trans(from, self.start().foot)
             }
             fn transition(&self) -> Transition {
                 Transition {
                     delta: $pos,
                     rotate: $rotate,
-                    foot: Foot::$end_foot,
+                    foot: Self::END.foot,
                 }
             }
             fn def(&self, _opts: &RenderOptions) -> Group {
@@ -93,43 +91,55 @@ macro_rules! move_definition {
 //  v  y-axis
 
 standard_move!(
-    Lf, Left => Left, "LF",
+    Lf, LF => LF, "LF",
     Position { x: 0, y: 100 }, Rotation(0),
     "l 0 100"
 );
 
 standard_move!(
-    Rf, Right => Right, "RF",
+    Rf, RF => RF, "RF",
     Position { x: 0, y: 100 }, Rotation(0),
     "l 0 100"
 );
 
 standard_move!(
-    Lfo, Left => Left, "LFO",
+    Lb, LB => LB, "LB",
+    Position { x: 0, y: 100 }, Rotation(0),
+    "l 0 100"
+);
+
+standard_move!(
+    Rb, RB => RB, "RB",
+    Position { x: 0, y: 100 }, Rotation(0),
+    "l 0 100"
+);
+
+standard_move!(
+    Lfo, LFO => LFO, "LFO",
     Position { x: 200, y: 200 }, Rotation(-90),
     "c 0 100 100 200 200 200"
 );
 
 standard_move!(
-    Lfi, Left => Left, "LFI",
+    Lfi, LFI => LFI, "LFI",
     Position { x: -180, y: 180 }, Rotation(90),
     "c 0 90 -90 180 -180 180"
 );
 
 standard_move!(
-    Rfo, Right => Right, "RFO",
+    Rfo, RFO => RFO, "RFO",
     Position { x: -200, y: 200 }, Rotation(90),
     "c 0 100 -100 200 -200 200"
 );
 
 standard_move!(
-    Rfi, Right => Right, "RFI",
+    Rfi, RFI => RFI, "RFI",
     Position { x: 180, y: 180 }, Rotation(-90),
     "c 0 90 90 180 180 180"
 );
 
-xf_move!(
-    XfRfi, Right => Right, "xf-RFI",
+cross_move!(
+    XfRfi, RFI => RFI, "xf-RFI",
     Position { x: 180, y: 180 }, Rotation(-90),
     "c 0 90 90 180 180 180"
 );
@@ -148,6 +158,8 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     let mut ids = HashSet::new();
     register!(ids, m, Lf);
     register!(ids, m, Rf);
+    register!(ids, m, Lb);
+    register!(ids, m, Rb);
     register!(ids, m, Lfo);
     register!(ids, m, Lfi);
     register!(ids, m, Rfo);
@@ -232,10 +244,10 @@ mod tests {
             let mv = constructor(&input);
             assert_eq!(
                 mv.pre_transition(Foot::Both).foot,
-                mv.start_foot(),
+                mv.start().foot,
                 "for '{name}'"
             );
-            assert_eq!(mv.transition().foot, mv.end_foot(), "for '{name}'");
+            assert_eq!(mv.transition().foot, mv.end().foot, "for '{name}'");
             assert_eq!(mv.input(), Some(input.owned()));
             assert_eq!(mv.text(), *name);
         }
