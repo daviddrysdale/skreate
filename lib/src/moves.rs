@@ -112,36 +112,21 @@ move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotati
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
-    { $ids:ident, $m:ident, $typ:ident } => {
-        $ids.insert($typ::ID.to_string());
-        $m.insert($typ::ID.to_string(), $typ::new_box as Constructor);
-        $m.insert($typ::ID.to_lowercase(), $typ::new_box as Constructor);
+    { $ids:ident, $m:ident, $( $typ:ident ),* } => {
+        $(
+            $ids.insert($typ::ID.to_string());
+            $m.insert($typ::ID.to_string(), $typ::new_box as Constructor);
+            $m.insert($typ::ID.to_lowercase(), $typ::new_box as Constructor);
+        )*
     }
 }
 
 fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     let mut m = HashMap::new();
     let mut ids = HashSet::new();
-    register!(ids, m, Lf);
-    register!(ids, m, Rf);
-    register!(ids, m, Lb);
-    register!(ids, m, Rb);
-    register!(ids, m, Lfo);
-    register!(ids, m, XfLfo);
-    register!(ids, m, Lfi);
-    register!(ids, m, XfLfi);
-    register!(ids, m, Rfo);
-    register!(ids, m, XfRfo);
-    register!(ids, m, Rfi);
-    register!(ids, m, XfRfi);
-    register!(ids, m, Lbo);
-    register!(ids, m, XbLbo);
-    register!(ids, m, Lbi);
-    register!(ids, m, XbLbi);
-    register!(ids, m, Rbo);
-    register!(ids, m, XbRbo);
-    register!(ids, m, Rbi);
-    register!(ids, m, XbRbi);
+    register!(ids, m, Lf, Rf, Lb, Rb);
+    register!(ids, m, Lfo, XfLfo, Lfi, XfLfi, Rfo, XfRfo, Rfi, XfRfi);
+    register!(ids, m, Lbo, XbLbo, Lbi, XbLbi, Rbo, XbRbo, Rbi, XbRbi);
     (ids, m)
 }
 
