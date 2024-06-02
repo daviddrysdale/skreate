@@ -29,14 +29,15 @@ macro_rules! move_and_xf {
         move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, cross_transition);
     }
 }
+macro_rules! move_and_xb {
+    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, cross_transition);
+    }
+}
 macro_rules! standard_move {
     { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:literal } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
-    }
-}
-macro_rules! cross_move {
-    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:literal } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, cross_transition);
     }
 }
 
@@ -104,6 +105,10 @@ move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotatio
 move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0 90 -90 180 -180 180");
 move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0 100 -100 200 -200 200");
 move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0 90 90 180 180 180");
+move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(-90), "c 0 100 -100 200 -200 200");
+move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0 90 90 180 180 180");
+move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0 100 100 200 200 200");
+move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0 90 -90 180 -180 180");
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
@@ -129,6 +134,14 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     register!(ids, m, XfRfo);
     register!(ids, m, Rfi);
     register!(ids, m, XfRfi);
+    register!(ids, m, Lbo);
+    register!(ids, m, XbLbo);
+    register!(ids, m, Lbi);
+    register!(ids, m, XbLbi);
+    register!(ids, m, Rbo);
+    register!(ids, m, XbRbo);
+    register!(ids, m, Rbi);
+    register!(ids, m, XbRbi);
     (ids, m)
 }
 

@@ -1,0 +1,10 @@
+<svg height="400" width="400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>Skating Diagram</desc>
+<defs>
+<g fill="none" id="xb-LBO" stroke="black">
+<path d="M 0 0 c 0 100 -100 200 -200 200"/>
+</g>
+</defs>
+<use id="r_0_c_0_6" transform="translate(300 100) rotate(0)" xlink:href="#xb-LBO"/>
+</svg>
