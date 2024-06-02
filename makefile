@@ -23,6 +23,9 @@ cli: cli/src/main.rs
 test:
 	cargo test
 
+regenerate:
+	SKREATE_REGENERATE=1 cargo test -- test_compare
+
 pkg:
 	mkdir -p $@
 pkg/$(WASM_CRATE).js: target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm | pkg
