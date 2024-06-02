@@ -23,20 +23,26 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 }
 
 /// Macro to populate standard boilerplate for moves.
+macro_rules! move_and_xf {
+    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, cross_transition);
+    }
+}
 macro_rules! standard_move {
-    { $name:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:literal } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
     }
 }
 macro_rules! cross_move {
-    { $name:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:literal } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, cross_transition);
     }
 }
 
 /// Macro to populate a structure that implements [`Move`].
 macro_rules! move_definition {
-    { $name:ident, $start:expr => $end:expr, $def_id:literal, $text:literal, $pos:expr, $rotate:expr, $path:literal, $pre_trans:ident } => {
+    { $name:ident, $start:expr => $end:expr, $def_id:expr, $text:expr, $pos:expr, $rotate:expr, $path:literal, $pre_trans:ident } => {
         struct $name {
             input: OwnedInput,
         }
@@ -90,77 +96,14 @@ macro_rules! move_definition {
 //  |             45 L  v 0
 //  v  y-axis
 
-standard_move!(
-    Lf, LF => LF, "LF",
-    Position { x: 0, y: 100 }, Rotation(0),
-    "l 0 100"
-);
-
-standard_move!(
-    Rf, RF => RF, "RF",
-    Position { x: 0, y: 100 }, Rotation(0),
-    "l 0 100"
-);
-
-standard_move!(
-    Lb, LB => LB, "LB",
-    Position { x: 0, y: 100 }, Rotation(0),
-    "l 0 100"
-);
-
-standard_move!(
-    Rb, RB => RB, "RB",
-    Position { x: 0, y: 100 }, Rotation(0),
-    "l 0 100"
-);
-
-standard_move!(
-    Lfo, LFO => LFO, "LFO",
-    Position { x: 200, y: 200 }, Rotation(-90),
-    "c 0 100 100 200 200 200"
-);
-
-cross_move!(
-    XfLfo, LFO => LFO, "xf-LFO",
-    Position { x: 200, y: 200 }, Rotation(-90),
-    "c 0 100 100 200 200 200"
-);
-
-standard_move!(
-    Lfi, LFI => LFI, "LFI",
-    Position { x: -180, y: 180 }, Rotation(90),
-    "c 0 90 -90 180 -180 180"
-);
-
-cross_move!(
-    XfLfi, LFI => LFI, "xf-LFI",
-    Position { x: -180, y: 180 }, Rotation(90),
-    "c 0 90 -90 180 -180 180"
-);
-
-standard_move!(
-    Rfo, RFO => RFO, "RFO",
-    Position { x: -200, y: 200 }, Rotation(90),
-    "c 0 100 -100 200 -200 200"
-);
-
-cross_move!(
-    XfRfo, RFO => RFO, "xf-RFO",
-    Position { x: -200, y: 200 }, Rotation(90),
-    "c 0 100 -100 200 -200 200"
-);
-
-standard_move!(
-    Rfi, RFI => RFI, "RFI",
-    Position { x: 180, y: 180 }, Rotation(-90),
-    "c 0 90 90 180 180 180"
-);
-
-cross_move!(
-    XfRfi, RFI => RFI, "xf-RFI",
-    Position { x: 180, y: 180 }, Rotation(-90),
-    "c 0 90 90 180 180 180"
-);
+standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), "l 0 100");
+standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), "l 0 100");
+standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), "l 0 100");
+standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), "l 0 100");
+move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0 100 100 200 200 200");
+move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0 90 -90 180 -180 180");
+move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0 100 -100 200 -200 200");
+move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0 90 90 180 180 180");
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
