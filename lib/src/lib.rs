@@ -135,7 +135,7 @@ impl Bounds {
 struct Transition {
     delta: Position,
     rotate: Rotation,
-    foot: Foot,
+    code: Code,
 }
 
 impl Display for Transition {
@@ -143,7 +143,7 @@ impl Display for Transition {
         write!(
             f,
             "({:+.1},{:+.1}) {:+.1}° →{}",
-            self.delta.x, self.delta.y, self.rotate.0, self.foot
+            self.delta.x, self.delta.y, self.rotate.0, self.code
         )
     }
 }
@@ -212,6 +212,8 @@ impl Display for Code {
 /// Create a [`Code`] instance from a short code.
 #[macro_export]
 macro_rules! code {
+    { BF } => { Code { foot: Foot::Both, dir: SkatingDirection::Forward, edge: Edge::Flat } };
+    { BB } => { Code { foot: Foot::Both, dir: SkatingDirection::Backward, edge: Edge::Flat } };
     { LF } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Flat } };
     { LFO } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Outside } };
     { LFI } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Inside } };
@@ -231,7 +233,7 @@ macro_rules! code {
 struct Skater {
     pos: Position,
     dir: Direction,
-    foot: Foot,
+    code: Code,
 }
 
 impl Display for Skater {
@@ -239,7 +241,7 @@ impl Display for Skater {
         write!(
             f,
             "({},{}) {}° {}",
-            self.pos.x, self.pos.y, self.dir.0, self.foot
+            self.pos.x, self.pos.y, self.dir.0, self.code
         )
     }
 }
@@ -270,7 +272,7 @@ impl std::ops::Add<Transition> for Skater {
                 y: new_y as i64,
             },
             dir: self.dir + transition.rotate,
-            foot: transition.foot,
+            code: transition.code,
         }
     }
 }
@@ -294,7 +296,7 @@ trait Move {
     fn end(&self) -> Code;
 
     /// Transition needed before starting the move, starting from `Direction(0)`.
-    fn pre_transition(&self, from: Foot) -> Transition;
+    fn pre_transition(&self, from: Code) -> Transition;
 
     /// Transition as a result of the move, starting from `Direction(0)`, and assuming that [`pre_transition`] has
     /// already happened.
@@ -379,11 +381,11 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let mut skater = Skater {
         pos: Position { x: 0, y: 0 },
         dir: Direction::new(0),
-        foot: Foot::Both,
+        code: code!(BF),
     };
     let mut bounds = Bounds::new();
     for mv in &moves {
-        let pre_transition = mv.pre_transition(skater.foot);
+        let pre_transition = mv.pre_transition(skater.code);
         let before = skater + pre_transition;
         bounds.encompass(&before.pos);
         let transition = mv.transition();
@@ -407,10 +409,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let mut skater = Skater {
         pos: start_pos,
         dir: Direction::new(0),
-        foot: Foot::Both,
+        code: code!(BF),
     };
     for mv in &moves {
-        let pre_transition = mv.pre_transition(skater.foot);
+        let pre_transition = mv.pre_transition(skater.code);
         let before = skater + pre_transition;
         debug!("pre:  {skater} == {pre_transition} ==> {before}");
         doc = mv.render(doc, &before, &opts);

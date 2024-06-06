@@ -66,14 +66,14 @@ macro_rules! move_definition {
             fn def_id(&self) -> &'static str { Self::ID }
             fn text(&self) -> String { $text.to_string() }
             fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
-            fn pre_transition(&self, from: Foot) -> Transition {
-                $pre_trans(from, self.start().foot)
+            fn pre_transition(&self, from: Code) -> Transition {
+                $pre_trans(from, self.start())
             }
             fn transition(&self) -> Transition {
                 Transition {
                     delta: $pos,
                     rotate: $rotate,
-                    foot: Self::END.foot,
+                    code: Self::END,
                 }
             }
             fn def(&self, _opts: &RenderOptions) -> Group {
@@ -146,8 +146,8 @@ fn registry() -> &'static HashMap<String, Constructor> {
 }
 
 /// Standard pre-transition is just to change foot.
-fn pre_transition(from: Foot, to: Foot) -> Transition {
-    let x = match (from, to) {
+fn pre_transition(from: Code, to: Code) -> Transition {
+    let x = match (from.foot, to.foot) {
         (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => 0,
         (Foot::Both, _) => 0,
         (Foot::Left, Foot::Right) => -36,
@@ -158,13 +158,13 @@ fn pre_transition(from: Foot, to: Foot) -> Transition {
     Transition {
         delta: Position { x, y: 0 },
         rotate: Rotation(0),
-        foot: to,
+        code: to,
     }
 }
 
 /// Standard pre-transition is just to change foot.
-fn cross_transition(from: Foot, to: Foot) -> Transition {
-    let (x, y) = match (from, to) {
+fn cross_transition(from: Code, to: Code) -> Transition {
+    let (x, y) = match (from.foot, to.foot) {
         (Foot::Left, Foot::Right) => (18, 18),
         (Foot::Right, Foot::Left) => (-18, 18),
         (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {
@@ -187,7 +187,7 @@ fn cross_transition(from: Foot, to: Foot) -> Transition {
     Transition {
         delta: Position { x, y },
         rotate: Rotation(0),
-        foot: to,
+        code: to,
     }
 }
 
@@ -205,11 +205,11 @@ mod tests {
             };
             let mv = constructor(&input);
             assert_eq!(
-                mv.pre_transition(Foot::Both).foot,
-                mv.start().foot,
+                mv.pre_transition(code!(BF)).code,
+                mv.start(),
                 "for '{name}'"
             );
-            assert_eq!(mv.transition().foot, mv.end().foot, "for '{name}'");
+            assert_eq!(mv.transition().code, mv.end(), "for '{name}'");
             assert_eq!(mv.input(), Some(input.owned()));
             assert_eq!(mv.text(), *name);
         }
