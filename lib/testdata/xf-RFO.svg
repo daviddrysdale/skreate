@@ -3,7 +3,7 @@
 <desc>Skating Diagram</desc>
 <defs>
 <g fill="none" id="xf-RFO" stroke="black">
-<path d="M 0 0 c 0 100 -100 200 -200 200"/>
+<path d="M 0,0 c 0,100 -100,200 -200,200"/>
 </g>
 </defs>
 <use id="r_0_c_0_6" transform="translate(300 100) rotate(0)" xlink:href="#xf-RFO"/>

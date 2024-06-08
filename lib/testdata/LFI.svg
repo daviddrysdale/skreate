@@ -3,7 +3,7 @@
 <desc>Skating Diagram</desc>
 <defs>
 <g fill="none" id="LFI" stroke="black">
-<path d="M 0 0 c 0 90 -90 180 -180 180"/>
+<path d="M 0,0 c 0,90 -90,180 -180,180"/>
 </g>
 </defs>
 <use id="r_0_c_0_3" transform="translate(280 100) rotate(0)" xlink:href="#LFI"/>

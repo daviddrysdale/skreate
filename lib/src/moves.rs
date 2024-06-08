@@ -79,7 +79,7 @@ macro_rules! move_definition {
                 Group::new()
                     .set("stroke", "black")
                     .set("fill", "none")
-                    .add(Path::new().set("d", format!("M 0 0 {}", $path)))
+                    .add(Path::new().set("d", format!("M 0,0 {}", $path)))
             }
         }
     }
@@ -111,7 +111,7 @@ fn arrow_at(len: i64, dir: i32, arrow_angle: i32) -> String {
     let d2x = (len * angle.sin()) as i32;
     let d2y = (-len * angle.cos()) as i32;
     format!(
-        "{} {} {} {} {} {} {} {}",
+        "{},{} {},{} {},{} {},{}",
         d1x, d1y, -d1x, -d1y, d2x, d2y, -d2x, -d2y
     )
 }
@@ -124,20 +124,20 @@ fn arrow(dir: i32) -> String {
     }
 }
 
-standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0 35 {} 0 65", arrow(0)));
-standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0 35 {} 0 65", arrow(0)));
-standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0 35 {} 0 65", arrow(0)));
-standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0 35 {} 0 65", arrow(0)));
-move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0 100 100 200 200 200");
-move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0 90 -90 180 -180 180");
-move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0 100 -100 200 -200 200");
-move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0 90 90 180 180 180");
-move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(-90), "c 0 100 -100 200 -200 200");
-move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0 90 90 180 180 180");
-move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0 100 100 200 200 200");
-move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0 90 -90 180 -180 180");
-standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW} 0 l 0 35 {0} 0 65 m -{HW} -100 l 0 35 {0} 0 65", arrow(0)));
-standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW} 0 l 0 35 {0} 0 65 m -{HW} -100 l 0 35 {0} 0 65", arrow(0)));
+standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
+standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
+standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
+standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
+move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200");
+move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180");
+move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200");
+move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180");
+move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(-90), "c 0,100 -100,200 -200,200");
+move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0,90 90 180,180,180");
+move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0,100 100,200 200,200");
+move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0,90 -90,180 -180,180");
+standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,35 {0} 0,65 m -{HW},-100 l 0,35 {0} 0,65", arrow(0)));
+standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,35 {0} 0,65 m -{HW},-100 l 0,35 {0} 0,65", arrow(0)));
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
@@ -377,10 +377,10 @@ mod tests {
     #[test]
     fn test_arrow_at() {
         let tests = [
-            (0, 45, "7 -7 -7 7 -7 -7 7 7"),
-            (0, 90, "10 0 -10 0 -10 0 10 0"),
-            (45, 45, "10 0 -10 0 0 -10 0 10"),
-            (90, 45, "7 7 -7 -7 7 -7 -7 7"),
+            (0, 45, "7,-7 -7,7 -7,-7 7,7"),
+            (0, 90, "10,0 -10,0 -10,0 10,0"),
+            (45, 45, "10,0 -10,0 0,-10 0,10"),
+            (90, 45, "7,7 -7,-7 7,-7 -7,7"),
         ];
         for (dir, arrow_angle, want) in tests {
             let got = arrow_at(10, dir, arrow_angle);
