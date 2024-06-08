@@ -9,7 +9,7 @@
     - [x] Left/Right auto-mirror (no, more trouble than it's worth)
     - [x] Auto-generate cross variants
 - [x] Add in/out skating direction for moves
-- [ ] Fix pre-transitions to be aware of directions
+- [x] Fix pre-transitions to be aware of directions
 - [ ] Move move definitions.
     - [ ] 3-turn
     - [ ] Bracket

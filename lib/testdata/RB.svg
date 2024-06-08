@@ -1,4 +1,4 @@
-<svg height="300" width="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="200" width="318" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Skating Diagram</title>
 <desc>Skating Diagram</desc>
 <defs>
@@ -6,5 +6,5 @@
 <path d="M 0 0 l 0 100"/>
 </g>
 </defs>
-<use id="r_0_c_0_2" transform="translate(100 100) rotate(0)" xlink:href="#RB"/>
+<use id="r_0_c_0_2" transform="translate(200 100) rotate(90)" xlink:href="#RB"/>
 </svg>

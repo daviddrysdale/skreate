@@ -163,20 +163,18 @@ impl Display for Foot {
 /// Direction of skating.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SkatingDirection {
-    /// F
+    /// Skating forwards.
     Forward,
-    /// B
+    /// Skating backwards.
     Backward,
-    /// Stopped
-    Stopped,
 }
 
 /// Blade edge in use.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Edge {
-    /// O
+    /// Outside of the blade.
     Outside,
-    /// I
+    /// Inside of the blade.
     Inside,
     /// Flat
     Flat,
@@ -203,7 +201,6 @@ impl Display for Code {
         match &self.dir {
             SkatingDirection::Forward => write!(f, "F"),
             SkatingDirection::Backward => write!(f, "B"),
-            SkatingDirection::Stopped => write!(f, "x"),
         }?;
         match &self.edge {
             Edge::Outside => write!(f, "O"),

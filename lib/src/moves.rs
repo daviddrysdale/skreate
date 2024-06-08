@@ -2,9 +2,9 @@
 
 use crate::{
     code, Code, Edge, Foot, Input, Move, MoveData, OwnedInput, ParseError, Position, RenderOptions,
-    Rotation, SkatingDirection, Transition,
+    Rotation, SkatingDirection, SkatingDirection::*, Transition,
 };
-use log::{error, info};
+use log::{info, warn};
 use std::collections::{HashMap, HashSet};
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
@@ -94,6 +94,7 @@ macro_rules! move_definition {
 //  |                  /|
 //  |                 / |
 //  |             45 L  v 0
+//  |
 //  v  y-axis
 
 standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), "l 0 100");
@@ -147,48 +148,174 @@ fn registry() -> &'static HashMap<String, Constructor> {
     &REGISTRY.get_or_init(|| initialize()).1
 }
 
+/// Half-width of a standard stance.
 const HW: i64 = 18; // cm
+/// Width of a standard stance.
 const W: i64 = 2 * HW; // cm
 
-/// Standard pre-transition is just to change foot.
+/// Standard pre-transition with plain step.
 fn pre_transition(from: Code, to: Code) -> Transition {
-    let x = match (from.foot, to.foot) {
-        (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => 0,
-        (Foot::Both, _) => 0,
-        (Foot::Left, Foot::Right) => -36,
-        (Foot::Left, Foot::Both) => -18,
-        (Foot::Right, Foot::Left) => 36,
-        (Foot::Right, Foot::Both) => 18,
-    };
+    let mut x = 0;
+    let mut y = 0;
+    let mut rotation = 0;
+    match (from.dir, to.dir) {
+        (Forward, Forward) => match (from.foot, to.foot) {
+            (Foot::Left, Foot::Right) => x = -W,
+            (Foot::Left, Foot::Both) => x = -HW,
+            (Foot::Both, Foot::Left) => x = HW,
+            (Foot::Both, Foot::Right) => x = -HW,
+            (Foot::Right, Foot::Left) => x = W,
+            (Foot::Right, Foot::Both) => x = HW,
+            _ => {}
+        },
+        (Backward, Backward) => match (from.foot, to.foot) {
+            (Foot::Left, Foot::Right) => x = W,
+            (Foot::Left, Foot::Both) => x = HW,
+            (Foot::Both, Foot::Left) => x = -HW,
+            (Foot::Both, Foot::Right) => x = HW,
+            (Foot::Right, Foot::Left) => x = -W,
+            (Foot::Right, Foot::Both) => x = -HW,
+            _ => {}
+        },
+        (Forward, Backward) => match (from.foot, to.foot) {
+            (Foot::Left, Foot::Left) => rotation = 180,
+            (Foot::Left, Foot::Right) => {
+                x = -HW;
+                y = HW;
+                rotation = 90;
+            }
+            (Foot::Left, Foot::Both) => {
+                x = -HW;
+                y = HW / 2;
+                rotation = 90;
+            }
+            (Foot::Both, Foot::Left) => {
+                x = HW;
+                rotation = -90;
+            }
+            (Foot::Both, Foot::Right) => {
+                x = -HW;
+                rotation = 90;
+            }
+            (Foot::Both, Foot::Both) => rotation = 180,
+            (Foot::Right, Foot::Left) => {
+                x = HW;
+                y = HW;
+                rotation = -90;
+            }
+            (Foot::Right, Foot::Right) => rotation = 180,
+            (Foot::Right, Foot::Both) => {
+                x = HW;
+                y = HW / 2;
+                rotation = -90;
+            }
+        },
+        (Backward, Forward) => {
+            match (from.foot, to.foot) {
+                (Foot::Left, Foot::Left) => rotation = 180, // reverse direction
+                (Foot::Left, Foot::Right) => {
+                    x = HW;
+                    y = HW;
+                    rotation = -90;
+                }
+                (Foot::Left, Foot::Both) => {
+                    x = HW;
+                    y = HW / 2;
+                    rotation = 90;
+                }
+                (Foot::Both, Foot::Left) => {
+                    x = -HW;
+                    rotation = 90;
+                }
+                (Foot::Both, Foot::Right) => {
+                    x = HW;
+                    rotation = -90;
+                }
+                (Foot::Both, Foot::Both) => rotation = 90,
+                (Foot::Right, Foot::Left) => {
+                    x = -HW;
+                    y = HW;
+                    rotation = 90;
+                }
+                (Foot::Right, Foot::Right) => rotation = 180, // reverse direction
+                (Foot::Right, Foot::Both) => {
+                    x = -HW;
+                    y = HW / 2;
+                    rotation = -90;
+                }
+            }
+        }
+    }
     Transition {
-        delta: Position { x, y: 0 },
-        rotate: Rotation(0),
+        delta: Position { x, y },
+        rotate: Rotation(rotation),
         code: to,
     }
 }
 
-/// Standard pre-transition is just to change foot.
+/// Pre-transition with feet crossing over.
 fn cross_transition(from: Code, to: Code) -> Transition {
-    let (x, y) = match (from.foot, to.foot) {
-        (Foot::Left, Foot::Right) => (18, 18),
-        (Foot::Right, Foot::Left) => (-18, 18),
-        (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {
-            error!("XF transition but no foot change ({from}->{to})!");
-            (0, 0)
+    let mut x = 0;
+    let mut y = 0;
+    match (from.dir, to.dir) {
+        (Forward, Forward) => {
+            // Cross in front.
+            match (from.foot, to.foot) {
+                (Foot::Left, Foot::Right) => {
+                    x = HW;
+                    y = HW
+                }
+                (Foot::Right, Foot::Left) => {
+                    x = -HW;
+                    y = HW
+                }
+                (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {
+                    warn!("XF transition but no foot change ({from}->{to})!");
+                }
+                (Foot::Both, _) => {
+                    warn!("XF transition from two feet ({from}->{to})!");
+                }
+                (Foot::Left, Foot::Both) => {
+                    warn!("XF transition to two feet ({from}->{to})!");
+                    x = -HW;
+                }
+                (Foot::Right, Foot::Both) => {
+                    warn!("XF transition to two feet ({from}->{to})!");
+                    x = HW;
+                }
+            }
         }
-        (Foot::Both, _) => {
-            error!("XF transition from two feet ({from}->{to})!");
-            (0, 0)
+        (Backward, Backward) => {
+            // Cross behind.
+            match (from.foot, to.foot) {
+                (Foot::Left, Foot::Right) => {
+                    x = -HW;
+                    y = HW
+                }
+                (Foot::Right, Foot::Left) => {
+                    x = HW;
+                    y = HW
+                }
+                (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {
+                    warn!("XB transition but no foot change ({from}->{to})!");
+                }
+                (Foot::Both, _) => {
+                    warn!("XB transition from two feet ({from}->{to})!");
+                }
+                (Foot::Left, Foot::Both) => {
+                    warn!("XB transition to two feet ({from}->{to})!");
+                    x = HW;
+                }
+                (Foot::Right, Foot::Both) => {
+                    warn!("XB transition to two feet ({from}->{to})!");
+                    x = -HW;
+                }
+            }
         }
-        (Foot::Left, Foot::Both) => {
-            error!("XF transition to two feet ({from}->{to})!");
-            (-18, 0)
-        }
-        (Foot::Right, Foot::Both) => {
-            error!("XF transition to two feet ({from}->{to})!");
-            (18, 0)
-        }
-    };
+        // A cross transition that changes skating direction doesn't make much sense, so fall back to the standard
+        // transition here.
+        (Forward, Backward) | (Backward, Forward) => return pre_transition(from, to),
+    }
     Transition {
         delta: Position { x, y },
         rotate: Rotation(0),
