@@ -1,0 +1,48 @@
+# To Do
+
+- [x] Share? Maybe via minimized input format
+- [x] Print preview (no editor)
+- [x] Tests for round trip from move.text to input to move
+- [x] Single move code => output with comparison vs. golden output
+- [x] Less copy-pasta for moves
+    - [x] Registry with list of aliases => constructor
+    - [x] Left/Right auto-mirror (no, more trouble than it's worth)
+    - [x] Auto-generate cross variants
+- [x] Add in/out skating direction for moves
+- [ ] Fix pre-transitions to be aware of directions
+- [ ] Move move definitions.
+    - [ ] 3-turn
+    - [ ] Bracket
+    - [ ] Rocker
+    - [ ] Counter
+    - [ ] Mohawk
+    - [ ] Twizzle
+    - [ ] Loop
+    - [ ] Pivot
+    - [ ] Schramm
+    - [ ] Schafer push
+    - [ ] Jumps
+        - [ ] Waltz
+        - [ ] Salchow
+        - [ ] Loop
+        - [ ] Toe Loop
+        - [ ] Flip
+        - [ ] Lutz
+        - [ ] Axel
+        - [ ] Walley
+- [ ] Text labels, floating & oriented correctly
+- [ ] Adjust measurements of moves
+- [ ] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
+- [ ] Rink and start point specification
+- [ ] Title, text inserts
+- [ ] Counts and count display options
+- [ ] Add in/out curvature for moves?
+- [ ] Option to show body rotation
+- [ ] Option to set colours per-foot
+    - [ ] Can standalone SVG share CSS with web?
+- [ ] SVG to HTML linkage
+    - [ ] mouse over move => highlight text in editor
+    - [ ] cursor on move => highlight corresponding move
+    - [ ] animation: highlight move in diagram and corresponding text in editor
+- [ ] Fuzzer?
+- [ ] Railroad diagram for input?
