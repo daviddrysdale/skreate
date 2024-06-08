@@ -37,6 +37,7 @@
 - [ ] Title, text inserts
 - [ ] Counts and count display options
 - [ ] Add in/out curvature for moves?
+- [ ] Option to add direction-of-travel arrows?
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot
     - [ ] Can standalone SVG share CSS with web?
