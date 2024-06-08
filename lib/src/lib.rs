@@ -1,7 +1,7 @@
 //! Skating diagram creator.
 #![warn(missing_docs)]
 
-use crate::direction::{Direction, Rotation};
+pub use crate::types::*;
 use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
@@ -13,19 +13,10 @@ use svg::{
     Document,
 };
 
-mod direction;
 pub mod moves;
+mod types;
 
 const MARGIN: i64 = 100;
-
-/// Position in input text.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub struct TextPosition {
-    /// Row of input with error, zero-indexed.
-    pub row: usize,
-    /// Column of input with error, zero-indexed.
-    pub col: usize,
-}
 
 /// Error in parsing input.
 #[derive(Debug, Clone)]
@@ -68,166 +59,6 @@ impl From<std::string::FromUtf8Error> for ParseError {
         }
     }
 }
-
-/// Position, in centimetres.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct Position {
-    x: i64,
-    y: i64,
-}
-
-impl Display for Position {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "({},{})", self.x, self.y)
-    }
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct Bounds {
-    top_left: Position,
-    bottom_right: Position,
-}
-
-impl Display for Bounds {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{} -> {}", self.top_left, self.bottom_right)
-    }
-}
-
-impl Bounds {
-    fn new() -> Self {
-        Self {
-            top_left: Position { x: 0, y: 0 },
-            bottom_right: Position { x: 0, y: 0 },
-        }
-    }
-    fn encompass(&mut self, pos: &Position) {
-        if pos.x > self.bottom_right.x {
-            self.bottom_right.x = pos.x;
-        }
-        if pos.x < self.top_left.x {
-            self.top_left.x = pos.x;
-        }
-        if pos.y > self.bottom_right.y {
-            self.bottom_right.y = pos.y;
-        }
-        if pos.y < self.top_left.y {
-            self.top_left.y = pos.y;
-        }
-        trace!("encompass {pos} in bounds => {self}");
-    }
-    fn add_margin(&mut self, margin: i64) {
-        self.top_left.x -= margin;
-        self.top_left.y -= margin;
-        self.bottom_right.x += margin;
-        self.bottom_right.y += margin;
-    }
-    fn width(&self) -> i64 {
-        self.bottom_right.x - self.top_left.x
-    }
-    fn height(&self) -> i64 {
-        self.bottom_right.y - self.top_left.y
-    }
-}
-
-/// Effect of a move on a skater.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct Transition {
-    delta: Position,
-    rotate: Rotation,
-    code: Code,
-}
-
-impl Display for Transition {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "({:+.1},{:+.1}) {:+.1}° →{}",
-            self.delta.x, self.delta.y, self.rotate.0, self.code
-        )
-    }
-}
-
-/// Which foot has weight.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Foot {
-    Left,
-    Right,
-    Both,
-}
-
-impl Display for Foot {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        match self {
-            Foot::Left => write!(f, "LF"),
-            Foot::Right => write!(f, "RF"),
-            Foot::Both => write!(f, "BF"),
-        }
-    }
-}
-
-/// Direction of skating.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum SkatingDirection {
-    Forward,
-    Backward,
-    Stopped,
-}
-
-/// Blade edge in use.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Edge {
-    Outside,
-    Inside,
-    Flat,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-struct Code {
-    foot: Foot,
-    dir: SkatingDirection,
-    edge: Edge,
-}
-
-impl Display for Code {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        match &self.foot {
-            Foot::Left => write!(f, "L"),
-            Foot::Right => write!(f, "R"),
-            Foot::Both => write!(f, "B"),
-        }?;
-        match &self.dir {
-            SkatingDirection::Forward => write!(f, "F"),
-            SkatingDirection::Backward => write!(f, "B"),
-            SkatingDirection::Stopped => write!(f, "x"),
-        }?;
-        match &self.edge {
-            Edge::Outside => write!(f, "O"),
-            Edge::Inside => write!(f, "I"),
-            Edge::Flat => write!(f, "F"),
-        }
-    }
-}
-
-/// Create a [`Code`] instance from a short code.
-#[macro_export]
-macro_rules! code {
-    { BF } => { Code { foot: Foot::Both, dir: SkatingDirection::Forward, edge: Edge::Flat } };
-    { BB } => { Code { foot: Foot::Both, dir: SkatingDirection::Backward, edge: Edge::Flat } };
-    { LF } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Flat } };
-    { LFO } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Outside } };
-    { LFI } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Inside } };
-    { LB } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Flat } };
-    { LBO } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Outside } };
-    { LBI } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Inside } };
-    { RF } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Flat } };
-    { RFO } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Outside } };
-    { RFI } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Inside } };
-    { RB } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Flat } };
-    { RBO } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Outside } };
-    { RBI } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Inside } };
-}
-
 /// Description of current skater state.
 #[derive(Debug, Clone, Copy)]
 struct Skater {
@@ -383,7 +214,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         dir: Direction::new(0),
         code: code!(BF),
     };
-    let mut bounds = Bounds::new();
+    let mut bounds = Bounds::default();
     for mv in &moves {
         let pre_transition = mv.pre_transition(skater.code);
         let before = skater + pre_transition;

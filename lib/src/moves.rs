@@ -1,9 +1,8 @@
 //! Skating move definitions.
 
-use crate::direction::Rotation;
 use crate::{
     code, Code, Edge, Foot, Input, Move, MoveData, OwnedInput, ParseError, Position, RenderOptions,
-    SkatingDirection, Transition,
+    Rotation, SkatingDirection, Transition,
 };
 use log::{error, info};
 use std::collections::{HashMap, HashSet};
