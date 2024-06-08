@@ -23,26 +23,26 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 
 /// Macro to populate standard boilerplate for moves.
 macro_rules! move_and_xf {
-    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
         move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, cross_transition);
     }
 }
 macro_rules! move_and_xb {
-    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:literal } => {
+    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
         move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, cross_transition);
     }
 }
 macro_rules! standard_move {
-    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:literal } => {
+    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:expr } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
     }
 }
 
 /// Macro to populate a structure that implements [`Move`].
 macro_rules! move_definition {
-    { $name:ident, $start:expr => $end:expr, $def_id:expr, $text:expr, $pos:expr, $rotate:expr, $path:literal, $pre_trans:ident } => {
+    { $name:ident, $start:expr => $end:expr, $def_id:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $pre_trans:ident } => {
         struct $name {
             input: OwnedInput,
         }
@@ -79,7 +79,7 @@ macro_rules! move_definition {
                 Group::new()
                     .set("stroke", "black")
                     .set("fill", "none")
-                    .add(Path::new().set("d", concat!("M 0 0 ", $path)))
+                    .add(Path::new().set("d", format!("M 0 0 {}", $path)))
             }
         }
     }
@@ -108,6 +108,8 @@ move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotati
 move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0 90 90 180 180 180");
 move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0 100 100 200 200 200");
 move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0 90 -90 180 -180 180");
+standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW} 0 l 0 100 m -{HW} -100 l 0 100"));
+standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW} 0 l 0 100 m -{HW} -100 l 0 100"));
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
@@ -126,6 +128,7 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     register!(ids, m, Lf, Rf, Lb, Rb);
     register!(ids, m, Lfo, XfLfo, Lfi, XfLfi, Rfo, XfRfo, Rfi, XfRfi);
     register!(ids, m, Lbo, XbLbo, Lbi, XbLbi, Rbo, XbRbo, Rbi, XbRbi);
+    register!(ids, m, Bf, Bb);
     (ids, m)
 }
 
@@ -143,6 +146,9 @@ pub fn ids() -> &'static HashSet<String> {
 fn registry() -> &'static HashMap<String, Constructor> {
     &REGISTRY.get_or_init(|| initialize()).1
 }
+
+const HW: i64 = 18; // cm
+const W: i64 = 2 * HW; // cm
 
 /// Standard pre-transition is just to change foot.
 fn pre_transition(from: Code, to: Code) -> Transition {
