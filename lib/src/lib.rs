@@ -1,6 +1,7 @@
 //! Skating diagram creator.
 #![warn(missing_docs)]
 
+pub use crate::error::ParseError;
 pub use crate::types::*;
 use log::{debug, info, trace};
 use std::collections::HashSet;
@@ -13,52 +14,12 @@ use svg::{
     Document,
 };
 
+mod error;
 pub mod moves;
 mod types;
 
 const MARGIN: i64 = 100;
 
-/// Error in parsing input.
-#[derive(Debug, Clone)]
-pub struct ParseError {
-    /// Position of the error.
-    pub pos: TextPosition,
-    /// Error information.
-    pub msg: String,
-}
-
-impl ParseError {
-    fn from_input(input: &Input, msg: &str) -> Self {
-        Self {
-            pos: input.pos,
-            msg: msg.to_string(),
-        }
-    }
-}
-
-impl Display for ParseError {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{}:{}: {}", self.pos.row + 1, self.pos.col + 1, self.msg)
-    }
-}
-impl std::error::Error for ParseError {}
-
-impl From<std::io::Error> for ParseError {
-    fn from(err: std::io::Error) -> ParseError {
-        ParseError {
-            pos: TextPosition::default(),
-            msg: format!("{err}"),
-        }
-    }
-}
-impl From<std::string::FromUtf8Error> for ParseError {
-    fn from(err: std::string::FromUtf8Error) -> ParseError {
-        ParseError {
-            pos: TextPosition::default(),
-            msg: format!("{err}"),
-        }
-    }
-}
 /// Description of current skater state.
 #[derive(Debug, Clone, Copy)]
 struct Skater {
@@ -261,7 +222,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-struct Input<'a> {
+pub(crate) struct Input<'a> {
     pos: TextPosition,
     text: &'a str,
 }
@@ -276,7 +237,7 @@ impl<'a> Input<'a> {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-struct OwnedInput {
+pub(crate) struct OwnedInput {
     pos: TextPosition,
     text: String,
 }
