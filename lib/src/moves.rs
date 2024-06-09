@@ -117,6 +117,7 @@ standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), forma
 standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("RF" @ 30,50));
 standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("LB" @ 30,50));
 standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("RB" @ 30,50));
+
 move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200", label!("LFO" @ 100,100));
 move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("LFI" @ -90,90));
 move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200", label!("RFO" @ -100,100));
@@ -125,8 +126,19 @@ move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotati
 move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180", label!("LBI" @ 90,90));
 move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200", label!("RBO" @ 100,100));
 move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("RBI" @ -90,90));
+
 standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
 standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
+
+move_and_xf!(Lfo3, XfLfo3, LFO => LBI, "LFO3", Position { x: 200, y: 200 }, Rotation(-90), "c 15,80 90,90 130,70 c -20,40 -10,115 70,130", label!("LFO" @ 50,40), label!("3" @ 140,60), label!("LBI" @ 160,160));
+move_and_xb!(Lbi3, XbLbi3, LBI => LFO, "LBI3", Position { x: 200, y: 200 }, Rotation(-90), "c 15,80 90,90 130,70 c -20,40 -10,115 70,130", label!("LBI" @ 50,40), label!("3" @ 140,60), label!("LFO" @ 160,160));
+move_and_xf!(Rfi3, XfRfi3, RFI => RBO, "RFI3", Position { x: 200, y: 200 }, Rotation(-90), "c 15,80 90,90 130,70 c -20,40 -10,115 70,130", label!("RFI" @ 50,40), label!("3" @ 140,60), label!("RBO" @ 160,160));
+move_and_xb!(Rbo3, XbRbo3, RBO => RFI, "RBO3", Position { x: 200, y: 200 }, Rotation(-90), "c 15,80 90,90 130,70 c -20,40 -10,115 70,130", label!("RBO" @ 50,40), label!("3" @ 140,60), label!("RFI" @ 160,160));
+
+move_and_xf!(Rfo3, XfRfo3, RFO => RBI, "RFO3", Position { x: -200, y: 200 }, Rotation(90), "c -15,80 -90,90 -130,70 c 20,40 10,115 -70,130", label!("RFO" @ -50,40), label!("3" @ -140,60), label!("RBI" @ -160,160));
+move_and_xb!(Rbi3, XbRbi3, RBI => RFO, "RBI3", Position { x: -200, y: 200 }, Rotation(90), "c -15,80 -90,90 -130,70 c 20,40 10,115 -70,130", label!("RBI" @ -50,40), label!("3" @ -140,60), label!("RFO" @ -160,160));
+move_and_xf!(Lfi3, XfLfi3, LFI => LBO, "LFI3", Position { x: -200, y: 200 }, Rotation(90), "c -15,80 -90,90 -130,70 c 20,40 10,115 -70,130", label!("LFI" @ -50,40), label!("3" @ -140,60), label!("LBO" @ -160,160));
+move_and_xb!(Lbo3, XbLbo3, LBO => LFI, "LBO3", Position { x: -200, y: 200 }, Rotation(90), "c -15,80 -90,90 -130,70 c 20,40 10,115 -70,130", label!("LBO" @ -50,40), label!("3" @ -140,60), label!("LFI" @ -160,160));
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
@@ -146,6 +158,8 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     register!(ids, m, Lfo, XfLfo, Lfi, XfLfi, Rfo, XfRfo, Rfi, XfRfi);
     register!(ids, m, Lbo, XbLbo, Lbi, XbLbi, Rbo, XbRbo, Rbi, XbRbi);
     register!(ids, m, Bf, Bb);
+    register!(ids, m, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
+    register!(ids, m, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
     (ids, m)
 }
 

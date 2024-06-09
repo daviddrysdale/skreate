@@ -11,7 +11,7 @@
 - [x] Add in/out skating direction for moves
 - [x] Fix pre-transitions to be aware of directions
 - [ ] Move move definitions.
-    - [ ] 3-turn
+    - [x] 3-turn
     - [ ] Bracket
     - [ ] Rocker
     - [ ] Counter
