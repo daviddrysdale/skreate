@@ -21,17 +21,30 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     }
 }
 
+/// Macro to build a [`Label`]
+macro_rules! label {
+    { $text:literal @ $x:literal, $y:literal } => {
+        Label {
+            text: $text.to_string(),
+            pos: Position {
+                x: $x,
+                y: $y,
+            }
+        }
+    }
+}
+
 /// Macro to populate standard boilerplate for moves.
 macro_rules! move_and_xf {
     { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, vec![$($labels),*], cross_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xf" @ 10,10)], cross_transition);
     }
 }
 macro_rules! move_and_xb {
     { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
         move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*], cross_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xb" @ 10,10)], cross_transition);
     }
 }
 macro_rules! standard_move {
@@ -83,19 +96,6 @@ macro_rules! move_definition {
             }
             fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
                 $labels
-            }
-        }
-    }
-}
-
-/// Macro to build a [`Label`]
-macro_rules! label {
-    { $text:literal @ $x:literal, $y:literal } => {
-        Label {
-            text: $text.to_string(),
-            pos: Position {
-                x: $x,
-                y: $y,
             }
         }
     }
