@@ -13,7 +13,7 @@
 - [ ] Move move definitions.
     - [x] 3-turn
     - [ ] Bracket
-    - [ ] Rocker
+    - [x] Rocker
     - [ ] Counter
     - [ ] Mohawk
     - [ ] Twizzle

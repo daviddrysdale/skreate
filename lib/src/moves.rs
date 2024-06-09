@@ -140,6 +140,16 @@ move_and_xb!(Rbi3, XbRbi3, RBI => RFO, "RBI3", Position { x: -200, y: 200 }, Rot
 move_and_xf!(Lfi3, XfLfi3, LFI => LBO, "LFI3", Position { x: -200, y: 200 }, Rotation(90), "c -15,80 -90,90 -130,70 c 20,40 10,115 -70,130", label!("LFI" @ -50,40), label!("3" @ -140,60), label!("LBO" @ -160,160));
 move_and_xb!(Lbo3, XbLbo3, LBO => LFI, "LBO3", Position { x: -200, y: 200 }, Rotation(90), "c -15,80 -90,90 -130,70 c 20,40 10,115 -70,130", label!("LBO" @ -50,40), label!("3" @ -140,60), label!("LFI" @ -160,160));
 
+move_and_xf!(LfoRk, XfLfoRk, LFO => LBO, "LFO-Rk", Position { x: 200, y: 180 }, Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("LFO" @ 50,40), label!("Rk" @ 110,60), label!("LBO" @ 150,130));
+move_and_xb!(LbiRk, XbLbiRk, LBI => LFI, "LBI-Rk", Position { x: 200, y: 180 }, Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("LBI" @ 50,40), label!("Rk" @ 110,60), label!("LFI" @ 150,130));
+move_and_xf!(RfiRk, XfRfiRk, RFI => RBI, "RFI-Rk", Position { x: 200, y: 180 }, Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("RFI" @ 50,40), label!("Rk" @ 110,60), label!("RBI" @ 150,130));
+move_and_xb!(RboRk, XbRboRk, RBO => RFO, "RBO-Rk", Position { x: 200, y: 180 }, Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("RBO" @ 50,40), label!("Rk" @ 110,60), label!("RFO" @ 150,130));
+
+move_and_xf!(RfoRk, XfRfoRk, RFO => RBO, "RFO-Rk", Position { x: -200, y: 180 }, Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("RFO" @ -50,40), label!("Rk" @ -110,60), label!("RBO" @ -150,130));
+move_and_xb!(RbiRk, XbRbiRk, RBI => RFI, "RBI-Rk", Position { x: -200, y: 180 }, Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("RBI" @ -50,40), label!("Rk" @ -110,60), label!("RFI" @ -150,130));
+move_and_xf!(LfiRk, XfLfiRk, LFI => LBI, "LFI-Rk", Position { x: -200, y: 180 }, Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("LFI" @ -50,40), label!("Lk" @ -110,60), label!("LBI" @ -150,130));
+move_and_xb!(LboRk, XbLboRk, LBO => LFO, "LBO-Rk", Position { x: -200, y: 180 }, Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("LBO" @ -50,40), label!("Lk" @ -110,60), label!("LFO" @ -150,130));
+
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
     { $ids:ident, $m:ident, $( $typ:ident ),* } => {
@@ -160,6 +170,8 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
     register!(ids, m, Bf, Bb);
     register!(ids, m, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
     register!(ids, m, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
+    register!(ids, m, LfoRk, XfLfoRk, LbiRk, XbLbiRk, RfiRk, XfRfiRk, RboRk, XbRboRk);
+    register!(ids, m, RfoRk, XfRfoRk, RbiRk, XbRbiRk, LfiRk, XfLfiRk, LboRk, XbLboRk);
     (ids, m)
 }
 
