@@ -222,6 +222,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         code: code!(BF),
     };
     for mv in &moves {
+        info!("{} => {}", mv.start(), mv.end());
         let pre_transition = mv.pre_transition(skater.code);
         let before = skater + pre_transition;
         debug!("pre:  {skater} == {pre_transition} ==> {before}");
