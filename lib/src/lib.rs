@@ -194,9 +194,20 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         code: code!(BF),
     };
     let mut bounds = Bounds::default();
+    let mut first = true;
     for mv in &moves {
         let pre_transition = mv.pre_transition(skater.code);
-        let before = skater + pre_transition;
+        let before = if first {
+            let mut before = skater;
+            before.code = mv.start();
+            debug!("start: {before}");
+            before
+        } else {
+            let before = skater + pre_transition;
+            debug!("pre:  {skater} == {pre_transition} ==> {before}");
+            before
+        };
+        first = false;
         bounds.encompass(&before.pos);
         let transition = mv.transition();
         let after = before + transition;
@@ -221,11 +232,21 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         dir: Direction::new(0),
         code: code!(BF),
     };
+    let mut first = true;
     for mv in &moves {
         info!("{} => {}", mv.start(), mv.end());
         let pre_transition = mv.pre_transition(skater.code);
-        let before = skater + pre_transition;
-        debug!("pre:  {skater} == {pre_transition} ==> {before}");
+        let before = if first {
+            let mut before = skater;
+            before.code = mv.start();
+            debug!("start: {before}");
+            before
+        } else {
+            let before = skater + pre_transition;
+            debug!("pre:  {skater} == {pre_transition} ==> {before}");
+            before
+        };
+        first = false;
         doc = mv.render(doc, &before, &opts);
         let transition = mv.transition();
         let after = before + transition;
