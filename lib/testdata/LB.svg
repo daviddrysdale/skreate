@@ -3,7 +3,7 @@
 <desc>Skating Diagram</desc>
 <defs>
 <g fill="none" id="LB" stroke="black">
-<path d="M 0,0 l 0,35 7,-7 -7,7 -7,-7 7,7 0,65"/>
+<path d="M 0,0 l 0,100"/>
 </g>
 </defs>
 <use id="r_0_c_0_2" transform="translate(118 100) rotate(270)" xlink:href="#LB"/>

@@ -97,37 +97,10 @@ macro_rules! move_definition {
 //  |
 //  v  y-axis
 
-const ARROW: Option<i32> = Some(45);
-
-const ARROW_LEN: i64 = 10; // cm
-
-fn arrow_at(len: i64, dir: i32, arrow_angle: i32) -> String {
-    let len = len as f64;
-    let angle = (dir + arrow_angle) as f64 * std::f64::consts::PI / 180.0;
-    let d1x = (len * angle.sin()) as i32;
-    let d1y = (-len * angle.cos()) as i32;
-
-    let angle = (dir - arrow_angle) as f64 * std::f64::consts::PI / 180.0;
-    let d2x = (len * angle.sin()) as i32;
-    let d2y = (-len * angle.cos()) as i32;
-    format!(
-        "{},{} {},{} {},{} {},{}",
-        d1x, d1y, -d1x, -d1y, d2x, d2y, -d2x, -d2y
-    )
-}
-
-fn arrow(dir: i32) -> String {
-    if let Some(arrow_angle) = ARROW {
-        arrow_at(ARROW_LEN, dir, arrow_angle)
-    } else {
-        "".to_string()
-    }
-}
-
-standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
-standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
-standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
-standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,35 {} 0,65", arrow(0)));
+standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
+standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
+standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
+standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
 move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200");
 move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180");
 move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200");
@@ -136,8 +109,8 @@ move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotati
 move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0,90 90 180,180,180");
 move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0,100 100,200 200,200");
 move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0,90 -90,180 -180,180");
-standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,35 {0} 0,65 m -{HW},-100 l 0,35 {0} 0,65", arrow(0)));
-standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,35 {0} 0,65 m -{HW},-100 l 0,35 {0} 0,65", arrow(0)));
+standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"));
+standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"));
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
@@ -371,20 +344,6 @@ mod tests {
             assert_eq!(mv.transition().code, mv.end(), "for '{name}'");
             assert_eq!(mv.input(), Some(input.owned()));
             assert_eq!(mv.text(), *name);
-        }
-    }
-
-    #[test]
-    fn test_arrow_at() {
-        let tests = [
-            (0, 45, "7,-7 -7,7 -7,-7 7,7"),
-            (0, 90, "10,0 -10,0 -10,0 10,0"),
-            (45, 45, "10,0 -10,0 0,-10 0,10"),
-            (90, 45, "7,7 -7,-7 7,-7 -7,7"),
-        ];
-        for (dir, arrow_angle, want) in tests {
-            let got = arrow_at(10, dir, arrow_angle);
-            assert_eq!(got, want, "for {dir}, {arrow_angle}");
         }
     }
 }
