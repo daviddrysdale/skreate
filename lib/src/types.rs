@@ -118,6 +118,14 @@ impl Bounds {
     }
 }
 
+/// Label for parts of a move.
+pub struct Label {
+    /// Text to display
+    pub text: String,
+    /// Where to centre the text.
+    pub pos: Position,
+}
+
 /// Effect of a move on a skater.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Transition {

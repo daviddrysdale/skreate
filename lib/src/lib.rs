@@ -7,10 +7,7 @@ use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
-    node::{
-        element::{Definitions, Description, Group, Title, Use},
-        Text,
-    },
+    node::element::{Definitions, Description, Group, Text, Title, Use},
     Document,
 };
 
@@ -38,16 +35,16 @@ impl Display for Skater {
     }
 }
 
-impl std::ops::Add<Transition> for Skater {
+impl std::ops::Add<Position> for Skater {
     type Output = Self;
-    fn add(self, transition: Transition) -> Self {
+    fn add(self, delta: Position) -> Self {
         // Start position
         let start_x = self.pos.x as f64;
         let start_y = self.pos.y as f64;
 
         // Delta in coords if we were aligned with `Direction(0)` ...
-        let delta_x = transition.delta.x as f64;
-        let delta_y = transition.delta.y as f64;
+        let delta_x = delta.x as f64;
+        let delta_y = delta.y as f64;
 
         // ... but we're not, we're moving at an angle:
         let angle = self.dir.0 as f64 * std::f64::consts::PI / 180.0;
@@ -63,9 +60,18 @@ impl std::ops::Add<Transition> for Skater {
                 x: new_x as i64,
                 y: new_y as i64,
             },
-            dir: self.dir + transition.rotate,
-            code: transition.code,
+            dir: self.dir,
+            code: self.code,
         }
+    }
+}
+impl std::ops::Add<Transition> for Skater {
+    type Output = Self;
+    fn add(self, transition: Transition) -> Self {
+        let mut moved = self + transition.delta;
+        moved.dir = self.dir + transition.rotate;
+        moved.code = transition.code;
+        moved
     }
 }
 // TODO
@@ -95,13 +101,16 @@ trait Move {
     fn transition(&self) -> Transition;
 
     /// Emit SVG group definition for the move.
-    fn def(&self, _opts: &RenderOptions) -> Group;
+    fn def(&self, opts: &RenderOptions) -> Group;
 
     /// Emit a unique identifier for the SVG group definition for the move.
     fn def_id(&self) -> &'static str;
 
+    /// Return the labels for this move. Each returned position is relative to (0,0) at 0°.
+    fn labels(&self, opts: &RenderOptions) -> Vec<Label>;
+
     /// Render the move into the given SVG document, assuming the existence of groups included in the output from [`defs`].
-    fn render(&self, doc: Document, start: &Skater, _opts: &RenderOptions) -> Document {
+    fn render(&self, mut doc: Document, start: &Skater, opts: &RenderOptions) -> Document {
         // Default implementation uses the definition, suitable translated and rotated.
         let def_id = self.def_id();
         let mut use_link = Use::new().set("xlink:href", format!("#{def_id}")).set(
@@ -114,7 +123,16 @@ trait Move {
         if let Some(input) = self.input() {
             use_link = use_link.set("id", input.unique_id());
         }
-        doc.add(use_link)
+        doc = doc.add(use_link);
+        for label in self.labels(opts) {
+            let loc = *start + label.pos;
+            let text = Text::new(label.text)
+                .set("style", "text-anchor: middle")
+                .set("x", loc.pos.x)
+                .set("y", loc.pos.y);
+            doc = doc.add(text);
+        }
+        doc
     }
 
     /// Emit text that describes the move.  Feeding this text into `moves::factory` should result in the

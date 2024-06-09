@@ -1,10 +1,17 @@
 <svg height="380" width="397" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Skating Diagram</title>
-<desc>Skating Diagram</desc>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
 <defs>
 <g fill="none" id="LBI" stroke="black">
 <path d="M 0,0 c 0,90 90 180,180,180"/>
 </g>
 </defs>
 <use id="r_0_c_0_3" transform="translate(118 280) rotate(270)" xlink:href="#LBI"/>
+<text style="text-anchor: middle" x="208" y="190">
+LBI
+</text>
 </svg>

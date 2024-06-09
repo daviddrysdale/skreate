@@ -1,10 +1,17 @@
 <svg height="380" width="380" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Skating Diagram</title>
-<desc>Skating Diagram</desc>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
 <defs>
 <g fill="none" id="xf-RFI" stroke="black">
 <path d="M 0,0 c 0,90 90 180,180,180"/>
 </g>
 </defs>
 <use id="r_0_c_0_6" transform="translate(100 100) rotate(0)" xlink:href="#xf-RFI"/>
+<text style="text-anchor: middle" x="190" y="190">
+RFI
+</text>
 </svg>

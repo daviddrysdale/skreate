@@ -1,8 +1,8 @@
 //! Skating move definitions.
 
 use crate::{
-    code, Code, Edge, Foot, Input, Move, MoveData, OwnedInput, ParseError, Position, RenderOptions,
-    Rotation, SkatingDirection, SkatingDirection::*, Transition,
+    code, Code, Edge, Foot, Input, Label, Move, MoveData, OwnedInput, ParseError, Position,
+    RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, Transition,
 };
 use log::{info, warn};
 use std::collections::{HashMap, HashSet};
@@ -23,26 +23,26 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 
 /// Macro to populate standard boilerplate for moves.
 macro_rules! move_and_xf {
-    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, cross_transition);
+    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, vec![$($labels),*], cross_transition);
     }
 }
 macro_rules! move_and_xb {
-    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, cross_transition);
+    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*], cross_transition);
     }
 }
 macro_rules! standard_move {
-    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:expr } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, pre_transition);
+    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
+        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
     }
 }
 
 /// Macro to populate a structure that implements [`Move`].
 macro_rules! move_definition {
-    { $name:ident, $start:expr => $end:expr, $def_id:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $pre_trans:ident } => {
+    { $name:ident, $start:expr => $end:expr, $def_id:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $labels:expr, $pre_trans:ident } => {
         struct $name {
             input: OwnedInput,
         }
@@ -81,6 +81,22 @@ macro_rules! move_definition {
                     .set("fill", "none")
                     .add(Path::new().set("d", format!("M 0,0 {}", $path)))
             }
+            fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
+                $labels
+            }
+        }
+    }
+}
+
+/// Macro to build a [`Label`]
+macro_rules! label {
+    { $text:literal @ $x:literal, $y:literal } => {
+        Label {
+            text: $text.to_string(),
+            pos: Position {
+                x: $x,
+                y: $y,
+            }
         }
     }
 }
@@ -97,20 +113,20 @@ macro_rules! move_definition {
 //  |
 //  v  y-axis
 
-standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
-standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
-standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
-standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"));
-move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200");
-move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180");
-move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200");
-move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180");
-move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(-90), "c 0,100 -100,200 -200,200");
-move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0,90 90 180,180,180");
-move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0,100 100,200 200,200");
-move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0,90 -90,180 -180,180");
-standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"));
-standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"));
+standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("LF" @ 30,50));
+standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("RF" @ 30,50));
+standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("LB" @ 30,50));
+standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("RB" @ 30,50));
+move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200", label!("LFO" @ 100,100));
+move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("LFI" @ -90,90));
+move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200", label!("RFO" @ -100,100));
+move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180", label!("RFI" @ 90,90));
+move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(-90), "c 0,100 -100,200 -200,200", label!("LBO" @ -100,100));
+move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0,90 90 180,180,180", label!("LBI" @ 90,90));
+move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0,100 100,200 200,200", label!("RBO" @ 100,100));
+move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0,90 -90,180 -180,180", label!("RBI" @ -90,90));
+standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
+standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {

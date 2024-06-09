@@ -30,7 +30,7 @@
         - [ ] Lutz
         - [ ] Axel
         - [ ] Walley
-- [ ] Text labels, floating & oriented correctly
+- [x] Text labels, floating & oriented correctly
 - [ ] Adjust measurements of moves
 - [ ] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
 - [ ] Rink and start point specification
@@ -41,6 +41,7 @@
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot
     - [ ] Can standalone SVG share CSS with web?
+- [ ] Option for arbitrary text annotation ("LFI3 (waves arms)")
 - [ ] SVG to HTML linkage
     - [ ] mouse over move => highlight text in editor
     - [ ] cursor on move => highlight corresponding move
