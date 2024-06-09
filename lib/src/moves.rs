@@ -121,10 +121,10 @@ move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotatio
 move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("LFI" @ -90,90));
 move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200", label!("RFO" @ -100,100));
 move_and_xf!(Rfi, XfRfi, RFI => RFI, "RFI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180", label!("RFI" @ 90,90));
-move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(-90), "c 0,100 -100,200 -200,200", label!("LBO" @ -100,100));
-move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(90), "c 0,90 90 180,180,180", label!("LBI" @ 90,90));
-move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(90), "c 0,100 100,200 200,200", label!("RBO" @ 100,100));
-move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(-90), "c 0,90 -90,180 -180,180", label!("RBI" @ -90,90));
+move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200", label!("LBO" @ -100,100));
+move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180", label!("LBI" @ 90,90));
+move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200", label!("RBO" @ 100,100));
+move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("RBI" @ -90,90));
 standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
 standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
 
