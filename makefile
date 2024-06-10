@@ -26,7 +26,13 @@ test:
 regenerate:
 	SKREATE_REGENERATE=1 cargo test -- test_compare
 
-publish:
+publish: clean build publish_build publish_tag
+publish_build:
+	git diff-index --quiet HEAD -- && \
+	rm -rf published && \
+	cp -r web published
+
+publish_tag:
 	git tag -f `date "+published-%Y%m%dT%H%M"`
 
 web/pkg:
