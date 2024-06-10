@@ -26,6 +26,9 @@ test:
 regenerate:
 	SKREATE_REGENERATE=1 cargo test -- test_compare
 
+publish:
+	git tag -f `date "+published-%Y%m%dT%H%M"`
+
 web/pkg:
 	mkdir -p $@
 web/pkg/$(WASM_CRATE).js: target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm | web/pkg
