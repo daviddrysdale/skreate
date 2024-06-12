@@ -19,11 +19,6 @@ async function run() {
 }
 await run();
 
-export function set_svg(text, div) {
-  var diagram_svg = generate(text);
-  div.html(diagram_svg);
-}
-
 export function setup_download(div, diagram_div, get_value) {
   var download_link = div.find('.download');
   download_link.click(function(ev) {
@@ -51,7 +46,7 @@ export function setup_editor(div, autofocus, text) {
   var editor_div = div.find(".editor");
   editor_div.html(text);
   var editor = ace.edit(editor_div.get(0));
-  editor.getSession().on('change', debounce(on_change, 100));
+  editor.getSession().on('change', debounce(on_change, 400));
   if (autofocus) {
       editor.focus();
   }
@@ -67,13 +62,12 @@ export function setup_editor(div, autofocus, text) {
 
   function on_change() {
     try {
-      // Clear out old diagram and editor annotations.
+      // Clear out old editor annotations.
       editor.getSession().setAnnotations([]);
-      diagram_div.html('');
-
       var options = { scale: 1 };
 
-      set_svg(editor.getValue(), diagram_div);
+      var diagram_svg = generate(getValue());
+      diagram_div.html(diagram_svg);
     } catch(err) {
       var annotation = {
         type: "error", // also warning and information
