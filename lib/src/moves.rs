@@ -1,8 +1,8 @@
 //! Skating move definitions.
 
 use crate::{
-    code, Code, Edge, Foot, Input, Label, Move, MoveData, OwnedInput, ParseError, Position,
-    RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, Transition,
+    code, Code, Edge, Foot, Input, Label, Move, OwnedInput, ParseError, Position, RenderOptions,
+    Rotation, SkatingDirection, SkatingDirection::*, Transition,
 };
 use log::{info, warn};
 use std::collections::{HashMap, HashSet};
@@ -12,7 +12,7 @@ use svg::node::element::{Group, Path};
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
     if let Some(factory) = registry().get(input.text) {
-        Ok(factory(input))
+        factory(input)
     } else {
         Err(ParseError::from_input(
             input,
@@ -62,15 +62,10 @@ macro_rules! move_definition {
         impl $name {
             const START: Code = $start;
             const END: Code = $end;
-            pub fn new(input: &Input) -> Self {
-                Self { input: input.owned() }
-            }
-            pub fn new_box(input: &Input) -> Box<dyn Move> {
-                Box::new(Self::new(input))
-            }
-        }
-        impl MoveData for $name {
             const ID: &'static str = $text;
+            pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+                Ok(Box::new(Self { input: input.owned()}))
+            }
         }
         impl Move for $name {
             fn start(&self) -> Code { Self::START }
@@ -155,8 +150,8 @@ macro_rules! register {
     { $ids:ident, $m:ident, $( $typ:ident ),* } => {
         $(
             $ids.insert($typ::ID.to_string());
-            $m.insert($typ::ID.to_string(), $typ::new_box as Constructor);
-            $m.insert($typ::ID.to_lowercase(), $typ::new_box as Constructor);
+            $m.insert($typ::ID.to_string(), $typ::construct as Constructor);
+            $m.insert($typ::ID.to_lowercase(), $typ::construct as Constructor);
         )*
     }
 }
@@ -176,7 +171,7 @@ fn initialize() -> (HashSet<String>, HashMap<String, Constructor>) {
 }
 
 /// Function that constructs a move from an [`Input`].
-type Constructor = fn(&Input) -> Box<dyn Move>;
+type Constructor = fn(&Input) -> Result<Box<dyn Move>, ParseError>;
 
 /// Registry of move names and name-or-alias to constructor mapping.
 static REGISTRY: OnceLock<(HashSet<String>, HashMap<String, Constructor>)> = OnceLock::new();
@@ -377,7 +372,7 @@ mod tests {
                 pos: Default::default(),
                 text: name,
             };
-            let mv = constructor(&input);
+            let mv = constructor(&input).unwrap();
             assert_eq!(
                 mv.pre_transition(code!(BF)).code,
                 mv.start(),
