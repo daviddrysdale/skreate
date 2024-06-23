@@ -84,10 +84,7 @@ macro_rules! move_definition {
                 }
             }
             fn def(&self, _opts: &RenderOptions) -> Group {
-                Group::new()
-                    .set("stroke", "black")
-                    .set("fill", "none")
-                    .add(Path::new().set("d", format!("M 0,0 {}", $path)))
+                Group::new().add(Path::new().set("d", format!("M 0,0 {}", $path)))
             }
             fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
                 $labels

@@ -6,21 +6,24 @@ Skating Diagram
 </text>
 </desc>
 <defs>
-<g fill="none" id="xf-LFO-Rk" stroke="black">
+<style>
+path { fill:none; stroke:black; } text { text-anchor: middle }
+</style>
+<g id="xf-LFO-Rk">
 <path d="M 0,0 c 15,80 70,100 100,70 c 10,40 80,0 100,80"/>
 </g>
 </defs>
 <use id="r_0_c_0_9" transform="translate(100 100) rotate(0)" xlink:href="#xf-LFO-Rk"/>
-<text style="text-anchor: middle" x="150" y="140">
+<text x="150" y="140">
 LFO
 </text>
-<text style="text-anchor: middle" x="210" y="160">
+<text x="210" y="160">
 Rk
 </text>
-<text style="text-anchor: middle" x="250" y="230">
+<text x="250" y="230">
 LBO
 </text>
-<text style="text-anchor: middle" x="110" y="110">
+<text x="110" y="110">
 xf
 </text>
 </svg>

@@ -6,7 +6,10 @@ Skating Diagram
 </text>
 </desc>
 <defs>
-<g fill="none" id="BF" stroke="black">
+<style>
+path { fill:none; stroke:black; } text { text-anchor: middle }
+</style>
+<g id="BF">
 <path d="M 0,0 m 18,0 l 0,100 m -18,-100 l 0,100"/>
 </g>
 </defs>

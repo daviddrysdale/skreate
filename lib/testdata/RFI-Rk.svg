@@ -6,18 +6,21 @@ Skating Diagram
 </text>
 </desc>
 <defs>
-<g fill="none" id="RFI-Rk" stroke="black">
+<style>
+path { fill:none; stroke:black; } text { text-anchor: middle }
+</style>
+<g id="RFI-Rk">
 <path d="M 0,0 c 15,80 70,100 100,70 c 10,40 80,0 100,80"/>
 </g>
 </defs>
 <use id="r_0_c_0_6" transform="translate(100 100) rotate(0)" xlink:href="#RFI-Rk"/>
-<text style="text-anchor: middle" x="150" y="140">
+<text x="150" y="140">
 RFI
 </text>
-<text style="text-anchor: middle" x="210" y="160">
+<text x="210" y="160">
 Rk
 </text>
-<text style="text-anchor: middle" x="250" y="230">
+<text x="250" y="230">
 RBI
 </text>
 </svg>

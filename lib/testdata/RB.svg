@@ -6,12 +6,15 @@ Skating Diagram
 </text>
 </desc>
 <defs>
-<g fill="none" id="RB" stroke="black">
+<style>
+path { fill:none; stroke:black; } text { text-anchor: middle }
+</style>
+<g id="RB">
 <path d="M 0,0 l 0,100"/>
 </g>
 </defs>
 <use id="r_0_c_0_2" transform="translate(100 100) rotate(0)" xlink:href="#RB"/>
-<text style="text-anchor: middle" x="130" y="150">
+<text x="130" y="150">
 RB
 </text>
 </svg>

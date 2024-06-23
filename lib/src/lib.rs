@@ -7,7 +7,7 @@ use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
-    node::element::{Definitions, Description, Group, Text, Title, Use},
+    node::element::{Definitions, Description, Group, Style, Text, Title, Use},
     Document,
 };
 
@@ -15,7 +15,11 @@ mod error;
 pub mod moves;
 mod types;
 
+/// Extra margin to put around calculated bounding box.
 const MARGIN: i64 = 100;
+
+/// Common style definitions.
+const STYLE_DEF: &str = "path { fill:none; stroke:black; } text { text-anchor: middle }";
 
 /// Description of current skater state.
 #[derive(Debug, Clone, Copy)]
@@ -120,7 +124,6 @@ trait Move {
         for label in self.labels(opts) {
             let loc = *start + label.pos;
             let text = Text::new(label.text)
-                .set("style", "text-anchor: middle")
                 .set("x", loc.pos.x)
                 .set("y", loc.pos.y);
             doc = doc.add(text);
@@ -167,8 +170,9 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let opts = RenderOptions {};
 
     // First pass: emit definitions for all moves in use.
+    let style = Style::new(STYLE_DEF);
     let mut seen = HashSet::new();
-    let mut defs = Definitions::new();
+    let mut defs = Definitions::new().add(style);
     for mv in &moves {
         let id = mv.def_id();
         if seen.contains(id) {
