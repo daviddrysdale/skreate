@@ -19,6 +19,11 @@ async function run() {
 }
 await run();
 
+export function set_svg(text, div) {
+  var diagram_svg = generate(text);
+  div.html(diagram_svg);
+}
+
 export function setup_download(div, diagram_div, get_value) {
   var download_link = div.find('.download');
   download_link.click(function(ev) {
@@ -66,8 +71,7 @@ export function setup_editor(div, autofocus, text) {
       editor.getSession().setAnnotations([]);
       var options = { scale: 1 };
 
-      var diagram_svg = generate(getValue());
-      diagram_div.html(diagram_svg);
+      set_svg(editor.getValue(), diagram_div);
     } catch(err) {
       var annotation = {
         type: "error", // also warning and information
