@@ -1,7 +1,7 @@
 //! Skating move definitions.
 
 use crate::{
-    code, Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
+    code, label, Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
     RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, Transition,
 };
 use log::{info, warn};
@@ -18,19 +18,6 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
             input,
             &format!("unknown move {}", input.text),
         ))
-    }
-}
-
-/// Macro to build a [`Label`]
-macro_rules! label {
-    { $text:literal @ $x:literal, $y:literal } => {
-        Label {
-            text: $text.to_string(),
-            pos: Position {
-                x: $x,
-                y: $y,
-            }
-        }
     }
 }
 

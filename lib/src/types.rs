@@ -126,6 +126,20 @@ pub struct Label {
     pub pos: Position,
 }
 
+/// Convenience macro to build a [`Label`].
+#[macro_export]
+macro_rules! label {
+    { $text:literal @ $x:literal, $y:literal } => {
+        Label {
+            text: $text.to_string(),
+            pos: Position {
+                x: $x,
+                y: $y,
+            }
+        }
+    }
+}
+
 /// Effect of a move on a skater.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Transition {
