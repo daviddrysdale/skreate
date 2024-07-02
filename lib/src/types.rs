@@ -175,9 +175,9 @@ pub enum Foot {
 impl Display for Foot {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
-            Foot::Left => write!(f, "LF"),
-            Foot::Right => write!(f, "RF"),
-            Foot::Both => write!(f, "BF"),
+            Foot::Left => write!(f, "L"),
+            Foot::Right => write!(f, "R"),
+            Foot::Both => write!(f, "B"),
         }
     }
 }
@@ -191,6 +191,15 @@ pub enum SkatingDirection {
     Backward,
 }
 
+impl Display for SkatingDirection {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            SkatingDirection::Forward => write!(f, "F"),
+            SkatingDirection::Backward => write!(f, "B"),
+        }
+    }
+}
+
 /// Blade edge in use.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Edge {
@@ -200,6 +209,16 @@ pub enum Edge {
     Inside,
     /// Flat
     Flat,
+}
+
+impl Display for Edge {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            Edge::Outside => write!(f, "O"),
+            Edge::Inside => write!(f, "I"),
+            Edge::Flat => write!(f, ""),
+        }
+    }
 }
 
 /// Code describing current foot/direction/edge.
@@ -215,20 +234,7 @@ pub struct Code {
 
 impl Display for Code {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        match &self.foot {
-            Foot::Left => write!(f, "L"),
-            Foot::Right => write!(f, "R"),
-            Foot::Both => write!(f, "B"),
-        }?;
-        match &self.dir {
-            SkatingDirection::Forward => write!(f, "F"),
-            SkatingDirection::Backward => write!(f, "B"),
-        }?;
-        match &self.edge {
-            Edge::Outside => write!(f, "O"),
-            Edge::Inside => write!(f, "I"),
-            Edge::Flat => write!(f, "F"),
-        }
+        write!(f, "{}{}{}", self.foot, self.dir, self.edge)
     }
 }
 

@@ -94,7 +94,7 @@ pub struct MoveParam {
 /// Trait describing the external behavior of a move.
 trait Move {
     /// Parameters for the move.
-    fn params(&self) -> &[MoveParam];
+    fn params(&self) -> Vec<MoveParam>;
 
     /// Start of the move.
     fn start(&self) -> Code;

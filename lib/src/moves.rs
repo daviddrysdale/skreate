@@ -9,6 +9,8 @@ use std::collections::HashSet;
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
+mod straight;
+
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
 
@@ -37,11 +39,6 @@ macro_rules! move_and_xb {
         move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xb" @ 10,10)], cross_transition);
     }
 }
-macro_rules! standard_move {
-    { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
-        move_definition!($name, code!($start) => code!($end), $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-    }
-}
 
 /// Macro to populate a structure that implements [`Move`].
 macro_rules! move_definition {
@@ -65,7 +62,7 @@ macro_rules! move_definition {
             }
         }
         impl Move for $name {
-            fn params(&self) -> &[MoveParam] {&[]}
+            fn params(&self) -> Vec<MoveParam> {vec![]}
             fn start(&self) -> Code { Self::START }
             fn end(&self) -> Code { Self::END }
             fn text(&self) -> String { $text.to_string() }
@@ -102,11 +99,6 @@ macro_rules! move_definition {
 //  |
 //  v  y-axis
 
-standard_move!(Lf, LF => LF, "LF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("LF" @ 30,50));
-standard_move!(Rf, RF => RF, "RF", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("RF" @ 30,50));
-standard_move!(Lb, LB => LB, "LB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("LB" @ 30,50));
-standard_move!(Rb, RB => RB, "RB", Position { x: 0, y: 100 }, Rotation(0), format!("l 0,100"), label!("RB" @ 30,50));
-
 move_and_xf!(Lfo, XfLfo, LFO => LFO, "LFO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200", label!("LFO" @ 100,100));
 move_and_xf!(Lfi, XfLfi, LFI => LFI, "LFI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("LFI" @ -90,90));
 move_and_xf!(Rfo, XfRfo, RFO => RFO, "RFO", Position { x: -200, y: 200 }, Rotation(90), "c 0,100 -100,200 -200,200", label!("RFO" @ -100,100));
@@ -115,9 +107,6 @@ move_and_xb!(Lbo, XbLbo, LBO => LBO, "LBO", Position { x: -200, y: 200 }, Rotati
 move_and_xb!(Lbi, XbLbi, LBI => LBI, "LBI", Position { x: 180, y: 180 }, Rotation(-90), "c 0,90 90 180,180,180", label!("LBI" @ 90,90));
 move_and_xb!(Rbo, XbRbo, RBO => RBO, "RBO", Position { x: 200, y: 200 }, Rotation(-90), "c 0,100 100,200 200,200", label!("RBO" @ 100,100));
 move_and_xb!(Rbi, XbRbi, RBI => RBI, "RBI", Position { x: -180, y: 180 }, Rotation(90), "c 0,90 -90,180 -180,180", label!("RBI" @ -90,90));
-
-standard_move!(Bf, BF => BF, "BF", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
-standard_move!(Bb, BF => BF, "BB", Position { x: 0, y: 100 }, Rotation(0), format!("m {HW},0 l 0,100 m -{HW},-100 l 0,100"), );
 
 move_and_xf!(Lfo3, XfLfo3, LFO => LBI, "LFO3", Position { x: 200, y: 200 }, Rotation(-90), "c 15,80 90,90 130,70 c -20,40 -10,115 70,130", label!("LFO" @ 50,40), label!("3" @ 140,60), label!("LBI" @ 160,160));
 move_and_xb!(Lbi3, XbLbi3, LBI => LFO, "LBI3", Position { x: 200, y: 200 }, Rotation(-90), "c 15,80 90,90 130,70 c -20,40 -10,115 70,130", label!("LBI" @ 50,40), label!("3" @ 140,60), label!("LFO" @ 160,160));
@@ -141,15 +130,14 @@ move_and_xb!(LboRk, XbLboRk, LBO => LFO, "LBO-Rk", Position { x: -200, y: 180 },
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
-    {  $reg:ident, $( $typ:ident ),* } => {
-        $( $reg.insert($typ::construct as Constructor); )*
+    {  $reg:ident, $( $typ:ty ),* } => {
+        $( $reg.insert(<$typ>::construct as Constructor); )*
     }
 }
 
 fn initialize() -> HashSet<Constructor> {
     let mut reg = HashSet::new();
-    register!(reg, Lf, Rf, Lb, Rb);
-    register!(reg, Bf, Bb);
+    register!(reg, straight::StraightEdge);
     register!(reg, Lfo, XfLfo, Lfi, XfLfi, Rfo, XfRfo, Rfi, XfRfi);
     register!(reg, Lbo, XbLbo, Lbi, XbLbi, Rbo, XbRbo, Rbi, XbRbi);
     register!(reg, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
