@@ -1,8 +1,8 @@
 //! Skating move definitions.
 
 use crate::{
-    code, Code, Edge, Foot, Input, Label, Move, OwnedInput, ParseError, Position, RenderOptions,
-    Rotation, SkatingDirection, SkatingDirection::*, Transition,
+    code, Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
+    RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, Transition,
 };
 use log::{info, warn};
 use std::collections::{HashMap, HashSet};
@@ -68,9 +68,10 @@ macro_rules! move_definition {
             }
         }
         impl Move for $name {
+            fn params(&self) -> &[MoveParam] {&[]}
             fn start(&self) -> Code { Self::START }
             fn end(&self) -> Code { Self::END }
-            fn def_id(&self) -> &'static str { Self::ID }
+            fn def_id(&self) -> String { Self::ID.to_string() }
             fn text(&self) -> String { $text.to_string() }
             fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
             fn pre_transition(&self, from: Code) -> Transition {

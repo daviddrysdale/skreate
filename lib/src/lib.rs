@@ -82,8 +82,20 @@ impl std::ops::Add<Transition> for Skater {
 #[derive(Debug, Clone, Copy)]
 struct RenderOptions {}
 
+/// A parameter for a move.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct MoveParam {
+    /// Name of the parameter.
+    pub name: &'static str,
+    /// Value for the parameter.  By convention, 100 is a "normal" default value.
+    pub value: i32,
+}
+
 /// Trait describing the external behavior of a move.
 trait Move {
+    /// Parameters for the move.
+    fn params(&self) -> &[MoveParam];
+
     /// Start of the move.
     fn start(&self) -> Code;
 
@@ -100,8 +112,8 @@ trait Move {
     /// Emit SVG group definition for the move.
     fn def(&self, opts: &RenderOptions) -> Group;
 
-    /// Emit a unique identifier for the SVG group definition for the move.
-    fn def_id(&self) -> &'static str;
+    /// Emit a unique identifier for the SVG group definition for this particular move instance (and its parameters).
+    fn def_id(&self) -> String;
 
     /// Return the labels for this move. Each returned position is relative to (0,0) at 0°.
     fn labels(&self, opts: &RenderOptions) -> Vec<Label>;
@@ -175,10 +187,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let mut defs = Definitions::new().add(style);
     for mv in &moves {
         let id = mv.def_id();
-        if seen.contains(id) {
+        if seen.contains(&id) {
             continue;
         }
-        seen.insert(id);
+        seen.insert(id.clone());
         let group = mv.def(&opts).set("id", id);
         defs = defs.add(group);
     }
@@ -244,6 +256,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             before
         };
         first = false;
+        debug!("perform: {} with params {:?}", mv.text(), mv.params());
         doc = mv.render(doc, &before, &opts);
         let transition = mv.transition();
         let after = before + transition;
