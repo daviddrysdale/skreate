@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 log = "0.4.21"
+regex = "1.10.5"
 svg = "0.17"
 
 [dev-dependencies]

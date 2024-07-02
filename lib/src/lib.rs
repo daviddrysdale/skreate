@@ -13,6 +13,7 @@ use svg::{
 
 mod error;
 pub mod moves;
+pub mod params;
 mod types;
 
 /// Extra margin to put around calculated bounding box.
@@ -78,9 +79,13 @@ impl std::ops::Add<Transition> for Skater {
         moved
     }
 }
+
 // TODO
 #[derive(Debug, Clone, Copy)]
 struct RenderOptions {}
+
+/// Default value for move parameter.
+pub const DEFAULT_PARAM: i32 = 100;
 
 /// A parameter for a move.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

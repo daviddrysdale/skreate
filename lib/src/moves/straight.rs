@@ -2,19 +2,12 @@
 
 use super::{cross_transition, pre_transition, HW};
 use crate::{
+    param,
+    params::{params_to_string, populate_params},
     Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
     RenderOptions, Rotation, SkatingDirection, Transition,
 };
 use svg::node::element::{Group, Path};
-
-macro_rules! param {
-    { $self:ident.$pname:ident } => {
-        MoveParam {
-            name: stringify!($pname),
-            value: $self.$pname,
-        }
-    }
-}
 
 pub struct StraightEdge {
     input: OwnedInput,
@@ -64,11 +57,13 @@ impl StraightEdge {
             "-" => 80,
             "--" => 50,
             "---" => 25,
-            _ => {
-                return Err(ParseError {
+            rest => {
+                let mut params = vec![param!(len)];
+                populate_params(&mut params, rest).map_err(|msg| ParseError {
                     pos: input.pos,
-                    msg: "Unrecognized params".to_string(),
-                })
+                    msg,
+                })?;
+                params[0].value
             }
         };
 
@@ -110,7 +105,7 @@ impl Move for StraightEdge {
             80 => "-".to_string(),
             50 => "--".to_string(),
             25 => "---".to_string(),
-            v => format!("[len={v}]"),
+            _ => params_to_string(&[param!(self.len)]),
         };
         format!("{prefix}{}{}{suffix}", self.foot, self.dir)
     }
