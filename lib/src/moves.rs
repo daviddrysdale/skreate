@@ -27,25 +27,25 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 /// Macro to populate standard boilerplate for moves.
 macro_rules! move_and_xf {
     { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), concat!("xf-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xf" @ 10,10)], cross_transition);
+        move_definition!($name, code!($start) => code!($end), $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xf" @ 10,10)], cross_transition);
     }
 }
 macro_rules! move_and_xb {
     { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xb" @ 10,10)], cross_transition);
+        move_definition!($name, code!($start) => code!($end), $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
+        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xb" @ 10,10)], cross_transition);
     }
 }
 macro_rules! standard_move {
     { $name:ident, $start:ident => $end:ident, $text:expr, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
-        move_definition!($name, code!($start) => code!($end), $text, $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
+        move_definition!($name, code!($start) => code!($end), $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
     }
 }
 
 /// Macro to populate a structure that implements [`Move`].
 macro_rules! move_definition {
-    { $name:ident, $start:expr => $end:expr, $def_id:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $labels:expr, $pre_trans:ident } => {
+    { $name:ident, $start:expr => $end:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $labels:expr, $pre_trans:ident } => {
         struct $name {
             input: OwnedInput,
         }
@@ -54,12 +54,12 @@ macro_rules! move_definition {
             const END: Code = $end;
             const ID: &'static str = $text;
             pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
-                if input.text == $def_id {
+                if input.text == Self::ID {
                     Ok(Box::new(Self { input: input.owned()}))
                 } else {
                     Err(ParseError{
                         pos: input.pos,
-                        msg: format!("got '{}', expecting '{}'", input.text, $def_id),
+                        msg: format!("got '{}', expecting '{}'", input.text, $text),
                     })
                 }
             }
@@ -68,7 +68,6 @@ macro_rules! move_definition {
             fn params(&self) -> &[MoveParam] {&[]}
             fn start(&self) -> Code { Self::START }
             fn end(&self) -> Code { Self::END }
-            fn def_id(&self) -> String { Self::ID.to_string() }
             fn text(&self) -> String { $text.to_string() }
             fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
             fn pre_transition(&self, from: Code) -> Transition {
