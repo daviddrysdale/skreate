@@ -2,7 +2,7 @@
 
 use crate::MoveParam;
 use regex::Regex;
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 /// Populate a [`MoveParam`] from a field in `self`.
 #[macro_export]
@@ -72,12 +72,21 @@ pub fn populate_params(params: &mut Vec<MoveParam>, input: &str) -> Result<(), S
     let result: Result<Vec<(&str, i32)>, String> =
         inner.split(',').map(param_from_string).collect();
     let vals: HashMap<&str, i32> = result?.into_iter().collect();
+
+    // Before modifying the given params, check that the string only has valid parameter names in it.
+    let valid_names: HashSet<&'static str> = params.iter().map(|param| param.name).collect();
+    for name in vals.keys() {
+        if !valid_names.contains(name) {
+            return Err(format!("'{name}' is not a valid parameter name"));
+        }
+    }
+
+    // Now transcribe any specified values.
     for param in params {
         if let Some(val) = vals.get(param.name) {
             param.value = *val;
         }
     }
-    // TODO: should this error if there's an unknown parameter?
     Ok(())
 }
 
@@ -137,9 +146,17 @@ mod tests {
     #[test]
     fn test_populate_params() {
         let mut params = vec![param!(len)];
-        populate_params(&mut params, " [len=100]").unwrap();
-        assert_eq!(params[0], param!(len = 100));
-        populate_params(&mut params, " [len=100,other=200]").unwrap();
-        assert_eq!(params[0], param!(len = 100));
+        populate_params(&mut params, " [len=42]").unwrap();
+        assert_eq!(params, vec![param!(len = 42)]);
+
+        let mut params = vec![param!(len1 = 10), param!(len2 = 20)];
+        populate_params(&mut params, " [len2=42]").unwrap();
+        assert_eq!(params, vec![param!(len1 = 10), param!(len2 = 42)]);
+    }
+
+    #[test]
+    fn test_populate_params_err() {
+        let mut params = vec![param!(len1 = 10), param!(len2 = 20)];
+        assert!(populate_params(&mut params, " [len2=42,other=99]").is_err());
     }
 }
