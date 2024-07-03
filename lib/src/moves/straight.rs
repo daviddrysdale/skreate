@@ -58,7 +58,7 @@ impl StraightEdge {
             "--" => 50,
             "---" => 25,
             rest => {
-                let mut params = vec![param!(len)];
+                let mut params = vec![param!(len = 100)];
                 populate_params(&mut params, rest).map_err(|msg| ParseError {
                     pos: input.pos,
                     msg,

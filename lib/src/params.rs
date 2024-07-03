@@ -19,12 +19,6 @@ macro_rules! param {
             value: $value,
         }
     };
-    { $name:ident } => {
-        $crate::MoveParam {
-            name: stringify!($name),
-            value: $crate::DEFAULT_PARAM,
-        }
-    };
 }
 
 /// Generate a string describing a set of [`MoveParam`]s.
@@ -145,7 +139,7 @@ mod tests {
 
     #[test]
     fn test_populate_params() {
-        let mut params = vec![param!(len)];
+        let mut params = vec![param!(len = 100)];
         populate_params(&mut params, " [len=42]").unwrap();
         assert_eq!(params, vec![param!(len = 42)]);
 

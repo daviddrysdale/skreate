@@ -84,9 +84,6 @@ impl std::ops::Add<Transition> for Skater {
 #[derive(Debug, Clone, Copy)]
 struct RenderOptions {}
 
-/// Default value for move parameter.
-pub const DEFAULT_PARAM: i32 = 100;
-
 /// A parameter for a move.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct MoveParam {
