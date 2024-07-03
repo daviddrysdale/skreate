@@ -238,6 +238,51 @@ impl Display for Code {
     }
 }
 
+/// Parse a possible transition prefix ("xf-", "xb-") from `text`.
+pub fn parse_transition_prefix(text: &str) -> (bool, &str) {
+    if let Some(rest) = text.strip_prefix("xf-") {
+        (true, rest)
+    } else if let Some(rest) = text.strip_prefix("xb-") {
+        (true, rest)
+    } else {
+        (false, text)
+    }
+}
+
+/// Parse a foot and direction from `text`.
+pub fn parse_foot_dir(text: &str) -> Result<(Foot, SkatingDirection, &str), String> {
+    let (foot, rest) = if let Some(rest) = text.strip_prefix('L') {
+        (Foot::Left, rest)
+    } else if let Some(rest) = text.strip_prefix('R') {
+        (Foot::Right, rest)
+    } else if let Some(rest) = text.strip_prefix('B') {
+        (Foot::Both, rest)
+    } else {
+        return Err("No foot recognized".to_string());
+    };
+    let (dir, rest) = if let Some(rest) = rest.strip_prefix('F') {
+        (SkatingDirection::Forward, rest)
+    } else if let Some(rest) = rest.strip_prefix('B') {
+        (SkatingDirection::Backward, rest)
+    } else {
+        return Err("No direction recognized".to_string());
+    };
+    Ok((foot, dir, rest))
+}
+
+/// Parse an edge code from `text`.
+pub fn parse_code(text: &str) -> Result<(Code, &str), String> {
+    let (foot, dir, rest) = parse_foot_dir(text)?;
+    let (edge, rest) = if let Some(rest) = rest.strip_prefix('O') {
+        (Edge::Outside, rest)
+    } else if let Some(rest) = rest.strip_prefix('I') {
+        (Edge::Inside, rest)
+    } else {
+        return Err("No edge recognized".to_string());
+    };
+    Ok((Code { foot, dir, edge }, rest))
+}
+
 /// Create a [`Code`] instance from a short code.
 #[macro_export]
 macro_rules! code {

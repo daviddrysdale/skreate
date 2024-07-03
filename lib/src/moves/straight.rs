@@ -4,8 +4,8 @@ use super::{cross_transition, pre_transition, HW};
 use crate::{
     param,
     params::{params_to_string, populate_params},
-    Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
-    RenderOptions, Rotation, SkatingDirection, Transition,
+    parse_foot_dir, parse_transition_prefix, Code, Edge, Foot, Input, Label, Move, MoveParam,
+    OwnedInput, ParseError, Position, RenderOptions, Rotation, SkatingDirection, Transition,
 };
 use svg::node::element::{Group, Path};
 
@@ -19,35 +19,11 @@ pub struct StraightEdge {
 
 impl StraightEdge {
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
-        let (cross_transition, rest) = if let Some(rest) = input.text.strip_prefix("xf-") {
-            (true, rest)
-        } else if let Some(rest) = input.text.strip_prefix("xb-") {
-            (true, rest)
-        } else {
-            (false, input.text)
-        };
-        let (foot, rest) = if let Some(rest) = rest.strip_prefix('L') {
-            (Foot::Left, rest)
-        } else if let Some(rest) = rest.strip_prefix('R') {
-            (Foot::Right, rest)
-        } else if let Some(rest) = rest.strip_prefix('B') {
-            (Foot::Both, rest)
-        } else {
-            return Err(ParseError {
-                pos: input.pos,
-                msg: "No foot recognized".to_string(),
-            });
-        };
-        let (dir, rest) = if let Some(rest) = rest.strip_prefix('F') {
-            (SkatingDirection::Forward, rest)
-        } else if let Some(rest) = rest.strip_prefix('B') {
-            (SkatingDirection::Backward, rest)
-        } else {
-            return Err(ParseError {
-                pos: input.pos,
-                msg: "No direction recognized".to_string(),
-            });
-        };
+        let (cross_transition, rest) = parse_transition_prefix(input.text);
+        let (foot, dir, rest) = parse_foot_dir(rest).map_err(|msg| ParseError {
+            pos: input.pos,
+            msg,
+        })?;
 
         let len = match rest {
             "" => 100,
