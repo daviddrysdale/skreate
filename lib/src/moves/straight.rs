@@ -2,10 +2,9 @@
 
 use super::{cross_transition, pre_transition, HW};
 use crate::{
-    param,
-    params::{params_to_string, populate_params},
-    parse_foot_dir, parse_transition_prefix, Code, Edge, Foot, Input, Label, Move, MoveParam,
-    OwnedInput, ParseError, Position, RenderOptions, Rotation, SkatingDirection, Transition,
+    param, params, parse_foot_dir, parse_transition_prefix, Code, Edge, Foot, Input, Label, Move,
+    MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation, SkatingDirection,
+    Transition,
 };
 use svg::node::element::{Group, Path};
 
@@ -18,6 +17,19 @@ pub struct StraightEdge {
 }
 
 impl StraightEdge {
+    const PARAMS_INFO: &'static [params::Info] = &[params::Info {
+        name: "len",
+        default: 100,
+        range: params::Range::StrictlyPositive,
+        short: params::Abbrev::PlusMinus(params::Detents {
+            add1: 125,
+            add2: 150,
+            add3: 200,
+            less1: 75,
+            less2: 50,
+            less3: 25,
+        }),
+    }];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
         let (cross_transition, rest) = parse_transition_prefix(input.text);
         let (foot, dir, rest) = parse_foot_dir(rest).map_err(|msg| ParseError {
@@ -25,30 +37,17 @@ impl StraightEdge {
             msg,
         })?;
 
-        let len = match rest {
-            "" => 100,
-            "+" => 125,
-            "++" => 150,
-            "+++" => 200,
-            "-" => 80,
-            "--" => 50,
-            "---" => 25,
-            rest => {
-                let mut params = vec![param!(len = 100)];
-                populate_params(&mut params, rest).map_err(|msg| ParseError {
-                    pos: input.pos,
-                    msg,
-                })?;
-                params[0].value
-            }
-        };
+        let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
+            pos: input.pos,
+            msg,
+        })?;
 
         Ok(Box::new(Self {
             input: input.owned(),
             cross_transition,
             foot,
             dir,
-            len,
+            len: params[0].value,
         }))
     }
 }
@@ -73,16 +72,7 @@ impl Move for StraightEdge {
             (true, SkatingDirection::Forward) => "xf-",
             (true, SkatingDirection::Backward) => "xb-",
         };
-        let suffix = match self.len {
-            100 => "".to_string(),
-            125 => "+".to_string(),
-            150 => "++".to_string(),
-            200 => "+++".to_string(),
-            80 => "-".to_string(),
-            50 => "--".to_string(),
-            25 => "---".to_string(),
-            _ => params_to_string(&[param!(self.len)]),
-        };
+        let suffix = params::to_string(Self::PARAMS_INFO, &[param!(self.len)]);
         format!("{prefix}{}{}{suffix}", self.foot, self.dir)
     }
     fn input(&self) -> Option<OwnedInput> {
