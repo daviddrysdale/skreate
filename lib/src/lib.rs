@@ -7,7 +7,7 @@ use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
-    node::element::{Definitions, Description, Group, Style, Text, Title, Use},
+    node::element::{Definitions, Description, Group, Path, Style, Text, Title, Use},
     Document,
 };
 
@@ -82,7 +82,9 @@ impl std::ops::Add<Transition> for Skater {
 
 // TODO
 #[derive(Debug, Clone, Copy)]
-struct RenderOptions {}
+struct RenderOptions {
+    debug: bool,
+}
 
 /// A parameter for a move.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -91,6 +93,16 @@ pub struct MoveParam {
     pub name: &'static str,
     /// Value for the parameter.  By convention, 100 is a "normal" default value.
     pub value: i32,
+}
+
+fn use_at(skater: &Skater, def_id: &str) -> Use {
+    Use::new().set("xlink:href", format!("#{def_id}")).set(
+        "transform",
+        format!(
+            "translate({} {}) rotate({})",
+            skater.pos.x, skater.pos.y, skater.dir.0
+        ),
+    )
 }
 
 /// Trait describing the external behavior of a move.
@@ -121,13 +133,7 @@ trait Move {
     fn render(&self, mut doc: Document, start: &Skater, opts: &RenderOptions) -> Document {
         // Default implementation uses the definition, suitably translated and rotated.
         let def_id = self.text();
-        let mut use_link = Use::new().set("xlink:href", format!("#{def_id}")).set(
-            "transform",
-            format!(
-                "translate({} {}) rotate({})",
-                start.pos.x, start.pos.y, start.dir.0
-            ),
-        );
+        let mut use_link = use_at(start, &def_id);
         if let Some(input) = self.input() {
             use_link = use_link.set("id", input.unique_id());
         }
@@ -178,12 +184,32 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
-    let opts = RenderOptions {};
+    let opts = RenderOptions { debug: true };
 
     // First pass: emit definitions for all moves in use.
     let style = Style::new(STYLE_DEF);
     let mut seen = HashSet::new();
     let mut defs = Definitions::new().add(style);
+    if opts.debug {
+        defs = defs.add(
+            Path::new()
+                .set(
+                    "d",
+                    "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
+                )
+                .set("style", "stroke:red;")
+                .set("id", "end-mark"),
+        );
+        defs = defs.add(
+            Path::new()
+                .set(
+                    "d",
+                    "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
+                )
+                .set("style", "stroke:green;")
+                .set("id", "start-mark"),
+        );
+    }
     for mv in &moves {
         let id = mv.text();
         if seen.contains(&id) {
@@ -256,10 +282,16 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         };
         first = false;
         debug!("perform: {} with params {:?}", mv.text(), mv.params());
+        if opts.debug {
+            doc = doc.add(use_at(&before, "start-mark"));
+        }
         doc = mv.render(doc, &before, &opts);
         let transition = mv.transition();
         let after = before + transition;
         debug!("post: {before} == {transition} ==> {after}");
+        if opts.debug {
+            doc = doc.add(use_at(&after, "end-mark"));
+        }
         skater = after;
     }
 
