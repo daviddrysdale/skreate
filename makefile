@@ -1,6 +1,8 @@
 WASM_CRATE=skreate_wasm
 all: build
 
+LIBRARY_SRC=wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
+
 build: web/pkg/$(WASM_CRATE).js
 
 serve: build
@@ -14,14 +16,21 @@ prereqs:
 	cargo install wasm-bindgen-cli
 	cargo install https # for local webserver
 
-target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm: wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
+target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm: $(LIBRARY_SRC)
 	cargo build --lib --release --target wasm32-unknown-unknown
 
-cli: cli/src/main.rs
+cli: target/debug/skreate-cli
+target/debug/skreate-cli: cli/src/main.rs $(LIBRARY_SRC)
 	cargo build --manifest-path cli/Cargo.toml
+
+run-cli: target/debug/skreate-cli
+	$<
 
 test:
 	cargo test
+
+clippy:
+	cargo clippy --all-targets
 
 regenerate:
 	SKREATE_REGENERATE=1 cargo test -- test_compare
