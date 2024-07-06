@@ -2,9 +2,9 @@
 
 use super::{cross_transition, pre_transition, HW};
 use crate::{
-    param, params, parse_foot_dir, parse_transition_prefix, Code, Edge, Foot, Input, Label, Move,
-    MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation, SkatingDirection,
-    Transition,
+    param, params, params::Value, parse_foot_dir, parse_transition_prefix, Code, Edge, Foot, Input,
+    Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
+    SkatingDirection, Transition,
 };
 use svg::node::element::{Group, Path};
 
@@ -19,7 +19,7 @@ pub struct StraightEdge {
 impl StraightEdge {
     const PARAMS_INFO: &'static [params::Info] = &[params::Info {
         name: "len",
-        default: 100,
+        default: Value::Number(100),
         range: params::Range::StrictlyPositive,
         short: params::Abbrev::PlusMinus(params::Detents {
             add1: 125,
@@ -47,7 +47,7 @@ impl StraightEdge {
             cross_transition,
             foot,
             dir,
-            len: params[0].value,
+            len: params[0].value.as_i32().unwrap(),
         }))
     }
 }

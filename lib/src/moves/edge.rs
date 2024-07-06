@@ -2,9 +2,9 @@
 
 use super::{cross_transition, pre_transition};
 use crate::{
-    code, param, params, parse_code, parse_transition_prefix, Code, Edge, Foot, Input, Label, Move,
-    MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation, SkatingDirection,
-    Transition,
+    code, param, params, params::Value, parse_code, parse_transition_prefix, Code, Edge, Foot,
+    Input, Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
+    SkatingDirection, Transition,
 };
 use std::f64::consts::PI;
 use svg::node::element::{Group, Path};
@@ -21,7 +21,7 @@ impl Curve {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "angle",
-            default: 45,
+            default: Value::Number(45),
             range: params::Range::StrictlyPositive,
             short: params::Abbrev::GreaterLess(params::Detents {
                 add1: 90,
@@ -34,7 +34,7 @@ impl Curve {
         },
         params::Info {
             name: "len",
-            default: 100,
+            default: Value::Number(100),
             range: params::Range::StrictlyPositive,
             short: params::Abbrev::PlusMinus(params::Detents {
                 add1: 125,
@@ -62,8 +62,8 @@ impl Curve {
             input: input.owned(),
             cross_transition,
             code,
-            angle: params[0].value,
-            len: params[1].value,
+            angle: params[0].value.as_i32().unwrap(),
+            len: params[1].value.as_i32().unwrap(),
         }))
     }
 

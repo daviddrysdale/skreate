@@ -2,6 +2,7 @@
 #![warn(missing_docs)]
 
 pub use crate::error::ParseError;
+pub use crate::params::MoveParam;
 pub use crate::types::*;
 use log::{debug, info, trace};
 use std::collections::HashSet;
@@ -84,15 +85,6 @@ impl std::ops::Add<Transition> for Skater {
 #[derive(Debug, Clone, Copy)]
 struct RenderOptions {
     debug: bool,
-}
-
-/// A parameter for a move.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub struct MoveParam {
-    /// Name of the parameter.
-    pub name: &'static str,
-    /// Value for the parameter.  By convention, 100 is a "normal" default value.
-    pub value: i32,
 }
 
 fn use_at(skater: &Skater, def_id: &str) -> Use {

@@ -1,8 +1,8 @@
 //! Functionality for parsing and formatting parameters.
 
-use crate::MoveParam;
 use regex::Regex;
 use std::collections::HashMap;
+use std::fmt::{self, Display, Formatter};
 
 /// Populate a [`MoveParam`] from a field in `self`.
 #[macro_export]
@@ -10,18 +10,84 @@ macro_rules! param {
     { $self:ident.$pname:ident } => {
         $crate::MoveParam {
             name: stringify!($pname),
-            value: $self.$pname,
+            value: $self.$pname.into(),
         }
     };
     { $name:ident=$value:expr } => {
         $crate::MoveParam {
             name: stringify!($name),
-            value: $value,
+            value: $value.into(),
         }
     };
 }
 
-/// Set of predefined values for short codes.
+/// A parameter for a move.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct MoveParam {
+    /// Name of the parameter.
+    pub name: &'static str,
+    /// Value for the parameter.
+    pub value: Value,
+}
+
+/// A parameter value may be either a number or a `String`.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub enum Value {
+    /// Numeric value.
+    Number(i32),
+    /// Text value.
+    Text(String),
+}
+
+impl Value {
+    /// Extract the numeric value.
+    pub fn as_i32(&self) -> Result<i32, String> {
+        match self {
+            Value::Number(v) => Ok(*v),
+            Value::Text(v) => Err(format!(
+                "Trying to extract number from text parameter '{v}'!"
+            )),
+        }
+    }
+    /// Extract the text value.
+    pub fn as_str(&self) -> Result<&str, String> {
+        match self {
+            Value::Number(v) => Err(format!(
+                "Trying to extract number from text parameter '{v}'!"
+            )),
+            Value::Text(v) => Ok(v),
+        }
+    }
+}
+
+impl From<i32> for Value {
+    fn from(val: i32) -> Self {
+        Self::Number(val)
+    }
+}
+
+impl From<String> for Value {
+    fn from(val: String) -> Self {
+        Self::Text(val)
+    }
+}
+
+impl From<&str> for Value {
+    fn from(val: &str) -> Self {
+        Self::Text(val.to_owned())
+    }
+}
+
+impl Display for Value {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            Value::Number(v) => write!(f, "{v}",),
+            Value::Text(v) => write!(f, "\"{v}\"",),
+        }
+    }
+}
+
+/// Set of predefined values for numeric short codes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Detents {
     /// Value to use for one detent more than default.
@@ -43,9 +109,9 @@ pub struct Detents {
 pub enum Abbrev {
     /// No abbreviated form.
     None,
-    /// Specify as "+", "+++", "--" etc.
+    /// Numeric parameter can be specified as "+", "+++", "--" etc.
     PlusMinus(Detents),
-    /// Specify as "<", "<<<", ">>" etc.
+    /// Numeric parameter can be specified  as "<", "<<<", ">>" etc.
     GreaterLess(Detents),
 }
 
@@ -69,7 +135,9 @@ impl Abbrev {
 /// Valid range for parameter values.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Range {
-    /// Any value is allowed.
+    /// Only text strings are allowed (resulting in `Value::Text`).
+    Text,
+    /// Any numeric value is allowed (resulting in `Value::Number`).
     Any,
     /// Restrict to [0, ∞)
     Positive,
@@ -79,19 +147,25 @@ pub enum Range {
 
 impl Range {
     /// Indicate whether the given value is valid for this range.
-    pub fn valid(&self, val: i32) -> Result<i32, String> {
-        match self {
-            Range::Any => Ok(val),
-            Range::Positive if val >= 0 => Ok(val),
-            Range::Positive => Err(format!("{val} out of range, must be >= 0")),
-            Range::StrictlyPositive if val > 0 => Ok(val),
-            Range::StrictlyPositive => Err(format!("{val} out of range, must be > 0")),
+    pub fn valid(&self, val: &Value) -> Result<(), String> {
+        match (val, self) {
+            (Value::Number(_v), Range::Any) => Ok(()),
+            (Value::Number(v), Range::Text) => Err(format!("{v} unexpected, want \"string\"")),
+            (Value::Number(v), Range::Positive) if *v >= 0 => Ok(()),
+            (Value::Number(v), Range::Positive) => Err(format!("{v} out of range, must be >= 0")),
+            (Value::Number(v), Range::StrictlyPositive) if *v > 0 => Ok(()),
+            (Value::Number(v), Range::StrictlyPositive) => {
+                Err(format!("{v} out of range, must be > 0"))
+            }
+
+            (Value::Text(_v), Range::Text) => Ok(()),
+            (Value::Text(v), _) => Err(format!("'{v}' unexpected, want number")),
         }
     }
 }
 
 /// Information about a parameter for a move.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Info {
     /// Name of the parameter.
     pub name: &'static str,
@@ -100,7 +174,7 @@ pub struct Info {
     /// Valid range for parameter values.
     pub range: Range,
     /// Default value.
-    pub default: i32,
+    pub default: Value,
 }
 
 /// Generate a minimal string describing a set of [`MoveParam`]s.
@@ -134,17 +208,18 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
             done[idx] = true;
         } else if let Some(detents) = info.short.detents() {
             let (u, d) = info.short.chars();
-            let short = if param.value == detents.add1 {
+            let value = param.value.as_i32().unwrap();
+            let short = if value == detents.add1 {
                 format!("{u}")
-            } else if param.value == detents.add2 {
+            } else if value == detents.add2 {
                 format!("{u}{u}")
-            } else if param.value == detents.add3 {
+            } else if value == detents.add3 {
                 format!("{u}{u}{u}")
-            } else if param.value == detents.less1 {
+            } else if value == detents.less1 {
                 format!("{d}")
-            } else if param.value == detents.less2 {
+            } else if value == detents.less2 {
                 format!("{d}{d}")
-            } else if param.value == detents.less3 {
+            } else if value == detents.less3 {
                 format!("{d}{d}{d}")
             } else {
                 "".to_string()
@@ -179,22 +254,33 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
     s
 }
 
+// TODO: once-create `Regex`s
+
 /// Parse an explicit 'name=value' parameter string.
-fn param_from_string(input: &str) -> Result<(&str, i32), String> {
-    let inner_re =
+fn param_from_string(input: &str) -> Result<(&str, Value), String> {
+    let inner_number_re =
         Regex::new(r#"^(?P<name>[a-zA-Z_][a-zA-Z_0-9]*)\s*=\s*(?P<value>-?[0-9]+)$"#).unwrap();
-    let Some(captures) = inner_re.captures(input) else {
-        return Err(format!("failed to find parameter in '{input}'"));
-    };
-    Ok((
-        captures.name("name").unwrap().as_str(),
-        captures
-            .name("value")
-            .unwrap()
-            .as_str()
-            .parse::<i32>()
-            .map_err(|e| format!("value not an integer: {e:?}"))?,
-    ))
+    let inner_text_re =
+        Regex::new(r#"^(?P<name>[a-zA-Z_][a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]+)\"$"#).unwrap();
+    if let Some(captures) = inner_number_re.captures(input) {
+        Ok((
+            captures.name("name").unwrap().as_str(),
+            captures
+                .name("value")
+                .unwrap()
+                .as_str()
+                .parse::<i32>()
+                .map_err(|e| format!("value not an integer: {e:?}"))?
+                .into(),
+        ))
+    } else if let Some(captures) = inner_text_re.captures(input) {
+        Ok((
+            captures.name("name").unwrap().as_str(),
+            captures.name("value").unwrap().as_str().into(),
+        ))
+    } else {
+        Err(format!("failed to find parameter in '{input}'"))
+    }
 }
 
 /// Populate a collection of [`MoveParam`]s from the given `input`.  Any values that are not mentioned in the input will
@@ -206,7 +292,7 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
         .iter()
         .map(|info| MoveParam {
             name: info.name,
-            value: info.default,
+            value: info.default.clone(),
         })
         .collect();
 
@@ -265,7 +351,8 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
             (c, 2) if c == d => detents.less2,
             (c, 3) if c == d => detents.less3,
             _ => unreachable!(),
-        };
+        }
+        .into();
     }
 
     let rest: String = in_chars[idx..].iter().collect();
@@ -279,9 +366,9 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
         return Err(format!("failed to find params in '{input}'"));
     };
     let inner = captures.name("inner").unwrap().as_str();
-    let result: Result<Vec<(&str, i32)>, String> =
+    let result: Result<Vec<(&str, Value)>, String> =
         inner.split(',').map(param_from_string).collect();
-    let vals: HashMap<&str, i32> = result?.into_iter().collect();
+    let vals: HashMap<&str, Value> = result?.into_iter().collect();
 
     // Work through the explicitly specified parameters, transcribing valid values (overriding any value already set by
     // a short code) and rejecting invalid parameter names.
@@ -292,7 +379,8 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
                 .enumerate()
                 .find_map(|(idx, param)| if param.name == name { Some(idx) } else { None })
         {
-            params[idx].value = params_info[idx].range.valid(value)?;
+            params_info[idx].range.valid(&value)?;
+            params[idx].value = value;
         } else {
             return Err(format!("'{name}' is not a valid parameter name"));
         }
@@ -306,7 +394,7 @@ mod tests {
     const TEST_PARAMS_INFO: &[Info] = &[
         Info {
             name: "len1",
-            default: 100,
+            default: Value::Number(100),
             range: Range::StrictlyPositive,
             short: Abbrev::PlusMinus(Detents {
                 add1: 125,
@@ -319,13 +407,13 @@ mod tests {
         },
         Info {
             name: "len2",
-            default: 10,
+            default: Value::Number(10),
             range: Range::Positive,
             short: Abbrev::None,
         },
         Info {
             name: "curve",
-            default: 45,
+            default: Value::Number(45),
             range: Range::Any,
             short: Abbrev::GreaterLess(Detents {
                 add1: 60,
@@ -349,6 +437,10 @@ mod tests {
             ("a=0", param!(a = 0)),
             ("B=10", param!(B = 10)),
             ("a1bcDEF123=123", param!(a1bcDEF123 = 123)),
+            ("t = \"text\"", param!(t = "text")),
+            ("t= \"text\"", param!(t = "text")),
+            ("t =\"text\"", param!(t = "text")),
+            ("t=\"text\"", param!(t = "text")),
         ];
         for (input, want) in tests {
             let got = param_from_string(input).unwrap();

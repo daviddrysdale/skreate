@@ -32,7 +32,7 @@
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
 - [ ] Adjust measurements of moves
-- [ ] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
+- [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
 - [ ] Rink and start point specification
 - [ ] Title, text inserts
 - [ ] Counts and count display options
