@@ -184,7 +184,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
-    let opts = RenderOptions { debug: true };
+    let opts = RenderOptions { debug: false };
 
     // First pass: emit definitions for all moves in use.
     let style = Style::new(STYLE_DEF);
