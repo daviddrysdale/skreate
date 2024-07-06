@@ -33,10 +33,11 @@
 - [x] Text labels, floating & oriented correctly
 - [ ] Adjust measurements of moves
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
-- [ ] Rink and start point specification
+- [ ] Rink and start point/direction specification
 - [ ] Title, text inserts
 - [ ] Counts and count display options
-- [ ] Add in/out curvature for moves?
+- [x] Add in/out curvature for moves?
+- [ ] Generate a manual from move registry via new `Move` methods
 - [ ] Option to add direction-of-travel arrows?
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot
