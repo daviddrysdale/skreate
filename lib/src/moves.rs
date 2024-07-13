@@ -10,6 +10,7 @@ use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
 mod edge;
+mod rink;
 mod straight;
 
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
@@ -129,6 +130,7 @@ macro_rules! register {
 
 fn initialize() -> HashSet<Constructor> {
     let mut reg = HashSet::new();
+    register!(reg, rink::Rink);
     register!(reg, straight::StraightEdge);
     register!(reg, edge::Curve);
     register!(reg, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);

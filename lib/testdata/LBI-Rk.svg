@@ -7,7 +7,7 @@ Skating Diagram
 </desc>
 <defs>
 <style>
-path { fill:none; stroke:black; } text { text-anchor: middle }
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </style>
 <g id="LBI-Rk">
 <path d="M 0,0 c 15,80 70,100 100,70 c 10,40 80,0 100,80"/>

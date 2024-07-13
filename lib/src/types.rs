@@ -6,7 +6,7 @@ use std::fmt::{self, Display, Formatter};
 const DEGREES: i32 = 360;
 
 /// Rotation, in degrees.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rotation(pub i32);
 
 /// Direction, in degrees.

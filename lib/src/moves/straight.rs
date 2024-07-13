@@ -72,7 +72,7 @@ impl Move for StraightEdge {
             (true, SkatingDirection::Forward) => "xf-",
             (true, SkatingDirection::Backward) => "xb-",
         };
-        let suffix = params::to_string(Self::PARAMS_INFO, &[param!(self.len)]);
+        let suffix = params::to_string(Self::PARAMS_INFO, &self.params());
         format!("{prefix}{}{}{suffix}", self.foot, self.dir)
     }
     fn input(&self) -> Option<OwnedInput> {
