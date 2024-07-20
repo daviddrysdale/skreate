@@ -1,5 +1,6 @@
 //! Functionality for parsing and formatting parameters.
 
+use log::trace;
 use regex::Regex;
 use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
@@ -263,22 +264,23 @@ fn param_from_string(input: &str) -> Result<(&str, Value), String> {
     let inner_text_re =
         Regex::new(r#"^(?P<name>[a-zA-Z_][a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]+)\"$"#).unwrap();
     if let Some(captures) = inner_number_re.captures(input) {
-        Ok((
-            captures.name("name").unwrap().as_str(),
-            captures
-                .name("value")
-                .unwrap()
-                .as_str()
-                .parse::<i32>()
-                .map_err(|e| format!("value not an integer: {e:?}"))?
-                .into(),
-        ))
+        let name = captures.name("name").unwrap().as_str();
+        let value: Value = captures
+            .name("value")
+            .unwrap()
+            .as_str()
+            .parse::<i32>()
+            .map_err(|e| format!("value not an integer: {e:?}"))?
+            .into();
+        trace!("  param '{input}' => {name}:{value:?}");
+        Ok((name, value))
     } else if let Some(captures) = inner_text_re.captures(input) {
-        Ok((
-            captures.name("name").unwrap().as_str(),
-            captures.name("value").unwrap().as_str().into(),
-        ))
+        let name = captures.name("name").unwrap().as_str();
+        let value: Value = captures.name("value").unwrap().as_str().into();
+        trace!("  param '{input}' => {name}:{value:?}");
+        Ok((name, value))
     } else {
+        trace!("  param '{input}' failed to parse");
         Err(format!("failed to find parameter in '{input}'"))
     }
 }
@@ -295,6 +297,7 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
             value: info.default.clone(),
         })
         .collect();
+    trace!("  start with defaults {params:?}");
 
     // First look for short codes, until we encounter '[' or end of string.
     let in_chars = input.trim().chars().collect::<Vec<_>>();
@@ -318,10 +321,12 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
         }
         if let Some(&mut ref mut current) = codes.last_mut() {
             if c == current.c {
+                trace!("    found more of current short code '{c}'");
                 current.count += 1;
                 continue;
             }
         }
+        trace!("    found initial short code '{c}'");
         codes.push(ShortCode { c, count: 1 });
     }
     if codes.len() > 2 {
@@ -353,6 +358,11 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
             _ => unreachable!(),
         }
         .into();
+        trace!(
+            "  set {}:{:?} from short code",
+            params[idx].name,
+            params[idx].value
+        );
     }
 
     let rest: String = in_chars[idx..].iter().collect();
@@ -385,6 +395,8 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
             return Err(format!("'{name}' is not a valid parameter name"));
         }
     }
+
+    trace!("  end with {params:?}");
     Ok(params)
 }
 
