@@ -2,8 +2,10 @@
 
 use log::trace;
 use regex::Regex;
+
 use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
+use std::sync::OnceLock;
 
 /// Populate a [`MoveParam`] from a field in `self`.
 #[macro_export]
@@ -265,10 +267,14 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
 
 /// Parse an explicit 'name=value' parameter string.
 fn param_from_string(input: &str) -> Result<(&str, Value), String> {
-    let inner_number_re =
-        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*(?P<value>-?[0-9]+)$"#).unwrap();
-    let inner_text_re =
-        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]+)\"$"#).unwrap();
+    static INNER_NUMBER_RE: OnceLock<Regex> = OnceLock::new();
+    let inner_number_re = INNER_NUMBER_RE.get_or_init(|| {
+        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*(?P<value>-?[0-9]+)$"#).unwrap()
+    });
+    static INNER_TEXT_RE: OnceLock<Regex> = OnceLock::new();
+    let inner_text_re = INNER_TEXT_RE.get_or_init(|| {
+        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]+)\"$"#).unwrap()
+    });
     if let Some(captures) = inner_number_re.captures(input) {
         let name = captures.name("name").unwrap().as_str();
         let value: Value = captures
