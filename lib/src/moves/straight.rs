@@ -2,11 +2,11 @@
 
 use super::{cross_transition, pre_transition, HW};
 use crate::{
-    param, params, params::Value, parse_foot_dir, parse_transition_prefix, Code, Edge, Foot, Input,
-    Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
+    param, params, params::Value, parse_foot_dir, parse_transition_prefix, path, Code, Edge, Foot,
+    Input, Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
     SkatingDirection, Transition,
 };
-use svg::node::element::{Group, Path};
+use svg::node::element::Group;
 
 pub struct StraightEdge {
     input: OwnedInput,
@@ -97,12 +97,12 @@ impl Move for StraightEdge {
     }
     fn def(&self, _opts: &RenderOptions) -> Group {
         if self.foot == Foot::Both {
-            Group::new().add(Path::new().set(
-                "d",
-                format!("M 0,0 m {HW},0 l 0,{0} m -{HW},-{0} l 0,{0}", self.len),
+            Group::new().add(path!(
+                "M 0,0 m {HW},0 l 0,{0} m -{HW},-{0} l 0,{0}",
+                self.len
             ))
         } else {
-            Group::new().add(Path::new().set("d", format!("M 0,0 l 0,{}", self.len)))
+            Group::new().add(path!("M 0,0 l 0,{}", self.len))
         }
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {

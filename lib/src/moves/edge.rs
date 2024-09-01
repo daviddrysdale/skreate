@@ -2,12 +2,12 @@
 
 use super::{cross_transition, pre_transition};
 use crate::{
-    code, param, params, params::Value, parse_code, parse_transition_prefix, Code, Edge, Foot,
-    Input, Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
+    code, param, params, params::Value, parse_code, parse_transition_prefix, path, Code, Edge,
+    Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
     SkatingDirection, Transition,
 };
 use std::f64::consts::PI;
-use svg::node::element::{Group, Path};
+use svg::node::element::Group;
 
 pub struct Curve {
     input: OwnedInput,
@@ -141,7 +141,7 @@ impl Move for Curve {
         let big = if self.angle >= 180 { 1 } else { 0 };
         let sweep = 0;
         let Position { x, y } = self.endpoint();
-        Group::new().add(Path::new().set("d", format!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}")))
+        Group::new().add(path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}"))
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         let Position { x, y } = self.endpoint();

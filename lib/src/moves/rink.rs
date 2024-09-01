@@ -1,11 +1,11 @@
 //! Pseudo-move definition for rink description.
 
 use crate::{
-    param, params, params::Value, Bounds, Code, Direction, Edge, Foot, Input, Label, Move,
+    param, params, params::Value, path, Bounds, Code, Direction, Edge, Foot, Input, Label, Move,
     MoveParam, OwnedInput, ParseError, Position, RenderOptions, Skater, SkatingDirection,
     Transition,
 };
-use svg::node::element::{Circle, ClipPath, Group, Path, Rectangle};
+use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
 pub struct Rink {
     input: OwnedInput,
@@ -230,13 +230,9 @@ impl Move for Rink {
         ));
         if self.show_centre_line {
             if self.portrait() {
-                grp = grp.add(
-                    Path::new().set("d", format!("M 0,{0} l {1},0", self.length / 2, self.width)),
-                );
+                grp = grp.add(path!("M 0,{0} l {1},0", self.length / 2, self.width));
             } else {
-                grp = grp.add(
-                    Path::new().set("d", format!("M {0},0 l 0,{1}", self.width / 2, self.length)),
-                );
+                grp = grp.add(path!("M {0},0 l 0,{1}", self.width / 2, self.length));
             }
         }
         if let Some(radius) = self.centre_circle {
@@ -261,37 +257,21 @@ impl Move for Rink {
             if self.portrait() {
                 grp = grp
                     .add(
-                        Path::new()
-                            .set(
-                                "d",
-                                format!("M 0,{0} l {1},0", (self.length / 2) - dist, self.width),
-                            )
+                        path!("M 0,{0} l {1},0", (self.length / 2) - dist, self.width)
                             .set("style", "stroke: blue;"),
                     )
                     .add(
-                        Path::new()
-                            .set(
-                                "d",
-                                format!("M 0,{0} l {1},0", (self.length / 2) + dist, self.width),
-                            )
+                        path!("M 0,{0} l {1},0", (self.length / 2) + dist, self.width)
                             .set("style", "stroke: blue;"),
                     );
             } else {
                 grp = grp
                     .add(
-                        Path::new()
-                            .set(
-                                "d",
-                                format!("M {0},0 l 0,{1}", (self.width / 2) - dist, self.length),
-                            )
+                        path!("M {0},0 l 0,{1}", (self.width / 2) - dist, self.length)
                             .set("style", "stroke: blue;"),
                     )
                     .add(
-                        Path::new()
-                            .set(
-                                "d",
-                                format!("M {0},0 l 0,{1}", (self.width / 2) + dist, self.length),
-                            )
+                        path!("M {0},0 l 0,{1}", (self.width / 2) + dist, self.length)
                             .set("style", "stroke: blue;"),
                     );
             }
@@ -299,18 +279,12 @@ impl Move for Rink {
         if let Some(dist) = self.goal_lines {
             if self.portrait() {
                 grp = grp
-                    .add(Path::new().set("d", format!("M 0,{0} l {1},0", dist, self.width)))
-                    .add(Path::new().set(
-                        "d",
-                        format!("M 0,{0} l {1},0", self.length - dist, self.width),
-                    ));
+                    .add(path!("M 0,{0} l {1},0", dist, self.width))
+                    .add(path!("M 0,{0} l {1},0", self.length - dist, self.width));
             } else {
                 grp = grp
-                    .add(Path::new().set("d", format!("M {0},0 l 0,{1}", dist, self.length)))
-                    .add(Path::new().set(
-                        "d",
-                        format!("M {0},0 l 0,{1}", self.width - dist, self.length),
-                    ));
+                    .add(path!("M {0},0 l 0,{1}", dist, self.length))
+                    .add(path!("M {0},0 l 0,{1}", self.width - dist, self.length));
             }
         }
         // TODO: render `show_goals`

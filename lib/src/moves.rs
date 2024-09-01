@@ -28,6 +28,14 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     ))
 }
 
+/// Macro to build a [`Path`] with a "d" attribute set to the formatted arguments.
+#[macro_export]
+macro_rules! path {
+    { $($arg:tt)+ } => {
+        svg::node::element::Path::new().set("d", format!("{}", format_args!($($arg)+)))
+    }
+}
+
 /// Macro to populate standard boilerplate for moves.
 macro_rules! move_and_xf {
     { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
