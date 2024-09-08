@@ -159,9 +159,11 @@ fn registry() -> &'static HashSet<Constructor> {
 }
 
 /// Half-width of a standard stance.
-const HW: i64 = 18; // cm
+const HW: i64 = 27; // cm
 /// Width of a standard stance.
 const W: i64 = 2 * HW; // cm
+/// Length of skate.
+const SL: i64 = 30; // cm
 
 /// Standard pre-transition with plain step.
 fn pre_transition(from: Code, to: Code) -> Transition {
@@ -273,11 +275,11 @@ fn cross_transition(from: Code, to: Code) -> Transition {
             match (from.foot, to.foot) {
                 (Foot::Left, Foot::Right) => {
                     x = HW;
-                    y = HW
+                    y = SL / 2;
                 }
                 (Foot::Right, Foot::Left) => {
                     x = -HW;
-                    y = HW
+                    y = SL / 2;
                 }
                 (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {
                     warn!("XF transition but no foot change ({from}->{to})!");
@@ -299,11 +301,11 @@ fn cross_transition(from: Code, to: Code) -> Transition {
             // Cross behind.
             match (from.foot, to.foot) {
                 (Foot::Left, Foot::Right) => {
-                    x = -HW;
+                    x = -SL / 2;
                     y = HW
                 }
                 (Foot::Right, Foot::Left) => {
-                    x = HW;
+                    x = SL / 2;
                     y = HW
                 }
                 (Foot::Left, Foot::Left) | (Foot::Right, Foot::Right) => {

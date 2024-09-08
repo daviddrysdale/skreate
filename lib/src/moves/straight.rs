@@ -19,15 +19,15 @@ pub struct StraightEdge {
 impl StraightEdge {
     const PARAMS_INFO: &'static [params::Info] = &[params::Info {
         name: "len",
-        default: Value::Number(100),
+        default: Value::Number(450),
         range: params::Range::StrictlyPositive,
         short: params::Abbrev::PlusMinus(params::Detents {
-            add1: 125,
-            add2: 150,
-            add3: 200,
-            less1: 75,
-            less2: 50,
-            less3: 25,
+            add1: 600,
+            add2: 850,
+            add3: 1000,
+            less1: 300,
+            less2: 240,
+            less3: 100,
         }),
     }];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {

@@ -1,4 +1,4 @@
-<svg height="290" width="237" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="640" width="277" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Skating Diagram</title>
 <desc>
 <text>
@@ -10,11 +10,11 @@ Skating Diagram
 text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </style>
 <g id="xb-LBO">
-<path d="M 0,0 a 127,127 0 0 0 -37,90"/>
+<path d="M 0,0 a 1289,1289 0 0 0 -77,440"/>
 </g>
 </defs>
-<use id="r_0_c_0_6" transform="translate(137 100) rotate(0)" xlink:href="#xb-LBO"/>
-<text x="149" y="145">
+<use id="r_0_c_0_6" transform="translate(177 100) rotate(0)" xlink:href="#xb-LBO"/>
+<text x="169" y="320">
 LBO
 </text>
 </svg>
