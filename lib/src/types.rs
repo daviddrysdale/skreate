@@ -330,4 +330,20 @@ mod tests {
             assert_eq!(got, want, "{start:?} + {delta:?} should be {want:?}");
         }
     }
+
+    #[test]
+    fn test_add_margin() {
+        let mut bounds = Bounds {
+            top_left: Position { x: 10, y: 20 },
+            bottom_right: Position { x: 110, y: 120 },
+        };
+        assert_eq!(bounds.width(), 100);
+        assert_eq!(bounds.height(), 100);
+
+        bounds.add_margin(5);
+        assert_eq!(bounds.top_left, Position { x: 5, y: 15 });
+        assert_eq!(bounds.bottom_right, Position { x: 115, y: 125 });
+        assert_eq!(bounds.width(), 110);
+        assert_eq!(bounds.height(), 110);
+    }
 }
