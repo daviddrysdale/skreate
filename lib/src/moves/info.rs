@@ -12,6 +12,7 @@ pub struct Info {
     label: String,
     label_pos: Position,
     markers: bool,
+    bounds: bool,
     grid: Option<i32>,
 }
 
@@ -44,6 +45,12 @@ impl Info {
             short: params::Abbrev::None,
         },
         params::Info {
+            name: "bounds",
+            default: Value::Boolean(false),
+            range: params::Range::Boolean,
+            short: params::Abbrev::None,
+        },
+        params::Info {
             name: "grid",
             default: Value::Number(0),
             range: params::Range::Positive,
@@ -61,7 +68,7 @@ impl Info {
             pos: input.pos,
             msg,
         })?;
-        let grid = params[4].value.as_i32().unwrap();
+        let grid = params[5].value.as_i32().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -71,6 +78,7 @@ impl Info {
                 y: params[2].value.as_i32().unwrap() as i64,
             },
             markers: params[3].value.as_bool().unwrap(),
+            bounds: params[4].value.as_bool().unwrap(),
             grid: if grid > 0 { Some(grid) } else { None },
         }))
     }
@@ -83,6 +91,7 @@ impl Move for Info {
             param!("label-x" = (self.label_pos.x as i32)),
             param!("label-y" = (self.label_pos.y as i32)),
             param!(self.markers),
+            param!(self.bounds),
             param!("grid" = (self.grid.unwrap_or(0))),
         ]
     }
@@ -123,6 +132,7 @@ impl Move for Info {
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         opts.markers = self.markers;
+        opts.bounds = self.bounds;
         opts.grid = self.grid.map(|g| g as usize);
         doc
     }

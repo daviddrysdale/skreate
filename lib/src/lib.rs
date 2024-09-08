@@ -8,7 +8,7 @@ use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
-    node::element::{Definitions, Description, Group, Style, Text, Title, Use},
+    node::element::{Definitions, Description, Group, Rectangle, Style, Text, Title, Use},
     Document,
 };
 
@@ -90,6 +90,8 @@ struct RenderOptions {
     markers: bool,
     /// Grid size.
     grid: Option<usize>,
+    /// Whether to show bounds.
+    bounds: bool,
 }
 
 fn use_at(skater: &Skater, def_id: &str) -> Use {
@@ -305,6 +307,26 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             let x2 = outer_bounds.bottom_right.x;
             doc = doc.add(path!("M {x1},{y} L {x2},{y}").set("style", "stroke:lightgray;"));
         }
+    }
+    if opts.bounds {
+        doc = doc.add(
+            Rectangle::new()
+                .set("width", outer_bounds.width())
+                .set("height", outer_bounds.height())
+                .set("x", outer_bounds.top_left.x)
+                .set("y", outer_bounds.top_left.y)
+                .set("stroke-dasharray", "5,5")
+                .set("style", "stroke:red; stroke-width:3;"),
+        );
+        doc = doc.add(
+            Rectangle::new()
+                .set("width", bounds.width())
+                .set("height", bounds.height())
+                .set("x", bounds.top_left.x)
+                .set("y", bounds.top_left.y)
+                .set("stroke-dasharray", "5,5")
+                .set("style", "stroke:green; stroke-width:3;"),
+        );
     }
 
     let mut svg = Vec::new();
