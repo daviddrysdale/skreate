@@ -273,7 +273,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             before
         };
         first = false;
-        debug!("perform: {} with params {:?}", mv.text(), mv.params());
+        debug!("perform: {}", mv.text());
         if opts.debug {
             doc = doc.add(use_at(&before, "start-mark"));
         }
@@ -293,7 +293,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let mut svg = Vec::new();
     svg::write(&mut svg, &doc)?;
     let svg = String::from_utf8(svg)?;
-    info!("emit SVG:\n{svg}");
+    trace!("emit SVG:\n{svg}");
     Ok(svg)
 }
 
