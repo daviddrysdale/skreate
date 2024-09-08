@@ -56,8 +56,8 @@ impl Rink {
         },
         params::Info {
             name: "centre-line",
-            default: Value::Number(1), // 1=present, 0=absent
-            range: params::Range::Any,
+            default: Value::Boolean(true),
+            range: params::Range::Boolean,
             short: params::Abbrev::None,
         },
         params::Info {
@@ -68,8 +68,8 @@ impl Rink {
         },
         params::Info {
             name: "centre-faceoff",
-            default: Value::Number(0), // 1=present, 0=absent
-            range: params::Range::Any,
+            default: Value::Boolean(true),
+            range: params::Range::Boolean,
             short: params::Abbrev::None,
         },
         params::Info {
@@ -86,14 +86,14 @@ impl Rink {
         },
         params::Info {
             name: "goals",
-            default: Value::Number(0), // 1=present, 0=absent
-            range: params::Range::Any,
+            default: Value::Boolean(true),
+            range: params::Range::Boolean,
             short: params::Abbrev::None,
         },
         params::Info {
             name: "faceoffs",
-            default: Value::Number(0), // 1=present, 0=absent
-            range: params::Range::Any,
+            default: Value::Boolean(true),
+            range: params::Range::Boolean,
             short: params::Abbrev::None,
         },
     ];
@@ -108,7 +108,7 @@ impl Rink {
             pos: input.pos,
             msg,
         })?;
-        let to_bool = |param: &MoveParam| param.value.as_i32().unwrap() > 0;
+        let to_bool = |param: &MoveParam| param.value.as_bool().unwrap();
         let to_opt_i32 = |param: &MoveParam| {
             let val = param.value.as_i32().unwrap();
             if val > 0 {
@@ -129,11 +129,11 @@ impl Rink {
             start_dir: Direction(params[4].value.as_i32().unwrap() as u32),
             show_centre_line: to_bool(&params[5]),
             centre_circle: to_opt_i32(&params[6]),
-            show_centre_faceoff: to_bool(&params[7]),
+            show_centre_faceoff: params[7].value.as_bool().unwrap(),
             mid_lines: to_opt_i32(&params[8]),
             goal_lines: to_opt_i32(&params[9]),
-            show_goals: to_bool(&params[10]),
-            show_faceoffs: to_bool(&params[11]),
+            show_goals: params[10].value.as_bool().unwrap(),
+            show_faceoffs: params[11].value.as_bool().unwrap(),
         }))
     }
     fn rounding(&self) -> i32 {
@@ -151,13 +151,6 @@ impl Rink {
 
 impl Move for Rink {
     fn params(&self) -> Vec<MoveParam> {
-        let from_bool = |val| {
-            if val {
-                1
-            } else {
-                0
-            }
-        };
         let from_opt_i32 = |val: Option<i32>| val.unwrap_or(-1);
         vec![
             param!(self.width),
@@ -165,13 +158,13 @@ impl Move for Rink {
             param!("start-x" = (self.start.x as i32)),
             param!("start-y" = (self.start.y as i32)),
             param!("start_dir" = (self.start_dir.0 as i32)),
-            param!("show-centre-line" = from_bool(self.show_centre_line)),
+            param!("show-centre-line" = self.show_centre_line),
             param!("centre-circle" = from_opt_i32(self.centre_circle)),
-            param!("centre-faceoff" = from_bool(self.show_centre_faceoff)),
+            param!("centre-faceoff" = self.show_centre_faceoff),
             param!("mid-lines" = from_opt_i32(self.mid_lines)),
             param!("goal-lines" = from_opt_i32(self.goal_lines)),
-            param!("goals" = from_bool(self.show_goals)),
-            param!("faceoffs" = from_bool(self.show_faceoffs)),
+            param!("goals" = self.show_goals),
+            param!("faceoffs" = self.show_faceoffs),
         ]
     }
     fn start(&self) -> Code {

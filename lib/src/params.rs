@@ -46,6 +46,8 @@ pub enum Value {
     Number(i32),
     /// Text value.
     Text(String),
+    /// Boolean value.
+    Boolean(bool),
 }
 
 impl Value {
@@ -53,6 +55,9 @@ impl Value {
     pub fn as_i32(&self) -> Result<i32, String> {
         match self {
             Value::Number(v) => Ok(*v),
+            Value::Boolean(v) => Err(format!(
+                "Trying to extract number from boolean parameter '{v}'"
+            )),
             Value::Text(v) => Err(format!(
                 "Trying to extract number from text parameter '{v}'!"
             )),
@@ -64,7 +69,20 @@ impl Value {
             Value::Number(v) => Err(format!(
                 "Trying to extract number from text parameter '{v}'!"
             )),
+            Value::Boolean(v) => Err(format!(
+                "Trying to extract number from boolean parameter '{v}'!"
+            )),
             Value::Text(v) => Ok(v),
+        }
+    }
+    /// Extract the boolean value.
+    pub fn as_bool(&self) -> Result<bool, String> {
+        match self {
+            Value::Number(v) => Err(format!("Trying to extract bool from text parameter '{v}'!")),
+            Value::Boolean(v) => Ok(*v),
+            Value::Text(v) => Err(format!(
+                "Trying to extract number from text parameter '{v}'!"
+            )),
         }
     }
 }
@@ -87,10 +105,18 @@ impl From<&str> for Value {
     }
 }
 
+impl From<bool> for Value {
+    fn from(val: bool) -> Self {
+        Self::Boolean(val)
+    }
+}
+
 impl Display for Value {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
             Value::Number(v) => write!(f, "{v}",),
+            Value::Boolean(false) => write!(f, "false",),
+            Value::Boolean(true) => write!(f, "true",),
             Value::Text(v) => write!(f, "\"{v}\"",),
         }
     }
@@ -148,10 +174,12 @@ pub enum Range {
     Text,
     /// Any numeric value is allowed (resulting in `Value::Number`).
     Any,
-    /// Restrict to [0, ∞)
+    /// Numeric value restricted to [0, ∞).
     Positive,
-    /// Restrict to (0, ∞)
+    /// Numeric value restricted to (0, ∞).
     StrictlyPositive,
+    /// Only boolean values are allowed (resulting in `Value::Boolean`).
+    Boolean,
 }
 
 impl Range {
@@ -166,9 +194,13 @@ impl Range {
             (Value::Number(v), Range::StrictlyPositive) => {
                 Err(format!("{v} out of range, must be > 0"))
             }
+            (Value::Number(v), Range::Boolean) => Err(format!("{v} out of range, expect boolean")),
 
             (Value::Text(_v), Range::Text) => Ok(()),
-            (Value::Text(v), _) => Err(format!("'{v}' unexpected, want number")),
+            (Value::Text(v), range) => Err(format!("'{v}' unexpected, want {range:?}")),
+
+            (Value::Boolean(_v), Range::Boolean) => Ok(()),
+            (Value::Boolean(v), range) => Err(format!("'{v}' unexpected, want {range:?}")),
         }
     }
 }
@@ -263,13 +295,16 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
     s
 }
 
-// TODO: once-create `Regex`s
-
 /// Parse an explicit 'name=value' parameter string.
 fn param_from_string(input: &str) -> Result<(&str, Value), String> {
     static INNER_NUMBER_RE: OnceLock<Regex> = OnceLock::new();
     let inner_number_re = INNER_NUMBER_RE.get_or_init(|| {
         Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*(?P<value>-?[0-9]+)$"#).unwrap()
+    });
+    static INNER_BOOL_RE: OnceLock<Regex> = OnceLock::new();
+    let inner_bool_re = INNER_BOOL_RE.get_or_init(|| {
+        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*(?P<value>false|n|N|true|y|Y)$"#)
+            .unwrap()
     });
     static INNER_TEXT_RE: OnceLock<Regex> = OnceLock::new();
     let inner_text_re = INNER_TEXT_RE.get_or_init(|| {
@@ -289,6 +324,16 @@ fn param_from_string(input: &str) -> Result<(&str, Value), String> {
     } else if let Some(captures) = inner_text_re.captures(input) {
         let name = captures.name("name").unwrap().as_str();
         let value: Value = captures.name("value").unwrap().as_str().into();
+        trace!("  param '{input}' => {name}:{value:?}");
+        Ok((name, value))
+    } else if let Some(captures) = inner_bool_re.captures(input) {
+        let name = captures.name("name").unwrap().as_str();
+        let value: Value = match captures.name("value").unwrap().as_str() {
+            "false" | "n" | "N" => false,
+            "true" | "y" | "Y" => true,
+            _ => unreachable!(),
+        }
+        .into();
         trace!("  param '{input}' => {name}:{value:?}");
         Ok((name, value))
     } else {
@@ -448,6 +493,12 @@ mod tests {
                 less3: 10,
             }),
         },
+        Info {
+            name: "boolean",
+            default: Value::Boolean(false),
+            range: Range::Boolean,
+            short: Abbrev::None,
+        },
     ];
 
     #[test]
@@ -465,6 +516,12 @@ mod tests {
             ("t= \"text\"", param!(t = "text")),
             ("t =\"text\"", param!(t = "text")),
             ("t=\"text\"", param!(t = "text")),
+            ("b=true", param!(b = true)),
+            ("b=Y", param!(b = true)),
+            ("b=y", param!(b = true)),
+            ("b=false", param!(b = false)),
+            ("b=n", param!(b = false)),
+            ("b=N", param!(b = false)),
         ];
         for (input, want) in tests {
             let got = param_from_string(input).unwrap();
@@ -474,7 +531,7 @@ mod tests {
 
     #[test]
     fn test_param_from_string_err() {
-        let tests = ["1a=123", "x=1.2", "β=1", "a_1"];
+        let tests = ["1a=123", "x=1.2", "β=1", "a_1", "b=flase"];
         for input in tests {
             assert!(
                 param_from_string(input).is_err(),
@@ -487,32 +544,67 @@ mod tests {
     fn test_to_string() {
         let tests = [
             (
-                vec![param!(len1 = 12), param!(len2 = 10), param!(curve = 45)],
+                vec![
+                    param!(len1 = 12),
+                    param!(len2 = 10),
+                    param!(curve = 45),
+                    param!(boolean = false),
+                ],
                 "[len1=12]",
             ),
             (
-                vec![param!(len1 = 100), param!(len2 = 10), param!(curve = -10)],
+                vec![
+                    param!(len1 = 100),
+                    param!(len2 = 10),
+                    param!(curve = -10),
+                    param!(boolean = false),
+                ],
                 "[curve=-10]",
             ),
             (
-                vec![param!(len1 = 1), param!(len2 = 2), param!(curve = 3)],
-                "[len1=1,len2=2,curve=3]",
+                vec![
+                    param!(len1 = 1),
+                    param!(len2 = 2),
+                    param!(curve = 3),
+                    param!(boolean = true),
+                ],
+                "[len1=1,len2=2,curve=3,boolean=true]",
             ),
             (
-                vec![param!(len1 = 1), param!(len2 = 10), param!(curve = 46)],
+                vec![
+                    param!(len1 = 1),
+                    param!(len2 = 10),
+                    param!(curve = 46),
+                    param!(boolean = false),
+                ],
                 "[len1=1,curve=46]",
             ),
             (
-                vec![param!(len1 = 125), param!(len2 = 10), param!(curve = 60)],
+                vec![
+                    param!(len1 = 125),
+                    param!(len2 = 10),
+                    param!(curve = 60),
+                    param!(boolean = false),
+                ],
                 "+>",
             ),
             (
-                vec![param!(len1 = 200), param!(len2 = 11), param!(curve = 10)],
+                vec![
+                    param!(len1 = 200),
+                    param!(len2 = 11),
+                    param!(curve = 10),
+                    param!(boolean = false),
+                ],
                 "+++<<<[len2=11]",
             ),
             (
-                vec![param!(len1 = 200), param!(len2 = 50), param!(curve = 10)],
-                "+++<<<[len2=50]",
+                vec![
+                    param!(len1 = 200),
+                    param!(len2 = 50),
+                    param!(curve = 10),
+                    param!(boolean = true),
+                ],
+                "+++<<<[len2=50,boolean=true]",
             ),
         ];
         for (input, want) in tests {
@@ -532,13 +624,23 @@ mod tests {
         let got = populate(TEST_PARAMS_INFO, " [len1=42]").unwrap();
         assert_eq!(
             got,
-            vec![param!(len1 = 42), param!(len2 = 10), param!(curve = 45)]
+            vec![
+                param!(len1 = 42),
+                param!(len2 = 10),
+                param!(curve = 45),
+                param!(boolean = false)
+            ]
         );
 
         let got = populate(TEST_PARAMS_INFO, " [len2=42]").unwrap();
         assert_eq!(
             got,
-            vec![param!(len1 = 100), param!(len2 = 42), param!(curve = 45)]
+            vec![
+                param!(len1 = 100),
+                param!(len2 = 42),
+                param!(curve = 45),
+                param!(boolean = false)
+            ]
         );
     }
 
