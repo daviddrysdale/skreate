@@ -11,7 +11,8 @@ pub struct Info {
     input: OwnedInput,
     label: String,
     label_pos: Position,
-    debug: bool,
+    markers: bool,
+    grid: Option<i32>,
 }
 
 const NAME: &str = "Info";
@@ -37,9 +38,15 @@ impl Info {
             short: params::Abbrev::None,
         },
         params::Info {
-            name: "debug",
+            name: "markers",
             default: Value::Boolean(false),
             range: params::Range::Boolean,
+            short: params::Abbrev::None,
+        },
+        params::Info {
+            name: "grid",
+            default: Value::Number(0),
+            range: params::Range::Positive,
             short: params::Abbrev::None,
         },
     ];
@@ -54,15 +61,17 @@ impl Info {
             pos: input.pos,
             msg,
         })?;
+        let grid = params[4].value.as_i32().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
             label: params[0].value.as_str().unwrap().to_string(),
             label_pos: Position {
                 x: params[1].value.as_i32().unwrap() as i64,
-                y: params[1].value.as_i32().unwrap() as i64,
+                y: params[2].value.as_i32().unwrap() as i64,
             },
-            debug: params[3].value.as_bool().unwrap(),
+            markers: params[3].value.as_bool().unwrap(),
+            grid: if grid > 0 { Some(grid) } else { None },
         }))
     }
 }
@@ -73,7 +82,8 @@ impl Move for Info {
             param!(self.label),
             param!("label-x" = (self.label_pos.x as i32)),
             param!("label-y" = (self.label_pos.y as i32)),
-            param!(self.debug),
+            param!(self.markers),
+            param!("grid" = (self.grid.unwrap_or(0))),
         ]
     }
     fn text(&self) -> String {
@@ -93,7 +103,7 @@ impl Move for Info {
     }
     fn def(&self, _opts: &RenderOptions) -> Group {
         let mut defs = Group::new();
-        if self.debug {
+        if self.markers {
             defs = defs.add(
                 path!(
                     "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
@@ -112,7 +122,8 @@ impl Move for Info {
         defs
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
-        opts.debug = self.debug;
+        opts.markers = self.markers;
+        opts.grid = self.grid.map(|g| g as usize);
         doc
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {

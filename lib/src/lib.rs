@@ -84,10 +84,12 @@ impl std::ops::Add<Transition> for Skater {
     }
 }
 
-// TODO
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, Default)]
 struct RenderOptions {
-    debug: bool,
+    /// Whether to render start/end markers.
+    markers: bool,
+    /// Grid size.
+    grid: Option<usize>,
 }
 
 fn use_at(skater: &Skater, def_id: &str) -> Use {
@@ -209,7 +211,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
-    let mut opts = RenderOptions { debug: false };
+    let mut opts = RenderOptions::default();
 
     // First pass: emit definitions for all moves in use.
     let style = Style::new(STYLE_DEF);
@@ -274,7 +276,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         };
         first = false;
         debug!("perform: {}", mv.text());
-        if opts.debug {
+        if opts.markers {
             doc = doc.add(use_at(&before, "start-mark"));
         }
         let mut new_opts = opts;
@@ -282,12 +284,27 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         let transition = mv.transition();
         let after = before + transition;
         debug!("post: {before} == {transition} ==> {after}");
-        if opts.debug {
+        if opts.markers {
             doc = doc.add(use_at(&after, "end-mark"));
         }
 
         opts = new_opts;
         skater = after;
+    }
+
+    if let Some(grid) = opts.grid {
+        for dx in (0..=outer_bounds.width()).step_by(grid) {
+            let x = outer_bounds.top_left.x + dx;
+            let y1 = outer_bounds.top_left.y;
+            let y2 = outer_bounds.bottom_right.y;
+            doc = doc.add(path!("M {x},{y1} L {x},{y2}").set("style", "stroke:lightgray;"));
+        }
+        for dy in (0..=outer_bounds.height()).step_by(grid) {
+            let y = outer_bounds.top_left.y + dy;
+            let x1 = outer_bounds.top_left.x;
+            let x2 = outer_bounds.bottom_right.x;
+            doc = doc.add(path!("M {x1},{y} L {x2},{y}").set("style", "stroke:lightgray;"));
+        }
     }
 
     let mut svg = Vec::new();
