@@ -8,7 +8,7 @@ use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
-    node::element::{Definitions, Description, Group, Path, Style, Text, Title, Use},
+    node::element::{Definitions, Description, Group, Style, Text, Title, Use},
     Document,
 };
 
@@ -143,7 +143,7 @@ trait Move {
     fn labels(&self, opts: &RenderOptions) -> Vec<Label>;
 
     /// Render the move into the given SVG document, assuming the existence of groups included in the output from [`defs`].
-    fn render(&self, mut doc: Document, start: &Skater, opts: &RenderOptions) -> Document {
+    fn render(&self, mut doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
         // Default implementation uses the definition, suitably translated and rotated.
         let def_id = self.text();
         let mut use_link = use_at(start, &def_id);
@@ -197,32 +197,12 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
-    let opts = RenderOptions { debug: false };
+    let mut opts = RenderOptions { debug: false };
 
     // First pass: emit definitions for all moves in use.
     let style = Style::new(STYLE_DEF);
     let mut seen = HashSet::new();
     let mut defs = Definitions::new().add(style);
-    if opts.debug {
-        defs = defs.add(
-            Path::new()
-                .set(
-                    "d",
-                    "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
-                )
-                .set("style", "stroke:red;")
-                .set("id", "end-mark"),
-        );
-        defs = defs.add(
-            Path::new()
-                .set(
-                    "d",
-                    "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
-                )
-                .set("style", "stroke:green;")
-                .set("id", "start-mark"),
-        );
-    }
     for mv in &moves {
         let id = mv.text();
         if seen.contains(&id) {
@@ -283,7 +263,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         if opts.debug {
             doc = doc.add(use_at(&before, "start-mark"));
         }
-        doc = mv.render(doc, &before, &opts);
+        doc = mv.render(doc, &before, &mut opts);
         let transition = mv.transition();
         let after = before + transition;
         debug!("post: {before} == {transition} ==> {after}");

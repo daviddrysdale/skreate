@@ -7,6 +7,8 @@ use crate::{
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
+const NAME: &str = "Rink";
+
 pub struct Rink {
     input: OwnedInput,
     width: i32,
@@ -98,10 +100,10 @@ impl Rink {
         },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
-        let Some(rest) = input.text.strip_prefix("Rink") else {
+        let Some(rest) = input.text.strip_prefix(NAME) else {
             return Err(ParseError {
                 pos: input.pos,
-                msg: "No Rink prefix".to_string(),
+                msg: format!("No {NAME} prefix"),
             });
         };
         let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
@@ -179,7 +181,7 @@ impl Move for Rink {
     }
     fn text(&self) -> String {
         let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("Rink {params}")
+        format!("{NAME} {params}")
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())

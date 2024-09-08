@@ -3,6 +3,7 @@
 use log::trace;
 use regex::Regex;
 
+use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
 use std::sync::OnceLock;
@@ -13,7 +14,7 @@ macro_rules! param {
     { $self:ident.$pname:ident } => {
         $crate::MoveParam {
             name: stringify!($pname),
-            value: $self.$pname.into(),
+            value: $self.$pname.clone().into(),
         }
     };
     { $name:ident=$value:expr } => {
@@ -45,7 +46,7 @@ pub enum Value {
     /// Numeric value.
     Number(i32),
     /// Text value.
-    Text(String),
+    Text(Cow<'static, str>),
     /// Boolean value.
     Boolean(bool),
 }
@@ -95,13 +96,13 @@ impl From<i32> for Value {
 
 impl From<String> for Value {
     fn from(val: String) -> Self {
-        Self::Text(val)
+        Self::Text(val.into())
     }
 }
 
-impl From<&str> for Value {
-    fn from(val: &str) -> Self {
-        Self::Text(val.to_owned())
+impl From<&'static str> for Value {
+    fn from(val: &'static str) -> Self {
+        Self::Text(val.into())
     }
 }
 
@@ -323,7 +324,7 @@ fn param_from_string(input: &str) -> Result<(&str, Value), String> {
         Ok((name, value))
     } else if let Some(captures) = inner_text_re.captures(input) {
         let name = captures.name("name").unwrap().as_str();
-        let value: Value = captures.name("value").unwrap().as_str().into();
+        let value: Value = captures.name("value").unwrap().as_str().to_owned().into();
         trace!("  param '{input}' => {name}:{value:?}");
         Ok((name, value))
     } else if let Some(captures) = inner_bool_re.captures(input) {
