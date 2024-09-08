@@ -277,13 +277,16 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         if opts.debug {
             doc = doc.add(use_at(&before, "start-mark"));
         }
-        doc = mv.render(doc, &before, &mut opts);
+        let mut new_opts = opts;
+        doc = mv.render(doc, &before, &mut new_opts);
         let transition = mv.transition();
         let after = before + transition;
         debug!("post: {before} == {transition} ==> {after}");
         if opts.debug {
             doc = doc.add(use_at(&after, "end-mark"));
         }
+
+        opts = new_opts;
         skater = after;
     }
 
