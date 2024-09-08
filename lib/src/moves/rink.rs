@@ -1,9 +1,8 @@
 //! Pseudo-move definition for rink description.
 
 use crate::{
-    param, params, params::Value, path, Bounds, Code, Direction, Edge, Foot, Input, Label, Move,
-    MoveParam, OwnedInput, ParseError, Position, RenderOptions, Skater, SkatingDirection,
-    Transition,
+    param, params, params::Value, path, Bounds, Direction, Input, Label, Move, MoveParam,
+    OwnedInput, ParseError, Position, RenderOptions, Skater,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
@@ -169,36 +168,12 @@ impl Move for Rink {
             param!("faceoffs" = self.show_faceoffs),
         ]
     }
-    fn start(&self) -> Code {
-        Code {
-            foot: Foot::Both,
-            dir: SkatingDirection::Forward,
-            edge: Edge::Flat,
-        }
-    }
-    fn end(&self) -> Code {
-        self.start()
-    }
     fn text(&self) -> String {
         let params = params::to_string(Self::PARAMS_INFO, &self.params());
         format!("{NAME} {params}")
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
-    }
-    fn pre_transition(&self, _from: Code) -> Transition {
-        Transition {
-            delta: Default::default(),
-            rotate: Default::default(),
-            code: self.start(),
-        }
-    }
-    fn transition(&self) -> Transition {
-        Transition {
-            delta: self.start,
-            rotate: crate::Rotation(self.start_dir.0 as i32),
-            code: self.start(),
-        }
     }
     fn encompass_bounds(&self, skater: &Skater, _include_pre: bool, bounds: &mut Bounds) -> Skater {
         bounds.encompass(&Position { x: 0, y: 0 });

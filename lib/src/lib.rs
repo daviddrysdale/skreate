@@ -77,7 +77,9 @@ impl std::ops::Add<Transition> for Skater {
     fn add(self, transition: Transition) -> Self {
         let mut moved = self + transition.delta;
         moved.dir = self.dir + transition.rotate;
-        moved.code = transition.code;
+        if let Some(new_code) = transition.code {
+            moved.code = new_code;
+        }
         moved
     }
 }
@@ -104,17 +106,25 @@ trait Move {
     fn params(&self) -> Vec<MoveParam>;
 
     /// Start of the move.
-    fn start(&self) -> Code;
+    fn start(&self) -> Option<Code> {
+        None
+    }
 
     /// End of the move.
-    fn end(&self) -> Code;
+    fn end(&self) -> Option<Code> {
+        self.start()
+    }
 
     /// Transition needed before starting the move, starting from `Direction(0)`.
-    fn pre_transition(&self, from: Code) -> Transition;
+    fn pre_transition(&self, _from: Code) -> Transition {
+        Transition::default()
+    }
 
     /// Transition as a result of the move, starting from `Direction(0)`, and assuming that [`pre_transition`] has
     /// already happened.
-    fn transition(&self) -> Transition;
+    fn transition(&self) -> Transition {
+        Transition::default()
+    }
 
     /// Determine the extent of a bounding box encompassing the move.
     fn encompass_bounds(&self, skater: &Skater, include_pre: bool, bounds: &mut Bounds) -> Skater {
@@ -125,7 +135,9 @@ trait Move {
             before
         } else {
             let mut before = *skater;
-            before.code = self.start();
+            if let Some(start_code) = self.start() {
+                before.code = start_code;
+            }
             debug!("start: {before}");
             before
         };
@@ -246,11 +258,13 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     };
     let mut first = true;
     for mv in &moves {
-        info!("{} => {}", mv.start(), mv.end());
+        info!("{:?} => {:?}", mv.start(), mv.end());
         let pre_transition = mv.pre_transition(skater.code);
         let before = if first {
             let mut before = skater;
-            before.code = mv.start();
+            if let Some(start_code) = mv.start() {
+                before.code = start_code;
+            }
             debug!("start: {before}");
             before
         } else {

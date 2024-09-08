@@ -141,22 +141,28 @@ macro_rules! label {
 }
 
 /// Effect of a move on a skater.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct Transition {
     /// Spatial movement in the transition.
     pub delta: Position,
     /// Rotation in the transition.
     pub rotate: Rotation,
-    /// Post-transition starting foot/dir/edge.
-    pub code: Code,
+    /// Post-transition starting foot/dir/edge. `None` implies no change of foot/dir/edge.
+    pub code: Option<Code>,
 }
 
 impl Display for Transition {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "({:+.1},{:+.1}) {:+.1}° →{}",
-            self.delta.x, self.delta.y, self.rotate.0, self.code
+            "({:+.1},{:+.1}) {:+.1}° → {}",
+            self.delta.x,
+            self.delta.y,
+            self.rotate.0,
+            match self.code {
+                Some(code) => format!("{code}"),
+                None => "<unchanged>".to_string(),
+            }
         )
     }
 }

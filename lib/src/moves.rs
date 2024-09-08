@@ -74,18 +74,18 @@ macro_rules! move_definition {
         }
         impl Move for $name {
             fn params(&self) -> Vec<MoveParam> {vec![]}
-            fn start(&self) -> Code { Self::START }
-            fn end(&self) -> Code { Self::END }
+            fn start(&self) -> Option<Code> { Some(Self::START) }
+            fn end(&self) -> Option<Code> { Some(Self::END) }
             fn text(&self) -> String { $text.to_string() }
             fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
             fn pre_transition(&self, from: Code) -> Transition {
-                $pre_trans(from, self.start())
+                $pre_trans(from, Self::START)
             }
             fn transition(&self) -> Transition {
                 Transition {
                     delta: $pos,
                     rotate: $rotate,
-                    code: Self::END,
+                    code: Some(Self::END),
                 }
             }
             fn def(&self, _opts: &RenderOptions) -> Group {
@@ -263,7 +263,7 @@ fn pre_transition(from: Code, to: Code) -> Transition {
     Transition {
         delta: Position { x, y },
         rotate: Rotation(rotation),
-        code: to,
+        code: Some(to),
     }
 }
 
@@ -333,7 +333,7 @@ fn cross_transition(from: Code, to: Code) -> Transition {
     Transition {
         delta: Position { x, y },
         rotate: Rotation(0),
-        code: to,
+        code: Some(to),
     }
 }
 

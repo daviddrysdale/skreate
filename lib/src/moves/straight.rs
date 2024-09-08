@@ -50,21 +50,21 @@ impl StraightEdge {
             len: params[0].value.as_i32().unwrap(),
         }))
     }
-}
-
-impl Move for StraightEdge {
-    fn params(&self) -> Vec<MoveParam> {
-        vec![param!(self.len)]
-    }
-    fn start(&self) -> Code {
+    fn code(&self) -> Code {
         Code {
             foot: self.foot,
             dir: self.dir,
             edge: Edge::Flat,
         }
     }
-    fn end(&self) -> Code {
-        self.start()
+}
+
+impl Move for StraightEdge {
+    fn params(&self) -> Vec<MoveParam> {
+        vec![param!(self.len)]
+    }
+    fn start(&self) -> Option<Code> {
+        Some(self.code())
     }
     fn text(&self) -> String {
         let prefix = match (self.cross_transition, self.dir) {
@@ -80,9 +80,9 @@ impl Move for StraightEdge {
     }
     fn pre_transition(&self, from: Code) -> Transition {
         if self.cross_transition {
-            cross_transition(from, self.start())
+            cross_transition(from, self.code())
         } else {
-            pre_transition(from, self.start())
+            pre_transition(from, self.code())
         }
     }
     fn transition(&self) -> Transition {

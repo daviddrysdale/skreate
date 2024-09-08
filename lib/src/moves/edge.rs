@@ -104,11 +104,8 @@ impl Move for Curve {
     fn params(&self) -> Vec<MoveParam> {
         vec![param!(self.angle), param!(self.len)]
     }
-    fn start(&self) -> Code {
-        self.code
-    }
-    fn end(&self) -> Code {
-        self.code
+    fn start(&self) -> Option<Code> {
+        Some(self.code)
     }
     fn text(&self) -> String {
         let prefix = match (self.cross_transition, self.code.dir) {
@@ -123,16 +120,20 @@ impl Move for Curve {
         Some(self.input.clone())
     }
     fn pre_transition(&self, from: Code) -> Transition {
-        if self.cross_transition {
-            cross_transition(from, self.start())
+        if let Some(start) = self.start() {
+            if self.cross_transition {
+                cross_transition(from, start)
+            } else {
+                pre_transition(from, start)
+            }
         } else {
-            pre_transition(from, self.start())
+            Transition::default()
         }
     }
     fn transition(&self) -> Transition {
         Transition {
             delta: self.endpoint(),
-            code: self.end(),
+            code: Some(self.code),
             rotate: Rotation(self.angle * self.sign()),
         }
     }
