@@ -8,6 +8,7 @@ use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
 const NAME: &str = "Rink";
 
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Rink {
     input: OwnedInput,
     width: i32,
@@ -39,13 +40,13 @@ impl Rink {
         },
         params::Info {
             name: "start-x",
-            default: Value::Number(2 * 100), // in cm
+            default: Value::Number(6 * 100), // in cm
             range: params::Range::StrictlyPositive,
             short: params::Abbrev::None,
         },
         params::Info {
             name: "start-y",
-            default: Value::Number(2 * 100), // in cm
+            default: Value::Number(6 * 100), // in cm
             range: params::Range::StrictlyPositive,
             short: params::Abbrev::None,
         },
@@ -98,7 +99,12 @@ impl Rink {
             short: params::Abbrev::None,
         },
     ];
+
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+        Ok(Box::new(Self::new(input)?))
+    }
+
+    pub fn new(input: &Input) -> Result<Self, ParseError> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
             return Err(ParseError {
                 pos: input.pos,
@@ -119,7 +125,7 @@ impl Rink {
             }
         };
 
-        Ok(Box::new(Self {
+        Ok(Self {
             input: input.owned(),
             width: params[0].value.as_i32().unwrap(),
             length: params[1].value.as_i32().unwrap(),
@@ -135,7 +141,7 @@ impl Rink {
             goal_lines: to_opt_i32(&params[9]),
             show_goals: params[10].value.as_bool().unwrap(),
             show_faceoffs: params[11].value.as_bool().unwrap(),
-        }))
+        })
     }
     fn rounding(&self) -> i32 {
         let dim = std::cmp::min(self.width, self.length);
@@ -170,7 +176,7 @@ impl Move for Rink {
     }
     fn text(&self) -> String {
         let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("{NAME} {params}")
+        format!("{NAME}{params}")
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
@@ -263,5 +269,25 @@ impl Move for Rink {
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         Vec::new()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_params() {
+        let input = Input {
+            pos: Default::default(),
+            text: "Rink",
+        };
+        let rink1 = Rink::new(&input).unwrap();
+        let mut rink2 = Rink::new(&Input {
+            pos: Default::default(),
+            text: "Rink [width=3000,length=6100]",
+        })
+        .unwrap();
+        rink2.input = input.owned();
+        assert_eq!(rink1, rink2);
     }
 }
