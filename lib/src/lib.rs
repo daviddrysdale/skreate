@@ -18,7 +18,7 @@ pub mod params;
 mod types;
 
 /// Extra margin to put around calculated bounding box.
-const MARGIN: i64 = 100;
+const MARGIN: i64 = 50;
 
 /// Common style definitions.
 pub const STYLE_DEF: &str =
@@ -232,7 +232,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 
     // Second pass: figure out a bounding box.
     let mut skater = Skater {
-        pos: Position { x: 0, y: 0 },
+        pos: Position::default(),
         dir: Direction::new(0),
         code: code!(BF),
     };
@@ -242,6 +242,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         skater = mv.encompass_bounds(&skater, !first, &mut bounds);
         first = false;
     }
+
+    // Translate the inner bounding box in by the margin
+    bounds.translate(MARGIN, MARGIN);
+
     let mut outer_bounds = bounds;
     outer_bounds.add_margin(MARGIN);
     doc = doc
@@ -251,8 +255,8 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 
     // Third pass: render all the moves.
     let start_pos = Position {
-        x: MARGIN - bounds.top_left.x,
-        y: MARGIN - bounds.top_left.y,
+        x: MARGIN,
+        y: MARGIN,
     };
     info!("start at {start_pos}");
     let mut skater = Skater {
@@ -328,6 +332,12 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
                 .set("style", "stroke:green; stroke-width:3;"),
         );
     }
+
+    // Set the viewBox to the outer bounds.
+    doc = doc.set(
+        "viewBox",
+        format!("0 0 {} {}", outer_bounds.width(), outer_bounds.height()),
+    );
 
     let mut svg = Vec::new();
     svg::write(&mut svg, &doc)?;

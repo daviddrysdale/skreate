@@ -101,6 +101,13 @@ impl Bounds {
         }
         trace!("encompass {pos} in bounds => {self}");
     }
+    /// Translate the bounds by the given amounts.
+    pub fn translate(&mut self, dx: i64, dy: i64) {
+        self.top_left.x += dx;
+        self.top_left.y += dy;
+        self.bottom_right.x += dx;
+        self.bottom_right.y += dy;
+    }
     /// Expand bounds by the given `margin`.
     pub fn add_margin(&mut self, margin: i64) {
         self.top_left.x -= margin;
