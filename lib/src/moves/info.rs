@@ -2,15 +2,12 @@
 
 use crate::{
     param, params, params::Value, path, Bounds, Document, Input, Label, Move, MoveParam,
-    OwnedInput, ParseError, Position, RenderOptions, Skater,
+    OwnedInput, ParseError, RenderOptions, Skater,
 };
-use std::borrow::Cow;
 use svg::node::element::Group;
 
 pub struct Info {
     input: OwnedInput,
-    label: String,
-    label_pos: Position,
     markers: bool,
     bounds: bool,
     grid: Option<i32>,
@@ -20,24 +17,6 @@ const NAME: &str = "Info";
 
 impl Info {
     const PARAMS_INFO: &'static [params::Info] = &[
-        params::Info {
-            name: "label",
-            default: Value::Text(Cow::Borrowed("")),
-            range: params::Range::Text,
-            short: params::Abbrev::None,
-        },
-        params::Info {
-            name: "label-x",
-            default: Value::Number(100),
-            range: params::Range::Any,
-            short: params::Abbrev::None,
-        },
-        params::Info {
-            name: "label-y",
-            default: Value::Number(100),
-            range: params::Range::Any,
-            short: params::Abbrev::None,
-        },
         params::Info {
             name: "markers",
             default: Value::Boolean(false),
@@ -68,17 +47,12 @@ impl Info {
             pos: input.pos,
             msg,
         })?;
-        let grid = params[5].value.as_i32().unwrap();
+        let grid = params[2].value.as_i32().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
-            label: params[0].value.as_str().unwrap().to_string(),
-            label_pos: Position {
-                x: params[1].value.as_i32().unwrap() as i64,
-                y: params[2].value.as_i32().unwrap() as i64,
-            },
-            markers: params[3].value.as_bool().unwrap(),
-            bounds: params[4].value.as_bool().unwrap(),
+            markers: params[0].value.as_bool().unwrap(),
+            bounds: params[1].value.as_bool().unwrap(),
             grid: if grid > 0 { Some(grid) } else { None },
         }))
     }
@@ -87,9 +61,6 @@ impl Info {
 impl Move for Info {
     fn params(&self) -> Vec<MoveParam> {
         vec![
-            param!(self.label),
-            param!("label-x" = (self.label_pos.x as i32)),
-            param!("label-y" = (self.label_pos.y as i32)),
             param!(self.markers),
             param!(self.bounds),
             param!("grid" = (self.grid.unwrap_or(0))),
@@ -97,7 +68,7 @@ impl Move for Info {
     }
     fn text(&self) -> String {
         let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("{NAME} {params}")
+        format!("{NAME}{params}")
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
@@ -137,13 +108,6 @@ impl Move for Info {
         doc
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
-        if self.label.is_empty() {
-            Vec::new()
-        } else {
-            vec![Label {
-                text: self.label.clone(),
-                pos: self.label_pos,
-            }]
-        }
+        Vec::new()
     }
 }

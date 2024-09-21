@@ -153,7 +153,9 @@ trait Move {
     }
 
     /// Emit SVG group definition for the move.
-    fn def(&self, opts: &RenderOptions) -> Group;
+    fn def(&self, _opts: &RenderOptions) -> Group {
+        Group::new()
+    }
 
     /// Return the labels for this move. Each returned position is relative to (0,0) at 0°.
     fn labels(&self, opts: &RenderOptions) -> Vec<Label>;

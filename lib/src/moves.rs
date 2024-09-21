@@ -11,6 +11,7 @@ use svg::node::element::{Group, Path};
 
 mod edge;
 mod info;
+mod label;
 mod rink;
 mod straight;
 
@@ -143,6 +144,8 @@ fn initialize() -> HashSet<Constructor> {
     register!(reg, info::Info);
     register!(reg, straight::StraightEdge);
     register!(reg, edge::Curve);
+    register!(reg, label::Label);
+
     register!(reg, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
     register!(reg, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
     register!(reg, LfoRk, XfLfoRk, LbiRk, XbLbiRk, RfiRk, XfRfiRk, RboRk, XbRboRk);
