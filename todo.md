@@ -33,8 +33,8 @@
 - [x] Text labels, floating & oriented correctly
 - [ ] Adjust measurements of moves
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
-- [ ] Rink and start point/direction specification
-- [ ] Title, text inserts
+- [x] Rink and start point/direction specification
+- [x] Title, text inserts
 - [ ] Counts and count display options
 - [x] Add in/out curvature for moves?
 - [ ] Generate a manual from move registry via new `Move` methods
