@@ -58,12 +58,15 @@
       import {setup_editor} from './skreate.js';
 
       $(document).ready(function() {
-          var text = `LFO          # text after a hash is ignored
+          var text = `LFO          # text after a hash is a comment and ignored
 xf-RFI3      # put each move on its own line
 LFO; xf-RFI  # or use a semi-colon to separate moves
 
 # blank lines are ignored
-LFO-Rk`
+LFO-Rk
+
+Title [text="My Programme"]
+Label [text="add label centred here",x=200,y=200]`
         var urlParams = new URLSearchParams(window.location.search);
         if (urlParams.has('text')) {
           text = urlParams.get('text');
