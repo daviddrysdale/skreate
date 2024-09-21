@@ -103,7 +103,7 @@ macro_rules! move_definition {
                     code: Some(Self::END),
                 }
             }
-            fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+            fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
                 Some(Group::new().add(Path::new().set("d", format!("M 0,0 {}", $path))))
             }
             fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {

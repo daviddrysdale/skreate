@@ -157,7 +157,7 @@ trait Move {
     }
 
     /// Emit SVG group definition for the move.
-    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         None
     }
 
@@ -219,7 +219,13 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
-    let mut opts = RenderOptions::default();
+    let mut opts = RenderOptions {
+        offset: Position {
+            x: MARGIN,
+            y: MARGIN,
+        },
+        ..Default::default()
+    };
 
     // First pass: emit definitions for all moves in use.
     let style = Style::new(STYLE_DEF);
@@ -230,7 +236,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         if seen.contains(&id) {
             continue;
         }
-        if let Some(group) = mv.def(&opts) {
+        if let Some(group) = mv.def(&mut opts) {
             seen.insert(id.clone());
             defs = defs.add(group.set("id", id));
         }
@@ -251,25 +257,17 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     }
     opts.bounds = bounds;
 
-    // Translate the inner bounding box in by the margin
-    opts.offset = Position {
-        x: MARGIN,
-        y: MARGIN,
-    };
+    // Add a margin.
     bounds.translate(opts.offset.x, opts.offset.y);
-
     let mut outer_bounds = bounds;
-    outer_bounds.add_margin(MARGIN);
+    outer_bounds.add_margin(opts.offset.x, opts.offset.y);
     doc = doc
         .set("width", outer_bounds.width())
         .set("height", outer_bounds.height());
     info!("inner bounds {bounds}, add {MARGIN} to get {outer_bounds}");
 
     // Third pass: render all the moves.
-    let start_pos = Position {
-        x: MARGIN,
-        y: MARGIN,
-    };
+    let start_pos = opts.offset;
     info!("start at {start_pos}");
     let mut skater = Skater {
         pos: start_pos,

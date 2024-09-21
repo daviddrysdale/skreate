@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     param, params, params::Value, path, Bounds, Document, Input, Label, Move, MoveParam,
-    OwnedInput, RenderOptions, Skater,
+    OwnedInput, Position, RenderOptions, Skater,
 };
 use svg::node::element::Group;
 
@@ -12,6 +12,7 @@ pub struct Info {
     markers: bool,
     bounds: bool,
     grid: Option<i32>,
+    margin: Position,
 }
 
 const NAME: &str = "Info";
@@ -36,6 +37,18 @@ impl Info {
             range: params::Range::Positive,
             short: None,
         },
+        params::Info {
+            name: "margin-x",
+            default: Value::Number(crate::MARGIN as i32),
+            range: params::Range::Positive,
+            short: None,
+        },
+        params::Info {
+            name: "margin-y",
+            default: Value::Number(crate::MARGIN as i32),
+            range: params::Range::Positive,
+            short: None,
+        },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
@@ -49,6 +62,7 @@ impl Info {
             markers: params[0].value.as_bool().unwrap(),
             bounds: params[1].value.as_bool().unwrap(),
             grid: if grid > 0 { Some(grid) } else { None },
+            margin: Position::from_params(&params[3], &params[4]),
         }))
     }
 }
@@ -59,6 +73,8 @@ impl Move for Info {
             param!(self.markers),
             param!(self.bounds),
             param!("grid" = (self.grid.unwrap_or(0))),
+            param!("label-x" = (self.margin.x as i32)),
+            param!("label-y" = (self.margin.y as i32)),
         ]
     }
     fn text(&self) -> String {
@@ -76,7 +92,12 @@ impl Move for Info {
     ) -> Skater {
         *skater
     }
-    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+    fn def(&self, opts: &mut RenderOptions) -> Option<Group> {
+        // Change some options once and for all in the prelude.
+        opts.show_bounds = self.bounds;
+        opts.grid = self.grid.map(|g| g as usize);
+        opts.offset = self.margin;
+
         let mut defs = Group::new();
         if self.markers {
             defs = defs.add(
@@ -97,9 +118,9 @@ impl Move for Info {
         Some(defs)
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
+        // Some options can be toggled on/off as we go along.
         opts.markers = self.markers;
-        opts.show_bounds = self.bounds;
-        opts.grid = self.grid.map(|g| g as usize);
+
         doc
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {

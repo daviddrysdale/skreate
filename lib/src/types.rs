@@ -120,11 +120,11 @@ impl Bounds {
         self.bottom_right.y += dy;
     }
     /// Expand bounds by the given `margin`.
-    pub fn add_margin(&mut self, margin: i64) {
-        self.top_left.x -= margin;
-        self.top_left.y -= margin;
-        self.bottom_right.x += margin;
-        self.bottom_right.y += margin;
+    pub fn add_margin(&mut self, margin_x: i64, margin_y: i64) {
+        self.top_left.x -= margin_x;
+        self.top_left.y -= margin_y;
+        self.bottom_right.x += margin_x;
+        self.bottom_right.y += margin_y;
     }
     /// Current width of bounds.
     pub fn width(&self) -> i64 {

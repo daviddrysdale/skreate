@@ -90,7 +90,7 @@ impl Move for StraightEdge {
             rotate: Rotation(0),
         }
     }
-    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let grp = if self.foot == Foot::Both {
             Group::new().add(path!(
                 "M 0,0 m {HW},0 l 0,{0} m -{HW},-{0} l 0,{0}",

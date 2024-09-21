@@ -181,7 +181,7 @@ impl Move for Rink {
         });
         *skater + self.transition()
     }
-    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let rink_rect = Rectangle::new()
             .set("x", 0)
             .set("y", 0)

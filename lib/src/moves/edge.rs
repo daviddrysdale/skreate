@@ -132,7 +132,7 @@ impl Move for Curve {
             rotate: Rotation(self.angle * self.sign()),
         }
     }
-    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let r = self.radius() as i64;
         let big = if self.angle >= 180 { 1 } else { 0 };
         let sweep = 0;
