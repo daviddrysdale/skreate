@@ -23,27 +23,27 @@ impl Curve {
             name: "angle",
             default: Value::Number(20),
             range: params::Range::StrictlyPositive,
-            short: params::Abbrev::GreaterLess(params::Detents {
+            short: Some(params::Abbrev::GreaterLess(params::Detents {
                 add1: 60,
                 add2: 110,
                 add3: 180,
                 less1: 15,
                 less2: 10,
                 less3: 5,
-            }),
+            })),
         },
         params::Info {
             name: "len",
             default: Value::Number(450),
             range: params::Range::StrictlyPositive,
-            short: params::Abbrev::PlusMinus(params::Detents {
+            short: Some(params::Abbrev::PlusMinus(params::Detents {
                 add1: 600,
                 add2: 850,
                 add3: 1000,
                 less1: 300,
                 less2: 240,
                 less3: 100,
-            }),
+            })),
         },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {

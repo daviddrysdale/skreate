@@ -143,8 +143,6 @@ pub struct Detents {
 /// Abbreviated form for a parameter.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Abbrev {
-    /// No abbreviated form.
-    None,
     /// Numeric parameter can be specified as "+", "+++", "--" etc.
     PlusMinus(Detents),
     /// Numeric parameter can be specified  as "<", "<<<", ">>" etc.
@@ -152,16 +150,15 @@ pub enum Abbrev {
 }
 
 impl Abbrev {
-    fn detents(&self) -> Option<&Detents> {
+    fn detents(&self) -> &Detents {
         match self {
-            Abbrev::None => None,
-            Abbrev::PlusMinus(d) => Some(d),
-            Abbrev::GreaterLess(d) => Some(d),
+            Abbrev::PlusMinus(d) => d,
+            Abbrev::GreaterLess(d) => d,
         }
     }
     fn chars(&self) -> (char, char) {
         match self {
-            Abbrev::None => ('?', '?'),
+            // @@@@ Abbrev::None => ('?', '?'),
             Abbrev::PlusMinus(_) => ('+', '-'),
             Abbrev::GreaterLess(_) => ('>', '<'),
         }
@@ -212,7 +209,7 @@ pub struct Info {
     /// Name of the parameter.
     pub name: &'static str,
     /// Whether the parameter can be specified in an abbreviated form.
-    pub short: Abbrev,
+    pub short: Option<Abbrev>,
     /// Valid range for parameter values.
     pub range: Range,
     /// Default value.
@@ -228,14 +225,14 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
     assert!(
         params_info
             .iter()
-            .filter(|info| matches!(info.short, Abbrev::PlusMinus(_)))
+            .filter(|info| matches!(info.short, Some(Abbrev::PlusMinus(_))))
             .count()
             <= 1
     );
     assert!(
         params_info
             .iter()
-            .filter(|info| matches!(info.short, Abbrev::GreaterLess(_)))
+            .filter(|info| matches!(info.short, Some(Abbrev::GreaterLess(_))))
             .count()
             <= 1
     );
@@ -248,8 +245,9 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
         if param.value == info.default {
             // A default value can be assumed.
             done[idx] = true;
-        } else if let Some(detents) = info.short.detents() {
-            let (u, d) = info.short.chars();
+        } else if let Some(abbrev) = info.short {
+            let detents = abbrev.detents();
+            let (u, d) = abbrev.chars();
             let value = param.value.as_i32().unwrap();
             let short = if value == detents.add1 {
                 format!("{u}")
@@ -395,32 +393,38 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
             .iter()
             .enumerate()
             .filter_map(|(idx, info)| {
-                let (u, d) = info.short.chars();
-                if code.c == u || code.c == d {
-                    Some((idx, info))
+                if let Some(abbrev) = info.short {
+                    let (u, d) = abbrev.chars();
+                    if code.c == u || code.c == d {
+                        Some((idx, info))
+                    } else {
+                        None
+                    }
                 } else {
                     None
                 }
             })
             .next()
             .ok_or_else(|| format!("No parameter with short abbreviation using '{}'", code.c))?;
-        let (u, d) = info.short.chars();
-        let detents = info.short.detents().unwrap();
-        params[idx].value = match (code.c, code.count) {
-            (c, 1) if c == u => detents.add1,
-            (c, 2) if c == u => detents.add2,
-            (c, 3) if c == u => detents.add3,
-            (c, 1) if c == d => detents.less1,
-            (c, 2) if c == d => detents.less2,
-            (c, 3) if c == d => detents.less3,
-            _ => unreachable!(),
+        if let Some(abbrev) = info.short {
+            let (u, d) = abbrev.chars();
+            let detents = abbrev.detents();
+            params[idx].value = match (code.c, code.count) {
+                (c, 1) if c == u => detents.add1,
+                (c, 2) if c == u => detents.add2,
+                (c, 3) if c == u => detents.add3,
+                (c, 1) if c == d => detents.less1,
+                (c, 2) if c == d => detents.less2,
+                (c, 3) if c == d => detents.less3,
+                _ => unreachable!(),
+            }
+            .into();
+            trace!(
+                "  set {}:{:?} from short code",
+                params[idx].name,
+                params[idx].value
+            );
         }
-        .into();
-        trace!(
-            "  set {}:{:?} from short code",
-            params[idx].name,
-            params[idx].value
-        );
     }
 
     let rest: String = in_chars[idx..].iter().collect();
@@ -466,39 +470,39 @@ mod tests {
             name: "len1",
             default: Value::Number(100),
             range: Range::StrictlyPositive,
-            short: Abbrev::PlusMinus(Detents {
+            short: Some(Abbrev::PlusMinus(Detents {
                 add1: 125,
                 add2: 150,
                 add3: 200,
                 less1: 75,
                 less2: 50,
                 less3: 25,
-            }),
+            })),
         },
         Info {
             name: "len2",
             default: Value::Number(10),
             range: Range::Positive,
-            short: Abbrev::None,
+            short: None,
         },
         Info {
             name: "curve",
             default: Value::Number(45),
             range: Range::Any,
-            short: Abbrev::GreaterLess(Detents {
+            short: Some(Abbrev::GreaterLess(Detents {
                 add1: 60,
                 add2: 90,
                 add3: 120,
                 less1: 30,
                 less2: 20,
                 less3: 10,
-            }),
+            })),
         },
         Info {
             name: "boolean",
             default: Value::Boolean(false),
             range: Range::Boolean,
-            short: Abbrev::None,
+            short: None,
         },
     ];
 

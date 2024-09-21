@@ -30,73 +30,73 @@ impl Rink {
             name: "width",
             default: Value::Number(30 * 100), // in cm
             range: params::Range::StrictlyPositive,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "length",
             default: Value::Number(61 * 100), // in cm
             range: params::Range::StrictlyPositive,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "start-x",
             default: Value::Number(6 * 100), // in cm
             range: params::Range::StrictlyPositive,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "start-y",
             default: Value::Number(6 * 100), // in cm
             range: params::Range::StrictlyPositive,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "start-dir",
             default: Value::Number(0),
             range: params::Range::Positive,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "centre-line",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "centre-circle",
             default: Value::Number(900), // diameter in cm, <= 0 to omit
             range: params::Range::Any,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "centre-faceoff",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "mid-lines",
             default: Value::Number(17660 / 2), // distance from centre in cm, <= 0 to omit
             range: params::Range::Any,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "goal-lines",
             default: Value::Number(400), // cm from ends, 0=absent
             range: params::Range::Any,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "goals",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "faceoffs",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
-            short: params::Abbrev::None,
+            short: None,
         },
     ];
 

@@ -21,19 +21,19 @@ impl Info {
             name: "markers",
             default: Value::Boolean(false),
             range: params::Range::Boolean,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "bounds",
             default: Value::Boolean(false),
             range: params::Range::Boolean,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "grid",
             default: Value::Number(0),
             range: params::Range::Positive,
-            short: params::Abbrev::None,
+            short: None,
         },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {

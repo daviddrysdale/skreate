@@ -21,14 +21,14 @@ impl StraightEdge {
         name: "len",
         default: Value::Number(450),
         range: params::Range::StrictlyPositive,
-        short: params::Abbrev::PlusMinus(params::Detents {
+        short: Some(params::Abbrev::PlusMinus(params::Detents {
             add1: 600,
             add2: 850,
             add3: 1000,
             less1: 300,
             less2: 240,
             less3: 100,
-        }),
+        })),
     }];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
         let (cross_transition, rest) = parse_transition_prefix(input.text);

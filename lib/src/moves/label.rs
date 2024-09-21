@@ -21,19 +21,19 @@ impl Label {
             name: "text",
             default: Value::Text(Cow::Borrowed("")),
             range: params::Range::Text,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "x",
             default: Value::Number(100),
             range: params::Range::Any,
-            short: params::Abbrev::None,
+            short: None,
         },
         params::Info {
             name: "y",
             default: Value::Number(100),
             range: params::Range::Any,
-            short: params::Abbrev::None,
+            short: None,
         },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
