@@ -81,7 +81,7 @@ impl Move for Info {
     ) -> Skater {
         *skater
     }
-    fn def(&self, _opts: &RenderOptions) -> Group {
+    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
         let mut defs = Group::new();
         if self.markers {
             defs = defs.add(
@@ -99,7 +99,7 @@ impl Move for Info {
                 .set("id", "start-mark"),
             );
         }
-        defs
+        Some(defs)
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         opts.markers = self.markers;

@@ -137,12 +137,12 @@ impl Move for Curve {
             rotate: Rotation(self.angle * self.sign()),
         }
     }
-    fn def(&self, _opts: &RenderOptions) -> Group {
+    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
         let r = self.radius() as i64;
         let big = if self.angle >= 180 { 1 } else { 0 };
         let sweep = 0;
         let Position { x, y } = self.endpoint();
-        Group::new().add(path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}"))
+        Some(Group::new().add(path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}")))
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         let Position { x, y } = self.endpoint();

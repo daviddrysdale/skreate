@@ -186,7 +186,7 @@ impl Move for Rink {
         });
         *skater + self.transition()
     }
-    fn def(&self, _opts: &RenderOptions) -> Group {
+    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
         let rink_rect = Rectangle::new()
             .set("x", 0)
             .set("y", 0)
@@ -262,7 +262,7 @@ impl Move for Rink {
         }
         // TODO: render `show_goals`
         // TODO: render `show_faceoffs`
-        grp
+        Some(grp)
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         Vec::new()

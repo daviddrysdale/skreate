@@ -153,8 +153,8 @@ trait Move {
     }
 
     /// Emit SVG group definition for the move.
-    fn def(&self, _opts: &RenderOptions) -> Group {
-        Group::new()
+    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+        None
     }
 
     /// Return the labels for this move. Each returned position is relative to (0,0) at 0°.
@@ -226,9 +226,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         if seen.contains(&id) {
             continue;
         }
-        seen.insert(id.clone());
-        let group = mv.def(&opts).set("id", id);
-        defs = defs.add(group);
+        if let Some(group) = mv.def(&opts) {
+            seen.insert(id.clone());
+            defs = defs.add(group.set("id", id));
+        }
     }
     doc = doc.add(defs);
 

@@ -95,15 +95,16 @@ impl Move for StraightEdge {
             rotate: Rotation(0),
         }
     }
-    fn def(&self, _opts: &RenderOptions) -> Group {
-        if self.foot == Foot::Both {
+    fn def(&self, _opts: &RenderOptions) -> Option<Group> {
+        let grp = if self.foot == Foot::Both {
             Group::new().add(path!(
                 "M 0,0 m {HW},0 l 0,{0} m -{HW},-{0} l 0,{0}",
                 self.len
             ))
         } else {
             Group::new().add(path!("M 0,0 l 0,{}", self.len))
-        }
+        };
+        Some(grp)
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         if self.foot == Foot::Both {
