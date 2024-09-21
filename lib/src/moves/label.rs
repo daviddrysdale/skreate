@@ -51,10 +51,7 @@ impl Label {
         Ok(Box::new(Self {
             input: input.owned(),
             text: params[0].value.as_str().unwrap().to_string(),
-            pos: Position {
-                x: params[1].value.as_i32().unwrap() as i64,
-                y: params[2].value.as_i32().unwrap() as i64,
-            },
+            pos: Position::from_params(&params[1], &params[2]),
         }))
     }
 }

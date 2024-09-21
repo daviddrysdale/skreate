@@ -129,10 +129,7 @@ impl Rink {
             input: input.owned(),
             width: params[0].value.as_i32().unwrap(),
             length: params[1].value.as_i32().unwrap(),
-            start: Position {
-                x: params[2].value.as_i32().unwrap() as i64,
-                y: params[3].value.as_i32().unwrap() as i64,
-            },
+            start: Position::from_params(&params[2], &params[3]),
             start_dir: Direction(params[4].value.as_i32().unwrap() as u32),
             show_centre_line: to_bool(&params[5]),
             centre_circle: to_opt_i32(&params[6]),

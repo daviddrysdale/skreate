@@ -1,5 +1,6 @@
 //! Common basic types.
 
+use crate::MoveParam;
 use log::trace;
 use std::fmt::{self, Display, Formatter};
 
@@ -66,6 +67,16 @@ pub struct Position {
 impl Display for Position {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "({},{})", self.x, self.y)
+    }
+}
+
+impl Position {
+    /// Create a `Position` from (x, y) move parameters.
+    pub fn from_params(x: &MoveParam, y: &MoveParam) -> Self {
+        Self {
+            x: x.value.as_i32().unwrap() as i64,
+            y: y.value.as_i32().unwrap() as i64,
+        }
     }
 }
 
