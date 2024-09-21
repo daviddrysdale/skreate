@@ -103,7 +103,7 @@ impl Move for Info {
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         opts.markers = self.markers;
-        opts.bounds = self.bounds;
+        opts.show_bounds = self.bounds;
         opts.grid = self.grid.map(|g| g as usize);
         doc
     }

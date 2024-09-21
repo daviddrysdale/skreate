@@ -91,7 +91,11 @@ struct RenderOptions {
     /// Grid size.
     grid: Option<usize>,
     /// Whether to show bounds.
-    bounds: bool,
+    show_bounds: bool,
+    /// Calculated bounds.
+    bounds: Bounds,
+    /// Offset of coordinate origin in SVG space.
+    offset: Position,
 }
 
 fn use_at(skater: &Skater, def_id: &str) -> Use {
@@ -245,9 +249,14 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         skater = mv.encompass_bounds(&skater, !first, &mut bounds);
         first = false;
     }
+    opts.bounds = bounds;
 
     // Translate the inner bounding box in by the margin
-    bounds.translate(MARGIN, MARGIN);
+    opts.offset = Position {
+        x: MARGIN,
+        y: MARGIN,
+    };
+    bounds.translate(opts.offset.x, opts.offset.y);
 
     let mut outer_bounds = bounds;
     outer_bounds.add_margin(MARGIN);
@@ -315,7 +324,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             doc = doc.add(path!("M {x1},{y} L {x2},{y}").set("style", "stroke:lightgray;"));
         }
     }
-    if opts.bounds {
+    if opts.show_bounds {
         doc = doc.add(
             Rectangle::new()
                 .set("width", outer_bounds.width())

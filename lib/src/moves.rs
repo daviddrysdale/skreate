@@ -14,6 +14,7 @@ mod info;
 mod label;
 mod rink;
 mod straight;
+mod title;
 
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
@@ -145,6 +146,7 @@ fn initialize() -> HashSet<Constructor> {
     register!(reg, straight::StraightEdge);
     register!(reg, edge::Curve);
     register!(reg, label::Label);
+    register!(reg, title::Title);
 
     register!(reg, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
     register!(reg, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);

@@ -1,4 +1,4 @@
-//! Pseudo-move definition for diagram label.
+//! Pseudo-move definition for diagram title.
 
 use crate::{
     param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, ParseError, Position,
@@ -7,15 +7,15 @@ use crate::{
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
 
-pub struct Label {
+pub struct Title {
     input: OwnedInput,
     text: String,
     pos: Position,
 }
 
-const NAME: &str = "Label";
+const NAME: &str = "Title";
 
-impl Label {
+impl Title {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "text",
@@ -23,15 +23,16 @@ impl Label {
             range: params::Range::Text,
             short: None,
         },
+        // (-1, -1) used to indicate auto-positioning.
         params::Info {
             name: "x",
-            default: Value::Number(100),
+            default: Value::Number(-1),
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "y",
-            default: Value::Number(100),
+            default: Value::Number(-1),
             range: params::Range::Any,
             short: None,
         },
@@ -56,7 +57,7 @@ impl Label {
     }
 }
 
-impl Move for Label {
+impl Move for Title {
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),
@@ -83,10 +84,17 @@ impl Move for Label {
         Vec::new()
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
+        let x = if self.pos.x >= 0 {
+            self.pos.x
+        } else {
+            opts.bounds.midpoint().x
+        };
+        let y = if self.pos.y >= 0 { self.pos.y } else { 100 };
         doc.add(
             Text::new(self.text.clone())
-                .set("x", self.pos.x + opts.offset.x)
-                .set("y", self.pos.y + opts.offset.y),
+                .set("x", x + opts.offset.x)
+                .set("y", y + opts.offset.y)
+                .set("font-size", 30),
         )
     }
 }

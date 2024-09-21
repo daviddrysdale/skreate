@@ -134,6 +134,13 @@ impl Bounds {
     pub fn height(&self) -> i64 {
         self.bottom_right.y - self.top_left.y
     }
+    /// Midpoint of bounds.
+    pub fn midpoint(&self) -> Position {
+        Position {
+            x: self.top_left.x + self.width() / 2,
+            y: self.top_left.y + self.height() / 2,
+        }
+    }
 }
 
 /// Label for parts of a move.
