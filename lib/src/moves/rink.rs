@@ -1,8 +1,9 @@
 //! Pseudo-move definition for rink description.
 
+use super::Error;
 use crate::{
     param, params, params::Value, path, Bounds, Direction, Input, Label, Move, MoveParam,
-    OwnedInput, ParseError, Position, RenderOptions, Skater,
+    OwnedInput, Position, RenderOptions, Skater,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
@@ -100,21 +101,15 @@ impl Rink {
         },
     ];
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         Ok(Box::new(Self::new(input)?))
     }
 
-    pub fn new(input: &Input) -> Result<Self, ParseError> {
+    pub fn new(input: &Input) -> Result<Self, Error> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
-            return Err(ParseError {
-                pos: input.pos,
-                msg: format!("No {NAME} prefix"),
-            });
+            return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
         let to_bool = |param: &MoveParam| param.value.as_bool().unwrap();
         let to_opt_i32 = |param: &MoveParam| {
             let val = param.value.as_i32().unwrap();

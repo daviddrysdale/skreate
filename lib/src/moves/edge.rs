@@ -1,9 +1,9 @@
 //! Move definition for simple curved edges.
 
-use super::{cross_transition, pre_transition};
+use super::{cross_transition, pre_transition, Error};
 use crate::{
     code, param, params, params::Value, parse_code, parse_transition_prefix, path, Code, Edge,
-    Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
+    Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
     SkatingDirection, Transition,
 };
 use std::f64::consts::PI;
@@ -46,17 +46,12 @@ impl Curve {
             })),
         },
     ];
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (cross_transition, rest) = parse_transition_prefix(input.text);
-        let (code, rest) = parse_code(rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let (code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
 
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let params =
+            params::populate(Self::PARAMS_INFO, rest).map_err(|_msg| Error::Unrecognized)?;
 
         Ok(Box::new(Self {
             input: input.owned(),

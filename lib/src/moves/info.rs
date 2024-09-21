@@ -1,8 +1,9 @@
 //! Pseudo-move definition for diagram info.
 
+use super::Error;
 use crate::{
     param, params, params::Value, path, Bounds, Document, Input, Label, Move, MoveParam,
-    OwnedInput, ParseError, RenderOptions, Skater,
+    OwnedInput, RenderOptions, Skater,
 };
 use svg::node::element::Group;
 
@@ -36,17 +37,11 @@ impl Info {
             short: None,
         },
     ];
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
-            return Err(ParseError {
-                pos: input.pos,
-                msg: format!("No {NAME} prefix"),
-            });
+            return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
         let grid = params[2].value.as_i32().unwrap();
 
         Ok(Box::new(Self {

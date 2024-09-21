@@ -1,7 +1,8 @@
 //! Pseudo-move definition for diagram title.
 
+use super::Error;
 use crate::{
-    param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, ParseError, Position,
+    param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
     RenderOptions, Skater,
 };
 use std::borrow::Cow;
@@ -37,17 +38,11 @@ impl Title {
             short: None,
         },
     ];
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
-            return Err(ParseError {
-                pos: input.pos,
-                msg: format!("No {NAME} prefix"),
-            });
+            return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
 
         Ok(Box::new(Self {
             input: input.owned(),

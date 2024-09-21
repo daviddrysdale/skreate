@@ -16,12 +16,28 @@ mod rink;
 mod straight;
 mod title;
 
+#[derive(Debug, Clone)]
+enum Error {
+    /// Indicates that the constructor doesn't apply to this input.
+    Unrecognized,
+    /// Indicates that the constructor does apply to this input, but failed to parse correctly.
+    Failed(String),
+}
+
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
 
     for constructor in registry() {
-        if let Ok(mv) = constructor(input) {
-            return Ok(mv);
+        match constructor(input) {
+            Ok(mv) => return Ok(mv),
+            Err(Error::Unrecognized) => {}
+            Err(Error::Failed(msg)) => {
+                warn!("constructor {constructor:?} failed: {msg}");
+                return Err(ParseError {
+                    pos: input.pos,
+                    msg,
+                });
+            }
         }
     }
 
@@ -63,14 +79,11 @@ macro_rules! move_definition {
             const START: Code = $start;
             const END: Code = $end;
             const ID: &'static str = $text;
-            pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+            pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
                 if input.text == Self::ID {
                     Ok(Box::new(Self { input: input.owned()}))
                 } else {
-                    Err(ParseError{
-                        pos: input.pos,
-                        msg: format!("got '{}', expecting '{}'", input.text, $text),
-                    })
+                    Err(Error::Unrecognized)
                 }
             }
         }
@@ -156,7 +169,7 @@ fn initialize() -> HashSet<Constructor> {
 }
 
 /// Function that constructs a move from an [`Input`].
-type Constructor = fn(&Input) -> Result<Box<dyn Move>, ParseError>;
+type Constructor = fn(&Input) -> Result<Box<dyn Move>, Error>;
 
 /// Registry of move names and name-or-alias to constructor mapping.
 static REGISTRY: OnceLock<HashSet<Constructor>> = OnceLock::new();

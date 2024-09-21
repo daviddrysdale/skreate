@@ -1,10 +1,10 @@
 //! Move definition for simple straight edges.
 
-use super::{cross_transition, pre_transition, HW};
+use super::{cross_transition, pre_transition, Error, HW};
 use crate::{
     param, params, params::Value, parse_foot_dir, parse_transition_prefix, path, Code, Edge, Foot,
-    Input, Label, Move, MoveParam, OwnedInput, ParseError, Position, RenderOptions, Rotation,
-    SkatingDirection, Transition,
+    Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, SkatingDirection,
+    Transition,
 };
 use svg::node::element::Group;
 
@@ -30,17 +30,12 @@ impl StraightEdge {
             less3: 100,
         })),
     }];
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, ParseError> {
+    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (cross_transition, rest) = parse_transition_prefix(input.text);
-        let (foot, dir, rest) = parse_foot_dir(rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let (foot, dir, rest) = parse_foot_dir(rest).map_err(|_msg| Error::Unrecognized)?;
 
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(|msg| ParseError {
-            pos: input.pos,
-            msg,
-        })?;
+        let params =
+            params::populate(Self::PARAMS_INFO, rest).map_err(|_msg| Error::Unrecognized)?;
 
         Ok(Box::new(Self {
             input: input.owned(),

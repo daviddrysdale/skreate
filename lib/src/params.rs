@@ -416,6 +416,9 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
                 (c, 1) if c == d => detents.less1,
                 (c, 2) if c == d => detents.less2,
                 (c, 3) if c == d => detents.less3,
+                (c, n) if c == u || c == d => {
+                    return Err(format!("too many ({n}) instances of '{c}'"))
+                }
                 _ => unreachable!(),
             }
             .into();
