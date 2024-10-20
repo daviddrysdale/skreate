@@ -10,10 +10,11 @@
     - [x] Auto-generate cross variants
 - [x] Add in/out skating direction for moves
 - [x] Fix pre-transitions to be aware of directions
-- [ ] Move move definitions.
-    - [x] 3-turn
+- [ ] Move definitions.
+    - [x] Edges
+    - [ ] 3-turn
     - [ ] Bracket
-    - [x] Rocker
+    - [ ] Rocker
     - [ ] Counter
     - [ ] Mohawk
     - [ ] Twizzle
