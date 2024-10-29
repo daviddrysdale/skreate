@@ -92,6 +92,8 @@ struct RenderOptions {
     grid: Option<usize>,
     /// Whether to show bounds.
     show_bounds: bool,
+    /// Whether to show bounds of individual moves.
+    show_move_bounds: bool,
     /// Calculated bounds.
     bounds: Bounds,
     /// Offset of coordinate origin in SVG space.
@@ -216,7 +218,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         ..Default::default()
     };
 
-    // First pass: emit definitions for all moves in use.
+    // First pass: emit definitions for all moves in use, and get global option updates.
     let style = Style::new(STYLE_DEF);
     let mut seen = HashSet::new();
     let mut defs = Definitions::new().add(style);
@@ -259,6 +261,18 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             match &mut bounds {
                 Some(bounds) => bounds.encompass_bounds(&move_bounds),
                 None => bounds = Some(move_bounds),
+            }
+            debug!("bounds.encompass({move_bounds}) => {bounds:?}");
+            if opts.show_move_bounds {
+                doc = doc.add(
+                    Rectangle::new()
+                        .set("width", move_bounds.width())
+                        .set("height", move_bounds.height())
+                        .set("x", move_bounds.top_left.x + opts.offset.x)
+                        .set("y", move_bounds.top_left.y + opts.offset.y)
+                        .set("stroke-dasharray", "2,2")
+                        .set("style", "stroke:blue; stroke-width:2;"),
+                );
             }
         }
 

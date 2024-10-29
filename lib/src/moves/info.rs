@@ -13,6 +13,7 @@ pub struct Info {
     bounds: bool,
     grid: Option<i32>,
     margin: Position,
+    move_bounds: bool,
 }
 
 const NAME: &str = "Info";
@@ -49,6 +50,12 @@ impl Info {
             range: params::Range::Positive,
             short: None,
         },
+        params::Info {
+            name: "move-bounds",
+            default: Value::Boolean(false),
+            range: params::Range::Boolean,
+            short: None,
+        },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
@@ -63,6 +70,7 @@ impl Info {
             bounds: params[1].value.as_bool().unwrap(),
             grid: if grid > 0 { Some(grid) } else { None },
             margin: Position::from_params(&params[3], &params[4]),
+            move_bounds: params[5].value.as_bool().unwrap(),
         }))
     }
 }
@@ -75,6 +83,7 @@ impl Move for Info {
             param!("grid" = (self.grid.unwrap_or(0))),
             param!("label-x" = (self.margin.x as i32)),
             param!("label-y" = (self.margin.y as i32)),
+            param!("move-bounds" = self.move_bounds),
         ]
     }
     fn text(&self) -> String {
@@ -92,6 +101,7 @@ impl Move for Info {
         opts.show_bounds = self.bounds;
         opts.grid = self.grid.map(|g| g as usize);
         opts.offset = self.margin;
+        opts.show_move_bounds = self.move_bounds;
 
         let mut defs = Group::new();
         if self.markers {
