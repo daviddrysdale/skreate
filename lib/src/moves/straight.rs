@@ -4,7 +4,7 @@ use super::{cross_transition, pre_transition, Error, HW};
 use crate::{
     param, params, params::Value, parse_foot_dir, parse_transition_prefix, path, Code, Edge, Foot,
     Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, SkatingDirection,
-    Transition,
+    SpatialTransition, Transition,
 };
 use svg::node::element::Group;
 
@@ -82,12 +82,14 @@ impl Move for StraightEdge {
     }
     fn transition(&self) -> Transition {
         Transition {
-            delta: Position {
-                x: 0,
-                y: self.len as i64,
+            spatial: SpatialTransition::Relative {
+                delta: Position {
+                    x: 0,
+                    y: self.len as i64,
+                },
+                rotate: Rotation(0),
             },
             code: self.end(),
-            rotate: Rotation(0),
         }
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {

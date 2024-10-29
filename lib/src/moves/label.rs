@@ -66,14 +66,14 @@ impl Move for Label {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
-        (None, *before)
+    fn bounds(&self, _before: &Skater) -> Option<Bounds> {
+        None
     }
-    fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
+    fn render(&self, doc: Document, _start: &Skater, _opts: &mut RenderOptions) -> Document {
         doc.add(
             Text::new(self.text.clone())
-                .set("x", self.pos.x + opts.offset.x)
-                .set("y", self.pos.y + opts.offset.y),
+                .set("x", self.pos.x)
+                .set("y", self.pos.y),
         )
     }
 }

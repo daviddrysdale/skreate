@@ -67,8 +67,8 @@ impl Move for Title {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
-        (None, *before)
+    fn bounds(&self, _before: &Skater) -> Option<Bounds> {
+        None
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         let x = if self.pos.x >= 0 {
@@ -79,8 +79,8 @@ impl Move for Title {
         let y = if self.pos.y >= 0 { self.pos.y } else { 100 };
         doc.add(
             Text::new(self.text.clone())
-                .set("x", x + opts.offset.x)
-                .set("y", y + opts.offset.y)
+                .set("x", x)
+                .set("y", y)
                 .set("font-size", 30),
         )
     }

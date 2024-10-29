@@ -2,8 +2,8 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, Bounds, Direction, Input, Move, MoveParam, OwnedInput, Position,
-    Skater,
+    param, params, params::Value, Bounds, Direction, Document, Input, Move, MoveParam, OwnedInput,
+    Position, RenderOptions, Skater, SpatialTransition, Transition,
 };
 
 const NAME: &str = "Warp";
@@ -69,13 +69,22 @@ impl Move for Warp {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
-        (
-            Some(Bounds {
-                top_left: self.pos,
-                bottom_right: self.pos,
-            }),
-            *before,
-        )
+    fn transition(&self) -> Transition {
+        Transition {
+            spatial: SpatialTransition::Absolute {
+                pos: self.pos,
+                dir: self.dir,
+            },
+            code: None,
+        }
+    }
+    fn render(&self, doc: Document, _start: &Skater, _opts: &mut RenderOptions) -> Document {
+        doc
+    }
+    fn bounds(&self, _before: &Skater) -> Option<Bounds> {
+        Some(Bounds {
+            top_left: self.pos,
+            bottom_right: self.pos,
+        })
     }
 }

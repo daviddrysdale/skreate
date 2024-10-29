@@ -2,7 +2,7 @@
 
 use crate::{
     code, label, Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
-    RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, Transition,
+    RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, SpatialTransition, Transition,
 };
 use log::{info, warn};
 use std::collections::HashSet;
@@ -99,8 +99,10 @@ macro_rules! move_definition {
             }
             fn transition(&self) -> Transition {
                 Transition {
-                    delta: $pos,
-                    rotate: $rotate,
+                    spatial: SpatialTransition::Relative {
+                        delta: $pos,
+                        rotate: $rotate,
+                    },
                     code: Some(Self::END),
                 }
             }
@@ -281,8 +283,10 @@ fn pre_transition(from: Code, to: Code) -> Transition {
         }
     }
     Transition {
-        delta: Position { x, y },
-        rotate: Rotation(rotation),
+        spatial: SpatialTransition::Relative {
+            delta: Position { x, y },
+            rotate: Rotation(rotation),
+        },
         code: Some(to),
     }
 }
@@ -351,8 +355,10 @@ fn cross_transition(from: Code, to: Code) -> Transition {
         (Forward, Backward) | (Backward, Forward) => return pre_transition(from, to),
     }
     Transition {
-        delta: Position { x, y },
-        rotate: Rotation(0),
+        spatial: SpatialTransition::Relative {
+            delta: Position { x, y },
+            rotate: Rotation(0),
+        },
         code: Some(to),
     }
 }

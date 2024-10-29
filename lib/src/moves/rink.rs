@@ -148,17 +148,14 @@ impl Move for Rink {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
-        (
-            Some(Bounds {
-                top_left: Position { x: 0, y: 0 },
-                bottom_right: Position {
-                    x: self.width as i64,
-                    y: self.length as i64,
-                },
-            }),
-            *before + self.transition(),
-        )
+    fn bounds(&self, _before: &Skater) -> Option<Bounds> {
+        Some(Bounds {
+            top_left: Position { x: 0, y: 0 },
+            bottom_right: Position {
+                x: self.width as i64,
+                y: self.length as i64,
+            },
+        })
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let rink_rect = Rectangle::new()

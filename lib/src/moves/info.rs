@@ -93,14 +93,13 @@ impl Move for Info {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
-        (None, *before)
+    fn bounds(&self, _before: &Skater) -> Option<Bounds> {
+        None
     }
     fn def(&self, opts: &mut RenderOptions) -> Option<Group> {
         // Change some options once and for all in the prelude.
         opts.show_bounds = self.bounds;
         opts.grid = self.grid.map(|g| g as usize);
-        opts.offset = self.margin;
         opts.show_move_bounds = self.move_bounds;
 
         let mut defs = Group::new();

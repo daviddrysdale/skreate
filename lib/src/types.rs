@@ -191,30 +191,64 @@ macro_rules! label {
     }
 }
 
+/// Spatial effect of a move on a skater.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SpatialTransition {
+    /// Relative spatial movement and rotation.
+    Relative {
+        /// Change in position.
+        delta: Position,
+        /// Change in direction.
+        rotate: Rotation,
+    },
+    /// Absolute transition to new position and direction.
+    Absolute {
+        /// New position.
+        pos: Position,
+        /// New direction.
+        dir: Direction,
+    },
+}
+
 /// Effect of a move on a skater.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct Transition {
-    /// Spatial movement in the transition.
-    pub delta: Position,
-    /// Rotation in the transition.
-    pub rotate: Rotation,
+    /// Spatial effect on position/direction.
+    pub spatial: SpatialTransition,
     /// Post-transition starting foot/dir/edge. `None` implies no change of foot/dir/edge.
     pub code: Option<Code>,
 }
 
+impl Default for Transition {
+    fn default() -> Self {
+        Self {
+            spatial: SpatialTransition::Relative {
+                delta: Position::default(),
+                rotate: Rotation::default(),
+            },
+            code: None,
+        }
+    }
+}
+
 impl Display for Transition {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "({:+.1},{:+.1}) {:+.1}° → {}",
-            self.delta.x,
-            self.delta.y,
-            self.rotate.0,
-            match self.code {
-                Some(code) => format!("{code}"),
-                None => "<unchanged>".to_string(),
+        let code = match self.code {
+            Some(code) => format!("{code}"),
+            None => "<unchanged>".to_string(),
+        };
+        match self.spatial {
+            SpatialTransition::Relative { delta, rotate } => {
+                write!(
+                    f,
+                    "({:+.1},{:+.1}) {:+.1}° → {code}",
+                    delta.x, delta.y, rotate.0,
+                )
             }
-        )
+            SpatialTransition::Absolute { pos, dir } => {
+                write!(f, "({:.1},{:.1}) {:.1}° → {code}", pos.x, pos.y, dir.0,)
+            }
+        }
     }
 }
 

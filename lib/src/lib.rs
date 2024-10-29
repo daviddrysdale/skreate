@@ -75,8 +75,17 @@ impl std::ops::Add<Position> for Skater {
 impl std::ops::Add<Transition> for Skater {
     type Output = Self;
     fn add(self, transition: Transition) -> Self {
-        let mut moved = self + transition.delta;
-        moved.dir = self.dir + transition.rotate;
+        let mut moved = self;
+        match transition.spatial {
+            SpatialTransition::Relative { delta, rotate } => {
+                moved = moved + delta;
+                moved.dir = self.dir + rotate;
+            }
+            SpatialTransition::Absolute { pos, dir } => {
+                moved.pos = pos;
+                moved.dir = dir;
+            }
+        }
         if let Some(new_code) = transition.code {
             moved.code = new_code;
         }
@@ -96,8 +105,6 @@ struct RenderOptions {
     show_move_bounds: bool,
     /// Calculated bounds.
     bounds: Bounds,
-    /// Offset of coordinate origin in SVG space.
-    offset: Position,
 }
 
 fn use_at(skater: &Skater, def_id: &str) -> Use {
@@ -136,15 +143,14 @@ trait Move {
         Transition::default()
     }
 
-    /// Return a bounding box that encompasses the move, starting from `before`.  Also return the skater position after the move
-    /// has happened.
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
+    /// Return a bounding box that encompasses the move, starting from `before`.
+    fn bounds(&self, before: &Skater) -> Option<Bounds> {
         // The default implementation just encompasses the before and after positions.
         let mut bounds = bounds!(before.pos.x, before.pos.y => before.pos.x,before.pos.y);
         let after = *before + self.transition();
         bounds.encompass(&after.pos);
 
-        (Some(bounds), after)
+        Some(bounds)
     }
 
     /// Emit SVG group definition for the move.
@@ -212,15 +218,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
         .add(Title::new("Skating Diagram"))
         .add(Description::new().add(Text::new("Skating Diagram")));
-    let mut opts = RenderOptions {
-        offset: Position {
-            x: MARGIN,
-            y: MARGIN,
-        },
-        ..Default::default()
-    };
+    let mut opts = RenderOptions::default();
 
     // First pass: emit definitions for all moves in use, and get global option updates.
+    info!("========= emit definitions ===========");
     let style = Style::new(STYLE_DEF);
     let mut seen = HashSet::new();
     let mut defs = Definitions::new().add(style);
@@ -236,13 +237,14 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     }
     doc = doc.add(defs);
 
-    // Second pass: figure out a bounding box.
+    // Second pass: figure out a bounding box, starting at (0,0) facing 0.
+    info!("========= determine bounding box ===========");
+    let mut bounds: Option<Bounds> = None;
     let mut skater = Skater {
         pos: Position::default(),
         dir: Direction::new(0),
         code: code!(BF),
     };
-    let mut bounds: Option<Bounds> = None;
     let mut first = true;
     for mv in &moves {
         if first {
@@ -257,82 +259,85 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             debug!("pre:  add {pre_transition} ==> {skater}");
         };
 
-        let (move_bounds, after) = mv.bounds(&skater);
+        let move_bounds = mv.bounds(&skater);
 
         if let Some(move_bounds) = move_bounds {
             match &mut bounds {
                 Some(bounds) => bounds.encompass_bounds(&move_bounds),
                 None => bounds = Some(move_bounds),
             }
-            debug!("bounds.encompass({move_bounds}) => {bounds:?}");
+            debug!("bounds.encompass({move_bounds})");
             if opts.show_move_bounds {
                 doc = doc.add(
                     Rectangle::new()
                         .set("width", move_bounds.width())
                         .set("height", move_bounds.height())
-                        .set("x", move_bounds.top_left.x + opts.offset.x)
-                        .set("y", move_bounds.top_left.y + opts.offset.y)
+                        .set("x", move_bounds.top_left.x)
+                        .set("y", move_bounds.top_left.y)
                         .set("stroke-dasharray", "2,2")
                         .set("style", "stroke:blue; stroke-width:2;"),
                 );
             }
         }
 
+        let transition = mv.transition();
+        let after = skater + transition;
+        debug!("post: {skater} + {transition} ==> {after}");
+
         skater = after;
         first = false;
     }
-    let mut bounds = bounds.unwrap_or_default();
+    let bounds = bounds.unwrap_or_default();
     opts.bounds = bounds;
+    info!("calculated bounds {bounds}");
 
     // Add a margin.
-    bounds.translate(opts.offset.x, opts.offset.y);
     let mut outer_bounds = bounds;
-    outer_bounds.add_margin(opts.offset.x, opts.offset.y);
+    outer_bounds.add_margin(MARGIN, MARGIN);
     doc = doc
         .set("width", outer_bounds.width())
         .set("height", outer_bounds.height());
-    info!("inner bounds {bounds}, add {MARGIN} to get {outer_bounds}");
+    info!("add {MARGIN} to get {outer_bounds}");
 
     // Third pass: render all the moves.
-    let start_pos = opts.offset;
-    info!("start at {start_pos}");
+    info!("========= render ===========");
     let mut skater = Skater {
-        pos: start_pos,
+        pos: Position::default(),
         dir: Direction::new(0),
         code: code!(BF),
     };
     let mut first = true;
     for mv in &moves {
-        info!("{:?} => {:?}", mv.start(), mv.end());
-        let pre_transition = mv.pre_transition(skater.code);
-        let before = if first {
-            let mut before = skater;
+        if first {
+            // Don't apply pre-transition for first move.
             if let Some(start_code) = mv.start() {
-                before.code = start_code;
+                skater.code = start_code;
             }
-            debug!("start: {before}");
-            before
+            debug!("start: {skater}");
         } else {
-            let before = skater + pre_transition;
-            debug!("pre:  {skater} == {pre_transition} ==> {before}");
-            before
+            let pre_transition = mv.pre_transition(skater.code);
+            skater = skater + pre_transition;
+            debug!("pre:  add {pre_transition} ==> {skater}");
         };
-        first = false;
+
+        info!("{:?} => {:?}", mv.start(), mv.end());
         debug!("perform: {}", mv.text());
         if opts.markers {
-            doc = doc.add(use_at(&before, "start-mark"));
+            doc = doc.add(use_at(&skater, "start-mark"));
         }
         let mut new_opts = opts;
-        doc = mv.render(doc, &before, &mut new_opts);
+        doc = mv.render(doc, &skater, &mut new_opts);
+
         let transition = mv.transition();
-        let after = before + transition;
-        debug!("post: {before} == {transition} ==> {after}");
+        let after = skater + transition;
+        debug!("post: {skater} + {transition} ==> {after}");
         if opts.markers {
             doc = doc.add(use_at(&after, "end-mark"));
         }
-
         opts = new_opts;
+
         skater = after;
+        first = false;
     }
 
     if let Some(grid) = opts.grid {
@@ -373,7 +378,13 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     // Set the viewBox to the outer bounds.
     doc = doc.set(
         "viewBox",
-        format!("0 0 {} {}", outer_bounds.width(), outer_bounds.height()),
+        format!(
+            "{} {} {} {}",
+            outer_bounds.top_left.x,
+            outer_bounds.top_left.y,
+            outer_bounds.width(),
+            outer_bounds.height()
+        ),
     );
 
     let mut svg = Vec::new();

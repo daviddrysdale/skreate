@@ -4,7 +4,7 @@ use super::{cross_transition, pre_transition, Error};
 use crate::{
     bounds, code, param, params, params::Value, parse_code, parse_transition_prefix, path, Bounds,
     Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
-    Skater, SkatingDirection, Transition,
+    Skater, SkatingDirection, SpatialTransition, Transition,
 };
 use std::f64::consts::PI;
 use svg::node::element::Group;
@@ -143,12 +143,14 @@ impl Move for Curve {
     }
     fn transition(&self) -> Transition {
         Transition {
-            delta: self.endpoint(),
+            spatial: SpatialTransition::Relative {
+                delta: self.endpoint(),
+                rotate: Rotation(self.angle * self.sign()),
+            },
             code: Some(self.code),
-            rotate: Rotation(self.angle * self.sign()),
         }
     }
-    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
+    fn bounds(&self, before: &Skater) -> Option<Bounds> {
         let mut bounds = bounds!(before.pos.x, before.pos.y => before.pos.x, before.pos.y);
 
         // Calculate 100 points on the curve and ensure they're all included in the bounds.
@@ -162,7 +164,7 @@ impl Move for Curve {
             bounds.encompass(&mid.pos);
         }
 
-        (Some(bounds), *before + self.transition())
+        Some(bounds)
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let r = self.radius() as i64;
