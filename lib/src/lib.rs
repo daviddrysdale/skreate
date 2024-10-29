@@ -341,17 +341,32 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     }
 
     if let Some(grid) = opts.grid {
-        for dx in (0..=outer_bounds.width()).step_by(grid) {
-            let x = outer_bounds.top_left.x + dx;
-            let y1 = outer_bounds.top_left.y;
-            let y2 = outer_bounds.bottom_right.y;
-            doc = doc.add(path!("M {x},{y1} L {x},{y2}").set("style", "stroke:lightgray;"));
+        let grid = grid as i64;
+        let n = (bounds.top_left.x + grid - 1) / grid;
+        let mut x = grid * n;
+        while x < bounds.bottom_right.x {
+            let y1 = bounds.top_left.y;
+            let y2 = bounds.bottom_right.y;
+            let stroke = if x == 0 {
+                "stroke:gray; stroke-width:2;"
+            } else {
+                "stroke:lightgray"
+            };
+            doc = doc.add(path!("M {x},{y1} L {x},{y2}").set("style", stroke));
+            x += grid;
         }
-        for dy in (0..=outer_bounds.height()).step_by(grid) {
-            let y = outer_bounds.top_left.y + dy;
-            let x1 = outer_bounds.top_left.x;
-            let x2 = outer_bounds.bottom_right.x;
-            doc = doc.add(path!("M {x1},{y} L {x2},{y}").set("style", "stroke:lightgray;"));
+        let n = (bounds.top_left.y + grid - 1) / grid;
+        let mut y = grid * n;
+        while y < bounds.bottom_right.y {
+            let x1 = bounds.top_left.x;
+            let x2 = bounds.bottom_right.x;
+            let stroke = if y == 0 {
+                "stroke:gray; stroke-width:2;"
+            } else {
+                "stroke:lightgray"
+            };
+            doc = doc.add(path!("M {x1},{y} L {x2},{y}").set("style", stroke));
+            y += grid;
         }
     }
     if opts.show_bounds {
