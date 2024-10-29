@@ -135,8 +135,9 @@ impl Move for Curve {
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let r = self.radius() as i64;
         let big = if self.angle >= 180 { 1 } else { 0 };
-        let sweep = 0;
+        let sweep = if self.sign() == -1 { 0 } else { 1 };
         let Position { x, y } = self.endpoint();
+
         Some(Group::new().add(path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}")))
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {

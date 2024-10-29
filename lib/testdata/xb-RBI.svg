@@ -10,7 +10,7 @@ Skating Diagram
 text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </style>
 <g id="xb-RBI">
-<path d="M 0,0 a 1289,1289 0 0 0 -77,440"/>
+<path d="M 0,0 a 1289,1289 0 0 1 -77,440"/>
 </g>
 </defs>
 <use id="r_0_c_0_6" transform="translate(50 50) rotate(0)" xlink:href="#xb-RBI"/>
