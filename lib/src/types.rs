@@ -365,7 +365,7 @@ mod tests {
         assert_eq!(bounds.width(), 100);
         assert_eq!(bounds.height(), 100);
 
-        bounds.add_margin(5);
+        bounds.add_margin(5, 5);
         assert_eq!(bounds.top_left, Position { x: 5, y: 15 });
         assert_eq!(bounds.bottom_right, Position { x: 115, y: 125 });
         assert_eq!(bounds.width(), 110);
