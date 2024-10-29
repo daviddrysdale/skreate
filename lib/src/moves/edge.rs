@@ -2,9 +2,9 @@
 
 use super::{cross_transition, pre_transition, Error};
 use crate::{
-    code, param, params, params::Value, parse_code, parse_transition_prefix, path, Code, Edge,
-    Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
-    SkatingDirection, Transition,
+    bounds, code, param, params, params::Value, parse_code, parse_transition_prefix, path, Bounds,
+    Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
+    Skater, SkatingDirection, Transition,
 };
 use std::f64::consts::PI;
 use svg::node::element::Group;
@@ -79,7 +79,23 @@ impl Curve {
         self.len as f64 * 180.0 / (self.angle as f64 * PI)
     }
 
-    /// End point of the arc
+    /// Point of the arc some percentage along the way, starting at 0,0 facing 0.
+    fn percent_point(&self, percent: i32) -> Position {
+        let r = self.radius();
+        let theta = self.angle as f64 * PI / 180.0; // radians
+        let theta = (percent as f64 / 100.0) * theta;
+        let (x, y) = if self.sign() == 1 {
+            (r * theta.cos() - r, r * theta.sin())
+        } else {
+            (r - r * theta.cos(), r * theta.sin())
+        };
+        Position {
+            x: x as i64,
+            y: y as i64,
+        }
+    }
+
+    /// End point of the arc, starting at 0,0 facing 0.
     fn endpoint(&self) -> Position {
         let r = self.radius();
         let theta = self.angle as f64 * PI / 180.0; // radians
@@ -131,6 +147,22 @@ impl Move for Curve {
             code: Some(self.code),
             rotate: Rotation(self.angle * self.sign()),
         }
+    }
+    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
+        let mut bounds = bounds!(before.pos.x, before.pos.y => before.pos.x, before.pos.y);
+
+        // Calculate 100 points on the curve and ensure they're all included in the bounds.
+        // TODO: replace this with some cunning trigonometry.
+        for percent in 0..=100 {
+            // Figure a point some way along the curve starting from 0,0 direction 0.
+            let curve_pt = self.percent_point(percent);
+
+            // Translate and rotate relative to the actual start point.
+            let mid = *before + curve_pt;
+            bounds.encompass(&mid.pos);
+        }
+
+        (Some(bounds), *before + self.transition())
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let r = self.radius() as i64;
