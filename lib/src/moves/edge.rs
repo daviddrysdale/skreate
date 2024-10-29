@@ -3,8 +3,8 @@
 use super::{cross_transition, pre_transition, Error};
 use crate::{
     bounds, code, param, params, params::Value, parse_code, parse_transition_prefix, path, Bounds,
-    Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
-    Skater, SkatingDirection, SpatialTransition, Transition,
+    Code, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater,
+    SkatingDirection, SpatialTransition, Transition,
 };
 use std::f64::consts::PI;
 use svg::node::element::Group;

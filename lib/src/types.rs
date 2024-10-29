@@ -377,20 +377,20 @@ pub fn parse_code(text: &str) -> Result<(Code, &str), String> {
 /// Create a [`Code`] instance from a short code.
 #[macro_export]
 macro_rules! code {
-    { BF } => { Code { foot: Foot::Both, dir: SkatingDirection::Forward, edge: Edge::Flat } };
-    { BB } => { Code { foot: Foot::Both, dir: SkatingDirection::Backward, edge: Edge::Flat } };
-    { LF } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Flat } };
-    { LFO } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Outside } };
-    { LFI } => { Code { foot: Foot::Left, dir: SkatingDirection::Forward, edge: Edge::Inside } };
-    { LB } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Flat } };
-    { LBO } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Outside } };
-    { LBI } => { Code { foot: Foot::Left, dir: SkatingDirection::Backward, edge: Edge::Inside } };
-    { RF } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Flat } };
-    { RFO } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Outside } };
-    { RFI } => { Code { foot: Foot::Right, dir: SkatingDirection::Forward, edge: Edge::Inside } };
-    { RB } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Flat } };
-    { RBO } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Outside } };
-    { RBI } => { Code { foot: Foot::Right, dir: SkatingDirection::Backward, edge: Edge::Inside } };
+    { BF } =>  { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Flat } };
+    { BB } =>  { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Flat } };
+    { LF } =>  { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Flat } };
+    { LFO } => { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Outside } };
+    { LFI } => { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Inside } };
+    { LB } =>  { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Flat } };
+    { LBO } => { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Outside } };
+    { LBI } => { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Inside } };
+    { RF } =>  { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Flat } };
+    { RFO } => { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Outside } };
+    { RFI } => { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Inside } };
+    { RB } =>  { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Flat } };
+    { RBO } => { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Outside } };
+    { RBI } => { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Inside } };
 }
 
 #[cfg(test)]

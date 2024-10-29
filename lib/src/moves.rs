@@ -1,8 +1,8 @@
 //! Skating move definitions.
 
 use crate::{
-    code, label, Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
-    RenderOptions, Rotation, SkatingDirection, SkatingDirection::*, SpatialTransition, Transition,
+    code, label, Code, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
+    RenderOptions, Rotation, SkatingDirection::*, SpatialTransition, Transition,
 };
 use log::{info, warn};
 use std::collections::HashSet;
