@@ -2,8 +2,8 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, path, Bounds, Direction, Input, Move, MoveParam, OwnedInput,
-    Position, RenderOptions, Skater,
+    param, params, params::Value, path, Bounds, Input, Move, MoveParam, OwnedInput, Position,
+    RenderOptions, Skater,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
@@ -14,8 +14,6 @@ pub struct Rink {
     input: OwnedInput,
     width: i32,
     length: i32,
-    start: Position,
-    start_dir: Direction,
     show_centre_line: bool,
     centre_circle: Option<i32>,
     show_centre_faceoff: bool,
@@ -37,24 +35,6 @@ impl Rink {
             name: "length",
             default: Value::Number(61 * 100), // in cm
             range: params::Range::StrictlyPositive,
-            short: None,
-        },
-        params::Info {
-            name: "start-x",
-            default: Value::Number(6 * 100), // in cm
-            range: params::Range::StrictlyPositive,
-            short: None,
-        },
-        params::Info {
-            name: "start-y",
-            default: Value::Number(6 * 100), // in cm
-            range: params::Range::StrictlyPositive,
-            short: None,
-        },
-        params::Info {
-            name: "start-dir",
-            default: Value::Number(0),
-            range: params::Range::Positive,
             short: None,
         },
         params::Info {
@@ -110,7 +90,7 @@ impl Rink {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
-        let to_bool = |param: &MoveParam| param.value.as_bool().unwrap();
+        let to_bool = |param: &MoveParam| param.value.as_bool().map_err(Error::Failed);
         let to_opt_i32 = |param: &MoveParam| {
             let val = param.value.as_i32().unwrap();
             if val > 0 {
@@ -124,15 +104,13 @@ impl Rink {
             input: input.owned(),
             width: params[0].value.as_i32().unwrap(),
             length: params[1].value.as_i32().unwrap(),
-            start: Position::from_params(&params[2], &params[3]),
-            start_dir: Direction(params[4].value.as_i32().unwrap() as u32),
-            show_centre_line: to_bool(&params[5]),
-            centre_circle: to_opt_i32(&params[6]),
-            show_centre_faceoff: params[7].value.as_bool().unwrap(),
-            mid_lines: to_opt_i32(&params[8]),
-            goal_lines: to_opt_i32(&params[9]),
-            show_goals: params[10].value.as_bool().unwrap(),
-            show_faceoffs: params[11].value.as_bool().unwrap(),
+            show_centre_line: to_bool(&params[2])?,
+            centre_circle: to_opt_i32(&params[3]),
+            show_centre_faceoff: to_bool(&params[4])?,
+            mid_lines: to_opt_i32(&params[5]),
+            goal_lines: to_opt_i32(&params[6]),
+            show_goals: to_bool(&params[7])?,
+            show_faceoffs: to_bool(&params[8])?,
         })
     }
     fn rounding(&self) -> i32 {
@@ -154,9 +132,6 @@ impl Move for Rink {
         vec![
             param!(self.width),
             param!(self.length),
-            param!("start-x" = (self.start.x as i32)),
-            param!("start-y" = (self.start.y as i32)),
-            param!("start_dir" = (self.start_dir.0 as i32)),
             param!("show-centre-line" = self.show_centre_line),
             param!("centre-circle" = from_opt_i32(self.centre_circle)),
             param!("centre-faceoff" = self.show_centre_faceoff),

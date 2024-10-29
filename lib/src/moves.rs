@@ -15,6 +15,7 @@ mod label;
 mod rink;
 mod straight;
 mod title;
+mod warp;
 
 #[derive(Debug, Clone)]
 enum Error {
@@ -160,6 +161,7 @@ fn initialize() -> HashSet<Constructor> {
     register!(reg, edge::Curve);
     register!(reg, label::Label);
     register!(reg, title::Title);
+    register!(reg, warp::Warp);
 
     register!(reg, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
     register!(reg, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
