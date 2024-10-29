@@ -80,6 +80,16 @@ impl Position {
     }
 }
 
+impl std::ops::Add<Position> for Position {
+    type Output = Self;
+    fn add(self, other: Position) -> Self {
+        Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
+}
+
 /// Rectangular boundary in canvas.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct Bounds {
