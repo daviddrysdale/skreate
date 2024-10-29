@@ -112,6 +112,11 @@ impl Bounds {
         }
         trace!("encompass {pos} in bounds => {self}");
     }
+    /// Modify bounds to ensure they encompass the given additional [`Bounds`].
+    pub fn encompass_bounds(&mut self, other: &Bounds) {
+        self.encompass(&other.top_left);
+        self.encompass(&other.bottom_right);
+    }
     /// Translate the bounds by the given amounts.
     pub fn translate(&mut self, dx: i64, dy: i64) {
         self.top_left.x += dx;
@@ -139,6 +144,17 @@ impl Bounds {
         Position {
             x: self.top_left.x + self.width() / 2,
             y: self.top_left.y + self.height() / 2,
+        }
+    }
+}
+
+/// Convenience macro to build [`Bounds`].
+#[macro_export]
+macro_rules! bounds {
+    { $x1:expr, $y1:expr => $x2:expr, $y2:expr } => {
+        Bounds {
+            top_left: Position { x: $x1, y: $y1 },
+            bottom_right: Position { x: $x2, y: $y2 },
         }
     }
 }
@@ -370,5 +386,22 @@ mod tests {
         assert_eq!(bounds.bottom_right, Position { x: 115, y: 125 });
         assert_eq!(bounds.width(), 110);
         assert_eq!(bounds.height(), 110);
+    }
+
+    #[test]
+    fn test_encompass() {
+        let mut bounds = bounds!(10,20 => 110,120);
+
+        bounds.encompass(&Position { x: 200, y: 200 });
+        assert_eq!(bounds, bounds!(10,20 => 200,200));
+
+        bounds.encompass(&Position { x: 0, y: 0 });
+        assert_eq!(bounds, bounds!(0,0 => 200,200));
+
+        bounds.encompass_bounds(&bounds!(150,150 => 250,250));
+        assert_eq!(bounds, bounds!(0,0 => 250,250));
+
+        bounds.encompass_bounds(&bounds!(-50,-50 => 350,350));
+        assert_eq!(bounds, bounds!(-50,-50 => 350,350));
     }
 }
