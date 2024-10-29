@@ -69,9 +69,6 @@ impl Move for Label {
     fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
         (None, *before)
     }
-    fn labels(&self, _opts: &RenderOptions) -> Vec<crate::Label> {
-        Vec::new()
-    }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         doc.add(
             Text::new(self.text.clone())

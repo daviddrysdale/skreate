@@ -70,9 +70,6 @@ impl Move for Title {
     fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
         (None, *before)
     }
-    fn labels(&self, _opts: &RenderOptions) -> Vec<crate::Label> {
-        Vec::new()
-    }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         let x = if self.pos.x >= 0 {
             self.pos.x

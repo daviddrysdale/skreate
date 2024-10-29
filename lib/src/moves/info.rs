@@ -2,8 +2,8 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, path, Bounds, Document, Input, Label, Move, MoveParam,
-    OwnedInput, Position, RenderOptions, Skater,
+    param, params, params::Value, path, Bounds, Document, Input, Move, MoveParam, OwnedInput,
+    Position, RenderOptions, Skater,
 };
 use svg::node::element::Group;
 
@@ -127,8 +127,5 @@ impl Move for Info {
         opts.markers = self.markers;
 
         doc
-    }
-    fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
-        Vec::new()
     }
 }

@@ -2,8 +2,8 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, path, Bounds, Direction, Input, Label, Move, MoveParam,
-    OwnedInput, Position, RenderOptions, Skater,
+    param, params, params::Value, path, Bounds, Direction, Input, Move, MoveParam, OwnedInput,
+    Position, RenderOptions, Skater,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
@@ -262,9 +262,6 @@ impl Move for Rink {
         // TODO: render `show_goals`
         // TODO: render `show_faceoffs`
         Some(grp)
-    }
-    fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
-        Vec::new()
     }
 }
 

@@ -153,7 +153,9 @@ trait Move {
     }
 
     /// Return the labels for this move. Each returned position is relative to (0,0) at 0°.
-    fn labels(&self, opts: &RenderOptions) -> Vec<Label>;
+    fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
+        Vec::new()
+    }
 
     /// Render the move into the given SVG document, assuming the existence of groups included in the output from [`defs`].
     fn render(&self, mut doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
