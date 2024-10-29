@@ -134,26 +134,15 @@ trait Move {
         Transition::default()
     }
 
-    /// Determine the extent of a bounding box encompassing the move.
-    fn encompass_bounds(&self, skater: &Skater, include_pre: bool, bounds: &mut Bounds) -> Skater {
-        let before = if include_pre {
-            let pre_transition = self.pre_transition(skater.code);
-            let before = *skater + pre_transition;
-            debug!("pre:  {skater} == {pre_transition} ==> {before}");
-            before
-        } else {
-            let mut before = *skater;
-            if let Some(start_code) = self.start() {
-                before.code = start_code;
-            }
-            debug!("start: {before}");
-            before
-        };
-        bounds.encompass(&before.pos);
-        let transition = self.transition();
-        let after = before + transition;
+    /// Return a bounding box that encompasses the move, starting from `before`.  Also return the skater position after the move
+    /// has happened.
+    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
+        // The default implementation just encompasses the before and after positions.
+        let mut bounds = bounds!(before.pos.x, before.pos.y => before.pos.x,before.pos.y);
+        let after = *before + self.transition();
         bounds.encompass(&after.pos);
-        after
+
+        (Some(bounds), after)
     }
 
     /// Emit SVG group definition for the move.
@@ -249,12 +238,34 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         dir: Direction::new(0),
         code: code!(BF),
     };
-    let mut bounds = Bounds::default();
+    let mut bounds: Option<Bounds> = None;
     let mut first = true;
     for mv in &moves {
-        skater = mv.encompass_bounds(&skater, !first, &mut bounds);
+        if first {
+            // Don't apply pre-transition for first move.
+            if let Some(start_code) = mv.start() {
+                skater.code = start_code;
+            }
+            debug!("start: {skater}");
+        } else {
+            let pre_transition = mv.pre_transition(skater.code);
+            skater = skater + pre_transition;
+            debug!("pre:  add {pre_transition} ==> {skater}");
+        };
+
+        let (move_bounds, after) = mv.bounds(&skater);
+
+        if let Some(move_bounds) = move_bounds {
+            match &mut bounds {
+                Some(bounds) => bounds.encompass_bounds(&move_bounds),
+                None => bounds = Some(move_bounds),
+            }
+        }
+
+        skater = after;
         first = false;
     }
+    let mut bounds = bounds.unwrap_or_default();
     opts.bounds = bounds;
 
     // Add a margin.

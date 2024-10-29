@@ -173,13 +173,17 @@ impl Move for Rink {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn encompass_bounds(&self, skater: &Skater, _include_pre: bool, bounds: &mut Bounds) -> Skater {
-        bounds.encompass(&Position { x: 0, y: 0 });
-        bounds.encompass(&Position {
-            x: self.width as i64,
-            y: self.length as i64,
-        });
-        *skater + self.transition()
+    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
+        (
+            Some(Bounds {
+                top_left: Position { x: 0, y: 0 },
+                bottom_right: Position {
+                    x: self.width as i64,
+                    y: self.length as i64,
+                },
+            }),
+            *before + self.transition(),
+        )
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let rink_rect = Rectangle::new()

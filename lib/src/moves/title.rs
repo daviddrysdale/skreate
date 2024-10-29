@@ -67,13 +67,8 @@ impl Move for Title {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn encompass_bounds(
-        &self,
-        skater: &Skater,
-        _include_pre: bool,
-        _bounds: &mut Bounds,
-    ) -> Skater {
-        *skater
+    fn bounds(&self, before: &Skater) -> (Option<Bounds>, Skater) {
+        (None, *before)
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<crate::Label> {
         Vec::new()
