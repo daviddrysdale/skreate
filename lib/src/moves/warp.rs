@@ -22,13 +22,13 @@ impl Warp {
         params::Info {
             name: "x",
             default: Value::Number(0), // in cm
-            range: params::Range::StrictlyPositive,
+            range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "y",
             default: Value::Number(0), // in cm
-            range: params::Range::StrictlyPositive,
+            range: params::Range::Any,
             short: None,
         },
         params::Info {
