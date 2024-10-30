@@ -1,0 +1,33 @@
+Rink [goal-lines=0,centre-circle=400,mid-lines=800]
+Title [text="Skills 1"]
+Info [grid=0,markers=false]
+
+Label [x=1300,y=500,text="SIDE 1"]
+Warp [x=700,y=500,dir=90]
+LFO--
+RFI--
+LFO[angle=140,len=900]
+RFO--
+LFI--
+RFO[angle=140,len=900]
+LFO--
+RFI--
+LFO[angle=140,len=900]
+RFO--
+LFI--
+RFO[angle=140,len=900]
+
+Label [x=1600,y=5500,text="SIDE 2"]
+Warp [x=2200,y=5500,dir=270]
+LFO->
+xf-RFI++>>
+LFI-- # TODO: wd-LFI--
+RFO--
+xf-LFI++>>
+RFI-- # TODO: wd-RFI--
+LFO--
+xf-RFI++>>
+LFI-- # TODO: wd-LFI--
+RFO--
+xf-LFI++>>
+RFI-- # TODO: wd-RFI--
