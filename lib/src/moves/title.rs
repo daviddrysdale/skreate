@@ -81,7 +81,7 @@ impl Move for Title {
             Text::new(self.text.clone())
                 .set("x", x)
                 .set("y", y)
-                .set("font-size", 30),
+                .set("style", format!("font-size: {}pt;", opts.font_size() * 2)),
         )
     }
 }

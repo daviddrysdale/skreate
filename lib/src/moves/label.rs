@@ -69,11 +69,12 @@ impl Move for Label {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
     }
-    fn render(&self, doc: Document, _start: &Skater, _opts: &mut RenderOptions) -> Document {
+    fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         doc.add(
             Text::new(self.text.clone())
                 .set("x", self.pos.x)
-                .set("y", self.pos.y),
+                .set("y", self.pos.y)
+                .set("style", format!("font-size:{}pt;", opts.font_size())),
         )
     }
 }

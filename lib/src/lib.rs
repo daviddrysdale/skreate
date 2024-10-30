@@ -105,6 +105,40 @@ struct RenderOptions {
     show_move_bounds: bool,
     /// Calculated bounds.
     bounds: Bounds,
+    /// Font size; auto-scale to bounds if [`None`].
+    font_size: Option<u32>,
+}
+
+impl RenderOptions {
+    /// Return the effective font-size in points.
+    pub fn font_size(&self) -> u32 {
+        if let Some(font_size) = &self.font_size {
+            *font_size
+        } else {
+            let diag_squared = self.bounds.width() * self.bounds.width()
+                + self.bounds.height() * self.bounds.height();
+            let diagonal = (diag_squared as f64).sqrt();
+            let pts = if diagonal < 500.0 {
+                10
+            } else if diagonal < 800.0 {
+                12
+            } else if diagonal < 933.0 {
+                14
+            } else if diagonal < 1067.0 {
+                16
+            } else if diagonal < 1200.0 {
+                18
+            } else if diagonal < 1600.0 {
+                24
+            } else if diagonal < 2400.0 {
+                36
+            } else {
+                40
+            };
+            debug!("diagonal dimension {diagonal} => {pts}pts text");
+            pts
+        }
+    }
 }
 
 fn use_at(skater: &Skater, def_id: &str) -> Use {
@@ -176,7 +210,8 @@ trait Move {
             let loc = *start + label.pos;
             let text = Text::new(label.text)
                 .set("x", loc.pos.x)
-                .set("y", loc.pos.y);
+                .set("y", loc.pos.y)
+                .set("style", format!("font-size:{}pt;", opts.font_size()));
             doc = doc.add(text);
         }
         doc

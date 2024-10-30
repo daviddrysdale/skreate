@@ -33,6 +33,8 @@
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
 - [ ] Adjust measurements of moves
+- [ ] Wide-step prefix
+- [x] Font size inc. auto from bounding box
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
 - [x] Rink and start point/direction specification
 - [x] Title, text inserts

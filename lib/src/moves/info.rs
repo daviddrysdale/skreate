@@ -14,6 +14,7 @@ pub struct Info {
     grid: Option<i32>,
     margin: Position,
     move_bounds: bool,
+    font_size: Option<u32>,
 }
 
 const NAME: &str = "Info";
@@ -56,6 +57,12 @@ impl Info {
             range: params::Range::Boolean,
             short: None,
         },
+        params::Info {
+            name: "font-size",
+            default: Value::Number(0),
+            range: params::Range::Positive,
+            short: None,
+        },
     ];
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let Some(rest) = input.text.strip_prefix(NAME) else {
@@ -63,6 +70,7 @@ impl Info {
         };
         let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
         let grid = params[2].value.as_i32().unwrap();
+        let font_size = params[6].value.as_i32().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -71,6 +79,11 @@ impl Info {
             grid: if grid > 0 { Some(grid) } else { None },
             margin: Position::from_params(&params[3], &params[4]),
             move_bounds: params[5].value.as_bool().unwrap(),
+            font_size: if font_size > 0 {
+                Some(font_size as u32)
+            } else {
+                None
+            },
         }))
     }
 }
@@ -84,6 +97,7 @@ impl Move for Info {
             param!("label-x" = (self.margin.x as i32)),
             param!("label-y" = (self.margin.y as i32)),
             param!("move-bounds" = self.move_bounds),
+            param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
         ]
     }
     fn text(&self) -> String {
@@ -124,6 +138,7 @@ impl Move for Info {
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         // Some options can be toggled on/off as we go along.
         opts.markers = self.markers;
+        opts.font_size = self.font_size;
 
         doc
     }
