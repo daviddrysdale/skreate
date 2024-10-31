@@ -2,8 +2,8 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, path, Bounds, Document, Input, Move, MoveParam, OwnedInput,
-    Position, RenderOptions, Skater,
+    moves, param, params, params::Value, path, Bounds, Document, Input, Move, MoveParam,
+    OwnedInput, Position, RenderOptions, Skater,
 };
 use svg::node::element::Group;
 
@@ -17,65 +17,69 @@ pub struct Info {
     font_size: Option<u32>,
 }
 
-const NAME: &str = "Info";
-
 impl Info {
-    const PARAMS_INFO: &'static [params::Info] = &[
-        params::Info {
-            name: "markers",
-            doc: "Whether to show begin/end move markers",
-            default: Value::Boolean(false),
-            range: params::Range::Boolean,
-            short: None,
-        },
-        params::Info {
-            name: "bounds",
-            doc: "Whether to show overall bounds",
-            default: Value::Boolean(false),
-            range: params::Range::Boolean,
-            short: None,
-        },
-        params::Info {
-            name: "grid",
-            doc: "Grid size to display, 0 for no grid",
-            default: Value::Number(0),
-            range: params::Range::Positive,
-            short: None,
-        },
-        params::Info {
-            name: "margin-x",
-            doc: "Horizontal margin",
-            default: Value::Number(crate::MARGIN as i32),
-            range: params::Range::Positive,
-            short: None,
-        },
-        params::Info {
-            name: "margin-y",
-            doc: "Vertical margin",
-            default: Value::Number(crate::MARGIN as i32),
-            range: params::Range::Positive,
-            short: None,
-        },
-        params::Info {
-            name: "move-bounds",
-            doc: "Whether to show bounds of each move",
-            default: Value::Boolean(false),
-            range: params::Range::Boolean,
-            short: None,
-        },
-        params::Info {
-            name: "font-size",
-            doc: "Font size for labels; 0 for auto-scaling",
-            default: Value::Number(0),
-            range: params::Range::Positive,
-            short: None,
-        },
-    ];
+    /// Static move information.
+    pub const INFO: moves::Info = moves::Info {
+        name: "Info",
+        summary: "Set diagram rendering information",
+        params: &[
+            params::Info {
+                name: "markers",
+                doc: "Whether to show begin/end move markers",
+                default: Value::Boolean(false),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "bounds",
+                doc: "Whether to show overall bounds",
+                default: Value::Boolean(false),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "grid",
+                doc: "Grid size to display, 0 for no grid",
+                default: Value::Number(0),
+                range: params::Range::Positive,
+                short: None,
+            },
+            params::Info {
+                name: "margin-x",
+                doc: "Horizontal margin",
+                default: Value::Number(crate::MARGIN as i32),
+                range: params::Range::Positive,
+                short: None,
+            },
+            params::Info {
+                name: "margin-y",
+                doc: "Vertical margin",
+                default: Value::Number(crate::MARGIN as i32),
+                range: params::Range::Positive,
+                short: None,
+            },
+            params::Info {
+                name: "move-bounds",
+                doc: "Whether to show bounds of each move",
+                default: Value::Boolean(false),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "font-size",
+                doc: "Font size for labels; 0 for auto-scaling",
+                default: Value::Number(0),
+                range: params::Range::Positive,
+                short: None,
+            },
+        ],
+    };
+
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let Some(rest) = input.text.strip_prefix(NAME) else {
+        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
             return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
+        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
         let grid = params[2].value.as_i32().unwrap();
         let font_size = params[6].value.as_i32().unwrap();
 
@@ -108,8 +112,8 @@ impl Move for Info {
         ]
     }
     fn text(&self) -> String {
-        let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("{NAME}{params}")
+        let params = params::to_string(Self::INFO.params, &self.params());
+        format!("{}{params}", Self::INFO.name)
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())

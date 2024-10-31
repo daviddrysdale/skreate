@@ -2,12 +2,10 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, parse_code, Bounds, Code, Direction, Document, Input, Move,
-    MoveParam, OwnedInput, Position, RenderOptions, Skater, SpatialTransition, Transition,
+    moves, param, params, params::Value, parse_code, Bounds, Code, Direction, Document, Input,
+    Move, MoveParam, OwnedInput, Position, RenderOptions, Skater, SpatialTransition, Transition,
 };
 use std::borrow::Cow;
-
-const NAME: &str = "Warp";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Warp {
@@ -18,46 +16,50 @@ pub struct Warp {
 }
 
 impl Warp {
-    const PARAMS_INFO: &'static [params::Info] = &[
-        params::Info {
-            name: "x",
-            doc: "Horizontal coordinate to warp to",
-            default: Value::Number(0), // in cm
-            range: params::Range::Any,
-            short: None,
-        },
-        params::Info {
-            name: "y",
-            doc: "Vertical coordinate to warp to",
-            default: Value::Number(0), // in cm
-            range: params::Range::Any,
-            short: None,
-        },
-        params::Info {
-            name: "dir",
-            doc: "Direction to be facing after warp, in degrees (0 is facing down)",
-            default: Value::Number(0),
-            range: params::Range::Positive,
-            short: None,
-        },
-        params::Info {
-            name: "code",
-            doc: "Foot code to start with after warp",
-            default: Value::Text(Cow::Borrowed("")),
-            range: params::Range::Text,
-            short: None,
-        },
-    ];
+    pub const INFO: moves::Info = moves::Info {
+        name: "Warp",
+        summary: "Move skater to new location/position",
+        params: &[
+            params::Info {
+                name: "x",
+                doc: "Horizontal coordinate to warp to",
+                default: Value::Number(0), // in cm
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
+                name: "y",
+                doc: "Vertical coordinate to warp to",
+                default: Value::Number(0), // in cm
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
+                name: "dir",
+                doc: "Direction to be facing after warp, in degrees (0 is facing down)",
+                default: Value::Number(0),
+                range: params::Range::Positive,
+                short: None,
+            },
+            params::Info {
+                name: "code",
+                doc: "Foot code to start with after warp",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
+        ],
+    };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         Ok(Box::new(Self::new(input)?))
     }
 
     pub fn new(input: &Input) -> Result<Self, Error> {
-        let Some(rest) = input.text.strip_prefix(NAME) else {
+        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
             return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
+        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
         let code_str = params[3].value.as_str().map_err(Error::Failed)?;
         let code = if code_str.is_empty() {
             None
@@ -90,8 +92,8 @@ impl Move for Warp {
         ]
     }
     fn text(&self) -> String {
-        let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("{NAME}{params}")
+        let params = params::to_string(Self::INFO.params, &self.params());
+        format!("{}{params}", Self::INFO.name)
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())

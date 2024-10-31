@@ -93,6 +93,7 @@ impl std::ops::Add<Transition> for Skater {
     }
 }
 
+/// Options for how to render the diagram.
 #[derive(Debug, Clone, Copy, Default)]
 struct RenderOptions {
     /// Whether to render start/end markers.
@@ -444,8 +445,9 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     Ok(svg)
 }
 
+/// User input.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct Input<'a> {
+struct Input<'a> {
     pos: TextPosition,
     text: &'a str,
 }
@@ -460,7 +462,7 @@ impl<'a> Input<'a> {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(crate) struct OwnedInput {
+struct OwnedInput {
     pos: TextPosition,
     text: String,
 }

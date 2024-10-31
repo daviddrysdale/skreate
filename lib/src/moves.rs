@@ -5,7 +5,6 @@ use crate::{
     RenderOptions, Rotation, SkatingDirection::*, SpatialTransition, Transition,
 };
 use log::{info, warn};
-use std::collections::HashSet;
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
@@ -17,6 +16,7 @@ mod straight;
 mod title;
 mod warp;
 
+/// Errors arising from attempting to create move instances.
 #[derive(Debug, Clone)]
 enum Error {
     /// Indicates that the constructor doesn't apply to this input.
@@ -25,15 +25,25 @@ enum Error {
     Failed(String),
 }
 
+/// Information about a class of moves.
+pub struct Info {
+    /// Name of the move.
+    pub name: &'static str,
+    /// Summary of the move.
+    pub summary: &'static str,
+    /// Move parameter information.
+    pub params: &'static [crate::params::Info],
+}
+
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
 
-    for constructor in registry() {
+    for constructor in constructors() {
         match constructor(input) {
             Ok(mv) => return Ok(mv),
             Err(Error::Unrecognized) => {}
             Err(Error::Failed(msg)) => {
-                warn!("constructor {constructor:?} failed: {msg}");
+                warn!("constructor {constructor:?} failed: {msg}",);
                 return Err(ParseError {
                     pos: input.pos,
                     msg,
@@ -70,7 +80,7 @@ macro_rules! move_and_xb {
     }
 }
 
-/// Macro to populate a structure that implements [`Move`].
+/// Macro to populate a structure that implements [`Move`] and [`Info`].
 macro_rules! move_definition {
     { $name:ident, $start:expr => $end:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $labels:expr, $pre_trans:ident } => {
         struct $name {
@@ -80,6 +90,11 @@ macro_rules! move_definition {
             const START: Code = $start;
             const END: Code = $end;
             const ID: &'static str = $text;
+            const INFO: Info = Info {
+                name: stringify!($name),
+                summary: stringify!($name),
+                params: &[],
+            };
             pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
                 if input.text == Self::ID {
                     Ok(Box::new(Self { input: input.owned()}))
@@ -88,6 +103,7 @@ macro_rules! move_definition {
                 }
             }
         }
+
         impl Move for $name {
             fn params(&self) -> Vec<MoveParam> {vec![]}
             fn start(&self) -> Option<Code> { Some(Self::START) }
@@ -150,36 +166,54 @@ move_and_xb!(LboRk, XbLboRk, LBO => LFO, "LBO-Rk", Position { x: -200, y: 180 },
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
-    {  $reg:ident, $( $typ:ty ),* } => {
-        $( $reg.insert(<$typ>::construct as Constructor); )*
+    {  $constructors:ident, $info:ident, $( $typ:ty ),* } => {
+        $( $constructors.push(
+            <$typ>::construct as Constructor
+        ); )*
+        $( $info.push(
+            <$typ>::INFO,
+        ); )*
     }
 }
 
-fn initialize() -> HashSet<Constructor> {
-    let mut reg = HashSet::new();
-    register!(reg, rink::Rink);
-    register!(reg, info::Info);
-    register!(reg, straight::StraightEdge);
-    register!(reg, edge::Curve);
-    register!(reg, label::Label);
-    register!(reg, title::Title);
-    register!(reg, warp::Warp);
+#[allow(clippy::vec_init_then_push)]
+fn initialize() -> (Vec<Info>, Vec<Constructor>) {
+    let mut cons = Vec::new();
+    let mut info = Vec::new();
 
-    register!(reg, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
-    register!(reg, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
-    register!(reg, LfoRk, XfLfoRk, LbiRk, XbLbiRk, RfiRk, XfRfiRk, RboRk, XbRboRk);
-    register!(reg, RfoRk, XfRfoRk, RbiRk, XbRbiRk, LfiRk, XfLfiRk, LboRk, XbLboRk);
-    reg
+    // Insert moves in order of importance, as they will appear in the manual.
+    register!(cons, info, edge::Curve);
+    register!(cons, info, straight::StraightEdge);
+
+    register!(cons, info, warp::Warp);
+    register!(cons, info, rink::Rink);
+    register!(cons, info, info::Info);
+    register!(cons, info, title::Title);
+    register!(cons, info, label::Label);
+
+    register!(cons, info, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
+    register!(cons, info, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
+    register!(cons, info, LfoRk, XfLfoRk, LbiRk, XbLbiRk, RfiRk, XfRfiRk, RboRk, XbRboRk);
+    register!(cons, info, RfoRk, XfRfoRk, RbiRk, XbRbiRk, LfiRk, XfLfiRk, LboRk, XbLboRk);
+    (info, cons)
 }
 
 /// Function that constructs a move from an [`Input`].
 type Constructor = fn(&Input) -> Result<Box<dyn Move>, Error>;
 
-/// Registry of move names and name-or-alias to constructor mapping.
-static REGISTRY: OnceLock<HashSet<Constructor>> = OnceLock::new();
+/// Registry of move information and constructors.
+static REGISTRY: OnceLock<(Vec<Info>, Vec<Constructor>)> = OnceLock::new();
 
-fn registry() -> &'static HashSet<Constructor> {
-    REGISTRY.get_or_init(|| initialize())
+/// Return a collection of move constructors.
+fn constructors() -> &'static Vec<Constructor> {
+    let (_info, constructors) = REGISTRY.get_or_init(|| initialize());
+    constructors
+}
+
+/// Return a collection of move [`Info`] structures.
+pub fn info() -> &'static Vec<Info> {
+    let (info, _constructors) = REGISTRY.get_or_init(|| initialize());
+    info
 }
 
 /// Half-width of a standard stance.
@@ -382,7 +416,7 @@ mod tests {
     #[test]
     #[ignore] // Reinstate later
     fn test_move_consistency() {
-        for constructor in registry() {
+        for constructor in constructors() {
             let name = "TODO";
             let input = Input {
                 pos: Default::default(),

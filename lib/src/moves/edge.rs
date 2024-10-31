@@ -2,9 +2,9 @@
 
 use super::{cross_transition, pre_transition, Error};
 use crate::{
-    bounds, code, param, params, params::Value, parse_code, parse_transition_prefix, path, Bounds,
-    Code, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater,
-    SkatingDirection, SpatialTransition, Transition,
+    bounds, code, moves, param, params, params::Value, parse_code, parse_transition_prefix, path,
+    Bounds, Code, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
+    Skater, SkatingDirection, SpatialTransition, Transition,
 };
 use std::f64::consts::PI;
 use svg::node::element::Group;
@@ -18,42 +18,48 @@ pub struct Curve {
 }
 
 impl Curve {
-    const PARAMS_INFO: &'static [params::Info] = &[
-        params::Info {
-            name: "angle",
-            doc: "Angle of rotation from start to finish, in degrees",
-            default: Value::Number(20),
-            range: params::Range::StrictlyPositive,
-            short: Some(params::Abbrev::GreaterLess(params::Detents {
-                add1: 60,
-                add2: 110,
-                add3: 180,
-                less1: 15,
-                less2: 10,
-                less3: 5,
-            })),
-        },
-        params::Info {
-            name: "len",
-            doc: "Length in centimetres",
-            default: Value::Number(450),
-            range: params::Range::StrictlyPositive,
-            short: Some(params::Abbrev::PlusMinus(params::Detents {
-                add1: 600,
-                add2: 850,
-                add3: 1000,
-                less1: 300,
-                less2: 240,
-                less3: 100,
-            })),
-        },
-    ];
+    /// Static move information.
+    pub const INFO: moves::Info = moves::Info {
+        summary: "Curving edge",
+        name: "Edge",
+        params: &[
+            params::Info {
+                name: "angle",
+                doc: "Angle of rotation from start to finish, in degrees",
+                default: Value::Number(20),
+                range: params::Range::StrictlyPositive,
+                short: Some(params::Abbrev::GreaterLess(params::Detents {
+                    add1: 60,
+                    add2: 110,
+                    add3: 180,
+                    less1: 15,
+                    less2: 10,
+                    less3: 5,
+                })),
+            },
+            params::Info {
+                name: "len",
+                doc: "Length in centimetres",
+                default: Value::Number(450),
+                range: params::Range::StrictlyPositive,
+                short: Some(params::Abbrev::PlusMinus(params::Detents {
+                    add1: 600,
+                    add2: 850,
+                    add3: 1000,
+                    less1: 300,
+                    less2: 240,
+                    less3: 100,
+                })),
+            },
+        ],
+    };
+
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (cross_transition, rest) = parse_transition_prefix(input.text);
         let (code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
 
         let params =
-            params::populate(Self::PARAMS_INFO, rest).map_err(|_msg| Error::Unrecognized)?;
+            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -126,7 +132,7 @@ impl Move for Curve {
             (true, SkatingDirection::Forward) => "xf-",
             (true, SkatingDirection::Backward) => "xb-",
         };
-        let suffix = params::to_string(Self::PARAMS_INFO, &self.params());
+        let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{suffix}", self.code)
     }
     fn input(&self) -> Option<OwnedInput> {

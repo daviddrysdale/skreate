@@ -2,12 +2,10 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, path, Bounds, Input, Move, MoveParam, OwnedInput, Position,
-    RenderOptions, Skater,
+    moves, param, params, params::Value, path, Bounds, Input, Move, MoveParam, OwnedInput,
+    Position, RenderOptions, Skater,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
-
-const NAME: &str = "Rink";
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Rink {
@@ -24,81 +22,85 @@ pub struct Rink {
 }
 
 impl Rink {
-    const PARAMS_INFO: &'static [params::Info] = &[
-        params::Info {
-            name: "width",
-            doc: "Rink width in centimetres",
-            default: Value::Number(30 * 100), // in cm
-            range: params::Range::StrictlyPositive,
-            short: None,
-        },
-        params::Info {
-            name: "length",
-            doc: "Rink length in centimetres",
-            default: Value::Number(61 * 100), // in cm
-            range: params::Range::StrictlyPositive,
-            short: None,
-        },
-        params::Info {
-            name: "centre-line",
-            doc: "Whether to show the centre line",
-            default: Value::Boolean(true),
-            range: params::Range::Boolean,
-            short: None,
-        },
-        params::Info {
-            name: "centre-circle",
-            doc: "Size of the centre circle in centimetre, 0 to omit",
-            default: Value::Number(900), // diameter in cm, <= 0 to omit
-            range: params::Range::Any,
-            short: None,
-        },
-        params::Info {
-            name: "centre-faceoff",
-            doc: "Whether to show the centre face-off",
-            default: Value::Boolean(true),
-            range: params::Range::Boolean,
-            short: None,
-        },
-        params::Info {
-            name: "mid-lines",
-            doc: "Location of mid-lines in centimetres from the centre line; 0 to omit",
-            default: Value::Number(17660 / 2), // distance from centre in cm, <= 0 to omit
-            range: params::Range::Any,
-            short: None,
-        },
-        params::Info {
-            name: "goal-lines",
-            doc: "Location of goal lines in centimetres from the ends; 0 to omit",
-            default: Value::Number(400), // cm from ends, 0=absent
-            range: params::Range::Any,
-            short: None,
-        },
-        params::Info {
-            name: "goals",
-            doc: "Whether to show the goals",
-            default: Value::Boolean(true),
-            range: params::Range::Boolean,
-            short: None,
-        },
-        params::Info {
-            name: "faceoffs",
-            doc: "Whether to show the face-offs",
-            default: Value::Boolean(true),
-            range: params::Range::Boolean,
-            short: None,
-        },
-    ];
+    pub const INFO: moves::Info = moves::Info {
+        name: "Rink",
+        summary: "Rink depiction",
+        params: &[
+            params::Info {
+                name: "width",
+                doc: "Rink width in centimetres",
+                default: Value::Number(30 * 100), // in cm
+                range: params::Range::StrictlyPositive,
+                short: None,
+            },
+            params::Info {
+                name: "length",
+                doc: "Rink length in centimetres",
+                default: Value::Number(61 * 100), // in cm
+                range: params::Range::StrictlyPositive,
+                short: None,
+            },
+            params::Info {
+                name: "centre-line",
+                doc: "Whether to show the centre line",
+                default: Value::Boolean(true),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "centre-circle",
+                doc: "Size of the centre circle in centimetre, 0 to omit",
+                default: Value::Number(900), // diameter in cm, <= 0 to omit
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
+                name: "centre-faceoff",
+                doc: "Whether to show the centre face-off",
+                default: Value::Boolean(true),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "mid-lines",
+                doc: "Location of mid-lines in centimetres from the centre line; 0 to omit",
+                default: Value::Number(17660 / 2), // distance from centre in cm, <= 0 to omit
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
+                name: "goal-lines",
+                doc: "Location of goal lines in centimetres from the ends; 0 to omit",
+                default: Value::Number(400), // cm from ends, 0=absent
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
+                name: "goals",
+                doc: "Whether to show the goals",
+                default: Value::Boolean(true),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "faceoffs",
+                doc: "Whether to show the face-offs",
+                default: Value::Boolean(true),
+                range: params::Range::Boolean,
+                short: None,
+            },
+        ],
+    };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         Ok(Box::new(Self::new(input)?))
     }
 
     pub fn new(input: &Input) -> Result<Self, Error> {
-        let Some(rest) = input.text.strip_prefix(NAME) else {
+        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
             return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
+        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
         let to_bool = |param: &MoveParam| param.value.as_bool().map_err(Error::Failed);
         let to_opt_i32 = |param: &MoveParam| {
             let val = param.value.as_i32().unwrap();
@@ -151,8 +153,8 @@ impl Move for Rink {
         ]
     }
     fn text(&self) -> String {
-        let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("{NAME}{params}")
+        let params = params::to_string(Self::INFO.params, &self.params());
+        format!("{}{params}", Self::INFO.name)
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())

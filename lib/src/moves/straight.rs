@@ -2,9 +2,9 @@
 
 use super::{cross_transition, pre_transition, Error, HW};
 use crate::{
-    param, params, params::Value, parse_foot_dir, parse_transition_prefix, path, Code, Edge, Foot,
-    Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, SkatingDirection,
-    SpatialTransition, Transition,
+    moves, param, params, params::Value, parse_foot_dir, parse_transition_prefix, path, Code, Edge,
+    Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
+    SkatingDirection, SpatialTransition, Transition,
 };
 use svg::node::element::Group;
 
@@ -17,26 +17,31 @@ pub struct StraightEdge {
 }
 
 impl StraightEdge {
-    const PARAMS_INFO: &'static [params::Info] = &[params::Info {
-        name: "len",
-        doc: "Length in centimetres",
-        default: Value::Number(450),
-        range: params::Range::StrictlyPositive,
-        short: Some(params::Abbrev::PlusMinus(params::Detents {
-            add1: 600,
-            add2: 850,
-            add3: 1000,
-            less1: 300,
-            less2: 240,
-            less3: 100,
-        })),
-    }];
+    pub const INFO: moves::Info = moves::Info {
+        name: "Straight edge",
+        summary: "Straight edge",
+        params: &[params::Info {
+            name: "len",
+            doc: "Length in centimetres",
+            default: Value::Number(450),
+            range: params::Range::StrictlyPositive,
+            short: Some(params::Abbrev::PlusMinus(params::Detents {
+                add1: 600,
+                add2: 850,
+                add3: 1000,
+                less1: 300,
+                less2: 240,
+                less3: 100,
+            })),
+        }],
+    };
+
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (cross_transition, rest) = parse_transition_prefix(input.text);
         let (foot, dir, rest) = parse_foot_dir(rest).map_err(|_msg| Error::Unrecognized)?;
 
         let params =
-            params::populate(Self::PARAMS_INFO, rest).map_err(|_msg| Error::Unrecognized)?;
+            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -68,7 +73,7 @@ impl Move for StraightEdge {
             (true, SkatingDirection::Forward) => "xf-",
             (true, SkatingDirection::Backward) => "xb-",
         };
-        let suffix = params::to_string(Self::PARAMS_INFO, &self.params());
+        let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{}{suffix}", self.foot, self.dir)
     }
     fn input(&self) -> Option<OwnedInput> {

@@ -2,7 +2,7 @@
 
 use super::Error;
 use crate::{
-    param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
+    moves, param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
     RenderOptions, Skater,
 };
 use std::borrow::Cow;
@@ -14,38 +14,41 @@ pub struct Title {
     pos: Position,
 }
 
-const NAME: &str = "Title";
-
 impl Title {
-    const PARAMS_INFO: &'static [params::Info] = &[
-        params::Info {
-            name: "text",
-            doc: "Text of title",
-            default: Value::Text(Cow::Borrowed("")),
-            range: params::Range::Text,
-            short: None,
-        },
-        // (-1, -1) used to indicate auto-positioning.
-        params::Info {
-            name: "x",
-            doc: "Horizontal location of title; -1 indicates automatic centering",
-            default: Value::Number(-1),
-            range: params::Range::Any,
-            short: None,
-        },
-        params::Info {
-            name: "y",
-            doc: "Vertical location of title",
-            default: Value::Number(100),
-            range: params::Range::Any,
-            short: None,
-        },
-    ];
+    pub const INFO: moves::Info = moves::Info {
+        name: "Title",
+        summary: "Diagram title",
+        params: &[
+            params::Info {
+                name: "text",
+                doc: "Text of title",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
+            // (-1, -1) used to indicate auto-positioning.
+            params::Info {
+                name: "x",
+                doc: "Horizontal location of title; -1 indicates automatic centering",
+                default: Value::Number(-1),
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
+                name: "y",
+                doc: "Vertical location of title",
+                default: Value::Number(100),
+                range: params::Range::Any,
+                short: None,
+            },
+        ],
+    };
+
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let Some(rest) = input.text.strip_prefix(NAME) else {
+        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
             return Err(Error::Unrecognized);
         };
-        let params = params::populate(Self::PARAMS_INFO, rest).map_err(Error::Failed)?;
+        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -64,8 +67,8 @@ impl Move for Title {
         ]
     }
     fn text(&self) -> String {
-        let params = params::to_string(Self::PARAMS_INFO, &self.params());
-        format!("{NAME}{params}")
+        let params = params::to_string(Self::INFO.params, &self.params());
+        format!("{}{params}", Self::INFO.name)
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
