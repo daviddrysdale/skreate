@@ -26,6 +26,7 @@ enum Error {
 }
 
 /// Information about a class of moves.
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Info {
     /// Name of the move.
     pub name: &'static str,
