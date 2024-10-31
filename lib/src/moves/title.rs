@@ -28,15 +28,15 @@ impl Title {
         // (-1, -1) used to indicate auto-positioning.
         params::Info {
             name: "x",
-            doc: "Horizontal location of title; -1 indicates automatic positioning",
+            doc: "Horizontal location of title; -1 indicates automatic centering",
             default: Value::Number(-1),
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "y",
-            doc: "Vertical location of title; -1 indicates default of 100",
-            default: Value::Number(-1),
+            doc: "Vertical location of title",
+            default: Value::Number(100),
             range: params::Range::Any,
             short: None,
         },
@@ -79,11 +79,10 @@ impl Move for Title {
         } else {
             opts.bounds.midpoint().x
         };
-        let y = if self.pos.y >= 0 { self.pos.y } else { 100 };
         doc.add(
             Text::new(self.text.clone())
                 .set("x", x)
-                .set("y", y)
+                .set("y", self.pos.y)
                 .set("style", format!("font-size: {}pt;", opts.font_size() * 2)),
         )
     }
