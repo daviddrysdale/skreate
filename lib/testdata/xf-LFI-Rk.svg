@@ -1,4 +1,4 @@
-<svg height="280" viewBox="0 0 300 280" width="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="280" viewBox="-250 -50 300 280" width="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Skating Diagram</title>
 <desc>
 <text>
@@ -13,17 +13,17 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80"/>
 </g>
 </defs>
-<use id="r_0_c_0_9" transform="translate(50 50) rotate(0)" xlink:href="#xf-LFI-Rk"/>
-<text x="0" y="90">
+<use id="r_0_c_0_9" transform="translate(0 0) rotate(0)" xlink:href="#xf-LFI-Rk"/>
+<text style="font-size:10pt;" x="-50" y="40">
 LFI
 </text>
-<text x="-60" y="110">
+<text style="font-size:10pt;" x="-110" y="60">
 Lk
 </text>
-<text x="-100" y="180">
+<text style="font-size:10pt;" x="-150" y="130">
 LBI
 </text>
-<text x="60" y="60">
+<text style="font-size:10pt;" x="10" y="10">
 xf
 </text>
 </svg>
