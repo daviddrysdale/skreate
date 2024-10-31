@@ -20,6 +20,7 @@ impl Title {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "text",
+            doc: "Text of title",
             default: Value::Text(Cow::Borrowed("")),
             range: params::Range::Text,
             short: None,
@@ -27,12 +28,14 @@ impl Title {
         // (-1, -1) used to indicate auto-positioning.
         params::Info {
             name: "x",
+            doc: "Horizontal location of title; -1 indicates automatic positioning",
             default: Value::Number(-1),
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "y",
+            doc: "Vertical location of title; -1 indicates default of 100",
             default: Value::Number(-1),
             range: params::Range::Any,
             short: None,

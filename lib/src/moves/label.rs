@@ -20,18 +20,21 @@ impl Label {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "text",
+            doc: "Text to display",
             default: Value::Text(Cow::Borrowed("")),
             range: params::Range::Text,
             short: None,
         },
         params::Info {
             name: "x",
+            doc: "Horizontal location of text",
             default: Value::Number(100),
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "y",
+            doc: "Vertical location of text (increasing down)",
             default: Value::Number(100),
             range: params::Range::Any,
             short: None,

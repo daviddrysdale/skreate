@@ -208,6 +208,8 @@ impl Range {
 pub struct Info {
     /// Name of the parameter.
     pub name: &'static str,
+    /// Documetnation for the parameter.
+    pub doc: &'static str,
     /// Whether the parameter can be specified in an abbreviated form.
     pub short: Option<Abbrev>,
     /// Valid range for parameter values.
@@ -471,6 +473,7 @@ mod tests {
     const TEST_PARAMS_INFO: &[Info] = &[
         Info {
             name: "len1",
+            doc: "test",
             default: Value::Number(100),
             range: Range::StrictlyPositive,
             short: Some(Abbrev::PlusMinus(Detents {
@@ -484,12 +487,14 @@ mod tests {
         },
         Info {
             name: "len2",
+            doc: "test",
             default: Value::Number(10),
             range: Range::Positive,
             short: None,
         },
         Info {
             name: "curve",
+            doc: "test",
             default: Value::Number(45),
             range: Range::Any,
             short: Some(Abbrev::GreaterLess(Detents {
@@ -503,6 +508,7 @@ mod tests {
         },
         Info {
             name: "boolean",
+            doc: "test",
             default: Value::Boolean(false),
             range: Range::Boolean,
             short: None,

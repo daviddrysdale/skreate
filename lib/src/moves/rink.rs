@@ -27,54 +27,63 @@ impl Rink {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "width",
+            doc: "Rink width in centimetres",
             default: Value::Number(30 * 100), // in cm
             range: params::Range::StrictlyPositive,
             short: None,
         },
         params::Info {
             name: "length",
+            doc: "Rink length in centimetres",
             default: Value::Number(61 * 100), // in cm
             range: params::Range::StrictlyPositive,
             short: None,
         },
         params::Info {
             name: "centre-line",
+            doc: "Whether to show the centre line",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
             short: None,
         },
         params::Info {
             name: "centre-circle",
+            doc: "Size of the centre circle in centimetre, 0 to omit",
             default: Value::Number(900), // diameter in cm, <= 0 to omit
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "centre-faceoff",
+            doc: "Whether to show the centre face-off",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
             short: None,
         },
         params::Info {
             name: "mid-lines",
+            doc: "Location of mid-lines in centimetres from the centre line; 0 to omit",
             default: Value::Number(17660 / 2), // distance from centre in cm, <= 0 to omit
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "goal-lines",
+            doc: "Location of goal lines in centimetres from the ends; 0 to omit",
             default: Value::Number(400), // cm from ends, 0=absent
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "goals",
+            doc: "Whether to show the goals",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
             short: None,
         },
         params::Info {
             name: "faceoffs",
+            doc: "Whether to show the face-offs",
             default: Value::Boolean(true),
             range: params::Range::Boolean,
             short: None,

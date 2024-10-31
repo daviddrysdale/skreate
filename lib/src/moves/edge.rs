@@ -21,6 +21,7 @@ impl Curve {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "angle",
+            doc: "Angle of rotation from start to finish, in degrees",
             default: Value::Number(20),
             range: params::Range::StrictlyPositive,
             short: Some(params::Abbrev::GreaterLess(params::Detents {
@@ -34,6 +35,7 @@ impl Curve {
         },
         params::Info {
             name: "len",
+            doc: "Length in centimetres",
             default: Value::Number(450),
             range: params::Range::StrictlyPositive,
             short: Some(params::Abbrev::PlusMinus(params::Detents {

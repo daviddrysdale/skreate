@@ -19,6 +19,7 @@ pub struct StraightEdge {
 impl StraightEdge {
     const PARAMS_INFO: &'static [params::Info] = &[params::Info {
         name: "len",
+        doc: "Length in centimetres",
         default: Value::Number(450),
         range: params::Range::StrictlyPositive,
         short: Some(params::Abbrev::PlusMinus(params::Detents {

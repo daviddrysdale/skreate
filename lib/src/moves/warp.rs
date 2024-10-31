@@ -21,24 +21,28 @@ impl Warp {
     const PARAMS_INFO: &'static [params::Info] = &[
         params::Info {
             name: "x",
+            doc: "Horizontal coordinate to warp to",
             default: Value::Number(0), // in cm
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "y",
+            doc: "Vertical coordinate to warp to",
             default: Value::Number(0), // in cm
             range: params::Range::Any,
             short: None,
         },
         params::Info {
             name: "dir",
+            doc: "Direction to be facing after warp, in degrees (0 is facing down)",
             default: Value::Number(0),
             range: params::Range::Positive,
             short: None,
         },
         params::Info {
             name: "code",
+            doc: "Foot code to start with after warp",
             default: Value::Text(Cow::Borrowed("")),
             range: params::Range::Text,
             short: None,
