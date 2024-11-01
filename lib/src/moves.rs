@@ -218,7 +218,7 @@ pub fn info() -> &'static Vec<Info> {
 }
 
 /// Half-width of a standard stance.
-const HW: i64 = 27; // cm
+const HW: i64 = 15; // cm
 /// Width of a standard stance.
 const W: i64 = 2 * HW; // cm
 /// Length of skate.
