@@ -2,7 +2,7 @@
 members = [
   "cli",
   "lib",
-  "man",
+  "doc",
   "wasm",
 ]
 resolver = "2"

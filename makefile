@@ -1,10 +1,10 @@
-WASM_CRATE=skreate_wasm
 all: build
 
-LIBRARY_SRC=wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
+WASM_CRATE=skreate_wasm
 CLI=target/debug/skreate-cli
-
-EXAMPLES=$(wildcard examples/*.txt)
+DOCGEN=target/debug/skreate-docgen
+LIBRARY_SRC=wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
+EXAMPLES=examples/*.txt
 EXAMPLES_SVG=$(EXAMPLES:.txt=.svg)
 
 build: web/pkg/$(WASM_CRATE).js
@@ -44,6 +44,13 @@ regenerate: regenerate_examples
 
 regenerate_examples: $(EXAMPLES_SVG)
 
+manual: web/manual.html
+web/manual.html: doc/manual.hbs $(DOCGEN)
+	$(DOCGEN) $< > $@
+
+$(DOCGEN): doc/src/main.rs
+	cargo build --manifest-path doc/Cargo.toml
+
 publish: clean build publish_build publish_tag
 publish_build:
 	git diff-index --quiet HEAD -- && \
@@ -64,4 +71,4 @@ clean:
 	cargo clean
 
 distclean:
-	rm -rf web/pkg target
+	rm -rf web/pkg target doc/manual.html
