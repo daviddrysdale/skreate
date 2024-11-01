@@ -2,6 +2,10 @@ WASM_CRATE=skreate_wasm
 all: build
 
 LIBRARY_SRC=wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
+CLI=target/debug/skreate-cli
+
+EXAMPLES=$(wildcard examples/*.txt)
+EXAMPLES_SVG=$(EXAMPLES:.txt=.svg)
 
 build: web/pkg/$(WASM_CRATE).js
 
@@ -19,12 +23,15 @@ prereqs:
 target/wasm32-unknown-unknown/release/$(WASM_CRATE).wasm: $(LIBRARY_SRC)
 	cargo build --lib --release --target wasm32-unknown-unknown
 
-cli: target/debug/skreate-cli
-target/debug/skreate-cli: cli/src/main.rs $(LIBRARY_SRC)
+cli: $(CLI)
+$(CLI): cli/src/main.rs $(LIBRARY_SRC)
 	cargo build --manifest-path cli/Cargo.toml
 
 run-cli: target/debug/skreate-cli
 	$<
+
+examples/%.svg: examples/%.txt $(CLI)
+	$(CLI) $< > $@
 
 test:
 	cargo test
@@ -32,8 +39,10 @@ test:
 clippy:
 	cargo clippy --all-targets
 
-regenerate:
+regenerate: regenerate_examples
 	SKREATE_REGENERATE=1 cargo test -- test_compare
+
+regenerate_examples: $(EXAMPLES_SVG)
 
 publish: clean build publish_build publish_tag
 publish_build:
