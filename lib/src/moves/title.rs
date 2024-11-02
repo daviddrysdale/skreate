@@ -75,7 +75,7 @@ impl Move for Title {
         Some(self.input.clone())
     }
     fn def(&self, opts: &mut RenderOptions) -> Option<Group> {
-        opts.title = self.text.clone();
+        opts.title.clone_from(&self.text);
         None
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {

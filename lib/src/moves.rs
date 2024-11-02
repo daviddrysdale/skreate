@@ -424,8 +424,8 @@ mod tests {
                 pos: Default::default(),
                 text: info.example,
             };
-            let mv =
-                factory(&input).expect(&format!("example for {} doesn't construct!", info.name));
+            let mv = factory(&input)
+                .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
             check_consistent(&*mv, &input);
         }
     }

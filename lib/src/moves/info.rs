@@ -15,6 +15,7 @@ pub struct Info {
     margin: Position,
     move_bounds: bool,
     font_size: Option<u32>,
+    stroke_width: Option<u32>,
 }
 
 impl Info {
@@ -73,6 +74,13 @@ impl Info {
                 range: params::Range::Positive,
                 short: None,
             },
+            params::Info {
+                name: "stroke-width",
+                doc: "Stroke width; 0 for auto-scaling",
+                default: Value::Number(0),
+                range: params::Range::Positive,
+                short: None,
+            },
         ],
     };
 
@@ -83,6 +91,7 @@ impl Info {
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
         let grid = params[2].value.as_i32().unwrap();
         let font_size = params[6].value.as_i32().unwrap();
+        let stroke_width = params[7].value.as_i32().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -93,6 +102,11 @@ impl Info {
             move_bounds: params[5].value.as_bool().unwrap(),
             font_size: if font_size > 0 {
                 Some(font_size as u32)
+            } else {
+                None
+            },
+            stroke_width: if stroke_width > 0 {
+                Some(stroke_width as u32)
             } else {
                 None
             },
@@ -110,6 +124,7 @@ impl Move for Info {
             param!("label-y" = (self.margin.y as i32)),
             param!("move-bounds" = self.move_bounds),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
+            param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
         ]
     }
     fn text(&self) -> String {
@@ -151,6 +166,7 @@ impl Move for Info {
         // Some options can be toggled on/off as we go along.
         opts.markers = self.markers;
         opts.font_size = self.font_size;
+        opts.stroke_width = self.stroke_width;
 
         doc
     }

@@ -32,8 +32,9 @@
         - [ ] Axel
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
-- [ ] Adjust measurements of moves
+- [x] Adjust measurements of moves
 - [ ] Wide-step prefix
+- [x] Allow (auto-)selection of stroke width
 - [x] Font size inc. auto from bounding box
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
 - [x] Rink and start point/direction specification
@@ -45,7 +46,7 @@
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot
     - [ ] Can standalone SVG share CSS with web?
-- [ ] Option for arbitrary text annotation ("LFI3 (waves arms)")
+- [ ] Option for arbitrary text annotation on move ("LFI3 (waves arms)")
 - [ ] SVG to HTML linkage
     - [ ] mouse over move => highlight text in editor
     - [ ] cursor on move => highlight corresponding move

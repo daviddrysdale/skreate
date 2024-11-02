@@ -110,17 +110,23 @@ struct RenderOptions {
     bounds: Bounds,
     /// Font size; auto-scale to bounds if [`None`].
     font_size: Option<u32>,
+    /// Stroke width; auto-scale with bounds if [`None`].
+    stroke_width: Option<u32>,
 }
 
 impl RenderOptions {
+    fn bounds_diag(&self) -> f64 {
+        let diag_squared =
+            self.bounds.width() * self.bounds.width() + self.bounds.height() * self.bounds.height();
+        (diag_squared as f64).sqrt()
+    }
+
     /// Return the effective font-size in points.
     pub fn font_size(&self) -> u32 {
         if let Some(font_size) = &self.font_size {
             *font_size
         } else {
-            let diag_squared = self.bounds.width() * self.bounds.width()
-                + self.bounds.height() * self.bounds.height();
-            let diagonal = (diag_squared as f64).sqrt();
+            let diagonal = self.bounds_diag();
             let pts = if diagonal < 500.0 {
                 10
             } else if diagonal < 800.0 {
@@ -132,26 +138,48 @@ impl RenderOptions {
             } else if diagonal < 1200.0 {
                 18
             } else if diagonal < 1600.0 {
-                24
+                20
             } else if diagonal < 2400.0 {
-                36
+                22
             } else {
-                40
+                24
             };
             debug!("diagonal dimension {diagonal} => {pts}pts text");
             pts
         }
     }
+    /// Return the effective stroke-width.
+    pub fn stroke_width(&self) -> u32 {
+        if let Some(stroke_width) = &self.stroke_width {
+            *stroke_width
+        } else {
+            let diagonal = self.bounds_diag();
+            let width = if diagonal < 1000.0 {
+                1
+            } else if diagonal < 1600.0 {
+                2
+            } else if diagonal < 2400.0 {
+                3
+            } else {
+                4
+            };
+            debug!("diagonal dimension {diagonal} => stroke-width: {width}");
+            width
+        }
+    }
 }
 
-fn use_at(skater: &Skater, def_id: &str) -> Use {
-    Use::new().set("xlink:href", format!("#{def_id}")).set(
-        "transform",
-        format!(
-            "translate({} {}) rotate({})",
-            skater.pos.x, skater.pos.y, skater.dir.0
-        ),
-    )
+fn use_at(skater: &Skater, def_id: &str, opts: &RenderOptions) -> Use {
+    Use::new()
+        .set("xlink:href", format!("#{def_id}"))
+        .set(
+            "transform",
+            format!(
+                "translate({} {}) rotate({})",
+                skater.pos.x, skater.pos.y, skater.dir.0
+            ),
+        )
+        .set("style", format!("stroke-width:{};", opts.stroke_width()))
 }
 
 /// Trait describing the external behavior of a move.
@@ -204,7 +232,7 @@ trait Move {
     fn render(&self, mut doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
         // Default implementation uses the definition, suitably translated and rotated.
         let def_id = self.text();
-        let mut use_link = use_at(start, &def_id);
+        let mut use_link = use_at(start, &def_id, opts);
         if let Some(input) = self.input() {
             use_link = use_link.set("id", input.unique_id());
         }
@@ -316,7 +344,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
                         .set("x", move_bounds.top_left.x)
                         .set("y", move_bounds.top_left.y)
                         .set("stroke-dasharray", "2,2")
-                        .set("style", "stroke:blue; stroke-width:2;"),
+                        .set(
+                            "style",
+                            format!("stroke:blue; stroke-width:{};", 2 * opts.stroke_width()),
+                        ),
                 );
             }
         }
@@ -364,7 +395,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         info!("{:?} => {:?}", mv.start(), mv.end());
         debug!("perform: {}", mv.text());
         if opts.markers {
-            doc = doc.add(use_at(&skater, "start-mark"));
+            doc = doc.add(use_at(&skater, "start-mark", &opts));
         }
         let show_marker = opts.markers;
         doc = mv.render(doc, &skater, &mut opts);
@@ -373,7 +404,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         let after = skater + transition;
         debug!("post: {skater} + {transition} ==> {after}");
         if show_marker {
-            doc = doc.add(use_at(&after, "end-mark"));
+            doc = doc.add(use_at(&after, "end-mark", &opts));
         }
 
         skater = after;
@@ -417,7 +448,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
                 .set("x", outer_bounds.top_left.x)
                 .set("y", outer_bounds.top_left.y)
                 .set("stroke-dasharray", "5,5")
-                .set("style", "stroke:red; stroke-width:3;"),
+                .set(
+                    "style",
+                    format!("stroke:red; stroke-width:{};", 3 * opts.stroke_width()),
+                ),
         );
         doc = doc.add(
             Rectangle::new()
@@ -426,7 +460,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
                 .set("x", bounds.top_left.x)
                 .set("y", bounds.top_left.y)
                 .set("stroke-dasharray", "5,5")
-                .set("style", "stroke:green; stroke-width:3;"),
+                .set(
+                    "style",
+                    format!("stroke:green; stroke-width:{};", 3 * opts.stroke_width()),
+                ),
         );
     }
 

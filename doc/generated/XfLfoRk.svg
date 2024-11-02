@@ -13,7 +13,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 c 15,80 70,100 100,70 c 10,40 80,0 100,80"/>
 </g>
 </defs>
-<use id="r_0_c_0_9" transform="translate(0 0) rotate(0)" xlink:href="#xf-LFO-Rk"/>
+<use id="r_0_c_0_9" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#xf-LFO-Rk"/>
 <text style="font-size:10pt;" x="50" y="40">
 LFO
 </text>
