@@ -94,8 +94,10 @@ impl std::ops::Add<Transition> for Skater {
 }
 
 /// Options for how to render the diagram.
-#[derive(Debug, Clone, Copy, Default)]
+#[derive(Debug, Clone, Default)]
 struct RenderOptions {
+    /// Diagram title.
+    title: String,
     /// Whether to render start/end markers.
     markers: bool,
     /// Grid size.
@@ -250,11 +252,11 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         .map(|input| moves::factory(input))
         .collect::<Result<Vec<_>, ParseError>>()?;
 
-    let mut doc = Document::new()
-        .set("xmlns:xlink", "http://www.w3.org/1999/xlink")
-        .add(Title::new("Skating Diagram"))
-        .add(Description::new().add(Text::new("Skating Diagram")));
-    let mut opts = RenderOptions::default();
+    let mut doc = Document::new().set("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    let mut opts = RenderOptions {
+        title: "Skating Diagram".to_string(),
+        ..Default::default()
+    };
 
     // First pass: emit definitions for all moves in use, and get global option updates.
     info!("========= emit definitions ===========");
@@ -271,6 +273,9 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
             defs = defs.add(group.set("id", id));
         }
     }
+    doc = doc
+        .add(Title::new(opts.title.clone()))
+        .add(Description::new().add(Text::new(opts.title.clone())));
     doc = doc.add(defs);
 
     // Second pass: figure out a bounding box, starting at (0,0) facing 0.
@@ -361,16 +366,15 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         if opts.markers {
             doc = doc.add(use_at(&skater, "start-mark"));
         }
-        let mut new_opts = opts;
-        doc = mv.render(doc, &skater, &mut new_opts);
+        let show_marker = opts.markers;
+        doc = mv.render(doc, &skater, &mut opts);
 
         let transition = mv.transition();
         let after = skater + transition;
         debug!("post: {skater} + {transition} ==> {after}");
-        if opts.markers {
+        if show_marker {
             doc = doc.add(use_at(&after, "end-mark"));
         }
-        opts = new_opts;
 
         skater = after;
         first = false;

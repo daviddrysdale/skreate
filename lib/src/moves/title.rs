@@ -2,8 +2,8 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
-    RenderOptions, Skater,
+    moves, param, params, params::Value, Bounds, Group, Input, Move, MoveParam, OwnedInput,
+    Position, RenderOptions, Skater,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -73,6 +73,10 @@ impl Move for Title {
     }
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
+    }
+    fn def(&self, opts: &mut RenderOptions) -> Option<Group> {
+        opts.title = self.text.clone();
+        None
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
