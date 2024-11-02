@@ -1,0 +1,17 @@
+<svg height="100" viewBox="-50 -50 100 100" width="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+</style>
+<g id="Info[markers=true,grid=100,move-bounds=true]">
+<path d="M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10" id="end-mark" style="stroke:red;"/>
+<path d="M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10" id="start-mark" style="stroke:green;"/>
+</g>
+</defs>
+</svg>
