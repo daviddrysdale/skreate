@@ -7,7 +7,7 @@ use std::io::Write;
 #[test]
 fn test_compare() {
     let _ = env_logger::try_init();
-    let doc_dir = concat!(env!("CARGO_MANIFEST_DIR"), "/../doc").to_string();
+    let doc_dir = concat!(env!("CARGO_MANIFEST_DIR"), "/../doc/generated").to_string();
     let doc_dir = std::path::PathBuf::from(doc_dir);
     for info in skreate::moves::info() {
         let name = info.name;

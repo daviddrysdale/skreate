@@ -44,8 +44,8 @@ regenerate: regenerate_examples
 
 regenerate_examples: $(EXAMPLES_SVG)
 
-manual: web/manual.html
-web/manual.html: doc/manual.hbs $(DOCGEN)
+manual: web/generated/manual.html
+web/generated/manual.html: doc/manual.hbs $(DOCGEN)
 	$(DOCGEN) $< > $@
 
 $(DOCGEN): doc/src/main.rs
@@ -71,4 +71,4 @@ clean:
 	cargo clean
 
 distclean:
-	rm -rf web/pkg target doc/manual.html
+	rm -rf web/pkg target doc/generated/manual.html
