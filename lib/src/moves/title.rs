@@ -18,6 +18,7 @@ impl Title {
     pub const INFO: moves::Info = moves::Info {
         name: "Title",
         summary: "Diagram title",
+        example: "Title[text=\"Waltz\"]",
         params: &[
             params::Info {
                 name: "text",

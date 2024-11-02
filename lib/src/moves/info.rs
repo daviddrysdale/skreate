@@ -22,6 +22,7 @@ impl Info {
     pub const INFO: moves::Info = moves::Info {
         name: "Info",
         summary: "Set diagram rendering information",
+        example: "Info[markers=true,grid=100,move-bounds=true]",
         params: &[
             params::Info {
                 name: "markers",

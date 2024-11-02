@@ -19,6 +19,7 @@ impl Warp {
     pub const INFO: moves::Info = moves::Info {
         name: "Warp",
         summary: "Move skater to new location/position",
+        example: "Warp[x=100,y=100,dir=270]",
         params: &[
             params::Info {
                 name: "x",

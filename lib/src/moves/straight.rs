@@ -20,6 +20,7 @@ impl StraightEdge {
     pub const INFO: moves::Info = moves::Info {
         name: "Straight edge",
         summary: "Straight edge",
+        example: "LF",
         params: &[params::Info {
             name: "len",
             doc: "Length in centimetres",

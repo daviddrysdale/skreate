@@ -18,6 +18,7 @@ impl Label {
     pub const INFO: moves::Info = moves::Info {
         name: "Label",
         summary: "Diagram label",
+        example: "Label[text=\"Start\",x=500,y=200]",
         params: &[
             params::Info {
                 name: "text",

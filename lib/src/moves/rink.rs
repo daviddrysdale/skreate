@@ -25,6 +25,7 @@ impl Rink {
     pub const INFO: moves::Info = moves::Info {
         name: "Rink",
         summary: "Rink depiction",
+        example: "Rink",
         params: &[
             params::Info {
                 name: "width",

@@ -22,6 +22,7 @@ impl Curve {
     pub const INFO: moves::Info = moves::Info {
         summary: "Curving edge",
         name: "Edge",
+        example: "LFO",
         params: &[
             params::Info {
                 name: "angle",

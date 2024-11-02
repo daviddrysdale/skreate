@@ -32,6 +32,8 @@ pub struct Info {
     pub name: &'static str,
     /// Summary of the move.
     pub summary: &'static str,
+    /// Example input for move.
+    pub example: &'static str,
     /// Move parameter information.
     pub params: &'static [crate::params::Info],
 }
@@ -94,6 +96,7 @@ macro_rules! move_definition {
             const INFO: Info = Info {
                 name: stringify!($name),
                 summary: stringify!($name),
+                example: $text,
                 params: &[],
             };
             pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
@@ -415,15 +418,14 @@ mod tests {
     }
 
     #[test]
-    #[ignore] // Reinstate later
-    fn test_move_consistency() {
-        for constructor in constructors() {
-            let name = "TODO";
+    fn test_examples() {
+        for info in info() {
             let input = Input {
                 pos: Default::default(),
-                text: name,
+                text: info.example,
             };
-            let mv = constructor(&input).unwrap();
+            let mv =
+                factory(&input).expect(&format!("example for {} doesn't construct!", info.name));
             check_consistent(&*mv, &input);
         }
     }
