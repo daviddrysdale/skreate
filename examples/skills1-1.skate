@@ -1,8 +1,8 @@
 Rink [goal-lines=0,centre-circle=400,mid-lines=800]
-Title [text="Skills 1 Exercise 1"]
+Title [text="Skills 1 Exercise 1",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1300,y=500,text="SIDE 1"]
+Label [x=1300,y=500,text="SIDE 1",font-size=50]
 Warp [x=700,y=500,dir=90]
 LFO--
 RFI--
@@ -17,7 +17,7 @@ RFO--
 LFI--
 RFO[angle=140,len=900]
 
-Label [x=1600,y=5500,text="SIDE 2"]
+Label [x=1600,y=5500,text="SIDE 2",font-size=50]
 Warp [x=2200,y=5500,dir=270]
 LFO->
 xf-RFI++>>

@@ -50,10 +50,10 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </g>
 </defs>
 <use id="r_0_c_0_51" style="stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink[centre-circle=400,mid-lines=800,goal-lines=-1]"/>
-<text style="font-size: 48pt;" x="1500" y="100">
+<text style="font-size: 90pt;" x="1500" y="200">
 Skills 1 Exercise 1
 </text>
-<text style="font-size:24pt;" x="1300" y="500">
+<text style="font-size:50pt;" x="1300" y="500">
 SIDE 1
 </text>
 <use id="r_6_c_0_5" style="stroke-width:4;" transform="translate(700 515) rotate(90)" xlink:href="#LFO--"/>
@@ -104,7 +104,7 @@ LFI
 <text style="font-size:24pt;" x="830" y="3461">
 RFO
 </text>
-<text style="font-size:24pt;" x="1600" y="5500">
+<text style="font-size:50pt;" x="1600" y="5500">
 SIDE 2
 </text>
 <use id="r_21_c_0_5" style="stroke-width:4;" transform="translate(2200 5470) rotate(270)" xlink:href="#LFO&gt;-"/>

@@ -1,8 +1,8 @@
 Rink [goal-lines=0,centre-circle=400,mid-lines=800]
-Title [text="Skills 2 Exercise 1"]
+Title [text="Skills 2 Exercise 1",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1000,y=700,text="SIDE 1"]
+Label [x=900,y=730,text="SIDE 1",font-size=50]
 Warp [x=600,y=700,dir=90,code="RBO"]
 
 RBO [angle=30,len=200]
@@ -21,7 +21,7 @@ LBO [angle=30,len=200]
 xf-RBI [angle=30,len=200]
 LBO [angle=120,len=800]
 
-Label [x=2100,y=5000,text="SIDE 2"]
+Label [x=2100,y=5020,text="SIDE 2",font-size=50]
 Warp [x=2300,y=5000,dir=270,code="RBO"]
 
 RBO [angle=40,len=240]

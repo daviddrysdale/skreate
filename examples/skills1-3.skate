@@ -1,8 +1,8 @@
 Rink [goal-lines=0,centre-circle=400,mid-lines=800]
-Title [text="Skills 1 Exercise 3"]
+Title [text="Skills 1 Exercise 3",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1500,y=600,text="START"]
+Label [x=1500,y=600,text="START",font-size=50]
 Warp [x=1200,y=600,dir=90,code="LFO"]
 
 LFO [angle=30,len=280]
@@ -12,7 +12,7 @@ xf-RFI [angle=30,len=290]
 LFO [angle=30,len=260]
 xf-RFI [angle=30,len=240]
 
-Label [x=1400,y=1740,text="OPTIONAL TURN"]
+Label [x=1400,y=1740,text="OPTIONAL TURN",font-size=30]
 Warp [x=1600,y=1750,dir=270,code="LBO"]
 
 LBO [angle=30,len=280]
@@ -32,7 +32,7 @@ xf-LBI [angle=30,len=290]
 RBO [angle=30,len=280]
 xf-LBI [angle=30,len=240]
 
-Label [x=2050,y=3850,text="OPTIONAL TURN"]
+Label [x=2050,y=3850,text="OPTIONAL TURN",font-size=30]
 Warp [x=2200,y=3850,dir=290,code="RFO"]
 
 RFO [angle=30,len=280]

@@ -12,6 +12,7 @@ pub struct Label {
     input: OwnedInput,
     text: String,
     pos: Position,
+    font_size: Option<u32>,
 }
 
 impl Label {
@@ -41,6 +42,13 @@ impl Label {
                 range: params::Range::Any,
                 short: None,
             },
+            params::Info {
+                name: "font-size",
+                doc: "Font size for label; 0 for auto-scaling",
+                default: Value::Number(0),
+                range: params::Range::Positive,
+                short: None,
+            },
         ],
     };
 
@@ -49,12 +57,22 @@ impl Label {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        let font_size = params[3].value.as_i32().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
             text: params[0].value.as_str().unwrap().to_string(),
             pos: Position::from_params(&params[1], &params[2]),
+            font_size: if font_size > 0 {
+                Some(font_size as u32)
+            } else {
+                None
+            },
         }))
+    }
+
+    fn font_size(&self, opts: &RenderOptions) -> u32 {
+        self.font_size.unwrap_or_else(|| opts.font_size())
     }
 }
 
@@ -64,6 +82,7 @@ impl Move for Label {
             param!(self.text),
             param!("x" = (self.pos.x as i32)),
             param!("y" = (self.pos.y as i32)),
+            param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
         ]
     }
     fn text(&self) -> String {
@@ -81,7 +100,7 @@ impl Move for Label {
             Text::new(self.text.clone())
                 .set("x", self.pos.x)
                 .set("y", self.pos.y)
-                .set("style", format!("font-size:{}pt;", opts.font_size())),
+                .set("style", format!("font-size:{}pt;", self.font_size(opts))),
         )
     }
 }
