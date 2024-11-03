@@ -6,6 +6,7 @@ use crate::{
     Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
     SkatingDirection, SpatialTransition, Transition,
 };
+use std::borrow::Cow;
 use svg::node::element::Group;
 
 pub struct StraightEdge {
@@ -14,6 +15,7 @@ pub struct StraightEdge {
     foot: Foot,
     dir: SkatingDirection,
     len: i32,
+    label: Option<String>,
 }
 
 impl StraightEdge {
@@ -21,20 +23,29 @@ impl StraightEdge {
         name: "Straight edge",
         summary: "Straight edge",
         example: "LF",
-        params: &[params::Info {
-            name: "len",
-            doc: "Length in centimetres",
-            default: Value::Number(450),
-            range: params::Range::StrictlyPositive,
-            short: Some(params::Abbrev::PlusMinus(params::Detents {
-                add1: 600,
-                add2: 850,
-                add3: 1000,
-                less1: 300,
-                less2: 240,
-                less3: 100,
-            })),
-        }],
+        params: &[
+            params::Info {
+                name: "len",
+                doc: "Length in centimetres",
+                default: Value::Number(450),
+                range: params::Range::StrictlyPositive,
+                short: Some(params::Abbrev::PlusMinus(params::Detents {
+                    add1: 600,
+                    add2: 850,
+                    add3: 1000,
+                    less1: 300,
+                    less2: 240,
+                    less3: 100,
+                })),
+            },
+            params::Info {
+                name: "label",
+                doc: "Replacement label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
+        ],
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
@@ -43,6 +54,7 @@ impl StraightEdge {
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        let label = params[1].value.as_str().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -50,6 +62,11 @@ impl StraightEdge {
             foot,
             dir,
             len: params[0].value.as_i32().unwrap(),
+            label: if label.is_empty() {
+                None
+            } else {
+                Some(label.to_string())
+            },
         }))
     }
     fn code(&self) -> Code {
@@ -63,7 +80,10 @@ impl StraightEdge {
 
 impl Move for StraightEdge {
     fn params(&self) -> Vec<MoveParam> {
-        vec![param!(self.len)]
+        vec![
+            param!(self.len),
+            param!("label" = (self.label.clone().unwrap_or("".to_string()))),
+        ]
     }
     fn start(&self) -> Option<Code> {
         Some(self.code())
@@ -102,7 +122,10 @@ impl Move for StraightEdge {
             vec![]
         } else {
             vec![Label {
-                text: format!("{}{}", self.foot, self.dir),
+                text: match &self.label {
+                    Some(label) => label.clone(),
+                    None => format!("{}{}", self.foot, self.dir),
+                },
                 pos: pos!(30, self.len as i64 / 2),
             }]
         }
