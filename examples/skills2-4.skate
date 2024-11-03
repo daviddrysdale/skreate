@@ -1,0 +1,27 @@
+Rink
+Title [text="Skills 1 Exercise 4",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Label [x=1500,y=500,text="START",font-size=50]
+Warp [x=1300,y=500,dir=90]
+
+LFO [angle=140,len=600]
+xf-RFO>>+
+xf-LFO [angle=140,len=600]
+xf-RFI->
+wd-LFI+>>
+RFO>>+
+xf-LFO [angle=140,len=600]
+xf-RFO [angle=140,len=600]
+xf-LFI>-
+wd-RFI+>>
+LFO>>+
+xf-RFO [angle=140,len=600]
+xf-LFO [angle=140,len=600]
+xf-RFI->
+wd-LFI+>>
+RFO>>+
+xf-LFO [angle=140,len=600]
+xf-RFO [angle=140,len=600]
+xf-LFI>-
+wd-RFI+>>

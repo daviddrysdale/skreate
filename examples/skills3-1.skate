@@ -1,0 +1,95 @@
+Rink
+Title [text="Skills 3 Exercise 1",y=200,font-size=90]
+Info [grid=100,markers=true]
+
+Label [x=1000,y=500,text="SIDE 1",font-size=50]
+Warp [x=800,y=500,dir=90]
+
+LFO [angle=45,len=300]
+RFI [angle=45,len=300]
+
+# TODO: replace with CoE
+LFO [angle=90,len=600]
+LF [len=100,label="COE"]
+LFI [angle=180,len=1100]
+
+RFO [angle=45,len=200]
+xf-LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+LFI [angle=45,len=200]
+
+RFO [angle=180,len=1200]
+RF [len=100,label="COE"]
+RFI [angle=180,len=1200]
+
+LFO [angle=45,len=200]
+xf-RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+RFI [angle=45,len=200]
+
+LFO [angle=190,len=1100]
+LF [len=100,label="COE"]
+LFI [angle=180,len=1100]
+
+RFO [angle=45,len=200]
+xf-LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+LFI [angle=45,len=200]
+
+RFO [angle=190,len=1100]
+RF [len=100,label="COE"]
+RFI [angle=180,len=1100]
+
+LFO [angle=45,len=200]
+xf-RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+RFI [angle=45,len=200]
+
+LFO [angle=190,len=1100]
+
+#-------------------------
+Label [x=2000,y=5800,text="SIDE 2",font-size=50]
+Warp [x=2200,y=5800,dir=270]
+
+LFO [angle=30,len=300]
+RFI [angle=30,len=300]
+LFO [angle=30,len=300]
+
+# TODO: replace with CoE
+xf-RFI [angle=90,len=600]
+RF [len=100,label="COE"]
+RFO [angle=180,len=1100]
+
+xf-LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+
+xf-LFI [angle=180,len=1100]
+LF [len=100,label="COE"]
+LFO [angle=180,len=1100]
+
+xf-RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+
+xf-RFI [angle=180,len=1100]
+RF [len=100,label="COE"]
+RFO [angle=180,len=1100]
+
+xf-LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+
+xf-LFI [angle=180,len=1100]
+LF [len=100,label="COE"]
+LFO [angle=180,len=1100]
+
+xf-RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+
+xf-RFI [angle=180,len=1100]
