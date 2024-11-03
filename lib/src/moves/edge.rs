@@ -1,17 +1,17 @@
 //! Move definition for simple curved edges.
 
-use super::{cross_transition, pre_transition, Error};
+use super::Error;
 use crate::{
-    bounds, code, moves, param, params, params::Value, parse_code, parse_transition_prefix, path,
-    Bounds, Code, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
-    Skater, SkatingDirection, SpatialTransition, Transition,
+    bounds, code, moves, param, params, params::Value, parse_code, path, Bounds, Code, Input,
+    Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation, Skater,
+    SpatialTransition, Transition,
 };
 use std::f64::consts::PI;
 use svg::node::element::Group;
 
 pub struct Curve {
     input: OwnedInput,
-    cross_transition: bool,
+    pre_transition: PreTransition,
     code: Code,
     angle: i32,
     len: i32,
@@ -56,7 +56,7 @@ impl Curve {
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (cross_transition, rest) = parse_transition_prefix(input.text);
+        let (pre_transition, rest) = PreTransition::parse(input.text);
         let (code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
 
         let params =
@@ -64,7 +64,7 @@ impl Curve {
 
         Ok(Box::new(Self {
             input: input.owned(),
-            cross_transition,
+            pre_transition,
             code,
             angle: params[0].value.as_i32().unwrap(),
             len: params[1].value.as_i32().unwrap(),
@@ -128,11 +128,7 @@ impl Move for Curve {
         Some(self.code)
     }
     fn text(&self) -> String {
-        let prefix = match (self.cross_transition, self.code.dir) {
-            (false, _) => "",
-            (true, SkatingDirection::Forward) => "xf-",
-            (true, SkatingDirection::Backward) => "xb-",
-        };
+        let prefix = self.pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{suffix}", self.code)
     }
@@ -141,11 +137,7 @@ impl Move for Curve {
     }
     fn pre_transition(&self, from: Code) -> Transition {
         if let Some(start) = self.start() {
-            if self.cross_transition {
-                cross_transition(from, start)
-            } else {
-                pre_transition(from, start)
-            }
+            self.pre_transition.perform(from, start)
         } else {
             Transition::default()
         }

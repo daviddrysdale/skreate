@@ -1,16 +1,16 @@
 //! Move definition for simple straight edges.
 
-use super::{cross_transition, pre_transition, Error, HW};
+use super::{Error, HW};
 use crate::{
-    moves, param, params, params::Value, parse_foot_dir, parse_transition_prefix, path, Code, Edge,
-    Foot, Input, Label, Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation,
+    moves, param, params, params::Value, parse_foot_dir, path, Code, Edge, Foot, Input, Label,
+    Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
     SkatingDirection, SpatialTransition, Transition,
 };
 use svg::node::element::Group;
 
 pub struct StraightEdge {
     input: OwnedInput,
-    cross_transition: bool,
+    pre_transition: PreTransition,
     foot: Foot,
     dir: SkatingDirection,
     len: i32,
@@ -38,7 +38,7 @@ impl StraightEdge {
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (cross_transition, rest) = parse_transition_prefix(input.text);
+        let (pre_transition, rest) = PreTransition::parse(input.text);
         let (foot, dir, rest) = parse_foot_dir(rest).map_err(|_msg| Error::Unrecognized)?;
 
         let params =
@@ -46,7 +46,7 @@ impl StraightEdge {
 
         Ok(Box::new(Self {
             input: input.owned(),
-            cross_transition,
+            pre_transition,
             foot,
             dir,
             len: params[0].value.as_i32().unwrap(),
@@ -69,11 +69,7 @@ impl Move for StraightEdge {
         Some(self.code())
     }
     fn text(&self) -> String {
-        let prefix = match (self.cross_transition, self.dir) {
-            (false, _) => "",
-            (true, SkatingDirection::Forward) => "xf-",
-            (true, SkatingDirection::Backward) => "xb-",
-        };
+        let prefix = self.pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{}{suffix}", self.foot, self.dir)
     }
@@ -81,11 +77,7 @@ impl Move for StraightEdge {
         Some(self.input.clone())
     }
     fn pre_transition(&self, from: Code) -> Transition {
-        if self.cross_transition {
-            cross_transition(from, self.code())
-        } else {
-            pre_transition(from, self.code())
-        }
+        self.pre_transition.perform(from, self.code())
     }
     fn transition(&self) -> Transition {
         Transition {

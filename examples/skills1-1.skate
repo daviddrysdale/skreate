@@ -21,13 +21,13 @@ Label [x=1600,y=5500,text="SIDE 2",font-size=50]
 Warp [x=2200,y=5500,dir=270]
 LFO->
 xf-RFI++>>
-LFI-- # TODO: wd-LFI--
+wd-LFI--
 RFO--
 xf-LFI++>>
-RFI-- # TODO: wd-RFI--
+wd-RFI--
 LFO--
 xf-RFI++>>
-LFI-- # TODO: wd-LFI--
+wd-LFI--
 RFO--
 xf-LFI++>>
-RFI-- # TODO: wd-RFI--
+wd-RFI--

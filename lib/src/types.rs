@@ -1,6 +1,9 @@
 //! Common basic types.
 
-use crate::MoveParam;
+use crate::{
+    moves::{cross_transition, pre_transition, wide_transition},
+    MoveParam,
+};
 use log::trace;
 use std::fmt::{self, Display, Formatter};
 
@@ -329,14 +332,49 @@ impl Display for Code {
     }
 }
 
-/// Parse a possible transition prefix ("xf-", "xb-") from `text`.
-pub fn parse_transition_prefix(text: &str) -> (bool, &str) {
-    if let Some(rest) = text.strip_prefix("xf-") {
-        (true, rest)
-    } else if let Some(rest) = text.strip_prefix("xb-") {
-        (true, rest)
-    } else {
-        (false, text)
+/// Transition to new skating foot.
+pub enum PreTransition {
+    /// Normal transition.
+    Normal,
+    /// Transition with new foot crossing in front.
+    CrossFront,
+    /// Transition with new foot crossing behind.
+    CrossBehind,
+    /// Normal transition but with a wide step.
+    Wide,
+}
+
+impl PreTransition {
+    /// Parse a possible transition prefix ("xf-", "xb-") from `text`.
+    pub fn parse(text: &str) -> (Self, &str) {
+        if let Some(rest) = text.strip_prefix("xf-") {
+            (PreTransition::CrossFront, rest)
+        } else if let Some(rest) = text.strip_prefix("xb-") {
+            (PreTransition::CrossBehind, rest)
+        } else if let Some(rest) = text.strip_prefix("wd-") {
+            (PreTransition::Wide, rest)
+        } else {
+            (PreTransition::Normal, text)
+        }
+    }
+
+    /// Return the prefix associated with this pre-transition.
+    pub fn prefix(&self) -> &'static str {
+        match self {
+            PreTransition::Normal => "",
+            PreTransition::CrossFront => "xf-",
+            PreTransition::CrossBehind => "xb-",
+            PreTransition::Wide => "wd-",
+        }
+    }
+
+    /// Perform a pre-transition, moving from `from` to the `start` position for a move.
+    pub fn perform(&self, from: Code, start: Code) -> Transition {
+        match self {
+            PreTransition::CrossFront | PreTransition::CrossBehind => cross_transition(from, start),
+            PreTransition::Normal => pre_transition(from, start),
+            PreTransition::Wide => wide_transition(from, start),
+        }
     }
 }
 

@@ -222,65 +222,72 @@ pub fn info() -> &'static Vec<Info> {
 
 /// Half-width of a standard stance.
 const HW: i64 = 15; // cm
-/// Width of a standard stance.
-const W: i64 = 2 * HW; // cm
 /// Length of skate.
 const SL: i64 = 30; // cm
 
 /// Standard pre-transition with plain step.
-fn pre_transition(from: Code, to: Code) -> Transition {
+pub fn pre_transition(from: Code, to: Code) -> Transition {
+    standard_transition(from, to, HW)
+}
+
+/// Pre-transition with wide step.
+pub fn wide_transition(from: Code, to: Code) -> Transition {
+    standard_transition(from, to, 2 * HW)
+}
+
+fn standard_transition(from: Code, to: Code, half_width: i64) -> Transition {
     let mut x = 0;
     let mut y = 0;
     let mut rotation = 0;
     match (from.dir, to.dir) {
         (Forward, Forward) => match (from.foot, to.foot) {
-            (Foot::Left, Foot::Right) => x = -W,
-            (Foot::Left, Foot::Both) => x = -HW,
-            (Foot::Both, Foot::Left) => x = HW,
-            (Foot::Both, Foot::Right) => x = -HW,
-            (Foot::Right, Foot::Left) => x = W,
-            (Foot::Right, Foot::Both) => x = HW,
+            (Foot::Left, Foot::Right) => x = -(2 * half_width),
+            (Foot::Left, Foot::Both) => x = -half_width,
+            (Foot::Both, Foot::Left) => x = half_width,
+            (Foot::Both, Foot::Right) => x = -half_width,
+            (Foot::Right, Foot::Left) => x = 2 * half_width,
+            (Foot::Right, Foot::Both) => x = half_width,
             _ => {}
         },
         (Backward, Backward) => match (from.foot, to.foot) {
-            (Foot::Left, Foot::Right) => x = W,
-            (Foot::Left, Foot::Both) => x = HW,
-            (Foot::Both, Foot::Left) => x = -HW,
-            (Foot::Both, Foot::Right) => x = HW,
-            (Foot::Right, Foot::Left) => x = -W,
-            (Foot::Right, Foot::Both) => x = -HW,
+            (Foot::Left, Foot::Right) => x = 2 * half_width,
+            (Foot::Left, Foot::Both) => x = half_width,
+            (Foot::Both, Foot::Left) => x = -half_width,
+            (Foot::Both, Foot::Right) => x = half_width,
+            (Foot::Right, Foot::Left) => x = -(2 * half_width),
+            (Foot::Right, Foot::Both) => x = -half_width,
             _ => {}
         },
         (Forward, Backward) => match (from.foot, to.foot) {
             (Foot::Left, Foot::Left) => rotation = 180,
             (Foot::Left, Foot::Right) => {
-                x = -HW;
-                y = HW;
+                x = -half_width;
+                y = half_width;
                 rotation = 90;
             }
             (Foot::Left, Foot::Both) => {
-                x = -HW;
-                y = HW / 2;
+                x = -half_width;
+                y = half_width / 2;
                 rotation = 90;
             }
             (Foot::Both, Foot::Left) => {
-                x = HW;
+                x = half_width;
                 rotation = -90;
             }
             (Foot::Both, Foot::Right) => {
-                x = -HW;
+                x = -half_width;
                 rotation = 90;
             }
             (Foot::Both, Foot::Both) => rotation = 180,
             (Foot::Right, Foot::Left) => {
-                x = HW;
-                y = HW;
+                x = half_width;
+                y = half_width;
                 rotation = -90;
             }
             (Foot::Right, Foot::Right) => rotation = 180,
             (Foot::Right, Foot::Both) => {
-                x = HW;
-                y = HW / 2;
+                x = half_width;
+                y = half_width / 2;
                 rotation = -90;
             }
         },
@@ -288,33 +295,33 @@ fn pre_transition(from: Code, to: Code) -> Transition {
             match (from.foot, to.foot) {
                 (Foot::Left, Foot::Left) => rotation = 180, // reverse direction
                 (Foot::Left, Foot::Right) => {
-                    x = HW;
-                    y = HW;
+                    x = half_width;
+                    y = half_width;
                     rotation = -90;
                 }
                 (Foot::Left, Foot::Both) => {
-                    x = HW;
-                    y = HW / 2;
+                    x = half_width;
+                    y = half_width / 2;
                     rotation = 90;
                 }
                 (Foot::Both, Foot::Left) => {
-                    x = -HW;
+                    x = -half_width;
                     rotation = 90;
                 }
                 (Foot::Both, Foot::Right) => {
-                    x = HW;
+                    x = half_width;
                     rotation = -90;
                 }
                 (Foot::Both, Foot::Both) => rotation = 90,
                 (Foot::Right, Foot::Left) => {
-                    x = -HW;
-                    y = HW;
+                    x = -half_width;
+                    y = half_width;
                     rotation = 90;
                 }
                 (Foot::Right, Foot::Right) => rotation = 180, // reverse direction
                 (Foot::Right, Foot::Both) => {
-                    x = -HW;
-                    y = HW / 2;
+                    x = -half_width;
+                    y = half_width / 2;
                     rotation = -90;
                 }
             }
@@ -330,7 +337,7 @@ fn pre_transition(from: Code, to: Code) -> Transition {
 }
 
 /// Pre-transition with feet crossing over.
-fn cross_transition(from: Code, to: Code) -> Transition {
+pub fn cross_transition(from: Code, to: Code) -> Transition {
     let mut x = 0;
     let mut y = 0;
     match (from.dir, to.dir) {

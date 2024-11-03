@@ -23,8 +23,7 @@ xf-RBI [angle=30,len=290]
 LBO [angle=30,len=280]
 xf-RBI [angle=30,len=240]
 
-# TODO: wd-LBI here
-LBI [angle=30,len=280]
+wd-LBI [angle=30,len=280]
 
 RBO [angle=30,len=280]
 xf-LBI [angle=30,len=290]

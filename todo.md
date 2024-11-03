@@ -33,8 +33,9 @@
         - [ ] Axel
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
-- [x] Adjust measurements of moves
-- [ ] Wide-step prefix
+- [ ] Adjust measurements of moves
+- [x] Wide-step prefix
+- [ ] Transition labels (xf/xb/wd)
 - [x] Allow text rotation for labels
 - [x] Allow (auto-)selection of stroke width
 - [x] Font size inc. auto from bounding box
