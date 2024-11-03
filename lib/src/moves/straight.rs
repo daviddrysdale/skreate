@@ -92,13 +92,11 @@ impl Move for StraightEdge {
         }
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
+        let len = self.len;
         let grp = if self.foot == Foot::Both {
-            Group::new().add(path!(
-                "M 0,0 m {HW},0 l 0,{0} m -{HW},-{0} l 0,{0}",
-                self.len
-            ))
+            Group::new().add(path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} l 0,{len}",))
         } else {
-            Group::new().add(path!("M 0,0 l 0,{}", self.len))
+            Group::new().add(path!("M 0,0 l 0,{len}"))
         };
         Some(grp)
     }
