@@ -9,7 +9,7 @@ Skills 1 Exercise 1
 <style>
 text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </style>
-<g id="Rink[centre-circle=400,mid-lines=800,goal-lines=-1]">
+<g id="Rink">
 <clipPath id="clip-rink">
 <rect height="6100" rx="750" ry="750" width="3000" x="0" y="0"/>
 </clipPath>
@@ -49,7 +49,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 442,442 0 0 1 -594,416"/>
 </g>
 </defs>
-<use id="r_0_c_0_51" style="stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink[centre-circle=400,mid-lines=800,goal-lines=-1]"/>
+<use id="r_0_c_0_4" style="stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink"/>
 <text style="font-size: 90pt;" x="1500" y="200">
 Skills 1 Exercise 1
 </text>

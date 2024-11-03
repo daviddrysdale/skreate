@@ -51,7 +51,7 @@ impl Rink {
             params::Info {
                 name: "centre-circle",
                 doc: "Size of the centre circle in centimetre, 0 to omit",
-                default: Value::Number(900), // diameter in cm, <= 0 to omit
+                default: Value::Number(400), // diameter in cm, <= 0 to omit
                 range: params::Range::Any,
                 short: None,
             },
@@ -65,28 +65,28 @@ impl Rink {
             params::Info {
                 name: "mid-lines",
                 doc: "Location of mid-lines in centimetres from the centre line; 0 to omit",
-                default: Value::Number(17660 / 2), // distance from centre in cm, <= 0 to omit
+                default: Value::Number(800), // distance from centre in cm, <= 0 to omit
                 range: params::Range::Any,
                 short: None,
             },
             params::Info {
                 name: "goal-lines",
                 doc: "Location of goal lines in centimetres from the ends; 0 to omit",
-                default: Value::Number(400), // cm from ends, 0=absent
+                default: Value::Number(0), // cm from ends, 0=absent
                 range: params::Range::Any,
                 short: None,
             },
             params::Info {
                 name: "goals",
                 doc: "Whether to show the goals",
-                default: Value::Boolean(true),
+                default: Value::Boolean(false),
                 range: params::Range::Boolean,
                 short: None,
             },
             params::Info {
                 name: "faceoffs",
                 doc: "Whether to show the face-offs",
-                default: Value::Boolean(true),
+                default: Value::Boolean(false),
                 range: params::Range::Boolean,
                 short: None,
             },
@@ -140,7 +140,7 @@ impl Rink {
 
 impl Move for Rink {
     fn params(&self) -> Vec<MoveParam> {
-        let from_opt_i32 = |val: Option<i32>| val.unwrap_or(-1);
+        let from_opt_i32 = |val: Option<i32>| val.unwrap_or(0);
         vec![
             param!(self.width),
             param!(self.length),
