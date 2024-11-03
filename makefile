@@ -3,8 +3,8 @@ all: build
 WASM_CRATE=skreate_wasm
 CLI=target/debug/skreate-cli
 DOCGEN=target/debug/skreate-docgen
-LIBRARY_SRC=wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
-EXAMPLES=examples/*.skate
+LIBRARY_SRC=wasm/src/lib.rs $(wildcard lib/src/*.rs) $(wildcard lib/src/moves/*rs)
+EXAMPLES=$(wildcard examples/*.skate)
 EXAMPLES_SVG=$(EXAMPLES:.skate=.svg)
 
 build: web/pkg/$(WASM_CRATE).js

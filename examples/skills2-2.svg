@@ -1,0 +1,155 @@
+<svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skills 2 Exercise 2</title>
+<desc>
+<text>
+Skills 2 Exercise 2
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+</style>
+<g id="Rink[centre-circle=400,mid-lines=800,goal-lines=-1]">
+<clipPath id="clip-rink">
+<rect height="6100" rx="750" ry="750" width="3000" x="0" y="0"/>
+</clipPath>
+<rect height="6100" rx="750" ry="750" style="text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; } clip-path:url(#clip-rink)" width="3000" x="0" y="0"/>
+<path d="M 0,3050 l 3000,0"/>
+<circle cx="1500" cy="3050" r="400"/>
+<circle cx="1500" cy="3050" r="2" style="fill: black;"/>
+<path d="M 0,2250 l 3000,0" style="stroke: blue;"/>
+<path d="M 0,3850 l 3000,0" style="stroke: blue;"/>
+</g>
+<g id="Info"/>
+<g id="RFI[angle=140]">
+<path d="M 0,0 a 184,184 0 0 0 325,118"/>
+</g>
+<g id="RFO[angle=140]">
+<path d="M 0,0 a 184,184 0 0 1 -325,118"/>
+</g>
+<g id="LFI[angle=140]">
+<path d="M 0,0 a 184,184 0 0 1 -325,118"/>
+</g>
+<g id="LFO[angle=140]">
+<path d="M 0,0 a 184,184 0 0 0 325,118"/>
+</g>
+<g id="LBI[angle=140]">
+<path d="M 0,0 a 184,184 0 0 0 325,118"/>
+</g>
+<g id="LBO[angle=140]">
+<path d="M 0,0 a 184,184 0 0 1 -325,118"/>
+</g>
+<g id="RBI[angle=140]">
+<path d="M 0,0 a 184,184 0 0 1 -325,118"/>
+</g>
+<g id="RBO[angle=140]">
+<path d="M 0,0 a 184,184 0 0 0 325,118"/>
+</g>
+</defs>
+<use id="r_0_c_0_51" style="stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink[centre-circle=400,mid-lines=800,goal-lines=-1]"/>
+<text style="font-size: 90pt;" x="1500" y="200">
+Skills 2 Exercise 2
+</text>
+<text style="font-size:50pt;" x="800" y="700">
+SIDE 1
+</text>
+<use id="r_7_c_0_15" style="stroke-width:4;" transform="translate(600 700) rotate(70)" xlink:href="#RFI[angle=140]"/>
+<text style="font-size:24pt;" x="610" y="900">
+RFI
+</text>
+<use id="r_8_c_0_15" style="stroke-width:4;" transform="translate(600 1045) rotate(290)" xlink:href="#RFO[angle=140]"/>
+<text style="font-size:24pt;" x="610" y="1189">
+RFO
+</text>
+<use id="r_9_c_0_15" style="stroke-width:4;" transform="translate(599 1390) rotate(70)" xlink:href="#RFI[angle=140]"/>
+<text style="font-size:24pt;" x="609" y="1590">
+RFI
+</text>
+<use id="r_11_c_0_15" style="stroke-width:4;" transform="translate(609 1706) rotate(290)" xlink:href="#LFI[angle=140]"/>
+<text style="font-size:24pt;" x="619" y="1850">
+LFI
+</text>
+<use id="r_12_c_0_15" style="stroke-width:4;" transform="translate(608 2051) rotate(70)" xlink:href="#LFO[angle=140]"/>
+<text style="font-size:24pt;" x="618" y="2251">
+LFO
+</text>
+<use id="r_13_c_0_15" style="stroke-width:4;" transform="translate(608 2396) rotate(290)" xlink:href="#LFI[angle=140]"/>
+<text style="font-size:24pt;" x="618" y="2540">
+LFI
+</text>
+<use id="r_15_c_0_15" style="stroke-width:4;" transform="translate(596 2712) rotate(70)" xlink:href="#RFI[angle=140]"/>
+<text style="font-size:24pt;" x="606" y="2912">
+RFI
+</text>
+<use id="r_16_c_0_15" style="stroke-width:4;" transform="translate(596 3057) rotate(290)" xlink:href="#RFO[angle=140]"/>
+<text style="font-size:24pt;" x="606" y="3201">
+RFO
+</text>
+<use id="r_17_c_0_15" style="stroke-width:4;" transform="translate(595 3402) rotate(70)" xlink:href="#RFI[angle=140]"/>
+<text style="font-size:24pt;" x="605" y="3602">
+RFI
+</text>
+<use id="r_19_c_0_15" style="stroke-width:4;" transform="translate(605 3718) rotate(290)" xlink:href="#LFI[angle=140]"/>
+<text style="font-size:24pt;" x="615" y="3862">
+LFI
+</text>
+<use id="r_20_c_0_15" style="stroke-width:4;" transform="translate(604 4063) rotate(70)" xlink:href="#LFO[angle=140]"/>
+<text style="font-size:24pt;" x="614" y="4263">
+LFO
+</text>
+<use id="r_21_c_0_15" style="stroke-width:4;" transform="translate(604 4408) rotate(290)" xlink:href="#LFI[angle=140]"/>
+<text style="font-size:24pt;" x="614" y="4552">
+LFI
+</text>
+<text style="font-size:50pt;" x="2100" y="5050">
+SIDE 2
+</text>
+<use id="r_26_c_0_15" style="stroke-width:4;" transform="translate(2310 5028) rotate(250)" xlink:href="#LBI[angle=140]"/>
+<text style="font-size:24pt;" x="2299" y="4827">
+LBI
+</text>
+<use id="r_27_c_0_15" style="stroke-width:4;" transform="translate(2309 4682) rotate(110)" xlink:href="#LBO[angle=140]"/>
+<text style="font-size:24pt;" x="2298" y="4537">
+LBO
+</text>
+<use id="r_28_c_0_15" style="stroke-width:4;" transform="translate(2309 4336) rotate(250)" xlink:href="#LBI[angle=140]"/>
+<text style="font-size:24pt;" x="2298" y="4135">
+LBI
+</text>
+<use id="r_30_c_0_15" style="stroke-width:4;" transform="translate(2297 4018) rotate(110)" xlink:href="#RBI[angle=140]"/>
+<text style="font-size:24pt;" x="2286" y="3873">
+RBI
+</text>
+<use id="r_31_c_0_15" style="stroke-width:4;" transform="translate(2297 3672) rotate(250)" xlink:href="#RBO[angle=140]"/>
+<text style="font-size:24pt;" x="2286" y="3471">
+RBO
+</text>
+<use id="r_32_c_0_15" style="stroke-width:4;" transform="translate(2296 3326) rotate(110)" xlink:href="#RBI[angle=140]"/>
+<text style="font-size:24pt;" x="2285" y="3181">
+RBI
+</text>
+<use id="r_34_c_0_15" style="stroke-width:4;" transform="translate(2306 3008) rotate(250)" xlink:href="#LBI[angle=140]"/>
+<text style="font-size:24pt;" x="2295" y="2807">
+LBI
+</text>
+<use id="r_35_c_0_15" style="stroke-width:4;" transform="translate(2305 2662) rotate(110)" xlink:href="#LBO[angle=140]"/>
+<text style="font-size:24pt;" x="2294" y="2517">
+LBO
+</text>
+<use id="r_36_c_0_15" style="stroke-width:4;" transform="translate(2305 2316) rotate(250)" xlink:href="#LBI[angle=140]"/>
+<text style="font-size:24pt;" x="2294" y="2115">
+LBI
+</text>
+<use id="r_38_c_0_15" style="stroke-width:4;" transform="translate(2293 1998) rotate(110)" xlink:href="#RBI[angle=140]"/>
+<text style="font-size:24pt;" x="2282" y="1853">
+RBI
+</text>
+<use id="r_39_c_0_15" style="stroke-width:4;" transform="translate(2293 1652) rotate(250)" xlink:href="#RBO[angle=140]"/>
+<text style="font-size:24pt;" x="2282" y="1451">
+RBO
+</text>
+<use id="r_40_c_0_15" style="stroke-width:4;" transform="translate(2292 1306) rotate(110)" xlink:href="#RBI[angle=140]"/>
+<text style="font-size:24pt;" x="2281" y="1161">
+RBI
+</text>
+</svg>
