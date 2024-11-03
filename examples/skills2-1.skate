@@ -1,0 +1,42 @@
+Rink [goal-lines=0,centre-circle=400,mid-lines=800]
+Title [text="Skills 2 Exercise 1"]
+Info [grid=0,markers=false]
+
+Label [x=1000,y=700,text="SIDE 1"]
+Warp [x=600,y=700,dir=90,code="RBO"]
+
+RBO [angle=30,len=200]
+xf-LBI [angle=30,len=200]
+RBO [angle=120,len=800]
+
+LBO [angle=30,len=200]
+xf-RBI [angle=30,len=200]
+LBO [angle=120,len=800]
+
+RBO [angle=30,len=200]
+xf-LBI [angle=30,len=200]
+RBO [angle=120,len=800]
+
+LBO [angle=30,len=200]
+xf-RBI [angle=30,len=200]
+LBO [angle=120,len=800]
+
+Label [x=2100,y=5000,text="SIDE 2"]
+Warp [x=2300,y=5000,dir=270,code="RBO"]
+
+RBO [angle=40,len=240]
+xf-LBI [angle=140,len=800]
+# TODO: wd-
+RBI [angle=30,len=240]
+LBO [angle=40,len=240]
+xf-RBI [angle=130,len=800]
+# TODO: wd-
+LBI [angle=30,len=240]
+RBO [angle=40,len=240]
+xf-LBI [angle=140,len=800]
+# TODO: wd-
+RBI [angle=30,len=240]
+LBO [angle=40,len=240]
+xf-RBI [angle=130,len=800]
+# TODO: wd-
+LBI [angle=30,len=240]

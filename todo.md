@@ -22,6 +22,7 @@
     - [ ] Pivot
     - [ ] Schramm
     - [ ] Schafer push
+    - [ ] Two-foot moves (e.g. for Skills 1-4)
     - [ ] Jumps
         - [ ] Waltz
         - [ ] Salchow
@@ -34,6 +35,8 @@
 - [x] Text labels, floating & oriented correctly
 - [x] Adjust measurements of moves
 - [ ] Wide-step prefix
+- [ ] Allow line breaks in labels
+- [ ] Allow text rotation for labels
 - [x] Allow (auto-)selection of stroke width
 - [x] Font size inc. auto from bounding box
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
@@ -53,3 +56,41 @@
     - [ ] animation: highlight move in diagram and corresponding text in editor
 - [ ] Fuzzer?
 - [ ] Railroad diagram for input?
+- [ ] Reproduce skills diagrams
+    - [x] Skills 1-1
+    - [x] Skills 1-2
+    - [x] Skills 1-3
+    - [ ] Skills 1-4
+    - [x] Skills 2-1
+    - [x] Skills 2-2
+    - [ ] Skills 2-3
+    - [ ] Skills 2-4
+    - [ ] Skills 2-5
+    - [ ] Skills 3-1
+    - [ ] Skills 3-2
+    - [ ] Skills 3-3
+    - [ ] Skills 3-4
+    - [ ] Skills 3-5
+    - [ ] Skills 4-1
+    - [ ] Skills 4-2
+    - [ ] Skills 4-3
+    - [ ] Skills 4-4
+    - [ ] Skills 4-5
+    - [ ] Skills 5-1
+    - [ ] Skills 5-2
+    - [ ] Skills 5-3
+    - [ ] Skills 5-4
+    - [ ] Skills 5-5
+    - [ ] Skills 6-1
+    - [ ] Skills 6-2
+    - [ ] Skills 6-3
+    - [ ] Skills 6-4
+    - [ ] Skills 6-5
+    - [ ] Skills 7-1
+    - [ ] Skills 7-2
+    - [ ] Skills 7-3
+    - [ ] Skills 7-4
+    - [ ] Skills 7-5
+    - [ ] Skills 8-1
+    - [ ] Skills 8-2
+    - [ ] Skills 8-3

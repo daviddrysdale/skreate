@@ -4,8 +4,8 @@ WASM_CRATE=skreate_wasm
 CLI=target/debug/skreate-cli
 DOCGEN=target/debug/skreate-docgen
 LIBRARY_SRC=wasm/src/lib.rs lib/src/*.rs lib/src/moves/*rs
-EXAMPLES=examples/*.txt
-EXAMPLES_SVG=$(EXAMPLES:.txt=.svg)
+EXAMPLES=examples/*.skate
+EXAMPLES_SVG=$(EXAMPLES:.skate=.svg)
 
 build: web/pkg/$(WASM_CRATE).js
 
@@ -30,7 +30,7 @@ $(CLI): cli/src/main.rs $(LIBRARY_SRC)
 run-cli: target/debug/skreate-cli
 	$<
 
-examples/%.svg: examples/%.txt $(CLI)
+examples/%.svg: examples/%.skate $(CLI)
 	$(CLI) $< > $@
 
 test:

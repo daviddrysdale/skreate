@@ -1,0 +1,25 @@
+Rink [goal-lines=0,centre-circle=400,mid-lines=800]
+Title [text="Skills 1 Exercise 2"]
+Info [grid=0,markers=false]
+
+Label [x=1400,y=2780,text="START CIRCLE 1"]
+Warp [x=1600,y=2780,dir=270,code="RBO"]
+
+RBO-
+xf-LBI-
+RBO-
+xf-LBI-
+RBO-
+xf-LBI-
+RBO [angle=160,len=2400]
+
+Label [x=1400,y=3380,text="START CIRCLE 2"]
+Warp [x=1600,y=3280,dir=270,code="RBO"]
+
+LBO-
+xf-RBI-
+LBO-
+xf-RBI-
+LBO-
+xf-RBI-
+LBO [angle=160,len=2400]

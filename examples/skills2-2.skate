@@ -1,0 +1,47 @@
+Rink [goal-lines=0,centre-circle=400,mid-lines=800]
+Info [font-size=50]
+Title [text="Skills 2 Exercise 2",y=200]
+Info [font-size=0]
+Info [grid=0,markers=true]
+
+Info [font-size=50]
+Label [x=800,y=700,text="SIDE 1"]
+Info [font-size=0]
+Warp [x=600,y=700,dir=70,code="RFI"]
+
+RFI [angle=140]
+RFO [angle=140]
+RFI [angle=140]
+
+LFI [angle=140]
+LFO [angle=140]
+LFI [angle=140]
+
+RFI [angle=140]
+RFO [angle=140]
+RFI [angle=140]
+
+LFI [angle=140]
+LFO [angle=140]
+LFI [angle=140]
+
+Info [font-size=50]
+Label [x=2100,y=5050,text="SIDE 2"]
+Info [font-size=0]
+Warp [x=2300,y=5000,dir=250,code="RBO"]
+
+LBI [angle=140]
+LBO [angle=140]
+LBI [angle=140]
+
+RBI [angle=140]
+RBO [angle=140]
+RBI [angle=140]
+
+LBI [angle=140]
+LBO [angle=140]
+LBI [angle=140]
+
+RBI [angle=140]
+RBO [angle=140]
+RBI [angle=140]

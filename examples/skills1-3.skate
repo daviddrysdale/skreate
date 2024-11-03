@@ -1,0 +1,43 @@
+Rink [goal-lines=0,centre-circle=400,mid-lines=800]
+Title [text="Skills 1 Exercise 3"]
+Info [grid=0,markers=false]
+
+Label [x=1500,y=600,text="START"]
+Warp [x=1200,y=600,dir=90,code="LFO"]
+
+LFO [angle=30,len=280]
+xf-RFI [angle=30,len=280]
+LFO [angle=30,len=290]
+xf-RFI [angle=30,len=290]
+LFO [angle=30,len=260]
+xf-RFI [angle=30,len=240]
+
+Label [x=1400,y=1740,text="OPTIONAL TURN"]
+Warp [x=1600,y=1750,dir=270,code="LBO"]
+
+LBO [angle=30,len=280]
+xf-RBI [angle=30,len=290]
+LBO [angle=30,len=290]
+xf-RBI [angle=30,len=290]
+LBO [angle=30,len=280]
+xf-RBI [angle=30,len=240]
+
+# TODO: wd-LBI here
+LBI [angle=30,len=280]
+
+RBO [angle=30,len=280]
+xf-LBI [angle=30,len=290]
+RBO [angle=30,len=290]
+xf-LBI [angle=30,len=290]
+RBO [angle=30,len=280]
+xf-LBI [angle=30,len=240]
+
+Label [x=2050,y=3850,text="OPTIONAL TURN"]
+Warp [x=2200,y=3850,dir=290,code="RFO"]
+
+RFO [angle=30,len=280]
+xf-LFI [angle=30,len=280]
+RFO [angle=30,len=290]
+xf-LFI [angle=30,len=290]
+RFO [angle=30,len=260]
+xf-LFI [angle=30,len=240]
