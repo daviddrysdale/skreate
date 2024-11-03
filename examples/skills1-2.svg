@@ -48,80 +48,80 @@ Skills 1 Exercise 2
 START CIRCLE 1
 </text>
 <use id="r_7_c_0_4" style="stroke-width:4;" transform="translate(1600 2780) rotate(270)" xlink:href="#RBO-"/>
-<text style="font-size:24pt;" x="1746" y="2725">
+<text style="font-size:24pt;" x="1737" y="2697">
 RBO
 </text>
 <use id="r_8_c_0_7" style="stroke-width:4;" transform="translate(1901 2709) rotate(250)" xlink:href="#xf-LBI-"/>
-<text style="font-size:24pt;" x="2019" y="2607">
+<text style="font-size:24pt;" x="2001" y="2584">
 LBI
 </text>
-<text style="font-size:24pt;" x="1925" y="2672">
+<text style="font-size:24pt;" x="1930" y="2749">
 XF
 </text>
 <use id="r_9_c_0_4" style="stroke-width:4;" transform="translate(2138 2537) rotate(230)" xlink:href="#RBO-"/>
-<text style="font-size:24pt;" x="2214" y="2401">
+<text style="font-size:24pt;" x="2189" y="2385">
 RBO
 </text>
 <use id="r_10_c_0_7" style="stroke-width:4;" transform="translate(2323 2288) rotate(210)" xlink:href="#xf-LBI-"/>
-<text style="font-size:24pt;" x="2348" y="2134">
+<text style="font-size:24pt;" x="2319" y="2127">
 LBI
 </text>
-<text style="font-size:24pt;" x="2318" y="2243">
+<text style="font-size:24pt;" x="2371" y="2299">
 XF
 </text>
 <use id="r_11_c_0_4" style="stroke-width:4;" transform="translate(2395 2002) rotate(190)" xlink:href="#RBO-"/>
-<text style="font-size:24pt;" x="2366" y="1848">
+<text style="font-size:24pt;" x="2337" y="1852">
 RBO
 </text>
 <use id="r_12_c_0_7" style="stroke-width:4;" transform="translate(2377 1691) rotate(170)" xlink:href="#xf-LBI-"/>
-<text style="font-size:24pt;" x="2297" y="1556">
+<text style="font-size:24pt;" x="2271" y="1570">
 LBI
 </text>
-<text style="font-size:24pt;" x="2345" y="1660">
+<text style="font-size:24pt;" x="2421" y="1668">
 XF
 </text>
 <use id="r_13_c_0_24" style="stroke-width:4;" transform="translate(2249 1426) rotate(150)" xlink:href="#RBO[angle=160,len=2400]"/>
-<text style="font-size:24pt;" x="1428" y="1731">
+<text style="font-size:24pt;" x="1235" y="1114">
 RBO
 </text>
 <text style="font-size:50pt;" x="1200" y="3340">
 START CIRCLE 2
 </text>
 <use id="r_18_c_0_4" style="stroke-width:4;" transform="translate(1600 3310) rotate(270)" xlink:href="#LBO-"/>
-<text style="font-size:24pt;" x="1746" y="3305">
+<text style="font-size:24pt;" x="1737" y="3393">
 LBO
 </text>
 <use id="r_19_c_0_7" style="stroke-width:4;" transform="translate(1901 3380) rotate(290)" xlink:href="#xf-RBI-"/>
-<text style="font-size:24pt;" x="2039" y="3425">
+<text style="font-size:24pt;" x="2001" y="3504">
 RBI
 </text>
-<text style="font-size:24pt;" x="1939" y="3379">
+<text style="font-size:24pt;" x="1930" y="3339">
 XF
 </text>
 <use id="r_20_c_0_4" style="stroke-width:4;" transform="translate(2138 3550) rotate(310)" xlink:href="#LBO-"/>
-<text style="font-size:24pt;" x="2253" y="3640">
+<text style="font-size:24pt;" x="2189" y="3701">
 LBO
 </text>
 <use id="r_21_c_0_7" style="stroke-width:4;" transform="translate(2323 3797) rotate(330)" xlink:href="#xf-RBI-"/>
-<text style="font-size:24pt;" x="2400" y="3920">
+<text style="font-size:24pt;" x="2319" y="3957">
 RBI
 </text>
-<text style="font-size:24pt;" x="2353" y="3821">
+<text style="font-size:24pt;" x="2371" y="3785">
 XF
 </text>
 <use id="r_22_c_0_4" style="stroke-width:4;" transform="translate(2395 4081) rotate(350)" xlink:href="#LBO-"/>
-<text style="font-size:24pt;" x="2425" y="4223">
+<text style="font-size:24pt;" x="2337" y="4230">
 LBO
 </text>
 <use id="r_23_c_0_7" style="stroke-width:4;" transform="translate(2377 4390) rotate(10)" xlink:href="#xf-RBI-"/>
-<text style="font-size:24pt;" x="2356" y="4534">
+<text style="font-size:24pt;" x="2271" y="4510">
 RBI
 </text>
-<text style="font-size:24pt;" x="2384" y="4427">
+<text style="font-size:24pt;" x="2421" y="4412">
 XF
 </text>
 <use id="r_24_c_0_24" style="stroke-width:4;" transform="translate(2249 4654) rotate(30)" xlink:href="#LBO[angle=160,len=2400]"/>
-<text style="font-size:24pt;" x="1480" y="4378">
+<text style="font-size:24pt;" x="1235" y="4965">
 LBO
 </text>
 </svg>

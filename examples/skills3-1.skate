@@ -1,6 +1,6 @@
 Rink
 Title [text="Skills 3 Exercise 1",y=200,font-size=90]
-Info [grid=100,markers=true]
+Info [grid=0,markers=false]
 
 Label [x=1000,y=500,text="SIDE 1",font-size=50]
 Warp [x=800,y=500,dir=90]

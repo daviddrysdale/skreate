@@ -169,21 +169,30 @@ impl Move for Curve {
 
         Some(Group::new().add(path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}")))
     }
-    fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
-        let Position { x, y } = self.endpoint();
-        // TODO: calculate label positions better
-        let code_label = Label {
+    fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
+        let font_size = opts.font_size() as i64;
+
+        let mid_pt = self.percent_point(50);
+        let half_theta = (self.sign() * self.angle) as f64 * PI / (2.0 * 180.0); // radians
+        let distance = (-3 * font_size) as f64 * self.sign() as f64;
+        let mut labels = vec![Label {
             text: format!("{}", self.code),
-            pos: pos!(x / 2 + 30, y / 2),
-        };
+            pos: mid_pt
+                + pos!(
+                    (distance * half_theta.cos()) as i64,
+                    (distance * half_theta.sin()) as i64
+                ),
+        }];
+
         if let Some(transition) = self.pre_transition.label() {
-            let transition_label = Label {
+            // Assume that 5% along the curve is still pretty much vertical,
+            // so the pre-transition label can just be inset horizontally.
+            let early_pt = self.percent_point(5);
+            labels.push(Label {
                 text: transition.to_string(),
-                pos: pos!(x / 8 + 20, y / 8),
-            };
-            vec![code_label, transition_label]
-        } else {
-            vec![code_label]
+                pos: early_pt + pos!(self.sign() as i64 * 2 * font_size, 0),
+            });
         }
+        labels
     }
 }
