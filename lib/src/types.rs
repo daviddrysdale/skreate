@@ -58,6 +58,14 @@ pub struct TextPosition {
     pub col: usize,
 }
 
+/// Helper macro to create [`Position`] instance.
+#[macro_export]
+macro_rules! pos {
+    { $x:expr, $y:expr} => {
+        Position { x: $x, y: $y }
+    }
+}
+
 /// Position, in centimetres.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct Position {
@@ -467,15 +475,15 @@ mod tests {
     #[test]
     fn test_add_margin() {
         let mut bounds = Bounds {
-            top_left: Position { x: 10, y: 20 },
-            bottom_right: Position { x: 110, y: 120 },
+            top_left: pos!(10, 20),
+            bottom_right: pos!(110, 120),
         };
         assert_eq!(bounds.width(), 100);
         assert_eq!(bounds.height(), 100);
 
         bounds.add_margin(5, 5);
-        assert_eq!(bounds.top_left, Position { x: 5, y: 15 });
-        assert_eq!(bounds.bottom_right, Position { x: 115, y: 125 });
+        assert_eq!(bounds.top_left, pos!(5, 15));
+        assert_eq!(bounds.bottom_right, pos!(115, 125));
         assert_eq!(bounds.width(), 110);
         assert_eq!(bounds.height(), 110);
     }
@@ -484,10 +492,10 @@ mod tests {
     fn test_encompass() {
         let mut bounds = bounds!(10,20 => 110,120);
 
-        bounds.encompass(&Position { x: 200, y: 200 });
+        bounds.encompass(&pos!(200, 200));
         assert_eq!(bounds, bounds!(10,20 => 200,200));
 
-        bounds.encompass(&Position { x: 0, y: 0 });
+        bounds.encompass(&pos!(0, 0));
         assert_eq!(bounds, bounds!(0,0 => 200,200));
 
         bounds.encompass_bounds(&bounds!(150,150 => 250,250));

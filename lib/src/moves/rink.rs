@@ -2,7 +2,7 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, path, Bounds, Input, Move, MoveParam, OwnedInput,
+    moves, param, params, params::Value, path, pos, Bounds, Input, Move, MoveParam, OwnedInput,
     Position, RenderOptions, Skater,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
@@ -162,11 +162,8 @@ impl Move for Rink {
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         Some(Bounds {
-            top_left: Position { x: 0, y: 0 },
-            bottom_right: Position {
-                x: self.width as i64,
-                y: self.length as i64,
-            },
+            top_left: pos!(0, 0),
+            bottom_right: pos!(self.width as i64, self.length as i64),
         })
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {

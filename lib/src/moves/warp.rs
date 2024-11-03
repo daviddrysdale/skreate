@@ -122,21 +122,16 @@ impl Move for Warp {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::code;
+    use crate::{code, pos};
 
     #[test]
     fn test_params() {
         let tests = [
-            ("Warp", Position { x: 0, y: 0 }, Direction(0), None),
-            (
-                "Warp[x=20,y=30,dir=90]",
-                Position { x: 20, y: 30 },
-                Direction(90),
-                None,
-            ),
+            ("Warp", pos!(0, 0), Direction(0), None),
+            ("Warp[x=20,y=30,dir=90]", pos!(20, 30), Direction(90), None),
             (
                 "Warp[x=20,y=30,code=\"LFO\"]",
-                Position { x: 20, y: 30 },
+                pos!(20, 30),
                 Direction(0),
                 Some(code!(LFO)),
             ),

@@ -63,10 +63,7 @@ impl std::ops::Add<Position> for Skater {
         let new_y = start_y + dy;
 
         Skater {
-            pos: Position {
-                x: new_x as i64,
-                y: new_y as i64,
-            },
+            pos: pos!(new_x as i64, new_y as i64),
             dir: self.dir,
             code: self.code,
         }

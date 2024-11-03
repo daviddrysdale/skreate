@@ -2,7 +2,7 @@
 
 use super::Error;
 use crate::{
-    bounds, code, moves, param, params, params::Value, parse_code, path, Bounds, Code, Input,
+    bounds, code, moves, param, params, params::Value, parse_code, path, pos, Bounds, Code, Input,
     Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation, Skater,
     SpatialTransition, Transition,
 };
@@ -98,10 +98,7 @@ impl Curve {
         } else {
             (r - r * theta.cos(), r * theta.sin())
         };
-        Position {
-            x: x as i64,
-            y: y as i64,
-        }
+        pos!(x as i64, y as i64)
     }
 
     /// End point of the arc, starting at 0,0 facing 0.
@@ -113,10 +110,7 @@ impl Curve {
         } else {
             (r - r * theta.cos(), r * theta.sin())
         };
-        Position {
-            x: x as i64,
-            y: y as i64,
-        }
+        pos!(x as i64, y as i64)
     }
 }
 
@@ -180,18 +174,12 @@ impl Move for Curve {
         // TODO: calculate label positions better
         let code_label = Label {
             text: format!("{}", self.code),
-            pos: Position {
-                x: x / 2 + 30,
-                y: y / 2,
-            },
+            pos: pos!(x / 2 + 30, y / 2),
         };
         if let Some(transition) = self.pre_transition.label() {
             let transition_label = Label {
                 text: transition.to_string(),
-                pos: Position {
-                    x: x / 8 + 20,
-                    y: y / 8,
-                },
+                pos: pos!(x / 8 + 20, y / 8),
             };
             vec![code_label, transition_label]
         } else {

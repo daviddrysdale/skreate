@@ -2,7 +2,7 @@
 
 use super::{Error, HW};
 use crate::{
-    moves, param, params, params::Value, parse_foot_dir, path, Code, Edge, Foot, Input, Label,
+    moves, param, params, params::Value, parse_foot_dir, path, pos, Code, Edge, Foot, Input, Label,
     Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
     SkatingDirection, SpatialTransition, Transition,
 };
@@ -82,10 +82,7 @@ impl Move for StraightEdge {
     fn transition(&self) -> Transition {
         Transition {
             spatial: SpatialTransition::Relative {
-                delta: Position {
-                    x: 0,
-                    y: self.len as i64,
-                },
+                delta: pos!(0, self.len as i64),
                 rotate: Rotation(0),
             },
             code: self.end(),
@@ -106,10 +103,7 @@ impl Move for StraightEdge {
         } else {
             vec![Label {
                 text: format!("{}{}", self.foot, self.dir),
-                pos: Position {
-                    x: 30,
-                    y: self.len as i64 / 2,
-                },
+                pos: pos!(30, self.len as i64 / 2),
             }]
         }
     }
