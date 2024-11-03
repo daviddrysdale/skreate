@@ -183,9 +183,15 @@ impl Move for Rink {
         ));
         if self.show_centre_line {
             if self.portrait() {
-                grp = grp.add(path!("M 0,{0} l {1},0", self.length / 2, self.width));
+                grp = grp.add(
+                    path!("M 0,{0} l {1},0", self.length / 2, self.width)
+                        .set("style", "stroke:red;"),
+                );
             } else {
-                grp = grp.add(path!("M {0},0 l 0,{1}", self.width / 2, self.length));
+                grp = grp.add(
+                    path!("M {0},0 l 0,{1}", self.width / 2, self.length)
+                        .set("style", "stroke:red;"),
+                );
             }
         }
         if let Some(radius) = self.centre_circle {
@@ -193,7 +199,8 @@ impl Move for Rink {
                 Circle::new()
                     .set("cx", self.width / 2)
                     .set("cy", self.length / 2)
-                    .set("r", radius),
+                    .set("r", radius)
+                    .set("style", "stroke:red;"),
             )
         }
         if self.show_centre_faceoff {
