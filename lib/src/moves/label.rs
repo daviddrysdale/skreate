@@ -13,6 +13,7 @@ pub struct Label {
     text: String,
     pos: Position,
     font_size: Option<u32>,
+    rotate: i32,
 }
 
 impl Label {
@@ -49,6 +50,13 @@ impl Label {
                 range: params::Range::Positive,
                 short: None,
             },
+            params::Info {
+                name: "rotate",
+                doc: "Angle to rotate text by",
+                default: Value::Number(0),
+                range: params::Range::Any,
+                short: None,
+            },
         ],
     };
 
@@ -68,6 +76,7 @@ impl Label {
             } else {
                 None
             },
+            rotate: params[4].value.as_i32().unwrap(),
         }))
     }
 
@@ -83,6 +92,7 @@ impl Move for Label {
             param!("x" = (self.pos.x as i32)),
             param!("y" = (self.pos.y as i32)),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
+            param!(self.rotate),
         ]
     }
     fn text(&self) -> String {
@@ -96,11 +106,16 @@ impl Move for Label {
         None
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
-        doc.add(
-            Text::new(self.text.clone())
-                .set("x", self.pos.x)
-                .set("y", self.pos.y)
-                .set("style", format!("font-size:{}pt;", self.font_size(opts))),
-        )
+        let mut text = Text::new(self.text.clone())
+            .set("x", self.pos.x)
+            .set("y", self.pos.y)
+            .set("style", format!("font-size:{}pt;", self.font_size(opts)));
+        if self.rotate != 0 {
+            text = text.set(
+                "transform",
+                format!("rotate({},{},{})", self.rotate, self.pos.x, self.pos.y),
+            )
+        }
+        doc.add(text)
     }
 }

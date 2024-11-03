@@ -35,8 +35,7 @@
 - [x] Text labels, floating & oriented correctly
 - [x] Adjust measurements of moves
 - [ ] Wide-step prefix
-- [ ] Allow line breaks in labels
-- [ ] Allow text rotation for labels
+- [x] Allow text rotation for labels
 - [x] Allow (auto-)selection of stroke width
 - [x] Font size inc. auto from bounding box
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont

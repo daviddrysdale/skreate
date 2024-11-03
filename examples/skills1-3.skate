@@ -12,7 +12,8 @@ xf-RFI [angle=30,len=290]
 LFO [angle=30,len=260]
 xf-RFI [angle=30,len=240]
 
-Label [x=1400,y=1740,text="OPTIONAL TURN",font-size=30]
+Label [x=1400,y=1740,text="OPTIONAL",font-size=40,rotate=-90]
+Label [x=1470,y=1740,text="TURN",font-size=40,rotate=-90]
 Warp [x=1600,y=1750,dir=270,code="LBO"]
 
 LBO [angle=30,len=280]
@@ -32,7 +33,8 @@ xf-LBI [angle=30,len=290]
 RBO [angle=30,len=280]
 xf-LBI [angle=30,len=240]
 
-Label [x=2050,y=3850,text="OPTIONAL TURN",font-size=30]
+Label [x=2050,y=3850,text="OPTIONAL",font-size=40,rotate=-90]
+Label [x=2120,y=3850,text="TURN",font-size=40,rotate=-90]
 Warp [x=2200,y=3850,dir=290,code="RFO"]
 
 RFO [angle=30,len=280]
