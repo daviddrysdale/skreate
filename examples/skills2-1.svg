@@ -76,6 +76,9 @@ RBO
 <text style="font-size:24pt;" x="349" y="866">
 LBI
 </text>
+<text style="font-size:24pt;" x="397" y="805">
+XF
+</text>
 <use id="r_9_c_0_23" style="stroke-width:4;" transform="translate(289 925) rotate(30)" xlink:href="#RBO[angle=120,len=800]"/>
 <text style="font-size:24pt;" x="480" y="1225">
 RBO
@@ -87,6 +90,9 @@ LBO
 <use id="r_12_c_0_25" style="stroke-width:4;" transform="translate(814 1597) rotate(300)" xlink:href="#xf-RBI[angle=30,len=200]"/>
 <text style="font-size:24pt;" x="898" y="1640">
 RBI
+</text>
+<text style="font-size:24pt;" x="840" y="1596">
+XF
 </text>
 <use id="r_13_c_0_23" style="stroke-width:4;" transform="translate(927 1751) rotate(330)" xlink:href="#LBO[angle=120,len=800]"/>
 <text style="font-size:24pt;" x="787" y="2021">
@@ -100,6 +106,9 @@ RBO
 <text style="font-size:24pt;" x="345" y="2518">
 LBI
 </text>
+<text style="font-size:24pt;" x="393" y="2457">
+XF
+</text>
 <use id="r_17_c_0_23" style="stroke-width:4;" transform="translate(285 2577) rotate(30)" xlink:href="#RBO[angle=120,len=800]"/>
 <text style="font-size:24pt;" x="476" y="2877">
 RBO
@@ -111,6 +120,9 @@ LBO
 <use id="r_20_c_0_25" style="stroke-width:4;" transform="translate(810 3249) rotate(300)" xlink:href="#xf-RBI[angle=30,len=200]"/>
 <text style="font-size:24pt;" x="894" y="3292">
 RBI
+</text>
+<text style="font-size:24pt;" x="836" y="3248">
+XF
 </text>
 <use id="r_21_c_0_23" style="stroke-width:4;" transform="translate(923 3403) rotate(330)" xlink:href="#LBO[angle=120,len=800]"/>
 <text style="font-size:24pt;" x="783" y="3673">
@@ -127,9 +139,15 @@ RBO
 <text style="font-size:24pt;" x="2396" y="4586">
 LBI
 </text>
+<text style="font-size:24pt;" x="2481" y="4810">
+XF
+</text>
 <use id="r_28_c_0_25" style="stroke-width:4;" transform="translate(2310 4380) rotate(90)" xlink:href="#wd-RBI--[angle=30]"/>
 <text style="font-size:24pt;" x="2196" y="4380">
 RBI
+</text>
+<text style="font-size:24pt;" x="2282" y="4393">
+Wd
 </text>
 <use id="r_29_c_0_22" style="stroke-width:4;" transform="translate(2096 4293) rotate(120)" xlink:href="#LBO--[angle=40]"/>
 <text style="font-size:24pt;" x="2005" y="4229">
@@ -139,9 +157,15 @@ LBO
 <text style="font-size:24pt;" x="2150" y="3877">
 RBI
 </text>
+<text style="font-size:24pt;" x="1990" y="4044">
+XF
+</text>
 <use id="r_31_c_0_25" style="stroke-width:4;" transform="translate(2383 3697) rotate(290)" xlink:href="#wd-LBI--[angle=30]"/>
 <text style="font-size:24pt;" x="2510" y="3679">
 LBI
+</text>
+<text style="font-size:24pt;" x="2418" y="3681">
+Wd
 </text>
 <use id="r_32_c_0_22" style="stroke-width:4;" transform="translate(2613 3688) rotate(260)" xlink:href="#RBO--[angle=40]"/>
 <text style="font-size:24pt;" x="2709" y="3599">
@@ -151,9 +175,15 @@ RBO
 <text style="font-size:24pt;" x="2636" y="3263">
 LBI
 </text>
+<text style="font-size:24pt;" x="2759" y="3469">
+XF
+</text>
 <use id="r_34_c_0_25" style="stroke-width:4;" transform="translate(2515 3075) rotate(80)" xlink:href="#wd-RBI--[angle=30]"/>
 <text style="font-size:24pt;" x="2402" y="3094">
 RBI
+</text>
+<text style="font-size:24pt;" x="2489" y="3092">
+Wd
 </text>
 <use id="r_35_c_0_22" style="stroke-width:4;" transform="translate(2288 3025) rotate(110)" xlink:href="#LBO--[angle=40]"/>
 <text style="font-size:24pt;" x="2188" y="2977">
@@ -162,6 +192,9 @@ LBO
 <use id="r_36_c_0_26" style="stroke-width:4;" transform="translate(2113 2853) rotate(150)" xlink:href="#xf-RBI[angle=130,len=800]"/>
 <text style="font-size:24pt;" x="2269" y="2606">
 RBI
+</text>
+<text style="font-size:24pt;" x="2141" y="2798">
+XF
 </text>
 <use id="r_38_c_0_22" style="stroke-width:4;" transform="translate(2473 2358) rotate(280)" xlink:href="#LBI--[angle=30]"/>
 <text style="font-size:24pt;" x="2595" y="2318">

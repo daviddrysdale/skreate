@@ -376,6 +376,16 @@ impl PreTransition {
             PreTransition::Wide => wide_transition(from, start),
         }
     }
+
+    /// Return label text.
+    pub fn label(&self) -> Option<&'static str> {
+        match self {
+            PreTransition::Normal => None,
+            PreTransition::CrossFront => Some("XF"),
+            PreTransition::CrossBehind => Some("XB"),
+            PreTransition::Wide => Some("Wd"),
+        }
+    }
 }
 
 /// Parse a foot and direction from `text`.

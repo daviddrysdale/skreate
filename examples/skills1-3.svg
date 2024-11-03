@@ -100,6 +100,9 @@ LFO
 <text style="font-size:24pt;" x="844" y="813">
 RFI
 </text>
+<text style="font-size:24pt;" x="912" y="731">
+XF
+</text>
 <use id="r_9_c_0_22" style="stroke-width:4;" transform="translate(756 900) rotate(30)" xlink:href="#LFO[angle=30,len=290]"/>
 <text style="font-size:24pt;" x="745" y="1053">
 LFO
@@ -108,6 +111,9 @@ LFO
 <text style="font-size:24pt;" x="764" y="1329">
 RFI
 </text>
+<text style="font-size:24pt;" x="726" y="1225">
+XF
+</text>
 <use id="r_11_c_0_22" style="stroke-width:4;" transform="translate(796 1452) rotate(330)" xlink:href="#LFO[angle=30,len=260]"/>
 <text style="font-size:24pt;" x="912" y="1527">
 LFO
@@ -115,6 +121,9 @@ LFO
 <use id="r_12_c_0_25" style="stroke-width:4;" transform="translate(997 1627) rotate(300)" xlink:href="#xf-RFI--[angle=30]"/>
 <text style="font-size:24pt;" x="1125" y="1632">
 RFI
+</text>
+<text style="font-size:24pt;" x="1034" y="1617">
+XF
 </text>
 <text style="font-size:40pt;" transform="rotate(-90,1400,1740)" x="1400" y="1740">
 OPTIONAL
@@ -130,6 +139,9 @@ LBO
 <text style="font-size:24pt;" x="1988" y="1916">
 RBI
 </text>
+<text style="font-size:24pt;" x="1906" y="1848">
+XF
+</text>
 <use id="r_20_c_0_22" style="stroke-width:4;" transform="translate(2048 2058) rotate(330)" xlink:href="#LBO[angle=30,len=290]"/>
 <text style="font-size:24pt;" x="2110" y="2181">
 LBO
@@ -137,6 +149,9 @@ LBO
 <use id="r_21_c_0_25" style="stroke-width:4;" transform="translate(2106 2349) rotate(0)" xlink:href="#xf-RBI[angle=30,len=290]"/>
 <text style="font-size:24pt;" x="2099" y="2487">
 RBI
+</text>
+<text style="font-size:24pt;" x="2117" y="2383">
+XF
 </text>
 <use id="r_22_c_0_22" style="stroke-width:4;" transform="translate(2006 2610) rotate(30)" xlink:href="#LBO[angle=30,len=280]"/>
 <text style="font-size:24pt;" x="1935" y="2722">
@@ -146,9 +161,15 @@ LBO
 <text style="font-size:24pt;" x="1691" y="2856">
 RBI
 </text>
+<text style="font-size:24pt;" x="1772" y="2824">
+XF
+</text>
 <use id="r_25_c_0_25" style="stroke-width:4;" transform="translate(1561 2800) rotate(90)" xlink:href="#wd-LBI[angle=30,len=280]"/>
 <text style="font-size:24pt;" x="1428" y="2865">
 LBI
+</text>
+<text style="font-size:24pt;" x="1528" y="2828">
+Wd
 </text>
 <use id="r_27_c_0_22" style="stroke-width:4;" transform="translate(1309 2896) rotate(60)" xlink:href="#RBO[angle=30,len=280]"/>
 <text style="font-size:24pt;" x="1226" y="3018">
@@ -158,6 +179,9 @@ RBO
 <text style="font-size:24pt;" x="1107" y="3263">
 LBI
 </text>
+<text style="font-size:24pt;" x="1126" y="3153">
+XF
+</text>
 <use id="r_29_c_0_22" style="stroke-width:4;" transform="translate(1074 3386) rotate(0)" xlink:href="#RBO[angle=30,len=290]"/>
 <text style="font-size:24pt;" x="1141" y="3524">
 RBO
@@ -166,6 +190,9 @@ RBO
 <text style="font-size:24pt;" x="1295" y="3753">
 LBI
 </text>
+<text style="font-size:24pt;" x="1210" y="3681">
+XF
+</text>
 <use id="r_31_c_0_22" style="stroke-width:4;" transform="translate(1385 3843) rotate(300)" xlink:href="#RBO[angle=30,len=280]"/>
 <text style="font-size:24pt;" x="1532" y="3853">
 RBO
@@ -173,6 +200,9 @@ RBO
 <use id="r_32_c_0_25" style="stroke-width:4;" transform="translate(1666 3900) rotate(270)" xlink:href="#xf-LBI--[angle=30]"/>
 <text style="font-size:24pt;" x="1780" y="3840">
 LBI
+</text>
+<text style="font-size:24pt;" x="1694" y="3873">
+XF
 </text>
 <text style="font-size:40pt;" transform="rotate(-90,2050,3850)" x="2050" y="3850">
 OPTIONAL
@@ -188,6 +218,9 @@ RFO
 <text style="font-size:24pt;" x="2505" y="4134">
 LFI
 </text>
+<text style="font-size:24pt;" x="2454" y="4046">
+XF
+</text>
 <use id="r_40_c_0_22" style="stroke-width:4;" transform="translate(2511 4284) rotate(350)" xlink:href="#RFO[angle=30,len=290]"/>
 <text style="font-size:24pt;" x="2528" y="4421">
 RFO
@@ -196,6 +229,9 @@ RFO
 <text style="font-size:24pt;" x="2412" y="4703">
 LFI
 </text>
+<text style="font-size:24pt;" x="2464" y="4611">
+XF
+</text>
 <use id="r_42_c_0_22" style="stroke-width:4;" transform="translate(2282 4787) rotate(50)" xlink:href="#RFO[angle=30,len=260]"/>
 <text style="font-size:24pt;" x="2185" y="4864">
 RFO
@@ -203,5 +239,8 @@ RFO
 <use id="r_43_c_0_25" style="stroke-width:4;" transform="translate(2031 4882) rotate(80)" xlink:href="#xf-LFI--[angle=30]"/>
 <text style="font-size:24pt;" x="1918" y="4901">
 LFI
+</text>
+<text style="font-size:24pt;" x="2005" y="4899">
+XF
 </text>
 </svg>

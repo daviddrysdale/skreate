@@ -177,12 +177,25 @@ impl Move for Curve {
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         let Position { x, y } = self.endpoint();
-        vec![Label {
+        // TODO: calculate label positions better
+        let code_label = Label {
             text: format!("{}", self.code),
             pos: Position {
                 x: x / 2 + 30,
                 y: y / 2,
             },
-        }]
+        };
+        if let Some(transition) = self.pre_transition.label() {
+            let transition_label = Label {
+                text: transition.to_string(),
+                pos: Position {
+                    x: x / 8 + 20,
+                    y: y / 8,
+                },
+            };
+            vec![code_label, transition_label]
+        } else {
+            vec![code_label]
+        }
     }
 }

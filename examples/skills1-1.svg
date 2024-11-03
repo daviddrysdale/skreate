@@ -121,9 +121,15 @@ LFO
 <text style="font-size:24pt;" x="2262" y="4962">
 RFI
 </text>
+<text style="font-size:24pt;" x="2386" y="5213">
+XF
+</text>
 <use id="r_23_c_0_8" style="stroke-width:4;" transform="translate(2124 4707) rotate(100)" xlink:href="#wd-LFI--"/>
 <text style="font-size:24pt;" x="2007" y="4696">
 LFI
+</text>
+<text style="font-size:24pt;" x="2092" y="4716">
+Wd
 </text>
 <use id="r_24_c_0_5" style="stroke-width:4;" transform="translate(1914 4599) rotate(120)" xlink:href="#RFO--"/>
 <text style="font-size:24pt;" x="1807" y="4549">
@@ -133,9 +139,15 @@ RFO
 <text style="font-size:24pt;" x="1801" y="4092">
 LFI
 </text>
+<text style="font-size:24pt;" x="1738" y="4348">
+XF
+</text>
 <use id="r_26_c_0_8" style="stroke-width:4;" transform="translate(1938 3778) rotate(250)" xlink:href="#wd-RFI--"/>
 <text style="font-size:24pt;" x="2030" y="3690">
 RFI
+</text>
+<text style="font-size:24pt;" x="1956" y="3744">
+Wd
 </text>
 <use id="r_27_c_0_5" style="stroke-width:4;" transform="translate(2124 3636) rotate(230)" xlink:href="#LFO--"/>
 <text style="font-size:24pt;" x="2181" y="3522">
@@ -145,9 +157,15 @@ LFO
 <text style="font-size:24pt;" x="2091" y="3088">
 RFI
 </text>
+<text style="font-size:24pt;" x="2215" y="3339">
+XF
+</text>
 <use id="r_29_c_0_8" style="stroke-width:4;" transform="translate(1953 2833) rotate(100)" xlink:href="#wd-LFI--"/>
 <text style="font-size:24pt;" x="1836" y="2822">
 LFI
+</text>
+<text style="font-size:24pt;" x="1921" y="2842">
+Wd
 </text>
 <use id="r_30_c_0_5" style="stroke-width:4;" transform="translate(1743 2725) rotate(120)" xlink:href="#RFO--"/>
 <text style="font-size:24pt;" x="1636" y="2675">
@@ -157,8 +175,14 @@ RFO
 <text style="font-size:24pt;" x="1630" y="2218">
 LFI
 </text>
+<text style="font-size:24pt;" x="1567" y="2474">
+XF
+</text>
 <use id="r_32_c_0_8" style="stroke-width:4;" transform="translate(1767 1904) rotate(250)" xlink:href="#wd-RFI--"/>
 <text style="font-size:24pt;" x="1859" y="1816">
 RFI
+</text>
+<text style="font-size:24pt;" x="1785" y="1870">
+Wd
 </text>
 </svg>

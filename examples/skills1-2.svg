@@ -55,6 +55,9 @@ RBO
 <text style="font-size:24pt;" x="2019" y="2607">
 LBI
 </text>
+<text style="font-size:24pt;" x="1925" y="2672">
+XF
+</text>
 <use id="r_9_c_0_4" style="stroke-width:4;" transform="translate(2138 2537) rotate(230)" xlink:href="#RBO-"/>
 <text style="font-size:24pt;" x="2214" y="2401">
 RBO
@@ -63,6 +66,9 @@ RBO
 <text style="font-size:24pt;" x="2348" y="2134">
 LBI
 </text>
+<text style="font-size:24pt;" x="2318" y="2243">
+XF
+</text>
 <use id="r_11_c_0_4" style="stroke-width:4;" transform="translate(2395 2002) rotate(190)" xlink:href="#RBO-"/>
 <text style="font-size:24pt;" x="2366" y="1848">
 RBO
@@ -70,6 +76,9 @@ RBO
 <use id="r_12_c_0_7" style="stroke-width:4;" transform="translate(2377 1691) rotate(170)" xlink:href="#xf-LBI-"/>
 <text style="font-size:24pt;" x="2297" y="1556">
 LBI
+</text>
+<text style="font-size:24pt;" x="2345" y="1660">
+XF
 </text>
 <use id="r_13_c_0_24" style="stroke-width:4;" transform="translate(2249 1426) rotate(150)" xlink:href="#RBO[angle=160,len=2400]"/>
 <text style="font-size:24pt;" x="1428" y="1731">
@@ -86,6 +95,9 @@ LBO
 <text style="font-size:24pt;" x="2039" y="3425">
 RBI
 </text>
+<text style="font-size:24pt;" x="1939" y="3379">
+XF
+</text>
 <use id="r_20_c_0_4" style="stroke-width:4;" transform="translate(2138 3550) rotate(310)" xlink:href="#LBO-"/>
 <text style="font-size:24pt;" x="2253" y="3640">
 LBO
@@ -94,6 +106,9 @@ LBO
 <text style="font-size:24pt;" x="2400" y="3920">
 RBI
 </text>
+<text style="font-size:24pt;" x="2353" y="3821">
+XF
+</text>
 <use id="r_22_c_0_4" style="stroke-width:4;" transform="translate(2395 4081) rotate(350)" xlink:href="#LBO-"/>
 <text style="font-size:24pt;" x="2425" y="4223">
 LBO
@@ -101,6 +116,9 @@ LBO
 <use id="r_23_c_0_7" style="stroke-width:4;" transform="translate(2377 4390) rotate(10)" xlink:href="#xf-RBI-"/>
 <text style="font-size:24pt;" x="2356" y="4534">
 RBI
+</text>
+<text style="font-size:24pt;" x="2384" y="4427">
+XF
 </text>
 <use id="r_24_c_0_24" style="stroke-width:4;" transform="translate(2249 4654) rotate(30)" xlink:href="#LBO[angle=160,len=2400]"/>
 <text style="font-size:24pt;" x="1480" y="4378">
