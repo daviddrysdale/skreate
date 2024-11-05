@@ -2,9 +2,9 @@ Rink
 Title [text="Skills 1 Exercise 3",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1500,y=600,text="START",font-size=50]
-Warp [x=1200,y=600,dir=90,code="LFO"]
-
+Label [x=1880,y=625,text="START",font-size=50]
+Warp [x=1700,y=600,dir=90,code="LFO"]
+LF [len=500,label=" ",style="dashed"]
 LFO [angle=30,len=280]
 xf-RFI [angle=30,len=280]
 LFO [angle=30,len=290]

@@ -21,6 +21,9 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,3850 l 3000,0" style="stroke: blue;"/>
 </g>
 <g id="Info"/>
+<g id="LF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]">
+<path d="M 0,0 l 0,500" stroke-dasharray="50 30"/>
+</g>
 <g id="LFO[angle=30,len=280]">
 <path d="M 0,0 a 534,534 0 0 0 71,267"/>
 </g>
@@ -89,8 +92,12 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <text style="font-size: 90pt;" x="1500" y="200">
 Skills 1 Exercise 3
 </text>
-<text style="font-size:50pt;" x="1500" y="600">
+<text style="font-size:50pt;" x="1880" y="625">
 START
+</text>
+<use id="r_6_c_0_37" style="stroke-width:4;" transform="translate(1700 600) rotate(90)" xlink:href="#LF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
+<text style="font-size:24pt;" x="1450" y="630">
+ 
 </text>
 <use id="r_7_c_0_22" style="stroke-width:4;" transform="translate(1200 600) rotate(90)" xlink:href="#LFO[angle=30,len=280]"/>
 <text style="font-size:24pt;" x="1080" y="687">

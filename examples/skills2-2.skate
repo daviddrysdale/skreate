@@ -2,9 +2,10 @@ Rink
 Title [text="Skills 2 Exercise 2",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=800,y=700,text="SIDE 1",font-size=50]
+Label [x=1250,y=730,text="SIDE 1",font-size=50]
+Warp [x=1100,y=700,dir=90,code="RFI"]
+RF [len=500,label=" ",style="dashed"]
 Warp [x=600,y=700,dir=70,code="RFI"]
-
 RFI [angle=140]
 RFO [angle=140]
 RFI [angle=140]
@@ -21,9 +22,10 @@ LFI [angle=140]
 LFO [angle=140]
 LFI [angle=140]
 
-Label [x=2100,y=5050,text="SIDE 2",font-size=50]
-Warp [x=2300,y=5000,dir=250,code="RBO"]
-
+Label [x=1650,y=5025,text="SIDE 2",font-size=50]
+Warp [x=1800,y=5000,dir=270,code="LBO"]
+LB [len=500,label=" ",style="dashed"]
+Warp [x=2300,y=5000,dir=250,code="LBO"]
 LBI [angle=140]
 LBO [angle=140]
 LBI [angle=140]
