@@ -2,8 +2,8 @@
 
 use super::{Error, HW};
 use crate::{
-    moves, param, params, params::Value, parse_foot_dir, path, pos, Code, Edge, Foot, Input, Label,
-    Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
+    apply_style, moves, param, params, params::Value, parse_foot_dir, path, pos, Code, Edge, Foot,
+    Input, Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
     SkatingDirection, SpatialTransition, Transition,
 };
 use std::borrow::Cow;
@@ -16,6 +16,7 @@ pub struct StraightEdge {
     dir: SkatingDirection,
     len: i32,
     label: Option<String>,
+    style: String,
 }
 
 impl StraightEdge {
@@ -45,6 +46,13 @@ impl StraightEdge {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "style",
+                doc: "Style of line",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -67,6 +75,7 @@ impl StraightEdge {
             } else {
                 Some(label.to_string())
             },
+            style: params[2].value.as_str().unwrap().to_string(),
         }))
     }
     fn code(&self) -> Code {
@@ -83,6 +92,7 @@ impl Move for StraightEdge {
         vec![
             param!(self.len),
             param!("label" = (self.label.clone().unwrap_or("".to_string()))),
+            param!(self.style),
         ]
     }
     fn start(&self) -> Option<Code> {
@@ -110,12 +120,13 @@ impl Move for StraightEdge {
     }
     fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
         let len = self.len;
-        let grp = if self.foot == Foot::Both {
-            Group::new().add(path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} l 0,{len}",))
+        let mut path = if self.foot == Foot::Both {
+            path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} l 0,{len}")
         } else {
-            Group::new().add(path!("M 0,0 l 0,{len}"))
+            path!("M 0,0 l 0,{len}")
         };
-        Some(grp)
+        path = apply_style(path, &self.style);
+        Some(Group::new().add(path))
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         if self.foot == Foot::Both {

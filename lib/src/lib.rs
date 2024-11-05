@@ -8,7 +8,7 @@ use log::{debug, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
-    node::element::{Definitions, Description, Group, Rectangle, Style, Text, Title, Use},
+    node::element::{Definitions, Description, Group, Path, Rectangle, Style, Text, Title, Use},
     Document,
 };
 
@@ -177,6 +177,13 @@ fn use_at(skater: &Skater, def_id: &str, opts: &RenderOptions) -> Use {
             ),
         )
         .set("style", format!("stroke-width:{};", opts.stroke_width()))
+}
+
+fn apply_style(path: Path, style: &str) -> Path {
+    match style {
+        "dashed" => path.set("stroke-dasharray", "50 30"),
+        _ => path,
+    }
 }
 
 /// Trait describing the external behavior of a move.
