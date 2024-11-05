@@ -158,7 +158,6 @@ impl Abbrev {
     }
     fn chars(&self) -> (char, char) {
         match self {
-            // @@@@ Abbrev::None => ('?', '?'),
             Abbrev::PlusMinus(_) => ('+', '-'),
             Abbrev::GreaterLess(_) => ('>', '<'),
         }
@@ -309,7 +308,7 @@ fn param_from_string(input: &str) -> Result<(&str, Value), String> {
     });
     static INNER_TEXT_RE: OnceLock<Regex> = OnceLock::new();
     let inner_text_re = INNER_TEXT_RE.get_or_init(|| {
-        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]+)\"$"#).unwrap()
+        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]*)\"$"#).unwrap()
     });
     if let Some(captures) = inner_number_re.captures(input) {
         let name = captures.name("name").unwrap().as_str();
@@ -530,6 +529,7 @@ mod tests {
             ("t= \"text\"", param!(t = "text")),
             ("t =\"text\"", param!(t = "text")),
             ("t=\"text\"", param!(t = "text")),
+            ("t=\"\"", param!(t = "")),
             ("b=true", param!(b = true)),
             ("b=Y", param!(b = true)),
             ("b=y", param!(b = true)),

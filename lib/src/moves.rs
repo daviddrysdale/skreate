@@ -43,7 +43,10 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
 
     for constructor in constructors() {
         match constructor(input) {
-            Ok(mv) => return Ok(mv),
+            Ok(mv) => {
+                info!("success: canonical form {}", mv.text());
+                return Ok(mv);
+            }
             Err(Error::Unrecognized) => {}
             Err(Error::Failed(msg)) => {
                 warn!("constructor {constructor:?} failed: {msg}",);
