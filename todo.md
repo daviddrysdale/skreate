@@ -42,6 +42,7 @@
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
 - [x] Rink and start point/direction specification
 - [x] Title, text inserts
+- [ ] Proper parser, coping with quoted strings
 - [ ] Counts and count display options
 - [x] Add in/out curvature for moves?
 - [ ] Generate a manual from move registry via new `Move` methods
@@ -64,9 +65,9 @@
     - [x] Skills 2-1
     - [x] Skills 2-2
     - [ ] Skills 2-3
-    - [ ] Skills 2-4
+    - [x] Skills 2-4
     - [ ] Skills 2-5
-    - [ ] Skills 3-1
+    - [x] Skills 3-1
     - [ ] Skills 3-2
     - [ ] Skills 3-3
     - [ ] Skills 3-4
