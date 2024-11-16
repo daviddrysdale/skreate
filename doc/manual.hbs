@@ -45,9 +45,17 @@
 {{/if}}
 <ul>
 {{#each this.params}}
-  <li><code>{{this.name}}</code>: {{this.doc}} (default {{this.default}})</li>
+<li><code>{{this.name}}</code>: {{this.doc}} (default {{this.default}}).
+{{#if this.short}}
+{{#if this.short.PlusMinus}}
+Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
+{{/if}}
+{{#if this.short.GreaterLess}}
+Can also be modified by a <code>&lt;</code> or <code>&gt;</code> (repeated) suffix.
+{{/if}}
+{{/if}}
+</li>
 {{! TODO: display contents of default correctly }}
-{{! TODO: conditionally emit mention of detents }}
 {{/each}}
 </ul>
 {{/each}}
