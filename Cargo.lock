@@ -419,6 +419,7 @@ name = "skreate-docgen"
 version = "0.1.0"
 dependencies = [
  "handlebars",
+ "serde_json",
  "skreate",
 ]
 

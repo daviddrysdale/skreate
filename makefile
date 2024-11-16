@@ -44,8 +44,8 @@ regenerate: regenerate_examples
 
 regenerate_examples: $(EXAMPLES_SVG)
 
-manual: web/generated/manual.html
-web/generated/manual.html: doc/manual.hbs $(DOCGEN)
+manual: web/doc/manual.html
+web/doc/manual.html: doc/manual.hbs $(DOCGEN)
 	$(DOCGEN) $< > $@
 
 $(DOCGEN): doc/src/main.rs

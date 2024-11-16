@@ -1,0 +1,11 @@
+{{#each infos}}
+{{this.name}}: {{this.summary}}
+{{#if this.params}}
+Parameters:
+{{/if}}
+{{#each this.params}}
+  {{this.name}}: {{this.doc}} (default {{this.default}})
+{{! TODO: display contents of default correctly }}
+{{! TODO: conditionally emit mention of detents }}
+{{/each}}
+{{/each}}
