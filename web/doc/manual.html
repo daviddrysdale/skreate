@@ -1,82 +1,236 @@
-Edge: Curving edge
-Parameters:
-  angle: Angle of rotation from start to finish, in degrees (default [object])
-  len: Length in centimetres (default [object])
-Straight edge: Straight edge
-Parameters:
-  len: Length in centimetres (default [object])
-  label: Replacement label, used if non-empty (default [object])
-  style: Style of line (default [object])
-Warp: Move skater to new location/position
-Parameters:
-  x: Horizontal coordinate to warp to (default [object])
-  y: Vertical coordinate to warp to (default [object])
-  dir: Direction to be facing after warp, in degrees (0 is facing down) (default [object])
-  code: Foot code to start with after warp (default [object])
-Rink: Rink depiction
-Parameters:
-  width: Rink width in centimetres (default [object])
-  length: Rink length in centimetres (default [object])
-  centre-line: Whether to show the centre line (default [object])
-  centre-circle: Size of the centre circle in centimetre, 0 to omit (default [object])
-  centre-faceoff: Whether to show the centre face-off (default [object])
-  mid-lines: Location of mid-lines in centimetres from the centre line; 0 to omit (default [object])
-  goal-lines: Location of goal lines in centimetres from the ends; 0 to omit (default [object])
-  goals: Whether to show the goals (default [object])
-  faceoffs: Whether to show the face-offs (default [object])
-Info: Set diagram rendering information
-Parameters:
-  markers: Whether to show begin/end move markers (default [object])
-  bounds: Whether to show overall bounds (default [object])
-  grid: Grid size to display, 0 for no grid (default [object])
-  margin-x: Horizontal margin (default [object])
-  margin-y: Vertical margin (default [object])
-  move-bounds: Whether to show bounds of each move (default [object])
-  font-size: Font size for labels; 0 for auto-scaling (default [object])
-  stroke-width: Stroke width; 0 for auto-scaling (default [object])
-Title: Diagram title
-Parameters:
-  text: Text of title (default [object])
-  x: Horizontal location of title; -1 indicates automatic centering (default [object])
-  y: Vertical location of title (default [object])
-  font-size: Font size for title; 0 for auto-scaling (default [object])
-Label: Diagram label
-Parameters:
-  text: Text to display (default [object])
-  x: Horizontal location of text (default [object])
-  y: Vertical location of text (increasing down) (default [object])
-  font-size: Font size for label; 0 for auto-scaling (default [object])
-  rotate: Angle to rotate text by (default [object])
-Lfo3: Lfo3
-XfLfo3: XfLfo3
-Lbi3: Lbi3
-XbLbi3: XbLbi3
-Rfi3: Rfi3
-XfRfi3: XfRfi3
-Rbo3: Rbo3
-XbRbo3: XbRbo3
-Rfo3: Rfo3
-XfRfo3: XfRfo3
-Rbi3: Rbi3
-XbRbi3: XbRbi3
-Lfi3: Lfi3
-XfLfi3: XfLfi3
-Lbo3: Lbo3
-XbLbo3: XbLbo3
-LfoRk: LfoRk
-XfLfoRk: XfLfoRk
-LbiRk: LbiRk
-XbLbiRk: XbLbiRk
-RfiRk: RfiRk
-XfRfiRk: XfRfiRk
-RboRk: RboRk
-XbRboRk: XbRboRk
-RfoRk: RfoRk
-XfRfoRk: XfRfoRk
-RbiRk: RbiRk
-XbRbiRk: XbRbiRk
-LfiRk: LfiRk
-XfLfiRk: XfLfiRk
-LboRk: LboRk
-XbLboRk: XbLboRk
+<html>
+<head>
+<title>Skating Diagram Creator</title>
+</head>
+<body>
+<h1>Skating Diagram Creator</h1>
+
+<h2>Overview</h2>
+<p>To build a skating diagram, enter move codes into the text entry box.  Each move should be on a new line, or separated from the previous move by a semi-colon <b><code>;</code></b>
+
+<p>Blank lines are ignored, and anything after a hash <b><code>#</code></b> on a line is treated as a comment and ignored.
+
+<p>Move codes are typically made up of:
+<ul>
+  <li>An optional prefix, indicating how a change of foot is performed.  For example: <ul>
+    <li>a <code>wd-</code> prefix indicates a wide step</li>
+    <li>a <code>xf-</code> prefix indicates a cross in front</li>
+    <li>a <code>xb-</code> prefix indicates a cross behind</li>
+   </ul></li>
+  <li>An edge code, indicating the skating foot, direction, and edge.  For example, <code>LBO</code> indicates skating on the left foot, travelling backwards on an outside edge.</li>
+  <li>An optional suffix indicating a move, turn or foot change.  For example, <code>LFO3</code> indicates a three-turn from a left forward outside edge, transitioning to a left backward inside edge.</li>
+  <li>Further optional suffices that adjust parameters for the move.  These can take two forms:<ul>
+    <li>A collection of comma-separated <code>name=value</code> parameters enclosed in square brackets.  For example, <code>LFO [curve=120,len=900]</code> indicates a left forward outside edge that turns 120&deg; and travels 900 cm.</li>
+    <li>Short code markers that adjust the most common parameters.  For example, <code>LFO>>++</code> indicates a left forward edge that curves more and travels further than the default.</li>
+  </ul></li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+  <li><a href="../?load=examples/skills1-1.skate">Skills 1-1</a></li>
+</ul>
+
+<h2>Move Reference</h2>
+<h3>Edge</h3>
+<p>Curving edge
+<h4>Parameters</h4>
+<ul>
+  <li><code>angle</code>: Angle of rotation from start to finish, in degrees (default [object])</li>
+  <li><code>len</code>: Length in centimetres (default [object])</li>
+</ul>
+<h3>Straight edge</h3>
+<p>Straight edge
+<h4>Parameters</h4>
+<ul>
+  <li><code>len</code>: Length in centimetres (default [object])</li>
+  <li><code>label</code>: Replacement label, used if non-empty (default [object])</li>
+  <li><code>style</code>: Style of line (default [object])</li>
+</ul>
+<h3>Warp</h3>
+<p>Move skater to new location/position
+<h4>Parameters</h4>
+<ul>
+  <li><code>x</code>: Horizontal coordinate to warp to (default [object])</li>
+  <li><code>y</code>: Vertical coordinate to warp to (default [object])</li>
+  <li><code>dir</code>: Direction to be facing after warp, in degrees (0 is facing down) (default [object])</li>
+  <li><code>code</code>: Foot code to start with after warp (default [object])</li>
+</ul>
+<h3>Rink</h3>
+<p>Rink depiction
+<h4>Parameters</h4>
+<ul>
+  <li><code>width</code>: Rink width in centimetres (default [object])</li>
+  <li><code>length</code>: Rink length in centimetres (default [object])</li>
+  <li><code>centre-line</code>: Whether to show the centre line (default [object])</li>
+  <li><code>centre-circle</code>: Size of the centre circle in centimetre, 0 to omit (default [object])</li>
+  <li><code>centre-faceoff</code>: Whether to show the centre face-off (default [object])</li>
+  <li><code>mid-lines</code>: Location of mid-lines in centimetres from the centre line; 0 to omit (default [object])</li>
+  <li><code>goal-lines</code>: Location of goal lines in centimetres from the ends; 0 to omit (default [object])</li>
+  <li><code>goals</code>: Whether to show the goals (default [object])</li>
+  <li><code>faceoffs</code>: Whether to show the face-offs (default [object])</li>
+</ul>
+<h3>Info</h3>
+<p>Set diagram rendering information
+<h4>Parameters</h4>
+<ul>
+  <li><code>markers</code>: Whether to show begin/end move markers (default [object])</li>
+  <li><code>bounds</code>: Whether to show overall bounds (default [object])</li>
+  <li><code>grid</code>: Grid size to display, 0 for no grid (default [object])</li>
+  <li><code>margin-x</code>: Horizontal margin (default [object])</li>
+  <li><code>margin-y</code>: Vertical margin (default [object])</li>
+  <li><code>move-bounds</code>: Whether to show bounds of each move (default [object])</li>
+  <li><code>font-size</code>: Font size for labels; 0 for auto-scaling (default [object])</li>
+  <li><code>stroke-width</code>: Stroke width; 0 for auto-scaling (default [object])</li>
+</ul>
+<h3>Title</h3>
+<p>Diagram title
+<h4>Parameters</h4>
+<ul>
+  <li><code>text</code>: Text of title (default [object])</li>
+  <li><code>x</code>: Horizontal location of title; -1 indicates automatic centering (default [object])</li>
+  <li><code>y</code>: Vertical location of title (default [object])</li>
+  <li><code>font-size</code>: Font size for title; 0 for auto-scaling (default [object])</li>
+</ul>
+<h3>Label</h3>
+<p>Diagram label
+<h4>Parameters</h4>
+<ul>
+  <li><code>text</code>: Text to display (default [object])</li>
+  <li><code>x</code>: Horizontal location of text (default [object])</li>
+  <li><code>y</code>: Vertical location of text (increasing down) (default [object])</li>
+  <li><code>font-size</code>: Font size for label; 0 for auto-scaling (default [object])</li>
+  <li><code>rotate</code>: Angle to rotate text by (default [object])</li>
+</ul>
+<h3>Lfo3</h3>
+<p>Lfo3
+<ul>
+</ul>
+<h3>XfLfo3</h3>
+<p>XfLfo3
+<ul>
+</ul>
+<h3>Lbi3</h3>
+<p>Lbi3
+<ul>
+</ul>
+<h3>XbLbi3</h3>
+<p>XbLbi3
+<ul>
+</ul>
+<h3>Rfi3</h3>
+<p>Rfi3
+<ul>
+</ul>
+<h3>XfRfi3</h3>
+<p>XfRfi3
+<ul>
+</ul>
+<h3>Rbo3</h3>
+<p>Rbo3
+<ul>
+</ul>
+<h3>XbRbo3</h3>
+<p>XbRbo3
+<ul>
+</ul>
+<h3>Rfo3</h3>
+<p>Rfo3
+<ul>
+</ul>
+<h3>XfRfo3</h3>
+<p>XfRfo3
+<ul>
+</ul>
+<h3>Rbi3</h3>
+<p>Rbi3
+<ul>
+</ul>
+<h3>XbRbi3</h3>
+<p>XbRbi3
+<ul>
+</ul>
+<h3>Lfi3</h3>
+<p>Lfi3
+<ul>
+</ul>
+<h3>XfLfi3</h3>
+<p>XfLfi3
+<ul>
+</ul>
+<h3>Lbo3</h3>
+<p>Lbo3
+<ul>
+</ul>
+<h3>XbLbo3</h3>
+<p>XbLbo3
+<ul>
+</ul>
+<h3>LfoRk</h3>
+<p>LfoRk
+<ul>
+</ul>
+<h3>XfLfoRk</h3>
+<p>XfLfoRk
+<ul>
+</ul>
+<h3>LbiRk</h3>
+<p>LbiRk
+<ul>
+</ul>
+<h3>XbLbiRk</h3>
+<p>XbLbiRk
+<ul>
+</ul>
+<h3>RfiRk</h3>
+<p>RfiRk
+<ul>
+</ul>
+<h3>XfRfiRk</h3>
+<p>XfRfiRk
+<ul>
+</ul>
+<h3>RboRk</h3>
+<p>RboRk
+<ul>
+</ul>
+<h3>XbRboRk</h3>
+<p>XbRboRk
+<ul>
+</ul>
+<h3>RfoRk</h3>
+<p>RfoRk
+<ul>
+</ul>
+<h3>XfRfoRk</h3>
+<p>XfRfoRk
+<ul>
+</ul>
+<h3>RbiRk</h3>
+<p>RbiRk
+<ul>
+</ul>
+<h3>XbRbiRk</h3>
+<p>XbRbiRk
+<ul>
+</ul>
+<h3>LfiRk</h3>
+<p>LfiRk
+<ul>
+</ul>
+<h3>XfLfiRk</h3>
+<p>XfLfiRk
+<ul>
+</ul>
+<h3>LboRk</h3>
+<p>LboRk
+<ul>
+</ul>
+<h3>XbLboRk</h3>
+<p>XbLboRk
+<ul>
+</ul>
+
+</body>
+</html>
 

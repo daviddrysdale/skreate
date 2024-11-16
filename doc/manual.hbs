@@ -1,11 +1,51 @@
+<html>
+<head>
+<title>Skating Diagram Creator</title>
+</head>
+<body>
+<h1>Skating Diagram Creator</h1>
+
+<h2>Overview</h2>
+<p>To build a skating diagram, enter move codes into the text entry box.  Each move should be on a new line, or separated from the previous move by a semi-colon <b><code>;</code></b>
+
+<p>Blank lines are ignored, and anything after a hash <b><code>#</code></b> on a line is treated as a comment and ignored.
+
+<p>Move codes are typically made up of:
+<ul>
+  <li>An optional prefix, indicating how a change of foot is performed.  For example: <ul>
+    <li>a <code>wd-</code> prefix indicates a wide step</li>
+    <li>a <code>xf-</code> prefix indicates a cross in front</li>
+    <li>a <code>xb-</code> prefix indicates a cross behind</li>
+   </ul></li>
+  <li>An edge code, indicating the skating foot, direction, and edge.  For example, <code>LBO</code> indicates skating on the left foot, travelling backwards on an outside edge.</li>
+  <li>An optional suffix indicating a move, turn or foot change.  For example, <code>LFO3</code> indicates a three-turn from a left forward outside edge, transitioning to a left backward inside edge.</li>
+  <li>Further optional suffices that adjust parameters for the move.  These can take two forms:<ul>
+    <li>A collection of comma-separated <code>name=value</code> parameters enclosed in square brackets.  For example, <code>LFO [curve=120,len=900]</code> indicates a left forward outside edge that turns 120&deg; and travels 900 cm.</li>
+    <li>Short code markers that adjust the most common parameters.  For example, <code>LFO>>++</code> indicates a left forward edge that curves more and travels further than the default.</li>
+  </ul></li>
+</ul>
+
+<h2>Examples</h2>
+
+<ul>
+  <li><a href="../?load=examples/skills1-1.skate">Skills 1-1</a></li>
+</ul>
+
+<h2>Move Reference</h2>
 {{#each infos}}
-{{this.name}}: {{this.summary}}
+<h3>{{this.name}}</h3>
+<p>{{this.summary}}
 {{#if this.params}}
-Parameters:
+<h4>Parameters</h4>
 {{/if}}
+<ul>
 {{#each this.params}}
-  {{this.name}}: {{this.doc}} (default {{this.default}})
+  <li><code>{{this.name}}</code>: {{this.doc}} (default {{this.default}})</li>
 {{! TODO: display contents of default correctly }}
 {{! TODO: conditionally emit mention of detents }}
 {{/each}}
+</ul>
 {{/each}}
+
+</body>
+</html>
