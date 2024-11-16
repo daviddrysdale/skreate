@@ -207,7 +207,7 @@ impl Range {
 pub struct Info {
     /// Name of the parameter.
     pub name: &'static str,
-    /// Documetnation for the parameter.
+    /// Documentation for the parameter.
     pub doc: &'static str,
     /// Whether the parameter can be specified in an abbreviated form.
     pub short: Option<Abbrev>,

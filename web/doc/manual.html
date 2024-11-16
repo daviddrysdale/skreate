@@ -43,10 +43,12 @@
 <div class="example"><img src="Edge.svg" height="200"/></div>
 <h4>Parameters</h4>
 <ul>
-<li><code>angle</code>: Angle of rotation from start to finish, in degrees (default [object]).
+<li><code>angle</code>: Angle of rotation from start to finish, in degrees
+(default <code>20</code>).
 Can also be modified by a <code>&lt;</code> or <code>&gt;</code> (repeated) suffix.
 </li>
-<li><code>len</code>: Length in centimetres (default [object]).
+<li><code>len</code>: Length in centimetres
+(default <code>450</code>).
 Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
 </li>
 </ul>
@@ -55,25 +57,26 @@ Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
 <div class="example"><img src="Straight edge.svg" height="200"/></div>
 <h4>Parameters</h4>
 <ul>
-<li><code>len</code>: Length in centimetres (default [object]).
+<li><code>len</code>: Length in centimetres
+(default <code>450</code>).
 Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
 </li>
-<li><code>label</code>: Replacement label, used if non-empty (default [object]).
+<li><code>label</code>: Replacement label, used if non-empty
 </li>
-<li><code>style</code>: Style of line (default [object]).
+<li><code>style</code>: Style of line
 </li>
 </ul>
 <h3>Warp</h3>
 <p>Move skater to new location/position</p>
 <h4>Parameters</h4>
 <ul>
-<li><code>x</code>: Horizontal coordinate to warp to (default [object]).
+<li><code>x</code>: Horizontal coordinate to warp to
 </li>
-<li><code>y</code>: Vertical coordinate to warp to (default [object]).
+<li><code>y</code>: Vertical coordinate to warp to
 </li>
-<li><code>dir</code>: Direction to be facing after warp, in degrees (0 is facing down) (default [object]).
+<li><code>dir</code>: Direction to be facing after warp, in degrees (0 is facing down)
 </li>
-<li><code>code</code>: Foot code to start with after warp (default [object]).
+<li><code>code</code>: Foot code to start with after warp
 </li>
 </ul>
 <h3>Rink</h3>
@@ -81,72 +84,84 @@ Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
 <div class="example"><img src="Rink.svg" height="200"/></div>
 <h4>Parameters</h4>
 <ul>
-<li><code>width</code>: Rink width in centimetres (default [object]).
+<li><code>width</code>: Rink width in centimetres
+(default <code>3000</code>).
 </li>
-<li><code>length</code>: Rink length in centimetres (default [object]).
+<li><code>length</code>: Rink length in centimetres
+(default <code>6100</code>).
 </li>
-<li><code>centre-line</code>: Whether to show the centre line (default [object]).
+<li><code>centre-line</code>: Whether to show the centre line
+(default <code>true</code>).
 </li>
-<li><code>centre-circle</code>: Size of the centre circle in centimetre, 0 to omit (default [object]).
+<li><code>centre-circle</code>: Size of the centre circle in centimetre, 0 to omit
+(default <code>400</code>).
 </li>
-<li><code>centre-faceoff</code>: Whether to show the centre face-off (default [object]).
+<li><code>centre-faceoff</code>: Whether to show the centre face-off
+(default <code>true</code>).
 </li>
-<li><code>mid-lines</code>: Location of mid-lines in centimetres from the centre line; 0 to omit (default [object]).
+<li><code>mid-lines</code>: Location of mid-lines in centimetres from the centre line; 0 to omit
+(default <code>800</code>).
 </li>
-<li><code>goal-lines</code>: Location of goal lines in centimetres from the ends; 0 to omit (default [object]).
+<li><code>goal-lines</code>: Location of goal lines in centimetres from the ends; 0 to omit
 </li>
-<li><code>goals</code>: Whether to show the goals (default [object]).
+<li><code>goals</code>: Whether to show the goals
 </li>
-<li><code>faceoffs</code>: Whether to show the face-offs (default [object]).
+<li><code>faceoffs</code>: Whether to show the face-offs
 </li>
 </ul>
 <h3>Info</h3>
 <p>Set diagram rendering information</p>
 <h4>Parameters</h4>
 <ul>
-<li><code>markers</code>: Whether to show begin/end move markers (default [object]).
+<li><code>markers</code>: Whether to show begin/end move markers
 </li>
-<li><code>bounds</code>: Whether to show overall bounds (default [object]).
+<li><code>bounds</code>: Whether to show overall bounds
 </li>
-<li><code>grid</code>: Grid size to display, 0 for no grid (default [object]).
+<li><code>grid</code>: Grid size to display, 0 for no grid
 </li>
-<li><code>margin-x</code>: Horizontal margin (default [object]).
+<li><code>margin-x</code>: Horizontal margin
+(default <code>50</code>).
 </li>
-<li><code>margin-y</code>: Vertical margin (default [object]).
+<li><code>margin-y</code>: Vertical margin
+(default <code>50</code>).
 </li>
-<li><code>move-bounds</code>: Whether to show bounds of each move (default [object]).
+<li><code>move-bounds</code>: Whether to show bounds of each move
 </li>
-<li><code>font-size</code>: Font size for labels; 0 for auto-scaling (default [object]).
+<li><code>font-size</code>: Font size for labels; 0 for auto-scaling
 </li>
-<li><code>stroke-width</code>: Stroke width; 0 for auto-scaling (default [object]).
+<li><code>stroke-width</code>: Stroke width; 0 for auto-scaling
 </li>
 </ul>
 <h3>Title</h3>
 <p>Diagram title</p>
 <h4>Parameters</h4>
 <ul>
-<li><code>text</code>: Text of title (default [object]).
+<li><code>text</code>: Text of title
 </li>
-<li><code>x</code>: Horizontal location of title; -1 indicates automatic centering (default [object]).
+<li><code>x</code>: Horizontal location of title; -1 indicates automatic centering
+(default <code>-1</code>).
 </li>
-<li><code>y</code>: Vertical location of title (default [object]).
+<li><code>y</code>: Vertical location of title
+(default <code>100</code>).
 </li>
-<li><code>font-size</code>: Font size for title; 0 for auto-scaling (default [object]).
+<li><code>font-size</code>: Font size for title; 0 for auto-scaling
 </li>
 </ul>
 <h3>Label</h3>
 <p>Diagram label</p>
 <h4>Parameters</h4>
 <ul>
-<li><code>text</code>: Text to display (default [object]).
+<li><code>text</code>: Text to display
 </li>
-<li><code>x</code>: Horizontal location of text (default [object]).
+<li><code>x</code>: Horizontal location of text
+(default <code>100</code>).
 </li>
-<li><code>y</code>: Vertical location of text (increasing down) (default [object]).
+<li><code>y</code>: Vertical location of text (increasing down)
+(default <code>100</code>).
 </li>
-<li><code>font-size</code>: Font size for label; 0 for auto-scaling (default [object]).
+<li><code>font-size</code>: Font size for label; 0 for auto-scaling
 </li>
-<li><code>rotate</code>: Angle to rotate text by (default [object]).
+<li><code>rotate</code>: Angle to rotate text by
 </li>
 </ul>
 <h3>Lfo3</h3>

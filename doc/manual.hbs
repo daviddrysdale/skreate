@@ -45,7 +45,16 @@
 {{/if}}
 <ul>
 {{#each this.params}}
-<li><code>{{this.name}}</code>: {{this.doc}} (default {{this.default}}).
+<li><code>{{this.name}}</code>: {{this.doc}}
+{{#if this.default.Number}}
+(default <code>{{this.default.Number}}</code>).
+{{/if}}
+{{#if this.default.Text}}
+(default <code>"{{this.default.Text}}"</code>).
+{{/if}}
+{{#if this.default.Boolean}}
+(default <code>{{this.default.Boolean}}</code>).
+{{/if}}
 {{#if this.short}}
 {{#if this.short.PlusMinus}}
 Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
@@ -55,7 +64,6 @@ Can also be modified by a <code>&lt;</code> or <code>&gt;</code> (repeated) suff
 {{/if}}
 {{/if}}
 </li>
-{{! TODO: display contents of default correctly }}
 {{/each}}
 </ul>
 {{/each}}
