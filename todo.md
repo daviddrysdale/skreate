@@ -61,37 +61,37 @@
     - [x] Skills 1-1
     - [x] Skills 1-2
     - [x] Skills 1-3
-    - [ ] Skills 1-4
+    - [ ] Skills 1-4: needs two-foot moves
     - [x] Skills 2-1
     - [x] Skills 2-2
-    - [ ] Skills 2-3
+    - [ ] Skills 2-3: needs 3-turn
     - [x] Skills 2-4
-    - [ ] Skills 2-5
+    - [ ] Skills 2-5: needs open mohawk
     - [x] Skills 3-1
-    - [ ] Skills 3-2
-    - [ ] Skills 3-3
-    - [ ] Skills 3-4
-    - [ ] Skills 3-5
-    - [ ] Skills 4-1
-    - [ ] Skills 4-2
-    - [ ] Skills 4-3
-    - [ ] Skills 4-4
-    - [ ] Skills 4-5
-    - [ ] Skills 5-1
-    - [ ] Skills 5-2
-    - [ ] Skills 5-3
-    - [ ] Skills 5-4
-    - [ ] Skills 5-5
-    - [ ] Skills 6-1
-    - [ ] Skills 6-2
-    - [ ] Skills 6-3
-    - [ ] Skills 6-4
-    - [ ] Skills 6-5
-    - [ ] Skills 7-1
-    - [ ] Skills 7-2
-    - [ ] Skills 7-3
-    - [ ] Skills 7-4
-    - [ ] Skills 7-5
-    - [ ] Skills 8-1
-    - [ ] Skills 8-2
-    - [ ] Skills 8-3
+    - [ ] Skills 3-2: needs 3-turn, open mohawk
+    - [ ] Skills 3-3: needs 3-turn
+    - [ ] Skills 3-4: needs twizzle
+    - [ ] Skills 3-5: needs closed mohawk, hop
+    - [ ] Skills 4-1: needs 3-turn
+    - [ ] Skills 4-2: needs 3-turn
+    - [ ] Skills 4-3: needs rocker
+    - [ ] Skills 4-4: needs 3-turn, twizzle
+    - [ ] Skills 4-5: needs closed choctaw, open mohawk
+    - [ ] Skills 5-1: needs 3-turn, mohawk
+    - [ ] Skills 5-2: needs rocker
+    - [ ] Skills 5-3: needs 3-turn, closed mohawk
+    - [ ] Skills 5-4: needs bracket
+    - [ ] Skills 5-5: needs 3-turn, open mohawk
+    - [ ] Skills 6-1: needs open mohawk, rocker, closed mohawk
+    - [ ] Skills 6-2: needs counter, open mohawk
+    - [ ] Skills 6-3: needs 3-turn, loop
+    - [ ] Skills 6-4: needs rocker, closed choctaw
+    - [ ] Skills 6-5: needs 3-turn, closed choctaw
+    - [ ] Skills 7-1: needs closed choctaw, 3-turn, counter
+    - [ ] Skills 7-2: needs closed choctaw, counter
+    - [ ] Skills 7-3: needs counter, twizzle
+    - [ ] Skills 7-4: needs rocker, counter
+    - [ ] Skills 7-5: needs bracket
+    - [ ] Skills 8-1: needs rocker, 3-turn, twizzle, bracket, pivot
+    - [ ] Skills 8-2: needs 3-turn, twizzle, bracket
+    - [ ] Skills 8-3: needs 3-turn, open mohawk, closed choctaw, closed mohawk, counter, twizzle
