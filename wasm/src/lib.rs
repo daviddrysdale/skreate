@@ -9,7 +9,7 @@ use wasm_bindgen::prelude::*;
 /// Perform initialization. Safe to be invoked more than once.
 #[wasm_bindgen]
 pub fn initialize() {
-    wasm_logger::init(wasm_logger::Config::default());
+    wasm_logger::init(wasm_logger::Config::new(log::Level::Debug));
     #[cfg(feature = "console_error_panic_hook")]
     {
         info!("initialize: set panic hook");
