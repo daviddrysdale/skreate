@@ -46,7 +46,7 @@ regenerate_examples: $(EXAMPLES_SVG)
 
 manual: web/doc/manual.html
 web/doc/manual.html: doc/manual.hbs $(DOCGEN)
-	$(DOCGEN) $< > $@
+	$(DOCGEN) --in-file $< --eg-dir web/examples/ --out-dir web/doc/
 
 $(DOCGEN): doc/src/main.rs
 	cargo build --manifest-path doc/Cargo.toml
