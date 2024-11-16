@@ -88,3 +88,18 @@ export function setup_editor(div, autofocus, text) {
     }
   }
 }
+
+// Return the text content of the URL or an error.  Loads the URL synchronously.
+export function load_skate(url) {
+  var result;
+  function listener() {
+    result = this.responseText;
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.addEventListener("load", listener);
+  xhr.open("GET", url, /* async= */false);
+  xhr.setRequestHeader("Cache-Control", "no-cache, no-store, max-age=0");
+  xhr.send();
+
+  return result;
+}

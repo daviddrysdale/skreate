@@ -55,10 +55,18 @@
 
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import {setup_editor} from './skreate.js';
+      import {setup_editor, load_skate} from './skreate.js';
 
       $(document).ready(function() {
-          var text = `LFO          # text after a hash is a comment and ignored
+        var urlParams = new URLSearchParams(window.location.search);
+        var text;
+        if (urlParams.has('text')) {
+          text = urlParams.get('text');
+        } else if (urlParams.get('load')) {
+          var url = urlParams.get('load');
+          text = load_skate(url);
+        } else {
+          text = `LFO          # text after a hash is a comment and ignored
 xf-RFI3      # put each move on its own line
 LFO; xf-RFI  # or use a semi-colon to separate moves
 
@@ -67,10 +75,8 @@ LFO-Rk
 
 Title [text="My Program"]
 Label [text="add label centred here",x=200,y=200]`
-        var urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('text')) {
-          text = urlParams.get('text');
         }
+
         setup_editor($('#demo'), true, text);
       });
     </script>
