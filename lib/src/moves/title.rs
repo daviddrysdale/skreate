@@ -20,6 +20,7 @@ impl Title {
         name: "Title",
         summary: "Diagram title",
         example: "Title[text=\"Waltz\"]",
+        visible: false,
         params: &[
             params::Info {
                 name: "text",

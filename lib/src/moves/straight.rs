@@ -24,6 +24,7 @@ impl StraightEdge {
         name: "Straight edge",
         summary: "Straight edge",
         example: "LF",
+        visible: true,
         params: &[
             params::Info {
                 name: "len",

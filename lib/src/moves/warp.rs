@@ -20,6 +20,7 @@ impl Warp {
         name: "Warp",
         summary: "Move skater to new location/position",
         example: "Warp[x=100,y=100,dir=270]",
+        visible: false,
         params: &[
             params::Info {
                 name: "x",

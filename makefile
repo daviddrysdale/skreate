@@ -46,6 +46,7 @@ regenerate_examples: $(EXAMPLES_SVG)
 
 manual: web/doc/manual.html
 web/doc/manual.html: doc/manual.hbs $(DOCGEN)
+	rm -f web/doc/*
 	$(DOCGEN) --in-file $< --eg-dir web/examples/ --out-dir web/doc/
 
 $(DOCGEN): doc/src/main.rs

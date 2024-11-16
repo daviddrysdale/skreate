@@ -21,6 +21,7 @@ impl Label {
         name: "Label",
         summary: "Diagram label",
         example: "Label[text=\"Start\",x=500,y=200]",
+        visible: false,
         params: &[
             params::Info {
                 name: "text",

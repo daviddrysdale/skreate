@@ -45,7 +45,7 @@
 - [ ] Proper parser, coping with quoted strings
 - [ ] Counts and count display options
 - [x] Add in/out curvature for moves?
-- [ ] Generate a manual from move registry via new `Move` methods
+- [x] Generate a manual from move registry via new `Move` methods
 - [ ] Option to add direction-of-travel arrows?
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot

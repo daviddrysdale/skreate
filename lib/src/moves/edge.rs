@@ -23,6 +23,7 @@ impl Curve {
         summary: "Curving edge",
         name: "Edge",
         example: "LFO",
+        visible: true,
         params: &[
             params::Info {
                 name: "angle",

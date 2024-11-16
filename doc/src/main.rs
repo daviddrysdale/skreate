@@ -68,4 +68,18 @@ fn main() {
                 .as_bytes(),
         )
         .expect("failed to write rendered manual");
+
+    // Also generate a sample SVG file for each move.
+    for info in infos {
+        if !info.visible {
+            continue;
+        }
+        let svg = skreate::generate(info.example)
+            .expect(&format!("example for {} does not parse!", info.example));
+        let filename = out_path.join(format!("{}.svg", info.name));
+        let mut svgfile = File::create(filename).expect("failed to create {filename:?}");
+        svgfile
+            .write_all(svg.as_bytes())
+            .expect("failed to write rendered SVG file");
+    }
 }

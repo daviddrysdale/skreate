@@ -24,6 +24,7 @@ impl Info {
         name: "Info",
         summary: "Set diagram rendering information",
         example: "Info[markers=true,grid=100,move-bounds=true]",
+        visible: false,
         params: &[
             params::Info {
                 name: "markers",

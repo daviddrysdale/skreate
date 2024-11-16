@@ -26,6 +26,7 @@ impl Rink {
         name: "Rink",
         summary: "Rink depiction",
         example: "Rink",
+        visible: true,
         params: &[
             params::Info {
                 name: "width",

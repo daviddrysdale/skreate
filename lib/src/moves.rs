@@ -35,6 +35,8 @@ pub struct Info {
     pub summary: &'static str,
     /// Example input for move.
     pub example: &'static str,
+    /// Whether the move is visible.
+    pub visible: bool,
     /// Move parameter information.
     pub params: &'static [crate::params::Info],
 }
@@ -101,6 +103,7 @@ macro_rules! move_definition {
                 name: stringify!($name),
                 summary: stringify!($name),
                 example: $text,
+                visible: true,
                 params: &[],
             };
             pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
