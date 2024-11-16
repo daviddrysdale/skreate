@@ -5,6 +5,7 @@ use crate::{
     RenderOptions, Rotation, SkatingDirection::*, SpatialTransition, Transition,
 };
 use log::{info, warn};
+use serde::Serialize;
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
@@ -26,7 +27,7 @@ enum Error {
 }
 
 /// Information about a class of moves.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct Info {
     /// Name of the move.
     pub name: &'static str,

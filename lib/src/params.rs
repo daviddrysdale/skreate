@@ -2,7 +2,7 @@
 
 use log::trace;
 use regex::Regex;
-
+use serde::Serialize;
 use std::borrow::Cow;
 use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
@@ -41,7 +41,7 @@ pub struct MoveParam {
 }
 
 /// A parameter value may be either a number or a `String`.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub enum Value {
     /// Numeric value.
     Number(i32),
@@ -124,7 +124,7 @@ impl Display for Value {
 }
 
 /// Set of predefined values for numeric short codes.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 pub struct Detents {
     /// Value to use for one detent more than default.
     pub add1: i32,
@@ -141,7 +141,7 @@ pub struct Detents {
 }
 
 /// Abbreviated form for a parameter.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 pub enum Abbrev {
     /// Numeric parameter can be specified as "+", "+++", "--" etc.
     PlusMinus(Detents),
@@ -165,7 +165,7 @@ impl Abbrev {
 }
 
 /// Valid range for parameter values.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 pub enum Range {
     /// Only text strings are allowed (resulting in `Value::Text`).
     Text,
@@ -203,7 +203,7 @@ impl Range {
 }
 
 /// Information about a parameter for a move.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct Info {
     /// Name of the parameter.
     pub name: &'static str,
