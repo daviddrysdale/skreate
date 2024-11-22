@@ -1,8 +1,8 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<title>Skills 1 Exercise 4</title>
+<title>Skills 2 Exercise 4</title>
 <desc>
 <text>
-Skills 1 Exercise 4
+Skills 2 Exercise 4
 </text>
 </desc>
 <defs>
@@ -57,7 +57,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </defs>
 <use id="r_0_c_0_4" style="stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink"/>
 <text style="font-size: 90pt;" x="1500" y="200">
-Skills 1 Exercise 4
+Skills 2 Exercise 4
 </text>
 <text style="font-size:50pt;" x="1950" y="525">
 START
