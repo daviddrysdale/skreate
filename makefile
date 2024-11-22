@@ -30,7 +30,7 @@ $(CLI): cli/src/main.rs $(LIBRARY_SRC)
 run-cli: target/debug/skreate-cli
 	$<
 
-examples/%.svg: examples/%.skate $(CLI)
+web/examples/%.svg: web/examples/%.skate $(CLI)
 	$(CLI) $< > $@
 
 test:
