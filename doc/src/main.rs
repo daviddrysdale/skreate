@@ -42,7 +42,7 @@ fn main() {
 
     let mut hbs = handlebars::Handlebars::new();
     hbs.register_template_file(TEMPLATE, &opts.in_file)
-        .expect(&format!("failed to load template at {}", opts.in_file));
+        .unwrap_or_else(|_| panic!("failed to load template at {}", opts.in_file));
 
     let mut examples: Vec<String> = Vec::new();
     if let Some(eg_dir) = &opts.eg_dir {
@@ -75,7 +75,7 @@ fn main() {
             continue;
         }
         let svg = skreate::generate(info.example)
-            .expect(&format!("example for {} does not parse!", info.example));
+            .unwrap_or_else(|_| panic!("example for {} does not parse!", info.example));
         let filename = out_path.join(format!("{}.svg", info.name));
         let mut svgfile = File::create(filename).expect("failed to create {filename:?}");
         svgfile
