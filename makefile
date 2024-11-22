@@ -39,7 +39,7 @@ test:
 clippy:
 	cargo clippy --all-targets
 
-regenerate: regenerate_examples
+regenerate: regenerate_examples manual
 	SKREATE_REGENERATE=1 cargo test -- test_compare
 
 regenerate_examples: $(EXAMPLES_SVG)
