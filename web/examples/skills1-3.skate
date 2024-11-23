@@ -2,7 +2,7 @@ Rink
 Title [text="Skills 1 Exercise 3",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1880,y=625,text="START",font-size=50]
+Text [x=1880,y=625,text="START",font-size=50]
 Warp [x=1700,y=600,dir=90,code="LFO"]
 LF [len=500,label=" ",style="dashed"]
 LFO [angle=30,len=280]
@@ -12,8 +12,8 @@ xf-RFI [angle=30,len=290]
 LFO [angle=30,len=260]
 xf-RFI [angle=30,len=240]
 
-Label [x=1400,y=1740,text="OPTIONAL",font-size=40,rotate=-90]
-Label [x=1470,y=1740,text="TURN",font-size=40,rotate=-90]
+Text [x=1400,y=1740,text="OPTIONAL",font-size=40,rotate=-90]
+Text [x=1470,y=1740,text="TURN",font-size=40,rotate=-90]
 Warp [x=1600,y=1750,dir=270,code="LBO"]
 
 LBO [angle=30,len=280]
@@ -32,8 +32,8 @@ xf-LBI [angle=30,len=290]
 RBO [angle=30,len=280]
 xf-LBI [angle=30,len=240]
 
-Label [x=2050,y=3850,text="OPTIONAL",font-size=40,rotate=-90]
-Label [x=2120,y=3850,text="TURN",font-size=40,rotate=-90]
+Text [x=2050,y=3850,text="OPTIONAL",font-size=40,rotate=-90]
+Text [x=2120,y=3850,text="TURN",font-size=40,rotate=-90]
 Warp [x=2200,y=3850,dir=290,code="RFO"]
 
 RFO [angle=30,len=280]

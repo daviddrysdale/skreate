@@ -2,7 +2,7 @@ Rink
 Title [text="Skills 1 Exercise 2",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1200,y=2800,text="START CIRCLE 1",font-size=50]
+Text [x=1200,y=2800,text="START CIRCLE 1",font-size=50]
 Warp [x=1600,y=2780,dir=270,code="RBO"]
 
 RBO-
@@ -13,7 +13,7 @@ RBO-
 xf-LBI-
 RBO [angle=160,len=2400]
 
-Label [x=1200,y=3340,text="START CIRCLE 2",font-size=50]
+Text [x=1200,y=3340,text="START CIRCLE 2",font-size=50]
 Warp [x=1600,y=3280,dir=270,code="RBO"]
 
 LBO-

@@ -1,4 +1,4 @@
-//! Pseudo-move definition for diagram label.
+//! Pseudo-move definition for diagram text.
 
 use super::Error;
 use crate::{
@@ -6,9 +6,9 @@ use crate::{
     RenderOptions, Skater,
 };
 use std::borrow::Cow;
-use svg::{node::element::Text, Document};
+use svg::{node::element::Text as SvgText, Document};
 
-pub struct Label {
+pub struct Text {
     input: OwnedInput,
     text: String,
     pos: Position,
@@ -16,11 +16,11 @@ pub struct Label {
     rotate: i32,
 }
 
-impl Label {
+impl Text {
     pub const INFO: moves::Info = moves::Info {
-        name: "Label",
-        summary: "Diagram label",
-        example: "Label[text=\"Start\",x=500,y=200]",
+        name: "Text",
+        summary: "Diagram text",
+        example: "Text[text=\"Start\",x=500,y=200]",
         visible: false,
         params: &[
             params::Info {
@@ -86,7 +86,7 @@ impl Label {
     }
 }
 
-impl Move for Label {
+impl Move for Text {
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),
@@ -107,7 +107,7 @@ impl Move for Label {
         None
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
-        let mut text = Text::new(self.text.clone())
+        let mut text = SvgText::new(self.text.clone())
             .set("x", self.pos.x)
             .set("y", self.pos.y)
             .set("style", format!("font-size:{}pt;", self.font_size(opts)));

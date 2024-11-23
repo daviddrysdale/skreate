@@ -2,7 +2,7 @@ Rink
 Title [text="Skills 2 Exercise 5",y=200,font-size=90]
 Info [grid=0,markers=false]
 
-Label [x=1700,y=325,text="SIDE 1",font-size=50]
+Text [x=1700,y=325,text="SIDE 1",font-size=50]
 Warp [x=1500,y=300,dir=90,code="LFO"]
 
 LF [len=900,label=" ",style="dashed"]
@@ -31,7 +31,7 @@ xf-RBI [angle=40,len=300]
 Shift [rotate=-70]
 LFO [angle=90,len=400]
 
-Label [x=1000,y=5900,text="SIDE 2",font-size=50]
+Text [x=1000,y=5900,text="SIDE 2",font-size=50]
 Warp [x=1200,y=5900,dir=270,code="RFI"]
 
 RF [len=600,label=" ",style="dashed"]
