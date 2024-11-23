@@ -68,7 +68,7 @@
     - [x] Skills 2-2
     - [ ] Skills 2-3: needs 3-turn
     - [x] Skills 2-4
-    - [ ] Skills 2-5: needs open mohawk
+    - [x] Skills 2-5: needs open mohawk
     - [x] Skills 3-1
     - [ ] Skills 3-2: needs 3-turn, open mohawk
     - [ ] Skills 3-3: needs 3-turn

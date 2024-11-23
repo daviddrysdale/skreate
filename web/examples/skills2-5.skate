@@ -1,0 +1,61 @@
+Rink
+Title [text="Skills 2 Exercise 5",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Label [x=1700,y=325,text="SIDE 1",font-size=50]
+Warp [x=1500,y=300,dir=90,code="LFO"]
+
+LF [len=900,label=" ",style="dashed"]
+Shift [rotate=-30]
+LFO [angle=60,len=600]
+
+# TODO: replace with RFI-OpMo
+RFI [angle=60,len=500]
+Shift [side=70,fwd=-95,rotate=140]
+LBI [angle=50,len=500]
+
+wd-RBI>
+LBO [angle=40,len=500]
+xf-RBI [angle=30,len=300]
+Shift [rotate=-70]
+LFO [angle=95,len=650]
+
+# TODO: replace with RFI-OpMo
+RFI [angle=60,len=500]
+Shift [side=70,fwd=-95,rotate=140]
+LBI [angle=50,len=500]
+
+wd-RBI>
+LBO [angle=40,len=300]
+xf-RBI [angle=40,len=300]
+Shift [rotate=-70]
+LFO [angle=90,len=400]
+
+Label [x=1000,y=5900,text="SIDE 2",font-size=50]
+Warp [x=1200,y=5900,dir=270,code="RFI"]
+
+RF [len=600,label=" ",style="dashed"]
+RFI [angle=120,len=700] # TODO: make dashed, drop label
+RFO [len=450,angle=30]
+
+# TODO: replace with LFI-OpMo
+LFI [angle=60,len=500]
+Shift [side=-70,fwd=-95,rotate=-140]
+RBI [angle=50,len=500]
+
+wd-LBI>
+RBO [angle=40,len=500]
+xf-LBI [angle=40,len=300]
+Shift [rotate=70]
+RFO [angle=100,len=650]
+
+# TODO: replace with LFI-OpMo
+LFI [angle=60,len=500]
+Shift [side=-70,fwd=-95,rotate=-140]
+RBI [angle=50,len=500]
+
+wd-LBI>
+RBO [angle=40,len=500]
+xf-LBI [angle=30,len=300]
+Shift [rotate=70]
+RFO [angle=90,len=600]
