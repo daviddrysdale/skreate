@@ -44,7 +44,7 @@
 - [x] Title, text inserts
 - [ ] Proper parser, coping with quoted strings
 - [ ] URL parameters for initial window sizes
-- [ ] Add relative=bool parameter to Warp
+- [x] Add relative=bool parameter to Warp
 - [ ] Counts and count display options
 - [x] Add in/out curvature for moves?
 - [x] Generate a manual from move registry via new `Move` methods

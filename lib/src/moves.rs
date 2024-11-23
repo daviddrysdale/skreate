@@ -13,6 +13,7 @@ mod edge;
 mod info;
 mod label;
 mod rink;
+mod shift;
 mod straight;
 mod title;
 mod warp;
@@ -197,6 +198,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, straight::StraightEdge);
 
     register!(cons, info, warp::Warp);
+    register!(cons, info, shift::Shift);
     register!(cons, info, rink::Rink);
     register!(cons, info, info::Info);
     register!(cons, info, title::Title);
