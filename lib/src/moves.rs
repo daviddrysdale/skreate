@@ -11,6 +11,7 @@ use svg::node::element::{Group, Path};
 
 mod edge;
 mod info;
+mod label;
 mod rink;
 mod shift;
 mod straight;
@@ -203,6 +204,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, info::Info);
     register!(cons, info, title::Title);
     register!(cons, info, text::Text);
+    register!(cons, info, label::Label);
 
     register!(cons, info, Lfo3, XfLfo3, Lbi3, XbLbi3, Rfi3, XfRfi3, Rbo3, XbRbo3);
     register!(cons, info, Rfo3, XfRfo3, Rbi3, XbRbi3, Lfi3, XfLfi3, Lbo3, XbLbo3);
