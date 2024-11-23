@@ -2,10 +2,11 @@
 
 use super::Error;
 use crate::{
-    bounds, code, moves, param, params, params::Value, parse_code, path, pos, Bounds, Code, Input,
-    Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation, Skater,
-    SpatialTransition, Transition,
+    apply_style, bounds, code, moves, param, params, params::Value, parse_code, path, pos, Bounds,
+    Code, Input, Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions,
+    Rotation, Skater, SpatialTransition, Transition,
 };
+use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
 
@@ -15,6 +16,8 @@ pub struct Curve {
     code: Code,
     angle: i32,
     len: i32,
+    label: Option<String>,
+    style: String,
 }
 
 impl Curve {
@@ -53,6 +56,20 @@ impl Curve {
                     less3: 100,
                 })),
             },
+            params::Info {
+                name: "label",
+                doc: "Replacement label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
+            params::Info {
+                name: "style",
+                doc: "Style of line",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -62,6 +79,7 @@ impl Curve {
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        let label = params[2].value.as_str().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -69,6 +87,12 @@ impl Curve {
             code,
             angle: params[0].value.as_i32().unwrap(),
             len: params[1].value.as_i32().unwrap(),
+            label: if label.is_empty() {
+                None
+            } else {
+                Some(label.to_string())
+            },
+            style: params[3].value.as_str().unwrap().to_string(),
         }))
     }
 
@@ -117,7 +141,12 @@ impl Curve {
 
 impl Move for Curve {
     fn params(&self) -> Vec<MoveParam> {
-        vec![param!(self.angle), param!(self.len)]
+        vec![
+            param!(self.angle),
+            param!(self.len),
+            param!("label" = (self.label.clone().unwrap_or("".to_string()))),
+            param!(self.style),
+        ]
     }
     fn start(&self) -> Option<Code> {
         Some(self.code)
@@ -168,7 +197,9 @@ impl Move for Curve {
         let sweep = if self.sign() == -1 { 0 } else { 1 };
         let Position { x, y } = self.endpoint();
 
-        Some(Group::new().add(path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}")))
+        let mut path = path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}");
+        path = apply_style(path, &self.style);
+        Some(Group::new().add(path))
     }
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
         let font_size = opts.font_size() as i64;
@@ -177,7 +208,10 @@ impl Move for Curve {
         let half_theta = (self.sign() * self.angle) as f64 * PI / (2.0 * 180.0); // radians
         let distance = (-3 * font_size) as f64 * self.sign() as f64;
         let mut labels = vec![Label {
-            text: format!("{}", self.code),
+            text: match &self.label {
+                Some(label) => label.clone(),
+                None => format!("{}", self.code),
+            },
             pos: mid_pt
                 + pos!(
                     (distance * half_theta.cos()) as i64,

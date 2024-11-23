@@ -37,7 +37,7 @@ Text [x=1000,y=5900,text="SIDE 2",font-size=50]
 Warp [x=1200,y=5900,dir=270,code="RFI"]
 
 RF [len=600,label=" ",style="dashed"]
-RFI [angle=120,len=700] # TODO: make dashed, drop label
+RFI [angle=120,len=700,label=" ",style="dashed"]
 RFO [len=450,angle=30]
 
 # TODO: replace with LFI-OpMo
