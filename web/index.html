@@ -24,7 +24,7 @@
           <tr>
             <td>
             <h3>Demo. Try editing me below</h3>
-            <div class="editor-wrapper">
+            <div class="editor-wrapper" id="ed">
               <div class="editor">
               </div>
             </div>
@@ -32,7 +32,7 @@
             |
             <a href="#" class="preview">Preview</a>
             </td>
-            <td><div class="diagram"></div></td>
+            <td><div class="diagram" id="pic"></div></td>
           </tr>
         </table>
       </section>
@@ -61,6 +61,23 @@
 
       $(document).ready(function() {
         var urlParams = new URLSearchParams(window.location.search);
+        var val = urlParams.get('w');
+        if (val) {
+          $('#pic')[0].style.width = val;
+        }
+        var val = urlParams.get('h');
+        if (val) {
+          $('#pic')[0].style.height = val;
+        }
+        var val = urlParams.get('edw');
+        if (val) {
+          $('#ed')[0].style.width = val;
+        }
+        var val = urlParams.get('edh');
+        if (val) {
+          $('#ed')[0].style.height = val;
+        }
+
         var text;
         if (urlParams.has('text')) {
           text = urlParams.get('text');
