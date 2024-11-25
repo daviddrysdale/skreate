@@ -32,6 +32,16 @@ struct Skater {
     code: Code,
 }
 
+impl Skater {
+    fn at_zero(code: Code) -> Self {
+        Self {
+            pos: Position::default(),
+            dir: Direction(0),
+            code,
+        }
+    }
+}
+
 impl Display for Skater {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(
@@ -242,6 +252,16 @@ trait Move {
             use_link = use_link.set("id", input.unique_id());
         }
         doc = doc.add(use_link);
+        self.render_labels(doc, start, opts)
+    }
+
+    /// Render the move labels into the given SVG document.
+    fn render_labels(
+        &self,
+        mut doc: Document,
+        start: &Skater,
+        opts: &mut RenderOptions,
+    ) -> Document {
         for label in self.labels(opts) {
             let loc = *start + label.pos;
             let text = Text::new(label.text)
@@ -331,11 +351,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     // Second pass: figure out a bounding box, starting at (0,0) facing 0.
     info!("========= determine bounding box ===========");
     let mut bounds: Option<Bounds> = None;
-    let mut skater = Skater {
-        pos: Position::default(),
-        dir: Direction::new(0),
-        code: code!(BF),
-    };
+    let mut skater = Skater::at_zero(code!(BF));
     let mut first = true;
     for mv in &moves {
         if first {

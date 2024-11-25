@@ -9,6 +9,7 @@ use serde::Serialize;
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
+mod compound;
 mod edge;
 mod info;
 mod label;
