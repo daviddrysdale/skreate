@@ -167,7 +167,7 @@ impl Move for Rink {
             bottom_right: pos!(self.width as i64, self.length as i64),
         })
     }
-    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
         let rink_rect = Rectangle::new()
             .set("x", 0)
             .set("y", 0)
@@ -250,7 +250,7 @@ impl Move for Rink {
         }
         // TODO: render `show_goals`
         // TODO: render `show_faceoffs`
-        Some(grp)
+        vec![grp]
     }
 }
 

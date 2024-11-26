@@ -93,9 +93,9 @@ impl Move for Title {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn def(&self, opts: &mut RenderOptions) -> Option<Group> {
+    fn defs(&self, opts: &mut RenderOptions) -> Vec<Group> {
         opts.title.clone_from(&self.text);
-        None
+        Vec::new()
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None

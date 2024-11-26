@@ -119,7 +119,7 @@ impl Move for StraightEdge {
             code: self.end(),
         }
     }
-    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
         let len = self.len;
         let mut path = if self.foot == Foot::Both {
             path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} l 0,{len}")
@@ -127,7 +127,7 @@ impl Move for StraightEdge {
             path!("M 0,0 l 0,{len}")
         };
         path = apply_style(path, &self.style);
-        Some(Group::new().add(path))
+        vec![Group::new().add(path)]
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         if self.foot == Foot::Both {

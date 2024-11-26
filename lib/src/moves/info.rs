@@ -138,22 +138,22 @@ impl Move for Info {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
     }
-    fn def(&self, opts: &mut RenderOptions) -> Option<Group> {
+    fn defs(&self, opts: &mut RenderOptions) -> Vec<Group> {
         // Change some options once and for all in the prelude.
         opts.show_bounds = self.bounds;
         opts.grid = self.grid.map(|g| g as usize);
         opts.show_move_bounds = self.move_bounds;
 
-        let mut defs = Group::new();
+        let mut grp = Group::new();
         if self.markers {
-            defs = defs.add(
+            grp = grp.add(
                 path!(
                     "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
                 )
                 .set("style", "stroke:red;")
                 .set("id", "end-mark"),
             );
-            defs = defs.add(
+            grp = grp.add(
                 path!(
                     "M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10",
                 )
@@ -161,7 +161,7 @@ impl Move for Info {
                 .set("id", "start-mark"),
             );
         }
-        Some(defs)
+        vec![grp]
     }
     fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
         // Some options can be toggled on/off as we go along.

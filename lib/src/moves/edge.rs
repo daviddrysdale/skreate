@@ -191,7 +191,7 @@ impl Move for Curve {
 
         Some(bounds)
     }
-    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
         let r = self.radius() as i64;
         let big = if self.angle >= 180 { 1 } else { 0 };
         let sweep = if self.sign() == -1 { 0 } else { 1 };
@@ -199,7 +199,7 @@ impl Move for Curve {
 
         let mut path = path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}");
         path = apply_style(path, &self.style);
-        Some(Group::new().add(path))
+        vec![Group::new().add(path)]
     }
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
         let font_size = opts.font_size() as i64;

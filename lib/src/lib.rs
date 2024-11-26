@@ -222,9 +222,9 @@ trait Move {
         Some(bounds)
     }
 
-    /// Emit SVG group definition for the move.
-    fn def(&self, _opts: &mut RenderOptions) -> Option<Group> {
-        None
+    /// Emit SVG group definitions for the move.
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
+        Vec::new()
     }
 
     /// Return the labels for this move. Each returned position is relative to (0,0) at 0°.
@@ -232,9 +232,10 @@ trait Move {
         Vec::new()
     }
 
-    /// Render the move into the given SVG document, assuming the existence of groups included in the output from [`defs`].
+    /// Render the move into the given SVG document.
     fn render(&self, mut doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
-        // Default implementation uses the definition, suitably translated and rotated.
+        // Default implementation assumes that [`defs`] has emitted a single definition, and uses that suitably
+        // translated and rotated.
         let def_id = self.text();
         let mut use_link = use_at(start, &def_id, opts);
         if let Some(input) = self.input() {
@@ -297,12 +298,29 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let mut defs = Definitions::new().add(style);
     for mv in &moves {
         let id = mv.text();
-        if seen.contains(&id) {
-            continue;
-        }
-        if let Some(group) = mv.def(&mut opts) {
-            seen.insert(id.clone());
-            defs = defs.add(group.set("id", id));
+        let mut grps = mv.defs(&mut opts);
+        match grps.len() {
+            0 => continue,
+            1 => {
+                // Special case a single group, using the ID as-is.
+                if seen.contains(&id) {
+                    continue;
+                }
+                let group = grps.remove(0);
+                defs = defs.add(group.set("id", id.clone()));
+                seen.insert(id);
+            }
+            _ => {
+                // Multiple groups, add a suffix to the ID.
+                for (idx, group) in grps.into_iter().enumerate() {
+                    let id = format!("{id}_{idx}");
+                    if seen.contains(&id) {
+                        continue;
+                    }
+                    defs = defs.add(group.set("id", id.clone()));
+                    seen.insert(id);
+                }
+            }
         }
     }
     doc = doc
