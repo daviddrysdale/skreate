@@ -31,16 +31,16 @@ impl Label {
                 short: None,
             },
             params::Info {
-                name: "side",
-                doc:
-                    "Location of text relative to current position, sideways from current direction",
+                name: "fwd",
+                doc: "Location of text relative to current position, in current direction",
                 default: Value::Number(0),
                 range: params::Range::Any,
                 short: None,
             },
             params::Info {
-                name: "fwd",
-                doc: "Location of text relative to current position, in current direction",
+                name: "side",
+                doc:
+                    "Location of text relative to current position, sideways from current direction",
                 default: Value::Number(0),
                 range: params::Range::Any,
                 short: None,
@@ -72,7 +72,7 @@ impl Label {
         Ok(Box::new(Self {
             input: input.owned(),
             text: params[0].value.as_str().unwrap().to_string(),
-            delta: Position::from_params(&params[1], &params[2]),
+            delta: Position::from_params(&params[2], &params[1]),
             font_size: if font_size > 0 {
                 Some(font_size as u32)
             } else {
@@ -91,8 +91,8 @@ impl Move for Label {
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),
-            param!("side" = (self.delta.x as i32)),
             param!("fwd" = (self.delta.y as i32)),
+            param!("side" = (self.delta.x as i32)),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
             param!(self.rotate),
         ]
