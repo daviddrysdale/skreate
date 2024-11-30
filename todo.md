@@ -17,7 +17,10 @@
     - [ ] Bracket
     - [ ] Rocker
     - [ ] Counter
-    - [ ] Mohawk
+    - [x] Open Mohawk
+    - [ ] Closed Mohawk
+    - [ ] Open Choctaw
+    - [ ] Closed Choctaw
     - [ ] Twizzle
     - [ ] Loop
     - [ ] Pivot

@@ -14,6 +14,7 @@ mod compound;
 mod edge;
 mod info;
 mod label;
+mod mohawk;
 mod rink;
 mod shift;
 mod straight;
@@ -202,6 +203,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     // Insert moves in order of importance, as they will appear in the manual.
     register!(cons, info, edge::Curve);
     register!(cons, info, straight::StraightEdge);
+    register!(cons, info, mohawk::OpenMohawk);
     register!(cons, info, coe::ChangeOfEdge);
 
     register!(cons, info, warp::Warp);

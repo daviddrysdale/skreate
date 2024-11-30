@@ -7,13 +7,9 @@ Warp [x=1500,y=300,dir=90,code="LFO"]
 
 LF [len=900,label=" ",style="dashed"]
 Shift [rotate=-30]
-LFO [angle=60,len=600]
+LFO [angle=70,len=600]
 
-# TODO: replace with RFI-OpMo
-RFI [angle=60,len=500]
-Label [text="OpMo",fwd=20,side=80]
-Shift [side=70,fwd=-95,rotate=140]
-LBI [angle=50,len=500]
+RFI-OpMo [angle=70,len=600,delta_angle=10]
 
 wd-RBI>
 LBO [angle=40,len=500]
@@ -21,17 +17,13 @@ xf-RBI [angle=30,len=300]
 Shift [rotate=-70]
 LFO [angle=95,len=650]
 
-# TODO: replace with RFI-OpMo
-RFI [angle=60,len=500]
-Label [text="OpMo",fwd=20,side=80]
-Shift [side=70,fwd=-95,rotate=140]
-LBI [angle=50,len=500]
+RFI-OpMo [angle=50,len=500,delta_angle=30]
 
 wd-RBI>
 LBO [angle=40,len=300]
 xf-RBI [angle=40,len=300]
-Shift [rotate=-70]
-LFO [angle=90,len=400]
+Shift [rotate=-90]
+LFO [angle=90,len=600]
 
 Text [x=1000,y=5900,text="SIDE 2",font-size=50]
 Warp [x=1200,y=5900,dir=270,code="RFI"]
@@ -40,11 +32,7 @@ RF [len=600,label=" ",style="dashed"]
 RFI [angle=120,len=700,label=" ",style="dashed"]
 RFO [len=450,angle=30]
 
-# TODO: replace with LFI-OpMo
-LFI [angle=60,len=500]
-Label [text="OpMo",fwd=20,side=-80]
-Shift [side=-70,fwd=-95,rotate=-140]
-RBI [angle=50,len=500]
+LFI-OpMo [angle=80,len=550,delta_angle=-10]
 
 wd-LBI>
 RBO [angle=40,len=500]
@@ -52,14 +40,10 @@ xf-LBI [angle=40,len=300]
 Shift [rotate=70]
 RFO [angle=100,len=650]
 
-# TODO: replace with LFI-OpMo
-LFI [angle=60,len=500]
-Label [text="OpMo",fwd=20,side=-80]
-Shift [side=-70,fwd=-95,rotate=-140]
-RBI [angle=50,len=500]
+LFI-OpMo [angle=80,len=600,delta_angle=-10]
 
 wd-LBI>
 RBO [angle=40,len=500]
 xf-LBI [angle=30,len=300]
-Shift [rotate=70]
+Shift [rotate=80]
 RFO [angle=90,len=600]
