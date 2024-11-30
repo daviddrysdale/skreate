@@ -104,11 +104,7 @@ impl ChangeOfEdge {
         let out_code = Code {
             foot: entry_code.foot,
             dir: entry_code.dir,
-            edge: match entry_code.edge {
-                Edge::Outside => Edge::Inside,
-                Edge::Inside => Edge::Outside,
-                Edge::Flat => unreachable!(),
-            },
+            edge: entry_code.edge.opposite(),
         };
 
         let pos = input.pos;

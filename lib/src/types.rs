@@ -274,6 +274,17 @@ pub enum Foot {
     Both,
 }
 
+impl Foot {
+    /// Return opposite `Foot`.
+    pub fn opposite(&self) -> Self {
+        match self {
+            Foot::Left => Foot::Right,
+            Foot::Right => Foot::Left,
+            Foot::Both => Foot::Both,
+        }
+    }
+}
+
 impl Display for Foot {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         match self {
@@ -291,6 +302,16 @@ pub enum SkatingDirection {
     Forward,
     /// Skating backwards.
     Backward,
+}
+
+impl SkatingDirection {
+    /// Return opposite `SkatingDirection`.
+    pub fn opposite(&self) -> Self {
+        match self {
+            SkatingDirection::Forward => SkatingDirection::Backward,
+            SkatingDirection::Backward => SkatingDirection::Forward,
+        }
+    }
 }
 
 impl Display for SkatingDirection {
@@ -311,6 +332,17 @@ pub enum Edge {
     Inside,
     /// Flat
     Flat,
+}
+
+impl Edge {
+    /// Return opposite `Edge`.
+    pub fn opposite(&self) -> Self {
+        match self {
+            Edge::Outside => Edge::Inside,
+            Edge::Inside => Edge::Outside,
+            Edge::Flat => Edge::Flat,
+        }
+    }
 }
 
 impl Display for Edge {
