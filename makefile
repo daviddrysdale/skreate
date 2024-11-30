@@ -45,11 +45,13 @@ regenerate: regenerate_examples manual
 regenerate_examples: $(EXAMPLES_SVG)
 
 manual: web/doc/manual.html
-web/doc/manual.html: doc/manual.hbs $(DOCGEN)
+web/doc/manual.html: doc/manual.hbs $(DOCGEN) $(LIBRARY_SRC)
 	rm -f web/doc/*
 	$(DOCGEN) --in-file $< --eg-dir web/examples/ --out-dir web/doc/
+clean_manual:
+	rm -f web/doc/* web/doc/manual.html
 
-$(DOCGEN): doc/src/main.rs
+$(DOCGEN): doc/src/main.rs $(LIBRARY_SRC)
 	cargo build --manifest-path doc/Cargo.toml
 
 publish: clean build publish_build publish_tag
