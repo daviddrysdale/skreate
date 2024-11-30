@@ -1,0 +1,34 @@
+<svg height="672" viewBox="-50 -50 722 672" width="722" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+</style>
+<g id="LFO-CoE_0">
+<path d="M 0,0 a 286,286 0 0 0 286,286"/>
+</g>
+<g id="LFO-CoE_1">
+<path d="M 0,0 l 0,50"/>
+</g>
+<g id="LFO-CoE_2">
+<path d="M 0,0 a 286,286 0 0 1 -286,286"/>
+</g>
+</defs>
+<use style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-CoE_0"/>
+<use style="stroke-width:1;" transform="translate(286 286) rotate(270)" xlink:href="#LFO-CoE_1"/>
+<use style="stroke-width:1;" transform="translate(336 286) rotate(270)" xlink:href="#LFO-CoE_2"/>
+<text style="font-size:14pt;" x="112" y="173">
+LFO
+</text>
+<text style="font-size:14pt;" x="311" y="256">
+COE
+</text>
+<text style="font-size:14pt;" x="509" y="398">
+LFI
+</text>
+</svg>

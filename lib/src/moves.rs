@@ -9,6 +9,7 @@ use serde::Serialize;
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
+mod coe;
 mod compound;
 mod edge;
 mod info;
@@ -198,6 +199,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     // Insert moves in order of importance, as they will appear in the manual.
     register!(cons, info, edge::Curve);
     register!(cons, info, straight::StraightEdge);
+    register!(cons, info, coe::ChangeOfEdge);
 
     register!(cons, info, warp::Warp);
     register!(cons, info, shift::Shift);

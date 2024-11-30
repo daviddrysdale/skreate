@@ -12,6 +12,7 @@
 - [x] Fix pre-transitions to be aware of directions
 - [ ] Move definitions.
     - [x] Edges
+    - [x] Change of Edge
     - [ ] 3-turn
     - [ ] Bracket
     - [ ] Rocker

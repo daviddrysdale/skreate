@@ -71,6 +71,29 @@ Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
 <li><code>style</code>: Style of line
 </li>
 </ul>
+<h3>CoE</h3>
+<p>Change of edge</p>
+<div class="example"><img src="CoE.svg" height="200"/></div>
+<h4>Parameters</h4>
+<ul>
+<li><code>angle</code>: Angle of rotation for each curved part, in degrees
+(default <code>90</code>).
+Can also be modified by a <code>&lt;</code> or <code>&gt;</code> (repeated) suffix.
+</li>
+<li><code>len</code>: Length of each curved part in centimetres
+(default <code>450</code>).
+Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
+</li>
+<li><code>flat_len</code>: Length between edges in centimetres
+(default <code>50</code>).
+</li>
+<li><code>delta_angle</code>: Difference in angle for second curved part, in degrees
+</li>
+<li><code>delta_len</code>: Difference in length for second curved part, in centimetres
+</li>
+<li><code>style</code>: Style of line
+</li>
+</ul>
 <h3>Warp</h3>
 <p>Move skater to new location/position</p>
 <h4>Parameters</h4>
@@ -188,9 +211,9 @@ Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
 <ul>
 <li><code>text</code>: Label to display
 </li>
-<li><code>side</code>: Location of text relative to current position, sideways from current direction
-</li>
 <li><code>fwd</code>: Location of text relative to current position, in current direction
+</li>
+<li><code>side</code>: Location of text relative to current position, sideways from current direction
 </li>
 <li><code>font-size</code>: Font size for label; 0 for auto-scaling
 </li>
