@@ -76,7 +76,8 @@ fn main() {
         }
         let svg = skreate::generate(info.example)
             .unwrap_or_else(|_| panic!("example for {} does not parse!", info.example));
-        let filename = out_path.join(format!("{}.svg", info.name));
+
+        let filename = out_path.join(format!("{}.svg", info.example));
         let mut svgfile = File::create(filename).expect("failed to create {filename:?}");
         svgfile
             .write_all(svg.as_bytes())

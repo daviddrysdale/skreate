@@ -21,7 +21,7 @@ pub struct StraightEdge {
 
 impl StraightEdge {
     pub const INFO: moves::Info = moves::Info {
-        name: "StraightEdge",
+        name: "Straight Edge",
         summary: "Straight edge",
         example: "LF",
         visible: true,

@@ -9,8 +9,8 @@ pub struct ChangeOfEdge;
 impl ChangeOfEdge {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
+        name: "Change of Edge",
         summary: "Change of edge",
-        name: "CoE",
         example: "LFO-CoE",
         visible: true,
         params: &[

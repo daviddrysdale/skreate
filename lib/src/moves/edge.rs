@@ -23,8 +23,8 @@ pub struct Curve {
 impl Curve {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        summary: "Curving edge",
         name: "Edge",
+        summary: "Curving edge",
         example: "LFO",
         visible: true,
         params: &[
