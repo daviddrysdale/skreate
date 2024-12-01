@@ -9,25 +9,25 @@ Skating Diagram
 <style>
 text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </style>
-<g id="LFO-CoE_0">
+<g id="LFO-CoE_0::LFO[angle=90]">
 <path d="M 0,0 a 286,286 0 0 0 286,286"/>
 </g>
-<g id="LFO-CoE_1">
+<g id="LFO-CoE_1::LF[len=50,label=&quot;COE&quot;]">
 <path d="M 0,0 l 0,50"/>
 </g>
-<g id="LFO-CoE_2">
+<g id="LFO-CoE_2::LFI[angle=90]">
 <path d="M 0,0 a 286,286 0 0 1 -286,286"/>
 </g>
 </defs>
-<use style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-CoE_0"/>
-<use style="stroke-width:1;" transform="translate(286 286) rotate(270)" xlink:href="#LFO-CoE_1"/>
-<use style="stroke-width:1;" transform="translate(336 286) rotate(270)" xlink:href="#LFO-CoE_2"/>
+<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-CoE_0::LFO[angle=90]"/>
 <text style="font-size:14pt;" x="112" y="173">
 LFO
 </text>
+<use id="r_0_c_0_31" style="stroke-width:1;" transform="translate(286 286) rotate(270)" xlink:href="#LFO-CoE_1::LF[len=50,label=&quot;COE&quot;]"/>
 <text style="font-size:14pt;" x="311" y="256">
 COE
 </text>
+<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(336 286) rotate(270)" xlink:href="#LFO-CoE_2::LFI[angle=90]"/>
 <text style="font-size:14pt;" x="509" y="398">
 LFI
 </text>

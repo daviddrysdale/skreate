@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
-    RenderOptions, Rotation, Skater, SpatialTransition, Transition,
+    RenderOptions, Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -107,7 +107,13 @@ impl Move for Label {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
     }
-    fn render(&self, doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
+    fn render(
+        &self,
+        doc: Document,
+        start: &Skater,
+        opts: &mut RenderOptions,
+        _ns: Option<&SvgId>,
+    ) -> Document {
         let delta = Transition {
             spatial: SpatialTransition::Relative {
                 delta: self.delta,

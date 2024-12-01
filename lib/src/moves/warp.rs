@@ -3,7 +3,8 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, parse_code, Bounds, Code, Direction, Document, Input,
-    Move, MoveParam, OwnedInput, Position, RenderOptions, Skater, SpatialTransition, Transition,
+    Move, MoveParam, OwnedInput, Position, RenderOptions, Skater, SpatialTransition, SvgId,
+    Transition,
 };
 use std::borrow::Cow;
 
@@ -109,7 +110,13 @@ impl Move for Warp {
             code: self.code,
         }
     }
-    fn render(&self, doc: Document, _start: &Skater, _opts: &mut RenderOptions) -> Document {
+    fn render(
+        &self,
+        doc: Document,
+        _start: &Skater,
+        _opts: &mut RenderOptions,
+        _ns: Option<&SvgId>,
+    ) -> Document {
         doc
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {

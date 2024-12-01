@@ -481,6 +481,23 @@ macro_rules! code {
     { RBI } => { $crate::Code { foot: $crate::Foot::Right, dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Inside } };
 }
 
+/// Identifier for an SVG element.
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
+pub struct SvgId(pub String);
+
+impl Display for SvgId {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+impl SvgId {
+    /// Return a new identifier that has the same ID but within the given namespace.
+    pub fn in_ns(&self, ns: &SvgId) -> Self {
+        Self(format!("{ns}::{self}"))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

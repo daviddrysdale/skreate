@@ -176,7 +176,7 @@ impl RenderOptions {
     }
 }
 
-fn use_at(skater: &Skater, def_id: &str, opts: &RenderOptions) -> Use {
+fn use_at(skater: &Skater, def_id: &SvgId, opts: &RenderOptions) -> Use {
     Use::new()
         .set("xlink:href", format!("#{def_id}"))
         .set(
@@ -233,7 +233,7 @@ trait Move {
     }
 
     /// Emit SVG group definitions for the move.
-    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         Vec::new()
     }
 
@@ -242,11 +242,22 @@ trait Move {
         Vec::new()
     }
 
-    /// Render the move into the given SVG document.
-    fn render(&self, mut doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
+    /// Render the move into the given SVG document.  Can assume the existence of SVG definitions as emitted by
+    /// [`defs`], except that the group [`SvgId`] values may be within the given namespace `ns`.
+    fn render(
+        &self,
+        mut doc: Document,
+        start: &Skater,
+        opts: &mut RenderOptions,
+        ns: Option<&SvgId>,
+    ) -> Document {
         // Default implementation assumes that [`defs`] has emitted a single definition, and uses that suitably
         // translated and rotated.
-        let def_id = self.text();
+        let def_id = SvgId(self.text());
+        let def_id = match ns {
+            Some(outer) => def_id.in_ns(outer),
+            None => def_id,
+        };
         let mut use_link = use_at(start, &def_id, opts);
         if let Some(input) = self.input() {
             use_link = use_link.set("id", input.unique_id());
@@ -317,30 +328,12 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let mut seen = HashSet::new();
     let mut defs = Definitions::new().add(style);
     for mv in &moves {
-        let id = mv.text();
-        let mut grps = mv.defs(&mut opts);
-        match grps.len() {
-            0 => continue,
-            1 => {
-                // Special case a single group, using the ID as-is.
-                if seen.contains(&id) {
-                    continue;
-                }
-                let group = grps.remove(0);
-                defs = defs.add(group.set("id", id.clone()));
-                seen.insert(id);
+        for (id, grp) in mv.defs(&mut opts) {
+            if seen.contains(&id) {
+                continue;
             }
-            _ => {
-                // Multiple groups, add a suffix to the ID.
-                for (idx, group) in grps.into_iter().enumerate() {
-                    let id = format!("{id}_{idx}");
-                    if seen.contains(&id) {
-                        continue;
-                    }
-                    defs = defs.add(group.set("id", id.clone()));
-                    seen.insert(id);
-                }
-            }
+            defs = defs.add(grp.set("id", id.0.clone()));
+            seen.insert(id);
         }
     }
     doc = doc
@@ -433,16 +426,16 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         info!("{:?} => {:?}", mv.start(), mv.end());
         debug!("perform: {}", mv.text());
         if opts.markers {
-            doc = doc.add(use_at(&skater, "start-mark", &opts));
+            doc = doc.add(use_at(&skater, &SvgId("start-mark".to_string()), &opts));
         }
         let show_marker = opts.markers;
-        doc = mv.render(doc, &skater, &mut opts);
+        doc = mv.render(doc, &skater, &mut opts, None);
 
         let transition = mv.transition();
         let after = skater + transition;
         debug!("post: {skater} + {transition} ==> {after}");
         if show_marker {
-            doc = doc.add(use_at(&after, "end-mark", &opts));
+            doc = doc.add(use_at(&after, &SvgId("end-mark".to_string()), &opts));
         }
 
         skater = after;

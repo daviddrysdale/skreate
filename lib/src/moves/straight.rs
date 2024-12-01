@@ -4,7 +4,7 @@ use super::{Error, HW};
 use crate::{
     apply_style, moves, param, params, params::Value, parse_foot_dir, path, pos, Code, Edge, Foot,
     Input, Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
-    SkatingDirection, SpatialTransition, Transition,
+    SkatingDirection, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
@@ -119,7 +119,7 @@ impl Move for StraightEdge {
             code: self.end(),
         }
     }
-    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let len = self.len;
         let mut path = if self.foot == Foot::Both {
             path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} l 0,{len}")
@@ -127,7 +127,7 @@ impl Move for StraightEdge {
             path!("M 0,0 l 0,{len}")
         };
         path = apply_style(path, &self.style);
-        vec![Group::new().add(path)]
+        vec![(SvgId(self.text()), Group::new().add(path))]
     }
     fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
         if self.foot == Foot::Both {

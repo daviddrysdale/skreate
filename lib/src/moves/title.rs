@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, Bounds, Group, Input, Move, MoveParam, OwnedInput,
-    Position, RenderOptions, Skater,
+    Position, RenderOptions, Skater, SvgId,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -93,14 +93,20 @@ impl Move for Title {
     fn input(&self) -> Option<OwnedInput> {
         Some(self.input.clone())
     }
-    fn defs(&self, opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         opts.title.clone_from(&self.text);
         Vec::new()
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
     }
-    fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
+    fn render(
+        &self,
+        doc: Document,
+        _start: &Skater,
+        opts: &mut RenderOptions,
+        _ns: Option<&SvgId>,
+    ) -> Document {
         let x = if self.pos.x >= 0 {
             self.pos.x
         } else {

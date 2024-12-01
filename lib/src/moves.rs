@@ -2,7 +2,7 @@
 
 use crate::{
     code, label, pos, Code, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
-    RenderOptions, Rotation, SkatingDirection::*, SpatialTransition, Transition,
+    RenderOptions, Rotation, SkatingDirection::*, SpatialTransition, SvgId, Transition,
 };
 use log::{info, warn};
 use serde::Serialize;
@@ -137,8 +137,11 @@ macro_rules! move_definition {
                     code: Some(Self::END),
                 }
             }
-            fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
-                vec![Group::new().add(Path::new().set("d", format!("M 0,0 {}", $path)))]
+            fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
+                vec![(
+                    SvgId(self.text()),
+                    Group::new().add(Path::new().set("d", format!("M 0,0 {}", $path)))
+                )]
             }
             fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
                 $labels

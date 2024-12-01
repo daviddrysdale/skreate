@@ -1,7 +1,7 @@
 //! Compound move definition.
 use crate::{
-    use_at, Bounds, Code, Input, Label, Move, MoveParam, OwnedInput, RenderOptions, Rotation,
-    Skater, SpatialTransition, Transition,
+    Bounds, Code, Input, Label, Move, MoveParam, OwnedInput, RenderOptions, Rotation, Skater,
+    SpatialTransition, SvgId, Transition,
 };
 use svg::node::element::Group;
 use svg::Document;
@@ -120,9 +120,20 @@ impl Move for Compound {
         });
         Some(bounds)
     }
-    fn defs(&self, opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         // Definitions are each relative to (0,0) at 0° so no need for translation.
-        self.moves.iter().flat_map(|mv| mv.defs(opts)).collect()
+        let id = self.text();
+        let mut result = Vec::new();
+        for (mv_idx, mv) in self.moves.iter().enumerate() {
+            let mv_ns = SvgId(format!("{id}_{mv_idx}"));
+            for (grp_id, grp) in mv.defs(opts) {
+                // The ID for the inner definition is the original ID prefixed by
+                // the compound move's ID and inner move index.
+                let id = grp_id.in_ns(&mv_ns);
+                result.push((id, grp));
+            }
+        }
+        result
     }
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
         let mut result = Vec::new();
@@ -146,17 +157,24 @@ impl Move for Compound {
         });
         result
     }
-    fn render(&self, mut doc: Document, start: &Skater, opts: &mut RenderOptions) -> Document {
-        let base_id = self.text();
-
-        let mut links = Vec::new();
-        self.for_each_move_from(start, |skater, idx, _mv| {
-            let id = format!("{base_id}_{idx}");
-            links.push(use_at(skater, &id, opts));
-        });
-        for link in links {
-            doc = doc.add(link);
+    fn render(
+        &self,
+        mut doc: Document,
+        start: &Skater,
+        opts: &mut RenderOptions,
+        ns: Option<&SvgId>,
+    ) -> Document {
+        let id = self.text();
+        let mut skater = *start;
+        for (idx, mv) in self.moves.iter().enumerate() {
+            let mv_ns = SvgId(format!("{id}_{idx}"));
+            let ns = match ns {
+                Some(outer) => mv_ns.in_ns(outer),
+                None => mv_ns,
+            };
+            doc = mv.render(doc, &skater, opts, Some(&ns));
+            skater = skater + mv.transition();
         }
-        self.render_labels(doc, start, opts)
+        doc
     }
 }

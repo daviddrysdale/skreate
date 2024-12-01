@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, path, Bounds, Document, Input, Move, MoveParam,
-    OwnedInput, Position, RenderOptions, Skater,
+    OwnedInput, Position, RenderOptions, Skater, SvgId,
 };
 use svg::node::element::Group;
 
@@ -138,7 +138,7 @@ impl Move for Info {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
     }
-    fn defs(&self, opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         // Change some options once and for all in the prelude.
         opts.show_bounds = self.bounds;
         opts.grid = self.grid.map(|g| g as usize);
@@ -161,9 +161,15 @@ impl Move for Info {
                 .set("id", "start-mark"),
             );
         }
-        vec![grp]
+        vec![(SvgId(self.text()), grp)]
     }
-    fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
+    fn render(
+        &self,
+        doc: Document,
+        _start: &Skater,
+        opts: &mut RenderOptions,
+        _ns: Option<&SvgId>,
+    ) -> Document {
         // Some options can be toggled on/off as we go along.
         opts.markers = self.markers;
         opts.font_size = self.font_size;

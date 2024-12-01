@@ -4,7 +4,7 @@ use super::Error;
 use crate::{
     apply_style, bounds, code, moves, param, params, params::Value, parse_code, path, pos, Bounds,
     Code, Input, Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions,
-    Rotation, Skater, SpatialTransition, Transition,
+    Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use std::f64::consts::PI;
@@ -191,7 +191,7 @@ impl Move for Curve {
 
         Some(bounds)
     }
-    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let r = self.radius() as i64;
         let big = if self.angle >= 180 { 1 } else { 0 };
         let sweep = if self.sign() == -1 { 0 } else { 1 };
@@ -199,7 +199,7 @@ impl Move for Curve {
 
         let mut path = path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}");
         path = apply_style(path, &self.style);
-        vec![Group::new().add(path)]
+        vec![(SvgId(self.text()), Group::new().add(path))]
     }
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
         let font_size = opts.font_size() as i64;

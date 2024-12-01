@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, parse_code, Bounds, Code, Document, Input, Move,
-    MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater, SpatialTransition,
+    MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId,
     Transition,
 };
 use std::borrow::Cow;
@@ -111,7 +111,13 @@ impl Move for Shift {
             code: self.code,
         }
     }
-    fn render(&self, doc: Document, _start: &Skater, _opts: &mut RenderOptions) -> Document {
+    fn render(
+        &self,
+        doc: Document,
+        _start: &Skater,
+        _opts: &mut RenderOptions,
+        _ns: Option<&SvgId>,
+    ) -> Document {
         doc
     }
     fn bounds(&self, before: &Skater) -> Option<Bounds> {

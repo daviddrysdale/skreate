@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, path, pos, Bounds, Input, Move, MoveParam, OwnedInput,
-    Position, RenderOptions, Skater,
+    Position, RenderOptions, Skater, SvgId,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
@@ -167,7 +167,7 @@ impl Move for Rink {
             bottom_right: pos!(self.width as i64, self.length as i64),
         })
     }
-    fn defs(&self, _opts: &mut RenderOptions) -> Vec<Group> {
+    fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let rink_rect = Rectangle::new()
             .set("x", 0)
             .set("y", 0)
@@ -250,7 +250,7 @@ impl Move for Rink {
         }
         // TODO: render `show_goals`
         // TODO: render `show_faceoffs`
-        vec![grp]
+        vec![(SvgId(self.text()), grp)]
     }
 }
 

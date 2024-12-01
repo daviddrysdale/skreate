@@ -3,7 +3,7 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
-    RenderOptions, Skater,
+    RenderOptions, Skater, SvgId,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text as SvgText, Document};
@@ -106,7 +106,13 @@ impl Move for Text {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None
     }
-    fn render(&self, doc: Document, _start: &Skater, opts: &mut RenderOptions) -> Document {
+    fn render(
+        &self,
+        doc: Document,
+        _start: &Skater,
+        opts: &mut RenderOptions,
+        _ns: Option<&SvgId>,
+    ) -> Document {
         let mut text = SvgText::new(self.text.clone())
             .set("x", self.pos.x)
             .set("y", self.pos.y)
