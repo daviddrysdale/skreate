@@ -70,7 +70,7 @@
     - [ ] Skills 1-4: needs two-foot moves
     - [x] Skills 2-1
     - [x] Skills 2-2
-    - [ ] Skills 2-3: needs 3-turn
+    - [x] Skills 2-3: needs 3-turn
     - [x] Skills 2-4
     - [x] Skills 2-5: needs open mohawk
     - [x] Skills 3-1
