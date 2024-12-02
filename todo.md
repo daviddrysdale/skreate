@@ -13,7 +13,7 @@
 - [ ] Move definitions.
     - [x] Edges
     - [x] Change of Edge
-    - [ ] 3-turn
+    - [x] 3-turn
     - [ ] Bracket
     - [ ] Rocker
     - [ ] Counter

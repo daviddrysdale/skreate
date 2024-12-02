@@ -1,17 +1,17 @@
-//! Mohawk.
+//! Three-turn
 
-use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, Error};
+use super::{compound::Compound, edge::Curve, shift::Shift, Error};
 use crate::{code, moves, params, params::Value, parse_code, Code, Input, Move, PreTransition};
 use std::borrow::Cow;
 
-pub struct OpenMohawk;
+pub struct ThreeTurn;
 
-impl OpenMohawk {
+impl ThreeTurn {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        name: "OpenMohawk",
-        summary: "Open mohawk",
-        example: "LFI-OpMo",
+        name: "ThreeTurn",
+        summary: "Three turn",
+        example: "LFO3",
         visible: true,
         params: &[
             params::Info {
@@ -20,12 +20,12 @@ impl OpenMohawk {
                 default: Value::Number(90),
                 range: params::Range::StrictlyPositive,
                 short: Some(params::Abbrev::GreaterLess(params::Detents {
-                    add1: 120,
-                    add2: 180,
-                    add3: 210,
-                    less1: 60,
-                    less2: 45,
-                    less3: 30,
+                    add1: 100,
+                    add2: 120,
+                    add3: 140,
+                    less1: 80,
+                    less2: 70,
+                    less3: 60,
                 })),
             },
             params::Info {
@@ -70,12 +70,14 @@ impl OpenMohawk {
         let (pre_transition, rest) = PreTransition::parse(input.text);
         let (entry_code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
         let sign = match entry_code {
-            code!(LFI) => "-",
-            code!(RFI) => "",
+            // Clockwise
+            code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
+            // Widdershins
+            code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
             _ => return Err(Error::Unrecognized),
         };
 
-        let Some((_, rest)) = rest.split_once("-OpMo") else {
+        let Some((_, rest)) = rest.split_once('3') else {
             return Err(Error::Unrecognized);
         };
 
@@ -93,28 +95,42 @@ impl OpenMohawk {
         let prefix = pre_transition.prefix();
 
         let out_code = Code {
-            foot: entry_code.foot.opposite(),
+            foot: entry_code.foot,
             dir: entry_code.dir.opposite(),
-            edge: entry_code.edge,
+            edge: entry_code.edge.opposite(),
         };
 
-        let pos = input.pos;
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\"]");
-        let label = format!("Label[fwd=30,side={sign}70,text=\"OpMo\"]");
-        let shift = format!("Shift[side={sign}80,fwd=-65,rotate={sign}90,code=\"{out_code}\"]");
-        let exit = format!("{out_code}[angle={angle2},len={len2},style=\"{style}\"]");
+        let len1a = len1 * 75 / 100;
+        let len1b = len1 - len1a;
+        let angle1b = angle1 * 60 / 100;
+        let angle1a = angle1 - angle1b;
 
-        log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
+        let len2a = len2 * 75 / 100;
+        let len2b = len2 - len2a;
+        let angle2b = angle2 * 60 / 100;
+        let angle2a = angle2 - angle2b;
+
+        let pos = input.pos;
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}3\"]");
+        let entry2 =
+            format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
+        let shift = format!("Shift[rotate={sign}135,code=\"{out_code}\"]");
+        let exit2 =
+            format!("{out_code}[angle={angle2b},len={len2b},style=\"{style}\",label=\" \"]");
+        let exit1 = format!("{out_code}[angle={angle2a},len={len2a},style=\"{style}\"]");
+
+        log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![
-            Curve::construct(&Input { pos, text: &entry }).unwrap(),
-            Label::construct(&Input { pos, text: &label }).unwrap(),
+            Curve::construct(&Input { pos, text: &entry1 }).unwrap(),
+            Curve::construct(&Input { pos, text: &entry2 }).unwrap(),
             Shift::construct(&Input { pos, text: &shift }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit }).unwrap(),
+            Curve::construct(&Input { pos, text: &exit2 }).unwrap(),
+            Curve::construct(&Input { pos, text: &exit1 }).unwrap(),
         ];
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{}-OpMo{suffix}", entry_code);
+        let text = format!("{prefix}{}3{suffix}", entry_code);
 
         Ok(Box::new(Compound::new(input, moves, params, text)))
     }
