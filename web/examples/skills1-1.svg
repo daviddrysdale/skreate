@@ -66,9 +66,6 @@ Skills 1 Exercise 1
 SIDE 1
 </text>
 <use id="r_6_c_0_37" style="stroke-width:4;" transform="translate(1200 515) rotate(90)" xlink:href="#LF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="950" y="545">
- 
-</text>
 <use id="r_7_c_0_5" style="stroke-width:4;" transform="translate(700 515) rotate(90)" xlink:href="#LFO--"/>
 <text style="font-size:24pt;" x="593" y="595">
 LFO
@@ -121,9 +118,6 @@ RFO
 SIDE 2
 </text>
 <use id="r_22_c_0_37" style="stroke-width:4;" transform="translate(1700 5470) rotate(270)" xlink:href="#LF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="1950" y="5440">
- 
-</text>
 <use id="r_23_c_0_5" style="stroke-width:4;" transform="translate(2200 5470) rotate(270)" xlink:href="#LFO&gt;-"/>
 <text style="font-size:24pt;" x="2308" y="5370">
 LFO

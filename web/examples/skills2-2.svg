@@ -60,9 +60,6 @@ Skills 2 Exercise 2
 SIDE 1
 </text>
 <use id="r_6_c_0_37" style="stroke-width:4;" transform="translate(1100 700) rotate(90)" xlink:href="#RF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="850" y="730">
- 
-</text>
 <use id="r_8_c_0_15" style="stroke-width:4;" transform="translate(600 700) rotate(70)" xlink:href="#RFI[angle=140]"/>
 <text style="font-size:24pt;" x="549" y="872">
 RFI
@@ -115,9 +112,6 @@ LFI
 SIDE 2
 </text>
 <use id="r_26_c_0_37" style="stroke-width:4;" transform="translate(1800 5000) rotate(270)" xlink:href="#LB[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="2050" y="4970">
- 
-</text>
 <use id="r_28_c_0_15" style="stroke-width:4;" transform="translate(2300 5000) rotate(250)" xlink:href="#LBI[angle=140]"/>
 <text style="font-size:24pt;" x="2350" y="4827">
 LBI

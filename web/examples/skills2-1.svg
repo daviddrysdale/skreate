@@ -69,9 +69,6 @@ Skills 2 Exercise 1
 SIDE 1
 </text>
 <use id="r_7_c_0_37" style="stroke-width:4;" transform="translate(1100 700) rotate(90)" xlink:href="#RB[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="850" y="730">
- 
-</text>
 <use id="r_8_c_0_22" style="stroke-width:4;" transform="translate(600 700) rotate(90)" xlink:href="#RBO[angle=30,len=200]"/>
 <text style="font-size:24pt;" x="520" y="782">
 RBO
@@ -136,9 +133,6 @@ LBO
 SIDE 2
 </text>
 <use id="r_27_c_0_37" style="stroke-width:4;" transform="translate(1800 5000) rotate(270)" xlink:href="#RB[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="2050" y="4970">
- 
-</text>
 <use id="r_28_c_0_22" style="stroke-width:4;" transform="translate(2300 5000) rotate(270)" xlink:href="#RBO--[angle=40]"/>
 <text style="font-size:24pt;" x="2393" y="4913">
 RBO

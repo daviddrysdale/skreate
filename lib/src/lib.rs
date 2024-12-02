@@ -274,6 +274,9 @@ trait Move {
         opts: &mut RenderOptions,
     ) -> Document {
         for label in self.labels(opts) {
+            if label.text.trim().is_empty() {
+                continue;
+            }
             let loc = *start + label.pos;
             let text = Text::new(label.text)
                 .set("x", loc.pos.x)

@@ -96,9 +96,6 @@ Skills 1 Exercise 3
 START
 </text>
 <use id="r_6_c_0_37" style="stroke-width:4;" transform="translate(1700 600) rotate(90)" xlink:href="#LF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="1450" y="630">
- 
-</text>
 <use id="r_7_c_0_22" style="stroke-width:4;" transform="translate(1200 600) rotate(90)" xlink:href="#LFO[angle=30,len=280]"/>
 <text style="font-size:24pt;" x="1080" y="687">
 LFO

@@ -108,9 +108,6 @@ Skills 2 Exercise 5
 SIDE 1
 </text>
 <use id="r_7_c_0_37" style="stroke-width:4;" transform="translate(1500 300) rotate(90)" xlink:href="#LF[len=900,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="1050" y="330">
- 
-</text>
 <use id="r_9_c_0_22" style="stroke-width:4;" transform="translate(600 300) rotate(60)" xlink:href="#LFO+[angle=70]"/>
 <text style="font-size:24pt;" x="465" y="546">
 LFO
@@ -185,13 +182,7 @@ LFO
 SIDE 2
 </text>
 <use id="r_30_c_0_37" style="stroke-width:4;" transform="translate(1200 5900) rotate(270)" xlink:href="#RF+[label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="1500" y="5870">
- 
-</text>
 <use id="r_31_c_0_48" style="stroke-width:4;" transform="translate(1800 5900) rotate(270)" xlink:href="#RFI[angle=120,len=700,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<text style="font-size:24pt;" x="2027" y="5697">
- 
-</text>
 <use id="r_32_c_0_22" style="stroke-width:4;" transform="translate(2089 5399) rotate(150)" xlink:href="#RFO[angle=30]"/>
 <text style="font-size:24pt;" x="2071" y="5173">
 RFO
