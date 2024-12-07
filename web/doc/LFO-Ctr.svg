@@ -1,0 +1,42 @@
+<svg height="675" viewBox="-50 -50 598 675" width="598" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+</style>
+<g id="LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO-Ctr&quot;]">
+<path d="M 0,0 a 214,214 0 0 0 214,214"/>
+</g>
+<g id="LFO-Ctr_1::LF[len=20,label=&quot; &quot;]">
+<path d="M 0,0 l 0,20"/>
+</g>
+<g id="LFO-Ctr_2::LFI[angle=80,len=93,label=&quot; &quot;]">
+<path d="M 0,0 a 66,66 0 0 1 -55,65"/>
+</g>
+<g id="LFO-Ctr_5::LBO[angle=80,len=68,label=&quot; &quot;]">
+<path d="M 0,0 a 48,48 0 0 1 -40,47"/>
+</g>
+<g id="LFO-Ctr_6::LBO[angle=90,len=382]">
+<path d="M 0,0 a 243,243 0 0 1 -243,243"/>
+</g>
+</defs>
+<use id="r_0_c_0_46" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO-Ctr&quot;]"/>
+<text style="font-size:12pt;" x="87" y="126">
+LFO-Ctr
+</text>
+<use id="r_0_c_0_29" style="stroke-width:1;" transform="translate(214 214) rotate(270)" xlink:href="#LFO-Ctr_1::LF[len=20,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(234 214) rotate(270)" xlink:href="#LFO-Ctr_2::LFI[angle=80,len=93,label=&quot; &quot;]"/>
+<text style="font-size:12pt;" x="305" y="308">
+Ctr
+</text>
+<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(299 269) rotate(215)" xlink:href="#LFO-Ctr_5::LBO[angle=80,len=68,label=&quot; &quot;]"/>
+<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(358 253) rotate(295)" xlink:href="#LFO-Ctr_6::LBO[angle=90,len=382]"/>
+<text style="font-size:12pt;" x="449" y="401">
+LBO
+</text>
+</svg>

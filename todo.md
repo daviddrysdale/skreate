@@ -16,7 +16,7 @@
     - [x] 3-turn
     - [x] Bracket
     - [ ] Rocker
-    - [ ] Counter
+    - [x] Counter
     - [x] Open Mohawk
     - [ ] Closed Mohawk
     - [ ] Open Choctaw
