@@ -9,6 +9,7 @@ use serde::Serialize;
 use std::sync::OnceLock;
 use svg::node::element::{Group, Path};
 
+mod bracket;
 mod coe;
 mod compound;
 mod edge;
@@ -196,6 +197,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, straight::StraightEdge);
     register!(cons, info, three::ThreeTurn);
     register!(cons, info, mohawk::OpenMohawk);
+    register!(cons, info, bracket::Bracket);
     register!(cons, info, coe::ChangeOfEdge);
 
     register!(cons, info, warp::Warp);

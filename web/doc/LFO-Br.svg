@@ -1,0 +1,46 @@
+<svg height="375" viewBox="-50 -50 789 375" width="789" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+</style>
+<g id="LFO-Br_0::LFO[angle=90,len=337,label=&quot;LFO-Br&quot;]">
+<path d="M 0,0 a 214,214 0 0 0 214,214"/>
+</g>
+<g id="LFO-Br_1::LF[len=40,label=&quot; &quot;]">
+<path d="M 0,0 l 0,40"/>
+</g>
+<g id="LFO-Br_2::LFI[angle=80,len=73,label=&quot; &quot;]">
+<path d="M 0,0 a 52,52 0 0 1 -43,51"/>
+</g>
+<g id="LFO-Br_5::LBO[angle=80,len=73,label=&quot; &quot;]">
+<path d="M 0,0 a 52,52 0 0 1 -43,51"/>
+</g>
+<g id="LFO-Br_6::LB[len=40,label=&quot; &quot;]">
+<path d="M 0,0 l 0,40"/>
+</g>
+<g id="LFO-Br_7::LBI[angle=90,len=337]">
+<path d="M 0,0 a 214,214 0 0 0 214,214"/>
+</g>
+</defs>
+<use id="r_0_c_0_45" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Br_0::LFO[angle=90,len=337,label=&quot;LFO-Br&quot;]"/>
+<text style="font-size:12pt;" x="87" y="126">
+LFO-Br
+</text>
+<use id="r_0_c_0_29" style="stroke-width:1;" transform="translate(214 214) rotate(270)" xlink:href="#LFO-Br_1::LF[len=40,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(254 214) rotate(270)" xlink:href="#LFO-Br_2::LFI[angle=80,len=73,label=&quot; &quot;]"/>
+<text style="font-size:12pt;" x="311" y="296">
+Br
+</text>
+<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(305 257) rotate(215)" xlink:href="#LFO-Br_5::LBO[angle=80,len=73,label=&quot; &quot;]"/>
+<use id="r_0_c_0_29" style="stroke-width:1;" transform="translate(369 239) rotate(295)" xlink:href="#LFO-Br_6::LB[len=40,label=&quot; &quot;]"/>
+<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(405 255) rotate(295)" xlink:href="#LFO-Br_7::LBI[angle=90,len=337]"/>
+<text style="font-size:12pt;" x="555" y="229">
+LBI
+</text>
+</svg>
