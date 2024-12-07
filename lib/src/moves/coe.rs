@@ -7,6 +7,9 @@ use std::borrow::Cow;
 pub struct ChangeOfEdge;
 
 impl ChangeOfEdge {
+    const MOVE: &'static str = "-CoE";
+    const MOVE_ALT: &'static str = "-COE";
+
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Change of Edge",
@@ -77,7 +80,7 @@ impl ChangeOfEdge {
         let (pre_transition, rest) = PreTransition::parse(input.text);
         let (entry_code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
 
-        let rest = match (rest.split_once("-CoE"), rest.split_once("-COE")) {
+        let rest = match (rest.split_once(Self::MOVE), rest.split_once(Self::MOVE_ALT)) {
             (Some(_), Some(_)) => return Err(Error::Unrecognized),
             (Some((_, rest)), None) | (None, Some((_, rest))) => rest,
             (None, None) => return Err(Error::Unrecognized),
@@ -121,7 +124,7 @@ impl ChangeOfEdge {
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{}-CoE{suffix}", entry_code);
+        let text = format!("{prefix}{}{}{suffix}", entry_code, Self::MOVE);
 
         Ok(Box::new(Compound::new(input, moves, params, text)))
     }

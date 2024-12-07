@@ -7,6 +7,7 @@ use std::borrow::Cow;
 pub struct ThreeTurn;
 
 impl ThreeTurn {
+    const MOVE: char = '3';
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "ThreeTurn",
@@ -77,7 +78,7 @@ impl ThreeTurn {
             _ => return Err(Error::Unrecognized),
         };
 
-        let Some((_, rest)) = rest.split_once('3') else {
+        let Some((_, rest)) = rest.split_once(Self::MOVE) else {
             return Err(Error::Unrecognized);
         };
 
@@ -111,7 +112,7 @@ impl ThreeTurn {
         let angle2a = angle2 - angle2b;
 
         let pos = input.pos;
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}3\"]");
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\"]", Self::MOVE);
         let entry2 =
             format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
         let shift = format!("Shift[rotate={sign}135,code=\"{out_code}\"]");
@@ -130,7 +131,7 @@ impl ThreeTurn {
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{}3{suffix}", entry_code);
+        let text = format!("{prefix}{}{}{suffix}", entry_code, Self::MOVE);
 
         Ok(Box::new(Compound::new(input, moves, params, text)))
     }
