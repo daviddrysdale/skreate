@@ -15,7 +15,7 @@
     - [x] Change of Edge
     - [x] 3-turn
     - [x] Bracket
-    - [ ] Rocker
+    - [x] Rocker
     - [x] Counter
     - [x] Open Mohawk
     - [ ] Closed Mohawk

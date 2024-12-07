@@ -1,4 +1,4 @@
-<svg height="280" viewBox="-50 -50 300 280" width="300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg height="418" viewBox="-50 -50 774 418" width="774" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 <title>Skating Diagram</title>
 <desc>
 <text>
@@ -9,18 +9,34 @@ Skating Diagram
 <style>
 text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 </style>
-<g id="LFO-Rk">
-<path d="M 0,0 c 15,80 70,100 100,70 c 10,40 80,0 100,80"/>
+<g id="LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO-Rk&quot;]">
+<path d="M 0,0 a 243,243 0 0 0 243,243"/>
+</g>
+<g id="LFO-Rk_1::LFO[angle=80,len=68,label=&quot; &quot;]">
+<path d="M 0,0 a 48,48 0 0 0 40,47"/>
+</g>
+<g id="LFO-Rk_4::LBI[angle=80,len=93,label=&quot; &quot;]">
+<path d="M 0,0 a 66,66 0 0 0 55,65"/>
+</g>
+<g id="LFO-Rk_5::LB[len=20,label=&quot; &quot;]">
+<path d="M 0,0 l 0,20"/>
+</g>
+<g id="LFO-Rk_6::LBO[angle=90,len=337]">
+<path d="M 0,0 a 214,214 0 0 1 -214,214"/>
 </g>
 </defs>
-<use id="r_0_c_0_6" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Rk"/>
-<text style="font-size:10pt;" x="50" y="40">
-LFO
+<use id="r_0_c_0_45" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO-Rk&quot;]"/>
+<text style="font-size:12pt;" x="96" y="146">
+LFO-Rk
 </text>
-<text style="font-size:10pt;" x="110" y="60">
+<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(243 243) rotate(270)" xlink:href="#LFO-Rk_1::LFO[angle=80,len=68,label=&quot; &quot;]"/>
+<text style="font-size:12pt;" x="296" y="163">
 Rk
 </text>
-<text style="font-size:10pt;" x="150" y="130">
+<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(290 203) rotate(325)" xlink:href="#LFO-Rk_4::LBI[angle=80,len=93,label=&quot; &quot;]"/>
+<use id="r_0_c_0_29" style="stroke-width:1;" transform="translate(372 224) rotate(245)" xlink:href="#LFO-Rk_5::LB[len=20,label=&quot; &quot;]"/>
+<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(390 215) rotate(245)" xlink:href="#LFO-Rk_6::LBO[angle=90,len=337]"/>
+<text style="font-size:12pt;" x="540" y="240">
 LBO
 </text>
 </svg>

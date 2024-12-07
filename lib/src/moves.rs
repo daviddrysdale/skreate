@@ -1,13 +1,12 @@
 //! Skating move definitions.
 
 use crate::{
-    code, label, pos, Code, Foot, Input, Label, Move, MoveParam, OwnedInput, ParseError, Position,
-    RenderOptions, Rotation, SkatingDirection::*, SpatialTransition, SvgId, Transition,
+    pos, Code, Foot, Input, Move, ParseError, Position, Rotation, SkatingDirection::*,
+    SpatialTransition, Transition,
 };
 use log::{info, warn};
 use serde::Serialize;
 use std::sync::OnceLock;
-use svg::node::element::{Group, Path};
 
 mod bracket;
 mod coe;
@@ -18,6 +17,7 @@ mod info;
 mod label;
 mod mohawk;
 mod rink;
+mod rocker;
 mod shift;
 mod straight;
 mod text;
@@ -83,77 +83,6 @@ macro_rules! path {
     }
 }
 
-/// Macro to populate standard boilerplate for moves.
-macro_rules! move_and_xf {
-    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
-        move_definition!($name, code!($start) => code!($end), $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xf-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xf" @ 10,10)], cross_transition);
-    }
-}
-macro_rules! move_and_xb {
-    { $name:ident, $xname:ident, $start:ident => $end:ident, $text:literal, $pos:expr, $rotate:expr, $path:expr, $($labels:expr),* } => {
-        move_definition!($name, code!($start) => code!($end), $text, $pos, $rotate, $path, vec![$($labels),*], pre_transition);
-        move_definition!($xname, code!($start) => code!($end), concat!("xb-", $text), $pos, $rotate, $path, vec![$($labels),*, label!("xb" @ 10,10)], cross_transition);
-    }
-}
-
-/// Macro to populate a structure that implements [`Move`] and [`Info`].
-macro_rules! move_definition {
-    { $name:ident, $start:expr => $end:expr, $text:expr, $pos:expr, $rotate:expr, $path:expr, $labels:expr, $pre_trans:ident } => {
-        struct $name {
-            input: OwnedInput,
-        }
-        impl $name {
-            const START: Code = $start;
-            const END: Code = $end;
-            const ID: &'static str = $text;
-            const INFO: Info = Info {
-                name: stringify!($name),
-                summary: stringify!($name),
-                example: $text,
-                visible: true,
-                params: &[],
-            };
-            pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-                if input.text == Self::ID {
-                    Ok(Box::new(Self { input: input.owned()}))
-                } else {
-                    Err(Error::Unrecognized)
-                }
-            }
-        }
-
-        impl Move for $name {
-            fn params(&self) -> Vec<MoveParam> {vec![]}
-            fn start(&self) -> Option<Code> { Some(Self::START) }
-            fn end(&self) -> Option<Code> { Some(Self::END) }
-            fn text(&self) -> String { $text.to_string() }
-            fn input(&self) -> Option<OwnedInput> { Some(self.input.clone()) }
-            fn pre_transition(&self, from: Code) -> Transition {
-                $pre_trans(from, Self::START)
-            }
-            fn transition(&self) -> Transition {
-                Transition {
-                    spatial: SpatialTransition::Relative {
-                        delta: $pos,
-                        rotate: $rotate,
-                    },
-                    code: Some(Self::END),
-                }
-            }
-            fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
-                vec![(
-                    SvgId(self.text()),
-                    Group::new().add(Path::new().set("d", format!("M 0,0 {}", $path)))
-                )]
-            }
-            fn labels(&self, _opts: &RenderOptions) -> Vec<Label> {
-                $labels
-            }
-        }
-    }
-}
-
 // Coordinates:
 //
 //  0-------------------> x axis
@@ -165,16 +94,6 @@ macro_rules! move_definition {
 //  |             45 L  v 0
 //  |
 //  v  y-axis
-
-move_and_xf!(LfoRk, XfLfoRk, LFO => LBO, "LFO-Rk", pos!(200, 180), Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("LFO" @ 50,40), label!("Rk" @ 110,60), label!("LBO" @ 150,130));
-move_and_xb!(LbiRk, XbLbiRk, LBI => LFI, "LBI-Rk", pos!(200, 180), Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("LBI" @ 50,40), label!("Rk" @ 110,60), label!("LFI" @ 150,130));
-move_and_xf!(RfiRk, XfRfiRk, RFI => RBI, "RFI-Rk", pos!(200, 180), Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("RFI" @ 50,40), label!("Rk" @ 110,60), label!("RBI" @ 150,130));
-move_and_xb!(RboRk, XbRboRk, RBO => RFO, "RBO-Rk", pos!(200, 180), Rotation(0), "c 15,80 70,100 100,70 c 10,40 80,0 100,80", label!("RBO" @ 50,40), label!("Rk" @ 110,60), label!("RFO" @ 150,130));
-
-move_and_xf!(RfoRk, XfRfoRk, RFO => RBO, "RFO-Rk", pos!(-200, 180), Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("RFO" @ -50,40), label!("Rk" @ -110,60), label!("RBO" @ -150,130));
-move_and_xb!(RbiRk, XbRbiRk, RBI => RFI, "RBI-Rk", pos!(-200, 180), Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("RBI" @ -50,40), label!("Rk" @ -110,60), label!("RFI" @ -150,130));
-move_and_xf!(LfiRk, XfLfiRk, LFI => LBI, "LFI-Rk", pos!(-200, 180), Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("LFI" @ -50,40), label!("Lk" @ -110,60), label!("LBI" @ -150,130));
-move_and_xb!(LboRk, XbLboRk, LBO => LFO, "LBO-Rk", pos!(-200, 180), Rotation(0), "c -15,80 -70,100 -100,70 c -10,40 -80,0 -100,80", label!("LBO" @ -50,40), label!("Lk" @ -110,60), label!("LFO" @ -150,130));
 
 /// Macro to register a move constructor by name (and lowercased name).
 macro_rules! register {
@@ -199,6 +118,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, three::ThreeTurn);
     register!(cons, info, mohawk::OpenMohawk);
     register!(cons, info, bracket::Bracket);
+    register!(cons, info, rocker::Rocker);
     register!(cons, info, counter::Counter);
     register!(cons, info, coe::ChangeOfEdge);
 
@@ -210,8 +130,6 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, text::Text);
     register!(cons, info, label::Label);
 
-    register!(cons, info, LfoRk, XfLfoRk, LbiRk, XbLbiRk, RfiRk, XfRfiRk, RboRk, XbRboRk);
-    register!(cons, info, RfoRk, XfRfoRk, RbiRk, XbRbiRk, LfiRk, XfLfiRk, LboRk, XbLboRk);
     (info, cons)
 }
 
@@ -424,6 +342,7 @@ pub fn cross_transition(from: Code, to: Code) -> Transition {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::code;
 
     fn check_consistent(mv: &dyn Move, input: &Input) {
         assert_eq!(
