@@ -37,7 +37,7 @@
         - [ ] Axel
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
-- [ ] Adjust measurements of moves
+- [x] Adjust measurements of moves
 - [x] Wide-step prefix
 - [x] Transition labels (xf/xb/wd)
 - [x] Allow text rotation for labels
@@ -47,16 +47,17 @@
 - [x] Rink and start point/direction specification
 - [x] Title, text inserts
 - [ ] Proper parser, coping with quoted strings
-- [ ] URL parameters for initial window sizes
+- [x] URL parameters for initial window sizes
 - [x] Add relative=bool parameter to Warp
 - [ ] Counts and count display options
 - [x] Add in/out curvature for moves?
 - [x] Generate a manual from move registry via new `Move` methods
+- [ ] Add interactive examples to manual
 - [ ] Option to add direction-of-travel arrows?
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot
     - [ ] Can standalone SVG share CSS with web?
-- [ ] Option for arbitrary text annotation on move ("LFI3 (waves arms)")
+- [x] Option for arbitrary text annotation on move ("LFI3 (waves arms)")
 - [ ] SVG to HTML linkage
     - [ ] mouse over move => highlight text in editor
     - [ ] cursor on move => highlight corresponding move
