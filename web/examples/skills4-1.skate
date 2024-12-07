@@ -1,0 +1,84 @@
+Rink
+Title [text="Skills 4 Exercise 1",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1350,y=525,text="SIDE 1",font-size=50]
+Warp [x=1200,y=500,dir=90,code="RBO"]
+
+RB [len=500,label=" ",style="dashed"]
+RBO [angle=45,len=300]
+xf-LBI [angle=45,len=300]
+
+RBO-CoE [angle=90,len=600,flat_len=100,delta_angle=90,delta_len=500]
+
+LBO [angle=45,len=200]
+xf-RBI [angle=45,len=200]
+LBO [angle=45,len=200]
+xf-RBI [angle=45,len=200]
+
+LBO-CoE [angle=180,len=1200,flat_len=100]
+
+RBO [angle=45,len=200]
+xf-LBI [angle=45,len=200]
+RBO [angle=45,len=200]
+xf-LBI [angle=45,len=200]
+
+RBO-CoE [angle=180,len=1200,flat_len=100]
+
+LBO [angle=45,len=200]
+xf-RBI [angle=45,len=200]
+LBO [angle=45,len=200]
+xf-RBI [angle=45,len=200]
+
+LBO-CoE [angle=180,len=1200,flat_len=100]
+
+RBO [angle=45,len=200]
+xf-LBI [angle=45,len=200]
+RBO [angle=45,len=200]
+xf-LBI [angle=45,len=200]
+
+RBO [angle=180,len=1200]
+
+#-------------------------
+Text [x=1750,y=5825,text="SIDE 2",font-size=50]
+Warp [x=1900,y=5800,dir=270,code="LFO"]
+
+LF [label=" ",style="dashed"]
+LFO3 [angle=100,len=200]
+RBO<<---
+xf-LBI--
+RBO--
+
+xf-LBI-CoE [angle=60,len=600,flat_len=50,delta_angle=120,delta_len=600]
+
+Shift [rotate=40]
+RFO3 [angle=120,len=300]
+LBO>--
+xf-RBI-
+LBO>-
+
+xf-RBI-CoE [angle=160,len=1200,delta_angle=20]
+
+Shift [rotate=-40]
+LFO3 [angle=120,len=300]
+RBO>--
+xf-LBI-
+RBO>-
+
+xf-LBI-CoE [angle=160,len=1200,delta_angle=20]
+
+Shift [rotate=40]
+RFO3 [angle=120,len=300]
+LBO>--
+xf-RBI-
+LBO>-
+
+xf-RBI-CoE [angle=160,len=1200,delta_angle=20]
+
+Shift [rotate=-40]
+LFO3 [angle=120,len=300]
+RBO>--
+xf-LBI-
+RBO>-
+
+xf-LBI [angle=180,len=1200]

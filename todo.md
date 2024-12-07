@@ -79,7 +79,7 @@
     - [ ] Skills 3-3: needs 3-turn
     - [ ] Skills 3-4: needs twizzle
     - [ ] Skills 3-5: needs closed mohawk, hop
-    - [ ] Skills 4-1: needs 3-turn
+    - [x] Skills 4-1: needs 3-turn
     - [ ] Skills 4-2: needs 3-turn
     - [ ] Skills 4-3: needs rocker
     - [ ] Skills 4-4: needs 3-turn, twizzle
