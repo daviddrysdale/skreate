@@ -10,7 +10,7 @@ impl ThreeTurn {
     const MOVE: char = '3';
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        name: "ThreeTurn",
+        name: "Three Turn",
         summary: "Three turn",
         example: "LFO3",
         visible: true,

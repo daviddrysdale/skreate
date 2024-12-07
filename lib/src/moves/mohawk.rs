@@ -9,7 +9,7 @@ pub struct OpenMohawk;
 impl OpenMohawk {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        name: "OpenMohawk",
+        name: "Open Mohawk",
         summary: "Open mohawk",
         example: "LFI-OpMo",
         visible: true,
