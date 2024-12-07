@@ -72,6 +72,9 @@ web/pkg/$(WASM_CRATE)_bg.wasm: target/wasm32-unknown-unknown/release/$(WASM_CRAT
 
 clean:
 	cargo clean
+	rm -f doc/generated/*    # regenerate with `make regenerate`
+	rm -f web/doc/*          # regenerate with `make manual`
+	rm -f web/examples/*.svg # regenerate with `make regenerate`
 
 distclean:
-	rm -rf web/pkg target doc/generated/manual.html
+	rm -rf web/pkg target
