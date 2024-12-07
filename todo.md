@@ -75,7 +75,7 @@
     - [x] Skills 2-4
     - [x] Skills 2-5: needs open mohawk
     - [x] Skills 3-1
-    - [ ] Skills 3-2: needs 3-turn, open mohawk
+    - [x] Skills 3-2: needs 3-turn, open mohawk
     - [ ] Skills 3-3: needs 3-turn
     - [ ] Skills 3-4: needs twizzle
     - [ ] Skills 3-5: needs closed mohawk, hop

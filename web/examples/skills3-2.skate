@@ -1,0 +1,73 @@
+Rink
+Title [text="Skills 3 Exercise 2",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1050,y=525,text="SIDE 1",font-size=50]
+Warp [x=900,y=500,dir=90,code="RFI"]
+
+RF [len=300,style="dashed",label=" "]
+
+RFI3-->
+Shift [rotate=270]
+LFO3--
+RBO--
+xf-LBI3-->
+xf-RFI---
+
+LFI3-->>
+Shift [rotate=90]
+RFO3--
+LBO--
+xf-RBI3 [angle=90,len=200]
+xf-LFI---
+
+RFI3-->>
+Shift [rotate=270]
+LFO3-
+RBO--
+xf-LBI3 [len=200]
+xf-RFI<---
+
+LFI3-->>
+Shift [rotate=90]
+RFO3--
+LBO--
+xf-RBI3 [angle=90,len=200]
+xf-LFI---
+
+
+#-------------------------
+Text [x=1750,y=5825,text="SIDE 2",font-size=50]
+Warp [x=1900,y=5800,dir=270,code="LFO"]
+
+LF [label=" ",style="dashed"]
+LFO3->
+RBO3--
+RFI-OpMo-
+wd-RBI--
+LBO [angle=40,len=200]
+Shift [rotate=90]
+RFO3--<
+LBO3--<
+LFI-OpMo-
+Shift[rotate=30]
+wd-LBI-->
+Shift[rotate=60]
+
+RBO [angle=40,len=200]
+Shift [rotate=270]
+
+LFO3->
+RBO3--
+RFI-OpMo-
+wd-RBI--
+LBO [angle=40,len=200]
+Shift [rotate=90]
+RFO3--<
+LBO3--<
+LFI-OpMo-
+Shift[rotate=30]
+wd-LBI-->
+Shift[rotate=60]
+
+RBO [angle=40,len=200]
