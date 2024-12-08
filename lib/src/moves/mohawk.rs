@@ -20,12 +20,12 @@ impl OpenMohawk {
                 default: Value::Number(90),
                 range: params::Range::StrictlyPositive,
                 short: Some(params::Abbrev::GreaterLess(params::Detents {
-                    add1: 120,
-                    add2: 180,
-                    add3: 210,
-                    less1: 60,
-                    less2: 45,
-                    less3: 30,
+                    add1: 110,
+                    add2: 130,
+                    add3: 150,
+                    less1: 80,
+                    less2: 70,
+                    less3: 60,
                 })),
             },
             params::Info {

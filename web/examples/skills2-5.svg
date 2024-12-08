@@ -27,10 +27,10 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <g id="LFO+[angle=70]">
 <path d="M 0,0 a 491,491 0 0 0 323,461"/>
 </g>
-<g id="RFI-OpMo+[angle=70,delta_angle=10]_0::RFI+[angle=70]">
+<g id="RFI-OpMo&lt;&lt;+[delta_angle=10]_0::RFI+[angle=70]">
 <path d="M 0,0 a 491,491 0 0 0 323,461"/>
 </g>
-<g id="RFI-OpMo+[angle=70,delta_angle=10]_3::LBI+[angle=80]">
+<g id="RFI-OpMo&lt;&lt;+[delta_angle=10]_3::LBI+[angle=80]">
 <path d="M 0,0 a 429,429 0 0 0 355,423"/>
 </g>
 <g id="wd-RBI&gt;">
@@ -69,10 +69,10 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <g id="RFO[angle=30]">
 <path d="M 0,0 a 859,859 0 0 1 -115,429"/>
 </g>
-<g id="LFI-OpMo[angle=80,len=550,delta_angle=-10]_0::LFI[angle=80,len=550]">
+<g id="LFI-OpMo&lt;[len=550,delta_angle=-10]_0::LFI[angle=80,len=550]">
 <path d="M 0,0 a 393,393 0 0 1 -325,387"/>
 </g>
-<g id="LFI-OpMo[angle=80,len=550,delta_angle=-10]_3::RBI[angle=70,len=550]">
+<g id="LFI-OpMo&lt;[len=550,delta_angle=-10]_3::RBI[angle=70,len=550]">
 <path d="M 0,0 a 450,450 0 0 1 -296,423"/>
 </g>
 <g id="wd-LBI&gt;">
@@ -87,10 +87,10 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <g id="RFO[angle=100,len=650]">
 <path d="M 0,0 a 372,372 0 0 1 -437,366"/>
 </g>
-<g id="LFI-OpMo+[angle=80,delta_angle=-10]_0::LFI+[angle=80]">
+<g id="LFI-OpMo&lt;+[delta_angle=-10]_0::LFI+[angle=80]">
 <path d="M 0,0 a 429,429 0 0 1 -355,423"/>
 </g>
-<g id="LFI-OpMo+[angle=80,delta_angle=-10]_3::RBI+[angle=70]">
+<g id="LFI-OpMo&lt;+[delta_angle=-10]_3::RBI+[angle=70]">
 <path d="M 0,0 a 491,491 0 0 1 -323,461"/>
 </g>
 <g id="xf-LBI-[angle=30]">
@@ -112,14 +112,14 @@ SIDE 1
 <text style="font-size:24pt;" x="465" y="546">
 LFO
 </text>
-<use id="r_11_c_0_30" style="stroke-width:4;" transform="translate(332 815) rotate(350)" xlink:href="#RFI-OpMo+[angle=70,delta_angle=10]_0::RFI+[angle=70]"/>
+<use id="r_11_c_0_30" style="stroke-width:4;" transform="translate(332 815) rotate(350)" xlink:href="#RFI-OpMo&lt;&lt;+[delta_angle=10]_0::RFI+[angle=70]"/>
 <text style="font-size:24pt;" x="517" y="1026">
 RFI
 </text>
 <text style="font-size:24pt;" x="771" y="1148">
 OpMo
 </text>
-<use id="r_11_c_0_30" style="stroke-width:4;" transform="translate(679 1121) rotate(10)" xlink:href="#RFI-OpMo+[angle=70,delta_angle=10]_3::LBI+[angle=80]"/>
+<use id="r_11_c_0_30" style="stroke-width:4;" transform="translate(679 1121) rotate(10)" xlink:href="#RFI-OpMo&lt;&lt;+[delta_angle=10]_3::LBI+[angle=80]"/>
 <text style="font-size:24pt;" x="791" y="1374">
 LBI
 </text>
@@ -187,14 +187,14 @@ SIDE 2
 <text style="font-size:24pt;" x="2071" y="5173">
 RFO
 </text>
-<use id="r_34_c_0_30" style="stroke-width:4;" transform="translate(1944 4969) rotate(180)" xlink:href="#LFI-OpMo[angle=80,len=550,delta_angle=-10]_0::LFI[angle=80,len=550]"/>
+<use id="r_34_c_0_30" style="stroke-width:4;" transform="translate(1944 4969) rotate(180)" xlink:href="#LFI-OpMo&lt;[len=550,delta_angle=-10]_0::LFI[angle=80,len=550]"/>
 <text style="font-size:24pt;" x="2091" y="4762">
 LFI
 </text>
 <text style="font-size:24pt;" x="2310" y="4645">
 OpMo
 </text>
-<use id="r_34_c_0_30" style="stroke-width:4;" transform="translate(2218 4672) rotate(170)" xlink:href="#LFI-OpMo[angle=80,len=550,delta_angle=-10]_3::RBI[angle=70,len=550]"/>
+<use id="r_34_c_0_30" style="stroke-width:4;" transform="translate(2218 4672) rotate(170)" xlink:href="#LFI-OpMo&lt;[len=550,delta_angle=-10]_3::RBI[angle=70,len=550]"/>
 <text style="font-size:24pt;" x="2317" y="4434">
 RBI
 </text>
@@ -220,14 +220,14 @@ XF
 <text style="font-size:24pt;" x="1931" y="3125">
 RFO
 </text>
-<use id="r_42_c_0_30" style="stroke-width:4;" transform="translate(1722 2895) rotate(180)" xlink:href="#LFI-OpMo+[angle=80,delta_angle=-10]_0::LFI+[angle=80]"/>
+<use id="r_42_c_0_30" style="stroke-width:4;" transform="translate(1722 2895) rotate(180)" xlink:href="#LFI-OpMo&lt;+[delta_angle=-10]_0::LFI+[angle=80]"/>
 <text style="font-size:24pt;" x="1877" y="2665">
 LFI
 </text>
 <text style="font-size:24pt;" x="2118" y="2535">
 OpMo
 </text>
-<use id="r_42_c_0_30" style="stroke-width:4;" transform="translate(2026 2562) rotate(170)" xlink:href="#LFI-OpMo+[angle=80,delta_angle=-10]_3::RBI+[angle=70]"/>
+<use id="r_42_c_0_30" style="stroke-width:4;" transform="translate(2026 2562) rotate(170)" xlink:href="#LFI-OpMo&lt;+[delta_angle=-10]_3::RBI+[angle=70]"/>
 <text style="font-size:24pt;" x="2128" y="2300">
 RBI
 </text>
