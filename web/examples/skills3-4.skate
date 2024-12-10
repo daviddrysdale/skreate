@@ -1,0 +1,34 @@
+Rink
+Title [text="Skills 3 Exercise 4",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1450,y=1200,text="START",font-size=50]
+Warp [x=1450,y=1400,dir=45,code="RFI"]
+
+RFI [angle=90,len=300]
+LFI [angle=90,len=300]
+
+# TODO: replace with RFI-Tw1
+RFI3 [angle=100,len=100,delta_len=-40]
+RBO3 [angle=80,len=60,delta_len=40]
+
+LFI [angle=90,len=300]
+RFI [angle=90,len=300]
+
+# TODO: replace with LFI-Tw1
+LFI3 [angle=100,len=100,delta_len=-40]
+LBO3 [angle=80,len=60,delta_len=40]
+
+RFI [angle=90,len=300]
+LFI [angle=90,len=300]
+
+# TODO: replace with RFI-Tw1
+RFI3 [angle=100,len=100,delta_len=-40]
+RBO3 [angle=80,len=60,delta_len=40]
+
+LFI [angle=90,len=300]
+RFI [angle=90,len=300]
+
+# TODO: replace with LFI-Tw1
+LFI3 [angle=100,len=100,delta_len=-40]
+LBO3 [angle=80,len=60,delta_len=40]
