@@ -54,7 +54,7 @@ clean_manual:
 $(DOCGEN): doc/src/main.rs $(LIBRARY_SRC)
 	cargo build --manifest-path doc/Cargo.toml
 
-publish: clean build publish_build publish_tag
+publish: clean clean_manual build regenerate publish_build publish_tag
 publish_build:
 	git diff-index --quiet HEAD -- && \
 	rm -rf published && \
