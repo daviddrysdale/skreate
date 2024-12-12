@@ -17,6 +17,7 @@ pub struct Curve {
     angle: i32,
     len: i32,
     label: Option<String>,
+    transition_label: Option<String>,
     style: String,
 }
 
@@ -70,6 +71,13 @@ impl Curve {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "transition-label",
+                doc: "Replacement transition label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -80,6 +88,7 @@ impl Curve {
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
         let label = params[2].value.as_str().unwrap();
+        let transition_label = params[4].value.as_str().unwrap();
 
         Ok(Box::new(Self {
             input: input.owned(),
@@ -91,6 +100,11 @@ impl Curve {
                 None
             } else {
                 Some(label.to_string())
+            },
+            transition_label: if transition_label.is_empty() {
+                None
+            } else {
+                Some(transition_label.to_string())
             },
             style: params[3].value.as_str().unwrap().to_string(),
         }))
@@ -146,6 +160,7 @@ impl Move for Curve {
             param!(self.len),
             param!("label" = (self.label.clone().unwrap_or("".to_string()))),
             param!(self.style),
+            param!("transition-label" = (self.transition_label.clone().unwrap_or("".to_string()))),
         ]
     }
     fn start(&self) -> Option<Code> {
@@ -219,7 +234,13 @@ impl Move for Curve {
                 ),
         }];
 
-        if let Some(transition) = self.pre_transition.label() {
+        let transition: Option<&str> = if self.transition_label.is_some() {
+            self.transition_label.as_deref()
+        } else {
+            self.pre_transition.label()
+        };
+
+        if let Some(transition) = transition {
             // Assume that 5% along the curve is still pretty much vertical,
             // so the pre-transition label can just be inset horizontally.
             let early_pt = self.percent_point(5);

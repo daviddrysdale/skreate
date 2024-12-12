@@ -46,7 +46,7 @@
 - [x] Move parameterization: allow 1/2/3 parameters to vary, cf. Metafont
 - [x] Rink and start point/direction specification
 - [x] Title, text inserts
-- [ ] Allow override of transition label
+- [x] Allow override of transition label
 - [ ] Proper parser, coping with quoted strings
 - [x] URL parameters for initial window sizes
 - [x] Add relative=bool parameter to Warp
