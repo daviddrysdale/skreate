@@ -48,14 +48,14 @@ impl Bracket {
                 })),
             },
             params::Info {
-                name: "delta_angle",
+                name: "delta-angle",
                 doc: "Difference in angle for second curved part, in degrees",
                 default: Value::Number(0),
                 range: params::Range::Any,
                 short: None,
             },
             params::Info {
-                name: "delta_len",
+                name: "delta-len",
                 doc: "Difference in length for second curved part, in centimetres",
                 default: Value::Number(0),
                 range: params::Range::Any,

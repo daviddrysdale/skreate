@@ -9,26 +9,26 @@ RFI [angle=90,len=300]
 LFI [angle=90,len=300]
 
 # TODO: replace with RFI-Tw1
-RFI3 [angle=100,len=100,delta_len=-40]
-RBO3 [angle=80,len=60,delta_len=40]
+RFI3 [angle=100,len=100,delta-len=-40]
+RBO3 [angle=80,len=60,delta-len=40]
 
 LFI [angle=90,len=300]
 RFI [angle=90,len=300]
 
 # TODO: replace with LFI-Tw1
-LFI3 [angle=100,len=100,delta_len=-40]
-LBO3 [angle=80,len=60,delta_len=40]
+LFI3 [angle=100,len=100,delta-len=-40]
+LBO3 [angle=80,len=60,delta-len=40]
 
 RFI [angle=90,len=300]
 LFI [angle=90,len=300]
 
 # TODO: replace with RFI-Tw1
-RFI3 [angle=100,len=100,delta_len=-40]
-RBO3 [angle=80,len=60,delta_len=40]
+RFI3 [angle=100,len=100,delta-len=-40]
+RBO3 [angle=80,len=60,delta-len=40]
 
 LFI [angle=90,len=300]
 RFI [angle=90,len=300]
 
 # TODO: replace with LFI-Tw1
-LFI3 [angle=100,len=100,delta_len=-40]
-LBO3 [angle=80,len=60,delta_len=40]
+LFI3 [angle=100,len=100,delta-len=-40]
+LBO3 [angle=80,len=60,delta-len=40]

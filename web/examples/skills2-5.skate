@@ -9,7 +9,7 @@ LF [len=900,label=" ",style="dashed"]
 Shift [rotate=-30]
 LFO [angle=70,len=600]
 
-RFI-OpMo [angle=70,len=600,delta_angle=10]
+RFI-OpMo [angle=70,len=600,delta-angle=10]
 
 wd-RBI>
 LBO [angle=40,len=500]
@@ -17,7 +17,7 @@ xf-RBI [angle=30,len=300]
 Shift [rotate=-70]
 LFO [angle=95,len=650]
 
-RFI-OpMo [angle=50,len=500,delta_angle=30]
+RFI-OpMo [angle=50,len=500,delta-angle=30]
 
 wd-RBI>
 LBO [angle=40,len=300]
@@ -32,7 +32,7 @@ RF [len=600,label=" ",style="dashed"]
 RFI [angle=120,len=700,label=" ",style="dashed"]
 RFO [len=450,angle=30]
 
-LFI-OpMo [angle=80,len=550,delta_angle=-10]
+LFI-OpMo [angle=80,len=550,delta-angle=-10]
 
 wd-LBI>
 RBO [angle=40,len=500]
@@ -40,7 +40,7 @@ xf-LBI [angle=40,len=300]
 Shift [rotate=70]
 RFO [angle=100,len=650]
 
-LFI-OpMo [angle=80,len=600,delta_angle=-10]
+LFI-OpMo [angle=80,len=600,delta-angle=-10]
 
 wd-LBI>
 RBO [angle=40,len=500]
