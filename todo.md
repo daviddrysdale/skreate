@@ -77,7 +77,7 @@
     - [x] Skills 2-5: needs open mohawk
     - [x] Skills 3-1
     - [x] Skills 3-2: needs 3-turn, open mohawk
-    - [ ] Skills 3-3: needs 3-turn, alternative transition label
+    - [x] Skills 3-3: needs 3-turn, alternative transition label
     - [ ] Skills 3-4: needs twizzle
     - [ ] Skills 3-5: needs closed mohawk, hop
     - [x] Skills 4-1: needs 3-turn
