@@ -147,7 +147,6 @@ impl Counter {
             Curve::construct(&Input { pos, text: &exit1 }).unwrap(),
         ];
 
-        let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
