@@ -7,6 +7,7 @@ use std::borrow::Cow;
 pub struct OpenMohawk;
 
 impl OpenMohawk {
+    const MOVE: &'static str = "-OpMo";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Open Mohawk",
@@ -75,7 +76,7 @@ impl OpenMohawk {
             _ => return Err(Error::Unrecognized),
         };
 
-        let Some((_, rest)) = rest.split_once("-OpMo") else {
+        let Some((_, rest)) = rest.split_once(Self::MOVE) else {
             return Err(Error::Unrecognized);
         };
 
@@ -114,7 +115,7 @@ impl OpenMohawk {
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{}-OpMo{suffix}", entry_code);
+        let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
         Ok(Box::new(Compound::new(input, moves, params, text)))
     }

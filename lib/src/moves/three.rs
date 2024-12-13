@@ -131,7 +131,7 @@ impl ThreeTurn {
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{}{}{suffix}", entry_code, Self::MOVE);
+        let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
         Ok(Box::new(Compound::new(input, moves, params, text)))
     }
