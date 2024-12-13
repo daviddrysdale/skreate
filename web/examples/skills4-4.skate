@@ -1,0 +1,75 @@
+Rink
+Title [text="Skills 4 Exercise 4",y=200,font-size=90]
+Info [grid=100,markers=false,font-size=30]
+
+Text [x=1350,y=1630,text="SIDE 1",font-size=50]
+Warp [x=1200,y=1600,dir=90,code="LFO"]
+
+LF [len=400,style="dashed",label=" "]
+
+LFO3>-
+Shift [rotate=90,side=40]
+RFI [angle=70,len=300]
+Shift [rotate=-75,side=40,fwd=30]
+LFI [len=100]
+LFI-Tw1.5 [len=40,angle=80]
+LBO [len=250,label=" "]
+Shift [rotate=80]
+
+RFO3->
+Shift [rotate=-90,side=-40]
+LFI [angle=70,len=300]
+Shift [rotate=65,side=-40,fwd=30]
+RFI [len=100]
+RFI-Tw1.5 [len=40,angle=80]
+RBO [len=250,label=" "]
+Shift [rotate=-80]
+
+LFO3>-
+Shift [rotate=90,side=40]
+RFI [angle=70,len=300]
+Shift [rotate=-65,side=40,fwd=30]
+LFI [len=100]
+LFI-Tw1.5 [len=40,angle=80]
+LBO [len=250,angle=45,label=" "]
+Shift [rotate=80]
+
+RFO3->
+Shift [rotate=-90,side=-40]
+LFI [angle=70,len=300]
+Shift [rotate=45,side=-40,fwd=30]
+RFI [len=100]
+RFI-Tw1.5 [len=40,angle=80]
+RBO [len=250,angle=60,label=" "]
+
+# --------
+
+Text [x=1650,y=5020,text="SIDE 2",font-size=50]
+Warp [x=1800,y=5000,dir=270,code="RBO"]
+
+RB [len=600,style="dashed",label=" "]
+Shift [rotate=-45]
+RBO [len=300,angle=85]
+xb-LBO [len=300,angle=80,transition-label="CR"]
+xb-RBO [len=300,angle=80,transition-label="CR"]
+xb-LBO [len=100,angle=40,transition-label="CR",label=" "]
+LBO-Tw1 [len=40,angle=120]
+LBO [len=100,angle=40,label=" "]
+
+xb-RBO [len=300,angle=80,transition-label="CR"]
+xb-LBO [len=300,angle=80,transition-label="CR"]
+xb-RBO [len=100,angle=40,transition-label="CR",label=" "]
+RBO-Tw1 [len=40,angle=120]
+RBO [len=100,angle=40,label=" "]
+
+xb-LBO [len=300,angle=80,transition-label="CR"]
+xb-RBO [len=300,angle=80,transition-label="CR"]
+xb-LBO [len=100,angle=40,transition-label="CR",label=" "]
+LBO-Tw1 [len=40,angle=120]
+LBO [len=100,angle=40,label=" "]
+
+xb-RBO [len=300,angle=80,transition-label="CR"]
+xb-LBO [len=300,angle=80,transition-label="CR"]
+xb-RBO [len=100,angle=40,transition-label="CR",label=" "]
+RBO-Tw1 [len=40,angle=120]
+RBO [len=100,angle=40,label=" "]
