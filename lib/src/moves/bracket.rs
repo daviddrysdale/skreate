@@ -82,7 +82,7 @@ impl Bracket {
             _ => return Err(Error::Unrecognized),
         };
 
-        let Some((_, rest)) = rest.split_once(Self::MOVE) else {
+        let Some(rest) = rest.strip_prefix(Self::MOVE) else {
             return Err(Error::Unrecognized);
         };
 

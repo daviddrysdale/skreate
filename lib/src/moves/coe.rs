@@ -80,9 +80,12 @@ impl ChangeOfEdge {
         let (pre_transition, rest) = PreTransition::parse(input.text);
         let (entry_code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
 
-        let rest = match (rest.split_once(Self::MOVE), rest.split_once(Self::MOVE_ALT)) {
-            (Some(_), Some(_)) => return Err(Error::Unrecognized),
-            (Some((_, rest)), None) | (None, Some((_, rest))) => rest,
+        let rest = match (
+            rest.strip_prefix(Self::MOVE),
+            rest.strip_prefix(Self::MOVE_ALT),
+        ) {
+            (Some(_), Some(_)) => unreachable!(),
+            (Some(rest), None) | (None, Some(rest)) => rest,
             (None, None) => return Err(Error::Unrecognized),
         };
 
