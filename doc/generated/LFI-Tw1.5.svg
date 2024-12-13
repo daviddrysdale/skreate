@@ -1,0 +1,64 @@
+<svg height="1177" viewBox="-112 -50 168 1177" width="168" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+</style>
+<g id="LFI-Tw1.5_0::LFI[angle=24,len=150,label=&quot; &quot;]">
+<path d="M 0,0 a 358,358 0 0 1 -30,145"/>
+</g>
+<g id="LFI-Tw1.5_1::LFI[angle=36,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 79,79 0 0 1 -15,46"/>
+</g>
+<g id="LFI-Tw1.5_3::LBO[angle=36,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 79,79 0 0 1 -15,46"/>
+</g>
+<g id="LFI-Tw1.5_4::LBO[angle=24,len=150,label=&quot; &quot;]">
+<path d="M 0,0 a 358,358 0 0 1 -30,145"/>
+</g>
+<g id="LFI-Tw1.5_5::LBO[angle=24,len=150,label=&quot; &quot;]">
+<path d="M 0,0 a 358,358 0 0 1 -30,145"/>
+</g>
+<g id="LFI-Tw1.5_6::LBO[angle=36,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 79,79 0 0 1 -15,46"/>
+</g>
+<g id="LFI-Tw1.5_9::LFI[angle=36,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 79,79 0 0 1 -15,46"/>
+</g>
+<g id="LFI-Tw1.5_10::LFI[angle=24,len=150,label=&quot; &quot;]">
+<path d="M 0,0 a 358,358 0 0 1 -30,145"/>
+</g>
+<g id="LFI-Tw1.5_11::LFI[angle=24,len=150,label=&quot; &quot;]">
+<path d="M 0,0 a 358,358 0 0 1 -30,145"/>
+</g>
+<g id="LFI-Tw1.5_12::LFI[angle=36,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 79,79 0 0 1 -15,46"/>
+</g>
+<g id="LFI-Tw1.5_14::LBO[angle=36,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 79,79 0 0 1 -15,46"/>
+</g>
+<g id="LFI-Tw1.5_15::LBO[angle=24,len=150,label=&quot; &quot;]">
+<path d="M 0,0 a 358,358 0 0 1 -30,145"/>
+</g>
+</defs>
+<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-Tw1.5_0::LFI[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-30 145) rotate(24)" xlink:href="#LFI-Tw1.5_1::LFI[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-62 180) rotate(300)" xlink:href="#LFI-Tw1.5_3::LBO[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-29 215) rotate(336)" xlink:href="#LFI-Tw1.5_4::LBO[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(2 359) rotate(0)" xlink:href="#LFI-Tw1.5_5::LBO[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-28 504) rotate(24)" xlink:href="#LFI-Tw1.5_6::LBO[angle=36,len=50,label=&quot; &quot;]"/>
+<text style="font-size:18pt;" x="-131" y="614">
+LFI-Tw1.5
+</text>
+<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-60 539) rotate(300)" xlink:href="#LFI-Tw1.5_9::LFI[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-27 574) rotate(336)" xlink:href="#LFI-Tw1.5_10::LFI[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(4 718) rotate(0)" xlink:href="#LFI-Tw1.5_11::LFI[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-26 863) rotate(24)" xlink:href="#LFI-Tw1.5_12::LFI[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-58 898) rotate(300)" xlink:href="#LFI-Tw1.5_14::LBO[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-25 933) rotate(336)" xlink:href="#LFI-Tw1.5_15::LBO[angle=24,len=150,label=&quot; &quot;]"/>
+</svg>

@@ -23,6 +23,7 @@ mod straight;
 mod text;
 mod three;
 mod title;
+mod twizzle;
 mod warp;
 
 /// Errors arising from attempting to create move instances.
@@ -121,6 +122,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, rocker::Rocker);
     register!(cons, info, counter::Counter);
     register!(cons, info, coe::ChangeOfEdge);
+    register!(cons, info, twizzle::Twizzle);
 
     register!(cons, info, warp::Warp);
     register!(cons, info, shift::Shift);

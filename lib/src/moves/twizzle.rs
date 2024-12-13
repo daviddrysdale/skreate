@@ -1,0 +1,166 @@
+//! Twizzle.
+
+use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, Error};
+use crate::{code, moves, params, params::Value, parse_code, Code, Input, Move, PreTransition};
+use regex::Regex;
+use std::borrow::Cow;
+
+pub struct Twizzle;
+
+impl Twizzle {
+    const MOVE: &'static str = "-Tw";
+    const PATTERN: &'static str = r#"(?P<n>[0-9])(?P<half>\.5)?(?P<rest>.*)"#;
+    /// Static move information.
+    pub const INFO: moves::Info = moves::Info {
+        name: "Twizzle",
+        summary: "Twizzle",
+        example: "LFI-Tw1.5",
+        visible: true,
+        params: &[
+            params::Info {
+                name: "angle",
+                doc: "Angle of rotation for each curved part, in degrees",
+                default: Value::Number(60),
+                range: params::Range::StrictlyPositive,
+                short: Some(params::Abbrev::GreaterLess(params::Detents {
+                    add1: 70,
+                    add2: 80,
+                    add3: 90,
+                    less1: 50,
+                    less2: 40,
+                    less3: 30,
+                })),
+            },
+            params::Info {
+                name: "len",
+                doc: "Length of each curved part in centimetres",
+                default: Value::Number(200),
+                range: params::Range::StrictlyPositive,
+                short: Some(params::Abbrev::PlusMinus(params::Detents {
+                    add1: 300,
+                    add2: 450,
+                    add3: 600,
+                    less1: 180,
+                    less2: 100,
+                    less3: 80,
+                })),
+            },
+            params::Info {
+                name: "style",
+                doc: "Style of line",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
+        ],
+    };
+
+    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
+        let (pre_transition, rest) = PreTransition::parse(input.text);
+        let (entry_code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
+        let sign = match entry_code {
+            // Clockwise
+            code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
+            // Widdershins
+            code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
+            _ => return Err(Error::Unrecognized),
+        };
+
+        let Some(rest) = rest.strip_prefix(Self::MOVE) else {
+            return Err(Error::Unrecognized);
+        };
+        if rest.is_empty() {
+            return Err(Error::Unrecognized);
+        }
+        let re = Regex::new(Self::PATTERN).unwrap();
+        let Some(captures) = re.captures(rest) else {
+            return Err(Error::Unrecognized);
+        };
+        let Some(n) = captures.name("n") else {
+            return Err(Error::Unrecognized);
+        };
+        let Ok(n) = n.as_str().parse::<u32>() else {
+            return Err(Error::Unrecognized);
+        };
+        let Some(rest) = captures.name("rest") else {
+            return Err(Error::Unrecognized);
+        };
+        let rest = rest.as_str();
+        let half = captures.name("half").is_some();
+        let count = n * 2 + if half { 1 } else { 0 };
+        if count < 2 {
+            log::warn!("need more than {count} turns in a twizzle");
+            return Err(Error::Unrecognized);
+        }
+
+        let params =
+            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        let angle = params[0].value.as_i32().unwrap();
+        let len = params[1].value.as_i32().unwrap();
+        let style = params[2].value.as_str().unwrap();
+
+        let len_a = len * 75 / 100;
+        let len_b = len - len_a;
+        let angle_b = angle * 60 / 100;
+        let angle_a = angle - angle_b;
+        let mid_angle = 2 * angle;
+
+        let prefix = pre_transition.prefix();
+        let suffix = params::to_string(Self::INFO.params, &params);
+        let label_text = format!(
+            "{entry_code}{}{}{}",
+            Self::MOVE,
+            count / 2,
+            if count % 2 == 0 { "" } else { ".5" }
+        );
+        let text = format!("{prefix}{label_text}{suffix}");
+
+        let pos = input.pos;
+        let mut code = entry_code;
+        let mut moves = Vec::new();
+        let mut debug = String::new();
+        if !prefix.is_empty() {
+            let pre = format!("{prefix}{code} [len=1,style=\"{style}\",label=\" \"]");
+            moves.push(Curve::construct(&Input { pos, text: &pre }).unwrap());
+        }
+        for n in 0..count {
+            let out_code = Code {
+                foot: code.foot,
+                dir: code.dir.opposite(),
+                edge: code.edge.opposite(),
+            };
+
+            let entry1 =
+                format!("{code}[angle={angle_a},len={len_a},style=\"{style}\",label=\" \"]");
+            let entry2 =
+                format!("{code}[angle={angle_b},len={len_b},style=\"{style}\",label=\" \"]");
+            let shift = format!("Shift[rotate={sign}{mid_angle},code=\"{out_code}\"]");
+            let exit2 =
+                format!("{out_code}[angle={angle_b},len={len_b},style=\"{style}\",label=\" \"]");
+            let exit1 =
+                format!("{out_code}[angle={angle_a},len={len_a},style=\"{style}\",label=\" \"]");
+
+            moves.push(Curve::construct(&Input { pos, text: &entry1 }).unwrap());
+            moves.push(Curve::construct(&Input { pos, text: &entry2 }).unwrap());
+            if count % 2 == 1 && n == count / 2 {
+                let label = format!("Label [fwd=100,side=30,text=\"{label_text}\"]");
+                moves.push(Label::construct(&Input { pos, text: &label }).unwrap());
+            }
+
+            moves.push(Shift::construct(&Input { pos, text: &shift }).unwrap());
+            moves.push(Curve::construct(&Input { pos, text: &exit2 }).unwrap());
+            moves.push(Curve::construct(&Input { pos, text: &exit1 }).unwrap());
+
+            if count % 2 == 0 && n == (count - 1) / 2 {
+                let label = format!("Label [side=100,text=\"{label_text}\"]");
+                moves.push(Label::construct(&Input { pos, text: &label }).unwrap());
+            }
+
+            code = out_code;
+            debug = format!("{debug}{entry1};{entry2};{shift};{exit2};{exit1};");
+        }
+        log::info!("input {input:?} results in {debug}");
+
+        Ok(Box::new(Compound::new(input, moves, params, text)))
+    }
+}

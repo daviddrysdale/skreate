@@ -21,7 +21,7 @@
     - [ ] Closed Mohawk
     - [ ] Open Choctaw
     - [ ] Closed Choctaw
-    - [ ] Twizzle
+    - [x] Twizzle
     - [ ] Loop
     - [ ] Pivot
     - [ ] Schramm
