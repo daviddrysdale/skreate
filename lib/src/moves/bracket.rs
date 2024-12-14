@@ -68,6 +68,13 @@ impl Bracket {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "transition-label",
+                doc: "Replacement transition label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -93,6 +100,7 @@ impl Bracket {
         let delta_angle = params[2].value.as_i32().unwrap();
         let delta_len = params[3].value.as_i32().unwrap();
         let style = params[4].value.as_str().unwrap();
+        let transition_label = params[5].value.as_str().unwrap();
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -136,7 +144,7 @@ impl Bracket {
         let angle2c = angle1c;
 
         let pos = input.pos;
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}{}\"]", Self::MOVE);
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
         let entry2 = format!("{entry_flat}[len={len1b},style=\"{style}\",label=\" \"]");
         let entry3 =
             format!("{entry_rev}[angle={angle1c},len={len1c},style=\"{style}\",label=\" \"]");

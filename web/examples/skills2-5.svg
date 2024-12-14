@@ -112,7 +112,7 @@ SIDE 1
 <text style="font-size:24pt;" x="465" y="546">
 LFO
 </text>
-<use id="r_11_c_0_30" style="stroke-width:4;" transform="translate(332 815) rotate(350)" xlink:href="#RFI-OpMo&lt;&lt;+[delta-angle=10]_0::RFI+[angle=70]"/>
+<use id="r_11_c_0_50" style="stroke-width:4;" transform="translate(332 815) rotate(350)" xlink:href="#RFI-OpMo&lt;&lt;+[delta-angle=10]_0::RFI+[angle=70]"/>
 <text style="font-size:24pt;" x="517" y="1026">
 RFI
 </text>
@@ -145,7 +145,7 @@ XF
 <text style="font-size:24pt;" x="689" y="2801">
 LFO
 </text>
-<use id="r_19_c_0_30" style="stroke-width:4;" transform="translate(552 3082) rotate(345)" xlink:href="#RFI-OpMo[angle=50,len=500,delta-angle=30]_0::RFI[angle=50,len=500]"/>
+<use id="r_19_c_0_50" style="stroke-width:4;" transform="translate(552 3082) rotate(345)" xlink:href="#RFI-OpMo[angle=50,len=500,delta-angle=30]_0::RFI[angle=50,len=500]"/>
 <text style="font-size:24pt;" x="720" y="3256">
 RFI
 </text>
@@ -187,7 +187,7 @@ SIDE 2
 <text style="font-size:24pt;" x="2071" y="5173">
 RFO
 </text>
-<use id="r_34_c_0_30" style="stroke-width:4;" transform="translate(1944 4969) rotate(180)" xlink:href="#LFI-OpMo&lt;[len=550,delta-angle=-10]_0::LFI[angle=80,len=550]"/>
+<use id="r_34_c_0_50" style="stroke-width:4;" transform="translate(1944 4969) rotate(180)" xlink:href="#LFI-OpMo&lt;[len=550,delta-angle=-10]_0::LFI[angle=80,len=550]"/>
 <text style="font-size:24pt;" x="2091" y="4762">
 LFI
 </text>
@@ -220,7 +220,7 @@ XF
 <text style="font-size:24pt;" x="1931" y="3125">
 RFO
 </text>
-<use id="r_42_c_0_30" style="stroke-width:4;" transform="translate(1722 2895) rotate(180)" xlink:href="#LFI-OpMo&lt;+[delta-angle=-10]_0::LFI+[angle=80]"/>
+<use id="r_42_c_0_50" style="stroke-width:4;" transform="translate(1722 2895) rotate(180)" xlink:href="#LFI-OpMo&lt;+[delta-angle=-10]_0::LFI+[angle=80]"/>
 <text style="font-size:24pt;" x="1877" y="2665">
 LFI
 </text>

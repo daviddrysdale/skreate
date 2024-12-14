@@ -64,6 +64,13 @@ impl ThreeTurn {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "transition-label",
+                doc: "Replacement transition label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -89,6 +96,7 @@ impl ThreeTurn {
         let delta_angle = params[2].value.as_i32().unwrap();
         let delta_len = params[3].value.as_i32().unwrap();
         let style = params[4].value.as_str().unwrap();
+        let transition_label = params[5].value.as_str().unwrap();
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -112,7 +120,7 @@ impl ThreeTurn {
         let angle2a = angle2 - angle2b;
 
         let pos = input.pos;
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\"]", Self::MOVE);
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
         let entry2 =
             format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
         let shift = format!("Shift[rotate={sign}135,code=\"{out_code}\"]");

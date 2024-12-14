@@ -73,6 +73,13 @@ impl ChangeOfEdge {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "transition-label",
+                doc: "Replacement transition label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -97,6 +104,7 @@ impl ChangeOfEdge {
         let delta_angle = params[3].value.as_i32().unwrap();
         let delta_len = params[4].value.as_i32().unwrap();
         let style = params[5].value.as_str().unwrap();
+        let transition_label = params[6].value.as_str().unwrap();
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -114,7 +122,7 @@ impl ChangeOfEdge {
         };
 
         let pos = input.pos;
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\"]");
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
         let flat = format!("{flat_code}[len={flat_len},label=\"COE\",style=\"{style}\"]");
         let exit = format!("{out_code}[angle={angle2},len={len2},style=\"{style}\"]");
         log::debug!("input {input:?} results in {entry};{flat};{exit}");

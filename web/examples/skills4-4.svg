@@ -303,7 +303,7 @@ Skills 4 Exercise 4
 SIDE 1
 </text>
 <use id="r_7_c_0_37" style="stroke-width:4;" transform="translate(1200 1600) rotate(90)" xlink:href="#LF[len=400,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<use id="r_9_c_0_43" style="stroke-width:4;" transform="translate(800 1600) rotate(90)" xlink:href="#LFO3&gt;-_0::LFO[angle=40,len=225,label=&quot;LFO3&quot;]"/>
+<use id="r_9_c_0_63" style="stroke-width:4;" transform="translate(800 1600) rotate(90)" xlink:href="#LFO3&gt;-_0::LFO[angle=40,len=225,label=&quot;LFO3&quot;]"/>
 <text style="font-size:30pt;" x="720" y="1703">
 LFO3
 </text>
@@ -334,7 +334,7 @@ LFI-Tw1.5
 <use id="r_13_c_0_39" style="stroke-width:4;" transform="translate(694 2102) rotate(180)" xlink:href="#LFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250,post-angle=20]_15::LBO[angle=48,len=10,label=&quot; &quot;]"/>
 <use id="r_13_c_0_39" style="stroke-width:4;" transform="translate(697 2094) rotate(228)" xlink:href="#LFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250,post-angle=20]_16::LBO[angle=32,len=30,label=&quot; &quot;]"/>
 <use id="r_13_c_0_41" style="stroke-width:4;" transform="translate(723 2081) rotate(260)" xlink:href="#LFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250,post-angle=20]_17::LBO[len=250,label=&quot; &quot;]"/>
-<use id="r_16_c_0_43" style="stroke-width:4;" transform="translate(983 2099) rotate(270)" xlink:href="#RFO3&gt;-_0::RFO[angle=40,len=225,label=&quot;RFO3&quot;]"/>
+<use id="r_16_c_0_63" style="stroke-width:4;" transform="translate(983 2099) rotate(270)" xlink:href="#RFO3&gt;-_0::RFO[angle=40,len=225,label=&quot;RFO3&quot;]"/>
 <text style="font-size:30pt;" x="1063" y="2202">
 RFO3
 </text>
@@ -365,7 +365,7 @@ RFI-Tw1.5
 <use id="r_20_c_0_39" style="stroke-width:4;" transform="translate(1067 2640) rotate(170)" xlink:href="#RFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250,post-angle=20]_15::RBO[angle=48,len=10,label=&quot; &quot;]"/>
 <use id="r_20_c_0_39" style="stroke-width:4;" transform="translate(1062 2632) rotate(122)" xlink:href="#RFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250,post-angle=20]_16::RBO[angle=32,len=30,label=&quot; &quot;]"/>
 <use id="r_20_c_0_41" style="stroke-width:4;" transform="translate(1034 2623) rotate(90)" xlink:href="#RFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250,post-angle=20]_17::RBO[len=250,label=&quot; &quot;]"/>
-<use id="r_23_c_0_43" style="stroke-width:4;" transform="translate(788 2689) rotate(80)" xlink:href="#LFO3&gt;-_0::LFO[angle=40,len=225,label=&quot;LFO3&quot;]"/>
+<use id="r_23_c_0_63" style="stroke-width:4;" transform="translate(788 2689) rotate(80)" xlink:href="#LFO3&gt;-_0::LFO[angle=40,len=225,label=&quot;LFO3&quot;]"/>
 <text style="font-size:30pt;" x="727" y="2804">
 LFO3
 </text>
@@ -396,7 +396,7 @@ LFI-Tw1.5
 <use id="r_27_c_0_39" style="stroke-width:4;" transform="translate(787 3241) rotate(180)" xlink:href="#LFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250]_15::LBO[angle=48,len=10,label=&quot; &quot;]"/>
 <use id="r_27_c_0_39" style="stroke-width:4;" transform="translate(790 3233) rotate(228)" xlink:href="#LFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250]_16::LBO[angle=32,len=30,label=&quot; &quot;]"/>
 <use id="r_27_c_0_41" style="stroke-width:4;" transform="translate(816 3220) rotate(260)" xlink:href="#LFI-Tw1.5&gt;&gt;[len=40,pre-angle=20,post-len=250]_17::LBO[angle=45,len=250,label=&quot; &quot;]"/>
-<use id="r_30_c_0_43" style="stroke-width:4;" transform="translate(1058 3295) rotate(295)" xlink:href="#RFO3&gt;-_0::RFO[angle=40,len=225,label=&quot;RFO3&quot;]"/>
+<use id="r_30_c_0_63" style="stroke-width:4;" transform="translate(1058 3295) rotate(295)" xlink:href="#RFO3&gt;-_0::RFO[angle=40,len=225,label=&quot;RFO3&quot;]"/>
 <text style="font-size:30pt;" x="1086" y="3422">
 RFO3
 </text>

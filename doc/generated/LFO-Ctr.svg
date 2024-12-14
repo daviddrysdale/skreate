@@ -25,7 +25,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 243,243 0 0 1 -243,243"/>
 </g>
 </defs>
-<use id="r_0_c_0_46" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO-Ctr&quot;]"/>
+<use id="r_0_c_0_66" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO-Ctr&quot;]"/>
 <text style="font-size:12pt;" x="87" y="126">
 LFO-Ctr
 </text>

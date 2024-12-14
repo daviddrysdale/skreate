@@ -87,7 +87,7 @@ Skills 3 Exercise 2
 START
 </text>
 <use id="r_6_c_0_37" style="stroke-width:4;" transform="translate(1500 700) rotate(90)" xlink:href="#LF-[label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<use id="r_8_c_0_43" style="stroke-width:4;" transform="translate(1200 700) rotate(90)" xlink:href="#LFO3-_0::LFO[angle=36,len=225,label=&quot;LFO3&quot;]"/>
+<use id="r_8_c_0_63" style="stroke-width:4;" transform="translate(1200 700) rotate(90)" xlink:href="#LFO3-_0::LFO[angle=36,len=225,label=&quot;LFO3&quot;]"/>
 <text style="font-size:24pt;" x="1112" y="785">
 LFO3
 </text>
@@ -122,7 +122,7 @@ LBO
 <text style="font-size:24pt;" x="1612" y="1445">
 CR
 </text>
-<use id="r_15_c_0_43" style="stroke-width:4;" transform="translate(1987 1674) rotate(255)" xlink:href="#RFO3-_0::RFO[angle=36,len=225,label=&quot;RFO3&quot;]"/>
+<use id="r_15_c_0_63" style="stroke-width:4;" transform="translate(1987 1674) rotate(255)" xlink:href="#RFO3-_0::RFO[angle=36,len=225,label=&quot;RFO3&quot;]"/>
 <text style="font-size:24pt;" x="2094" y="1733">
 RFO3
 </text>
@@ -157,7 +157,7 @@ RBO
 <text style="font-size:24pt;" x="1490" y="2537">
 CR
 </text>
-<use id="r_22_c_0_43" style="stroke-width:4;" transform="translate(1064 2843) rotate(100)" xlink:href="#LFO3-_0::LFO[angle=36,len=225,label=&quot;LFO3&quot;]"/>
+<use id="r_22_c_0_63" style="stroke-width:4;" transform="translate(1064 2843) rotate(100)" xlink:href="#LFO3-_0::LFO[angle=36,len=225,label=&quot;LFO3&quot;]"/>
 <text style="font-size:24pt;" x="962" y="2911">
 LFO3
 </text>
@@ -192,7 +192,7 @@ LBO
 <text style="font-size:24pt;" x="1491" y="3770">
 CR
 </text>
-<use id="r_29_c_0_43" style="stroke-width:4;" transform="translate(1871 4101) rotate(275)" xlink:href="#RFO3-_0::RFO[angle=36,len=225,label=&quot;RFO3&quot;]"/>
+<use id="r_29_c_0_63" style="stroke-width:4;" transform="translate(1871 4101) rotate(275)" xlink:href="#RFO3-_0::RFO[angle=36,len=225,label=&quot;RFO3&quot;]"/>
 <text style="font-size:24pt;" x="1951" y="4193">
 RFO3
 </text>

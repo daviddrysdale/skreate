@@ -28,7 +28,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 214,214 0 0 0 214,214"/>
 </g>
 </defs>
-<use id="r_0_c_0_45" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Br_0::LFO[angle=90,len=337,label=&quot;LFO-Br&quot;]"/>
+<use id="r_0_c_0_65" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Br_0::LFO[angle=90,len=337,label=&quot;LFO-Br&quot;]"/>
 <text style="font-size:12pt;" x="87" y="126">
 LFO-Br
 </text>

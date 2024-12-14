@@ -64,6 +64,13 @@ impl OpenMohawk {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "transition-label",
+                doc: "Replacement transition label, used if non-empty",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
         ],
     };
 
@@ -87,6 +94,7 @@ impl OpenMohawk {
         let delta_angle = params[2].value.as_i32().unwrap();
         let delta_len = params[3].value.as_i32().unwrap();
         let style = params[4].value.as_str().unwrap();
+        let transition_label = params[5].value.as_str().unwrap();
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -100,7 +108,7 @@ impl OpenMohawk {
         };
 
         let pos = input.pos;
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\"]");
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
         let label = format!("Label[fwd=30,side={sign}70,text=\"OpMo\"]");
         let shift = format!("Shift[side={sign}80,fwd=-65,rotate={sign}90,code=\"{out_code}\"]");
         let exit = format!("{out_code}[angle={angle2},len={len2},style=\"{style}\"]");
