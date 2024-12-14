@@ -8,27 +8,27 @@ Warp [x=1450,y=1400,dir=45,code="RFI"]
 RFI [angle=90,len=300]
 LFI [angle=90,len=300]
 
-# TODO: replace with RFI-Tw1
-RFI3 [angle=100,len=100,delta-len=-40]
-RBO3 [angle=80,len=60,delta-len=40]
+RFI [angle=45,len=100,label=" "]
+RFI-Tw1 [len=40,angle=110]
+RFI [angle=45,len=100,label=" "]
 
 LFI [angle=90,len=300]
 RFI [angle=90,len=300]
 
-# TODO: replace with LFI-Tw1
-LFI3 [angle=100,len=100,delta-len=-40]
-LBO3 [angle=80,len=60,delta-len=40]
+LFI [angle=45,len=100,label=" "]
+LFI-Tw1 [len=40,angle=110]
+LFI [angle=45,len=100,label=" "]
 
 RFI [angle=90,len=300]
 LFI [angle=90,len=300]
 
-# TODO: replace with RFI-Tw1
-RFI3 [angle=100,len=100,delta-len=-40]
-RBO3 [angle=80,len=60,delta-len=40]
+RFI [angle=45,len=100,label=" "]
+RFI-Tw1 [len=40,angle=110]
+RFI [angle=45,len=100,label=" "]
 
 LFI [angle=90,len=300]
 RFI [angle=90,len=300]
 
-# TODO: replace with LFI-Tw1
-LFI3 [angle=100,len=100,delta-len=-40]
-LBO3 [angle=80,len=60,delta-len=40]
+LFI [angle=45,len=100,label=" "]
+LFI-Tw1 [len=40,angle=110]
+LFI [angle=45,len=100,label=" "]
