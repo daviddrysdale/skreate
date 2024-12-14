@@ -46,8 +46,43 @@ impl Twizzle {
                 })),
             },
             params::Info {
+                name: "pre-len",
+                doc: "Length of entry curve in centimetres",
+                default: Value::Number(100),
+                range: params::Range::StrictlyPositive,
+                short: None,
+            },
+            params::Info {
+                name: "pre-angle",
+                doc: "Angle of entry curve in degrees",
+                default: Value::Number(45),
+                range: params::Range::StrictlyPositive,
+                short: None,
+            },
+            params::Info {
+                name: "post-len",
+                doc: "Length of exit curve in centimetres",
+                default: Value::Number(100),
+                range: params::Range::StrictlyPositive,
+                short: None,
+            },
+            params::Info {
+                name: "post-angle",
+                doc: "Angle of exit curve in degrees",
+                default: Value::Number(45),
+                range: params::Range::StrictlyPositive,
+                short: None,
+            },
+            params::Info {
                 name: "style",
                 doc: "Style of line",
+                default: Value::Text(Cow::Borrowed("")),
+                range: params::Range::Text,
+                short: None,
+            },
+            params::Info {
+                name: "transition-label",
+                doc: "Replacement transition label, used if non-empty",
                 default: Value::Text(Cow::Borrowed("")),
                 range: params::Range::Text,
                 short: None,
@@ -97,7 +132,12 @@ impl Twizzle {
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
         let angle = params[0].value.as_i32().unwrap();
         let len = params[1].value.as_i32().unwrap();
-        let style = params[2].value.as_str().unwrap();
+        let pre_len = params[2].value.as_i32().unwrap();
+        let pre_angle = params[3].value.as_i32().unwrap();
+        let post_len = params[4].value.as_i32().unwrap();
+        let post_angle = params[5].value.as_i32().unwrap();
+        let style = params[6].value.as_str().unwrap();
+        let transition_label = params[7].value.as_str().unwrap();
 
         let len_a = len * 75 / 100;
         let len_b = len - len_a;
@@ -118,11 +158,13 @@ impl Twizzle {
         let pos = input.pos;
         let mut code = entry_code;
         let mut moves = Vec::new();
-        let mut debug = String::new();
-        if !prefix.is_empty() {
-            let pre = format!("{prefix}{code} [len=1,style=\"{style}\",label=\" \"]");
-            moves.push(Curve::construct(&Input { pos, text: &pre }).unwrap());
-        }
+
+        let pre = format!(
+            "{prefix}{code} [len={pre_len},angle={pre_angle},style=\"{style}\",label=\" \",transition-label=\"{transition_label}\"]"
+        );
+        moves.push(Curve::construct(&Input { pos, text: &pre }).unwrap());
+        let mut debug = format!("{pre};");
+
         for n in 0..count {
             let out_code = Code {
                 foot: code.foot,
@@ -159,8 +201,12 @@ impl Twizzle {
             code = out_code;
             debug = format!("{debug}{entry1};{entry2};{shift};{exit2};{exit1};");
         }
-        log::info!("input {input:?} results in {debug}");
+        let post =
+            format!("{code} [len={post_len},angle={post_angle},style=\"{style}\",label=\" \"]");
+        moves.push(Curve::construct(&Input { pos, text: &post }).unwrap());
+        debug = format!("{debug}{post}");
 
+        log::info!("input {input:?} results in {debug}");
         Ok(Box::new(Compound::new(input, moves, params, text)))
     }
 }
