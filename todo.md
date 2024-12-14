@@ -48,6 +48,8 @@
 - [x] Title, text inserts
 - [x] Allow override of transition label
 - [ ] Proper parser, coping with quoted strings
+    - [ ] Railroad diagram for input?
+    - [ ] Fuzzer?
 - [x] URL parameters for initial window sizes
 - [x] Add relative=bool parameter to Warp
 - [ ] Counts and count display options
@@ -63,8 +65,6 @@
     - [ ] mouse over move => highlight text in editor
     - [ ] cursor on move => highlight corresponding move
     - [ ] animation: highlight move in diagram and corresponding text in editor
-- [ ] Fuzzer?
-- [ ] Railroad diagram for input?
 - [ ] Reproduce skills diagrams
     - [x] Skills 1-1
     - [x] Skills 1-2
