@@ -4,6 +4,8 @@ use nom::{
     bytes::complete::is_not, character::complete::char, combinator::value, sequence::pair, IResult,
 };
 
+pub mod string;
+
 /// Parse an end-of-line comment marked with '#'.
 pub fn parse_comment(input: &str) -> IResult<&str, ()> {
     value(
