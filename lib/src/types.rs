@@ -5,6 +5,7 @@ use crate::{
     MoveParam,
 };
 use log::trace;
+use nom::{branch::alt, bytes::complete::tag, combinator::value, IResult};
 use std::fmt::{self, Display, Formatter};
 
 const DEGREES: i32 = 360;
@@ -283,6 +284,15 @@ impl Foot {
             Foot::Both => Foot::Both,
         }
     }
+
+    /// Parse input as this type.
+    pub fn parse(input: &str) -> IResult<&str, Self> {
+        alt((
+            value(Self::Left, tag("L")),
+            value(Self::Right, tag("R")),
+            value(Self::Both, tag("B")),
+        ))(input)
+    }
 }
 
 impl Display for Foot {
@@ -311,6 +321,14 @@ impl SkatingDirection {
             SkatingDirection::Forward => SkatingDirection::Backward,
             SkatingDirection::Backward => SkatingDirection::Forward,
         }
+    }
+
+    /// Parse input as this type.
+    pub fn parse(input: &str) -> IResult<&str, Self> {
+        alt((
+            value(Self::Forward, tag("F")),
+            value(Self::Backward, tag("B")),
+        ))(input)
     }
 }
 
@@ -343,6 +361,15 @@ impl Edge {
             Edge::Flat => Edge::Flat,
         }
     }
+
+    /// Parse input as this type.
+    pub fn parse(input: &str) -> IResult<&str, Self> {
+        alt((
+            value(Self::Outside, tag("O")),
+            value(Self::Inside, tag("I")),
+            // no parse for Self::Flat
+        ))(input)
+    }
 }
 
 impl Display for Edge {
@@ -364,6 +391,22 @@ pub struct Code {
     pub dir: SkatingDirection,
     /// Edge
     pub edge: Edge,
+}
+
+impl Code {
+    /// Parse input as this type.
+    pub fn parse(input: &str) -> IResult<&str, Self> {
+        let (mut rest, (foot, dir)) =
+            nom::sequence::pair(Foot::parse, SkatingDirection::parse)(input)?;
+
+        let edge = if let Ok((more, edge)) = Edge::parse(rest) {
+            rest = more;
+            edge
+        } else {
+            Edge::Flat
+        };
+        Ok((rest, Self { foot, dir, edge }))
+    }
 }
 
 impl Display for Code {
@@ -552,5 +595,13 @@ mod tests {
 
         bounds.encompass_bounds(&bounds!(-50,-50 => 350,350));
         assert_eq!(bounds, bounds!(-50,-50 => 350,350));
+    }
+
+    #[test]
+    fn test_parse() {
+        assert_eq!(Ok(("xx", Foot::Left)), Foot::parse("Lxx"));
+        assert_eq!(Ok(("yy", Foot::Right)), Foot::parse("Ryy"));
+        assert_eq!(Ok(("xx", code!(LFO))), Code::parse("LFOxx"));
+        assert_eq!(Ok(("xx", code!(LF))), Code::parse("LFxx"));
     }
 }
