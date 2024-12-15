@@ -15,6 +15,7 @@ use svg::{
 mod error;
 pub mod moves;
 pub mod params;
+pub mod parser;
 mod types;
 
 /// Extra margin to put around calculated bounding box.
