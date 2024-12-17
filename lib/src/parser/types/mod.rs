@@ -1,6 +1,6 @@
 //! Parsers for base types.
 
-use crate::{Code, Edge, Foot, SkatingDirection};
+use crate::{Code, Edge, Foot, PreTransition, SkatingDirection};
 use nom::{branch::alt, bytes::complete::tag, combinator::value, IResult};
 
 #[cfg(test)]
@@ -43,4 +43,14 @@ pub fn parse_code(input: &str) -> IResult<&str, Code> {
         Edge::Flat
     };
     Ok((rest, Code { foot, dir, edge }))
+}
+
+/// Parse a possible transition prefix.
+pub fn parse_pre_transition(input: &str) -> IResult<&str, PreTransition> {
+    alt((
+        value(PreTransition::CrossFront, tag("xf-")),
+        value(PreTransition::CrossBehind, tag("xb-")),
+        value(PreTransition::Wide, tag("wd-")),
+        value(PreTransition::Normal, tag("")),
+    ))(input)
 }

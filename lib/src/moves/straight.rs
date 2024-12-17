@@ -2,9 +2,11 @@
 
 use super::{Error, HW};
 use crate::{
-    apply_style, moves, param, params, params::Value, parse_foot_dir, path, pos, Code, Edge, Foot,
-    Input, Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions, Rotation,
-    SkatingDirection, SpatialTransition, SvgId, Transition,
+    apply_style, moves, param, params,
+    params::Value,
+    parser::types::{parse_code, parse_pre_transition},
+    path, pos, Code, Edge, Foot, Input, Label, Move, MoveParam, OwnedInput, Position,
+    PreTransition, RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
@@ -58,8 +60,12 @@ impl StraightEdge {
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (pre_transition, rest) = PreTransition::parse(input.text);
-        let (foot, dir, rest) = parse_foot_dir(rest).map_err(|_msg| Error::Unrecognized)?;
+        let (rest, pre_transition) = parse_pre_transition(input.text)?;
+        let (rest, Code { foot, dir, edge }) =
+            parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
+        if edge != Edge::Flat {
+            return Err(Error::Unrecognized);
+        }
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;

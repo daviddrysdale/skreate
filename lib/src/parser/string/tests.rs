@@ -7,7 +7,8 @@ fn test_parse() {
         (r#""a\"b\"c"xyz"#, "a\"b\"c", "xyz"),
     ];
     for (input, want, want_rest) in tests {
-        let (got_rest, got) = parse(input).expect(&format!("parse failed for input: {input}"));
+        let (got_rest, got) =
+            parse(input).unwrap_or_else(|e| panic!("parse failed for input: {input}, {e:?}"));
         assert_eq!(got, want, "for input: {input}");
         assert_eq!(got_rest, want_rest, "for input: {input}");
     }

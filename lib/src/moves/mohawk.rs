@@ -1,7 +1,12 @@
 //! Mohawk.
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, Error};
-use crate::{code, moves, params, params::Value, parse_code, Code, Input, Move, PreTransition};
+use crate::{
+    code, moves, params,
+    params::Value,
+    parser::types::{parse_code, parse_pre_transition},
+    Code, Input, Move,
+};
 use std::borrow::Cow;
 
 pub struct OpenMohawk;
@@ -75,8 +80,8 @@ impl OpenMohawk {
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (pre_transition, rest) = PreTransition::parse(input.text);
-        let (entry_code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
+        let (rest, pre_transition) = parse_pre_transition(input.text)?;
+        let (rest, entry_code) = parse_code(rest)?;
         let sign = match entry_code {
             code!(LFI) => "-",
             code!(RFI) => "",

@@ -4,7 +4,10 @@ use super::{
     compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge, Error,
 };
 use crate::{
-    code, moves, params, params::Value, parse_code, Code, Edge, Input, Move, PreTransition,
+    code, moves, params,
+    params::Value,
+    parser::types::{parse_code, parse_pre_transition},
+    Code, Edge, Input, Move,
 };
 use std::borrow::Cow;
 
@@ -79,8 +82,8 @@ impl Bracket {
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (pre_transition, rest) = PreTransition::parse(input.text);
-        let (entry_code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
+        let (rest, pre_transition) = parse_pre_transition(input.text)?;
+        let (rest, entry_code) = parse_code(rest)?;
         let sign = match entry_code {
             // Clockwise
             code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "",

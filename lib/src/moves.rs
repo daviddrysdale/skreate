@@ -38,6 +38,13 @@ enum Error {
     Failed(String),
 }
 
+impl From<nom::Err<nom::error::Error<&str>>> for Error {
+    fn from(_err: nom::Err<nom::error::Error<&str>>) -> Self {
+        // TODO: move location into error
+        Error::Unrecognized
+    }
+}
+
 /// Information about a class of moves.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
 pub struct Info {

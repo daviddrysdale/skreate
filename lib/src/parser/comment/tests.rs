@@ -7,7 +7,8 @@ fn test_parse() {
         ("# comment with space \rNext Line", "\rNext Line"),
     ];
     for (input, want_rest) in tests {
-        let (got_rest, ()) = parse(input).expect(&format!("parse failed for input: {input}"));
+        let (got_rest, ()) =
+            parse(input).unwrap_or_else(|e| panic!("parse failed for input: {input}, {e:?}"));
         assert_eq!(got_rest, want_rest, "for input: {input}");
     }
 }

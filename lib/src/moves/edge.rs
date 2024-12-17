@@ -2,9 +2,11 @@
 
 use super::Error;
 use crate::{
-    apply_style, bounds, code, moves, param, params, params::Value, parse_code, path, pos, Bounds,
-    Code, Input, Label, Move, MoveParam, OwnedInput, Position, PreTransition, RenderOptions,
-    Rotation, Skater, SpatialTransition, SvgId, Transition,
+    apply_style, bounds, code, moves, param, params,
+    params::Value,
+    parser::types::{parse_code, parse_pre_transition},
+    path, pos, Bounds, Code, Edge, Input, Label, Move, MoveParam, OwnedInput, Position,
+    PreTransition, RenderOptions, Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use std::f64::consts::PI;
@@ -82,8 +84,11 @@ impl Curve {
     };
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (pre_transition, rest) = PreTransition::parse(input.text);
-        let (code, rest) = parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
+        let (rest, pre_transition) = parse_pre_transition(input.text)?;
+        let (rest, code) = parse_code(rest)?;
+        if code.edge == Edge::Flat {
+            return Err(Error::Unrecognized);
+        }
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;

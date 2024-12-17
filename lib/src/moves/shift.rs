@@ -2,9 +2,9 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, parse_code, Bounds, Code, Document, Input, Move,
-    MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId,
-    Transition,
+    moves, param, params, params::Value, parser::types::parse_code, Bounds, Code, Document, Input,
+    Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater, SpatialTransition,
+    SvgId, Transition,
 };
 use std::borrow::Cow;
 
@@ -67,7 +67,7 @@ impl Shift {
         let code = if code_str.is_empty() {
             None
         } else {
-            let (code, _rest) = parse_code(code_str).map_err(Error::Failed)?;
+            let (_rest, code) = parse_code(code_str)?;
             Some(code)
         };
 
