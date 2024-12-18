@@ -14,7 +14,8 @@ use std::borrow::Cow;
 pub struct Rocker;
 
 impl Rocker {
-    const MOVE: &'static str = "-Rk";
+    /// Move code.
+    pub const MOVE: &'static str = "-Rk";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Rocker",

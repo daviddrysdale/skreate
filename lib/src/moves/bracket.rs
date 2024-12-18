@@ -14,7 +14,8 @@ use std::borrow::Cow;
 pub struct Bracket;
 
 impl Bracket {
-    const MOVE: &'static str = "-Br";
+    /// Move code.
+    pub const MOVE: &'static str = "-Br";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Bracket",

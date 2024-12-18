@@ -14,7 +14,8 @@ use std::borrow::Cow;
 pub struct Counter;
 
 impl Counter {
-    const MOVE: &'static str = "-Ctr";
+    /// Move code.
+    pub const MOVE: &'static str = "-Ctr";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Counter",

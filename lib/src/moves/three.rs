@@ -12,7 +12,8 @@ use std::borrow::Cow;
 pub struct ThreeTurn;
 
 impl ThreeTurn {
-    const MOVE: char = '3';
+    /// Move code.
+    pub const MOVE: char = '3';
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Three Turn",

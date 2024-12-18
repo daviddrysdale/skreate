@@ -13,7 +13,8 @@ use std::borrow::Cow;
 pub struct Twizzle;
 
 impl Twizzle {
-    const MOVE: &'static str = "-Tw";
+    /// Move code.
+    pub const MOVE: &'static str = "-Tw";
     const PATTERN: &'static str = r#"(?P<n>[0-9])(?P<half>\.5)?(?P<rest>.*)"#;
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {

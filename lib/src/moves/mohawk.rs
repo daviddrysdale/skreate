@@ -12,7 +12,8 @@ use std::borrow::Cow;
 pub struct OpenMohawk;
 
 impl OpenMohawk {
-    const MOVE: &'static str = "-OpMo";
+    /// Move code.
+    pub const MOVE: &'static str = "-OpMo";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Open Mohawk",

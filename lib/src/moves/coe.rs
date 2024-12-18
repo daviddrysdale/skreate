@@ -12,8 +12,10 @@ use std::borrow::Cow;
 pub struct ChangeOfEdge;
 
 impl ChangeOfEdge {
-    const MOVE: &'static str = "-CoE";
-    const MOVE_ALT: &'static str = "-COE";
+    /// Move code.
+    pub const MOVE: &'static str = "-CoE";
+    /// Alternative move code.
+    pub const MOVE_ALT: &'static str = "-COE";
 
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
