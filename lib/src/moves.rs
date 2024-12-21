@@ -8,30 +8,30 @@ use log::{info, warn};
 use serde::Serialize;
 use std::sync::OnceLock;
 
-mod bracket;
-mod coe;
-mod compound;
-mod counter;
-mod edge;
-mod info;
-mod label;
-mod mohawk;
-mod rink;
-mod rocker;
-mod shift;
-mod straight;
-mod text;
-mod three;
-mod title;
-mod twizzle;
-mod warp;
+pub(crate) mod bracket;
+pub(crate) mod coe;
+pub(crate) mod compound;
+pub(crate) mod counter;
+pub(crate) mod edge;
+pub(crate) mod info;
+pub(crate) mod label;
+pub(crate) mod mohawk;
+pub(crate) mod rink;
+pub(crate) mod rocker;
+pub(crate) mod shift;
+pub(crate) mod straight;
+pub(crate) mod text;
+pub(crate) mod three;
+pub(crate) mod title;
+pub(crate) mod twizzle;
+pub(crate) mod warp;
 
 #[cfg(test)]
 mod tests;
 
 /// Errors arising from attempting to create move instances.
 #[derive(Debug, Clone)]
-enum Error {
+pub(crate) enum Error {
     /// Indicates that the constructor doesn't apply to this input.
     Unrecognized,
     /// Indicates that the constructor does apply to this input, but failed to parse correctly.
