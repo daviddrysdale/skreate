@@ -1,12 +1,9 @@
 //! Functionality for parsing and formatting parameters.
 
 use log::trace;
-use regex::Regex;
 use serde::Serialize;
 use std::borrow::Cow;
-use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
-use std::sync::OnceLock;
 
 /// Populate a [`MoveParam`].
 #[macro_export]
@@ -141,6 +138,21 @@ pub struct Detents {
     pub less2: i32,
     /// Value to use for three detents less than default.
     pub less3: i32,
+}
+
+impl Detents {
+    /// Panics if count is not 1,2,3,-1,-2,-3.
+    fn value(&self, count: i32) -> Value {
+        match count {
+            1 => self.add1.into(),
+            2 => self.add2.into(),
+            3 => self.add3.into(),
+            -1 => self.less1.into(),
+            -2 => self.less2.into(),
+            -3 => self.less3.into(),
+            _ => unreachable!(),
+        }
+    }
 }
 
 /// Abbreviated form for a parameter.
@@ -300,53 +312,6 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
     s
 }
 
-/// Parse an explicit 'name=value' parameter string.
-fn param_from_string(input: &str) -> Result<(&str, Value), String> {
-    static INNER_NUMBER_RE: OnceLock<Regex> = OnceLock::new();
-    let inner_number_re = INNER_NUMBER_RE.get_or_init(|| {
-        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*(?P<value>-?[0-9]+)$"#).unwrap()
-    });
-    static INNER_BOOL_RE: OnceLock<Regex> = OnceLock::new();
-    let inner_bool_re = INNER_BOOL_RE.get_or_init(|| {
-        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*(?P<value>false|n|N|true|y|Y)$"#)
-            .unwrap()
-    });
-    static INNER_TEXT_RE: OnceLock<Regex> = OnceLock::new();
-    let inner_text_re = INNER_TEXT_RE.get_or_init(|| {
-        Regex::new(r#"^(?P<name>[a-zA-Z_][-a-zA-Z_0-9]*)\s*=\s*\"(?P<value>[^\"]*)\"$"#).unwrap()
-    });
-    if let Some(captures) = inner_number_re.captures(input) {
-        let name = captures.name("name").unwrap().as_str();
-        let value: Value = captures
-            .name("value")
-            .unwrap()
-            .as_str()
-            .parse::<i32>()
-            .map_err(|e| format!("value not an integer: {e:?}"))?
-            .into();
-        trace!("  param '{input}' => {name}:{value:?}");
-        Ok((name, value))
-    } else if let Some(captures) = inner_text_re.captures(input) {
-        let name = captures.name("name").unwrap().as_str();
-        let value: Value = captures.name("value").unwrap().as_str().to_owned().into();
-        trace!("  param '{input}' => {name}:{value:?}");
-        Ok((name, value))
-    } else if let Some(captures) = inner_bool_re.captures(input) {
-        let name = captures.name("name").unwrap().as_str();
-        let value: Value = match captures.name("value").unwrap().as_str() {
-            "false" | "n" | "N" => false,
-            "true" | "y" | "Y" => true,
-            _ => unreachable!(),
-        }
-        .into();
-        trace!("  param '{input}' => {name}:{value:?}");
-        Ok((name, value))
-    } else {
-        trace!("  param '{input}' failed to parse");
-        Err(format!("failed to find parameter in '{input}'"))
-    }
-}
-
 /// Populate a collection of [`MoveParam`]s from the given `input`.  Any values that are not mentioned in the input will
 /// get default values.
 pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, String> {
@@ -361,109 +326,55 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
         .collect();
     trace!("  start with defaults {params:?}");
 
-    // First look for short codes, until we encounter '[' or end of string.
-    let in_chars = input.trim().chars().collect::<Vec<_>>();
-    struct ShortCode {
-        c: char,
-        count: usize,
+    let (rest, (plus_minus, more_less, vals)) =
+        crate::parser::params::parse(input).map_err(|e| format!("parse failed: {e:?}"))?;
+    if !rest.is_empty() {
+        return Err(format!("input '{rest}' remains"));
     }
-    let mut codes: Vec<ShortCode> = Vec::new();
-    let mut idx = 0;
-    loop {
-        if idx >= in_chars.len() {
-            break;
-        }
-        let c = in_chars[idx];
-        if c == '[' {
-            break;
-        }
-        idx += 1;
-        if !matches!(c, '+' | '-' | '<' | '>') {
-            return Err(format!("unexpected char '{c}' used in short code location"));
-        }
-        if let Some(&mut ref mut current) = codes.last_mut() {
-            if c == current.c {
-                trace!("    found more of current short code '{c}'");
-                current.count += 1;
-                continue;
-            }
-        }
-        trace!("    found initial short code '{c}'");
-        codes.push(ShortCode { c, count: 1 });
-    }
-    if codes.len() > 2 {
-        return Err(format!("{} short codes found, max is 2", codes.len()));
-    }
-    for code in codes {
-        let (idx, info) = params_info
+
+    if plus_minus != 0 {
+        let (idx, detents) = params_info
             .iter()
             .enumerate()
-            .filter_map(|(idx, info)| {
-                if let Some(abbrev) = info.short {
-                    let (u, d) = abbrev.chars();
-                    if code.c == u || code.c == d {
-                        Some((idx, info))
-                    } else {
-                        None
-                    }
+            .find_map(|(idx, info)| {
+                if let Some(Abbrev::PlusMinus(detents)) = info.short {
+                    Some((idx, detents))
                 } else {
                     None
                 }
             })
-            .next()
-            .ok_or_else(|| format!("No parameter with short abbreviation using '{}'", code.c))?;
-        if let Some(abbrev) = info.short {
-            let (u, d) = abbrev.chars();
-            let detents = abbrev.detents();
-            params[idx].value = match (code.c, code.count) {
-                (c, 1) if c == u => detents.add1,
-                (c, 2) if c == u => detents.add2,
-                (c, 3) if c == u => detents.add3,
-                (c, 1) if c == d => detents.less1,
-                (c, 2) if c == d => detents.less2,
-                (c, 3) if c == d => detents.less3,
-                (c, n) if c == u || c == d => {
-                    return Err(format!("too many ({n}) instances of '{c}'"))
+            .ok_or_else(|| format!("found unexpected +/- short code val {plus_minus}"))?;
+        params[idx].value = detents.value(plus_minus);
+    }
+    if more_less != 0 {
+        let (idx, detents) = params_info
+            .iter()
+            .enumerate()
+            .find_map(|(idx, info)| {
+                if let Some(Abbrev::GreaterLess(detents)) = info.short {
+                    Some((idx, detents))
+                } else {
+                    None
                 }
-                _ => unreachable!(),
-            }
-            .into();
-            trace!(
-                "  set {}:{:?} from short code",
-                params[idx].name,
-                params[idx].value
-            );
-        }
+            })
+            .ok_or_else(|| format!("found unexpected >/< short code val {more_less}"))?;
+        params[idx].value = detents.value(more_less);
     }
-
-    let rest: String = in_chars[idx..].iter().collect();
-    if rest.is_empty() {
-        return Ok(params);
-    }
-
-    // Now look for explicitly specified parameters.
-    let outer_re = Regex::new(r#"^\s*\[(?P<inner>.*)\]\s*$"#).unwrap();
-    let Some(captures) = outer_re.captures(&rest) else {
-        return Err(format!("failed to find params in '{input}'"));
-    };
-    let inner = captures.name("inner").unwrap().as_str();
-    let result: Result<Vec<(&str, Value)>, String> =
-        inner.split(',').map(param_from_string).collect();
-    let vals: HashMap<&str, Value> = result?.into_iter().collect();
 
     // Work through the explicitly specified parameters, transcribing valid values (overriding any value already set by
     // a short code) and rejecting invalid parameter names.
-    for (name, value) in vals {
-        if let Some(idx) =
-            params
-                .iter()
-                .enumerate()
-                .find_map(|(idx, param)| if param.name == name { Some(idx) } else { None })
-        {
-            params_info[idx].range.valid(&value)?;
-            params[idx].value = value;
+    for val in vals {
+        if let Some(idx) = params.iter().enumerate().find_map(|(idx, param)| {
+            if param.name == val.name {
+                Some(idx)
+            } else {
+                None
+            }
+        }) {
+            params_info[idx].range.valid(&val.value)?;
+            params[idx].value = val.value;
         } else {
-            return Err(format!("'{name}' is not a valid parameter name"));
+            return Err(format!("'{}' is not a valid parameter name", val.name));
         }
     }
 
@@ -518,46 +429,6 @@ mod tests {
             short: None,
         },
     ];
-
-    #[test]
-    fn test_param_from_string() {
-        let tests = [
-            ("a=1", param!(a = 1)),
-            ("a =1", param!(a = 1)),
-            ("a = 1", param!(a = 1)),
-            ("a= 1", param!(a = 1)),
-            ("a=-1", param!(a = -1)),
-            ("a=0", param!(a = 0)),
-            ("B=10", param!(B = 10)),
-            ("a1bcDEF123=123", param!(a1bcDEF123 = 123)),
-            ("t = \"text\"", param!(t = "text")),
-            ("t= \"text\"", param!(t = "text")),
-            ("t =\"text\"", param!(t = "text")),
-            ("t=\"text\"", param!(t = "text")),
-            ("t=\"\"", param!(t = "")),
-            ("b=true", param!(b = true)),
-            ("b=Y", param!(b = true)),
-            ("b=y", param!(b = true)),
-            ("b=false", param!(b = false)),
-            ("b=n", param!(b = false)),
-            ("b=N", param!(b = false)),
-        ];
-        for (input, want) in tests {
-            let got = param_from_string(input).unwrap();
-            assert_eq!(got, (want.name, want.value), "for input '{input}'");
-        }
-    }
-
-    #[test]
-    fn test_param_from_string_err() {
-        let tests = ["1a=123", "x=1.2", "β=1", "a_1", "b=flase"];
-        for input in tests {
-            assert!(
-                param_from_string(input).is_err(),
-                "unexpected success for '{input}'"
-            );
-        }
-    }
 
     #[test]
     fn test_to_string() {

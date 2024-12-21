@@ -5,7 +5,7 @@ use crate::parser;
 use nom::{
     branch::alt,
     bytes::complete::tag,
-    character::complete::{alpha1, alphanumeric1, char, multispace0, one_of},
+    character::complete::{alpha1, alphanumeric1, char, one_of, space0},
     combinator::{map, map_res, opt, recognize, value},
     multi::{many0, many1, separated_list0},
     sequence::{delimited, pair, preceded, terminated, tuple},
@@ -66,9 +66,9 @@ fn parse_name_value(input: &str) -> IResult<&str, MoveParamRef> {
     map(
         tuple((
             parse_name,
-            multispace0,
+            space0,
             value((), char('=')),
-            multispace0,
+            space0,
             parse_value,
         )),
         // We're only interested in the name and value, not the equals sign nor any whitespace.
@@ -80,14 +80,14 @@ fn parse_name_value(input: &str) -> IResult<&str, MoveParamRef> {
 /// Parse explicit "[name1=val1, name2=val2]" parameters.
 fn parse_name_values(input: &str) -> IResult<&str, Vec<MoveParamRef>> {
     delimited(
-        value((), terminated(tag("["), multispace0)),
+        value((), terminated(tag("["), space0)),
         separated_list0(
             // Separator is a comma, optionally with whitespace
-            tuple((multispace0, tag(","), multispace0)),
+            tuple((space0, tag(","), space0)),
             // Entries are name=value
             parse_name_value,
         ),
-        value((), preceded(multispace0, tag("]"))),
+        value((), preceded(space0, tag("]"))),
     )(input)
 }
 
@@ -130,9 +130,9 @@ fn parse_short_codes(input: &str) -> IResult<&str, (i32, i32)> {
     // Can't use `permutation` because the parsers will match the empty string and are applied greedily, so try both
     // combinations manually.
     let (rest1, (_, plus1, more1, _)) =
-        tuple((multispace0, parse_plus_minus, parse_more_less, multispace0)).parse(input)?;
+        tuple((space0, parse_plus_minus, parse_more_less, space0)).parse(input)?;
     let (rest2, (_, more2, plus2, _)) =
-        tuple((multispace0, parse_more_less, parse_plus_minus, multispace0)).parse(input)?;
+        tuple((space0, parse_more_less, parse_plus_minus, space0)).parse(input)?;
 
     Ok(if more2.abs() < more1.abs() {
         (rest1, (plus1, more1))
@@ -144,7 +144,7 @@ fn parse_short_codes(input: &str) -> IResult<&str, (i32, i32)> {
 /// Parse a parameter specification.  Returns (plus_minus, more_less, params).
 pub fn parse(input: &str) -> IResult<&str, (i32, i32, Vec<MoveParamRef>)> {
     map(
-        tuple((parse_short_codes, multispace0, opt(parse_name_values))),
+        tuple((parse_short_codes, space0, opt(parse_name_values))),
         |((plus_minus, more_less), _, params)| (plus_minus, more_less, params.unwrap_or_default()),
     )
     .parse(input)
