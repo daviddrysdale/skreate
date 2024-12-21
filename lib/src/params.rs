@@ -8,7 +8,7 @@ use std::collections::HashMap;
 use std::fmt::{self, Display, Formatter};
 use std::sync::OnceLock;
 
-/// Populate a [`MoveParam`] from a field in `self`.
+/// Populate a [`MoveParam`].
 #[macro_export]
 macro_rules! param {
     { $self:ident.$pname:ident } => {
@@ -31,11 +31,14 @@ macro_rules! param {
     }
 }
 
-/// A parameter for a move.
+/// A parameter for a move, with a compile-time name.
+pub type MoveParam = MoveParamRef<'static>;
+
+/// A parameter for a move, where the parameter name has a lifetime.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct MoveParam {
+pub struct MoveParamRef<'a> {
     /// Name of the parameter.
-    pub name: &'static str,
+    pub name: &'a str,
     /// Value for the parameter.
     pub value: Value,
 }
@@ -150,13 +153,15 @@ pub enum Abbrev {
 }
 
 impl Abbrev {
-    fn detents(&self) -> &Detents {
+    /// Extract the [`Detents`] for an abbreviation.
+    pub fn detents(&self) -> &Detents {
         match self {
             Abbrev::PlusMinus(d) => d,
             Abbrev::GreaterLess(d) => d,
         }
     }
-    fn chars(&self) -> (char, char) {
+    /// Return the short chars for an abbreviation.
+    pub fn chars(&self) -> (char, char) {
         match self {
             Abbrev::PlusMinus(_) => ('+', '-'),
             Abbrev::GreaterLess(_) => ('>', '<'),
