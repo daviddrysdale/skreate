@@ -16,8 +16,9 @@ pub struct Title {
 }
 
 impl Title {
+    pub const MOVE: &'static str = "Title";
     pub const INFO: moves::Info = moves::Info {
-        name: "Title",
+        name: Self::MOVE,
         summary: "Diagram title",
         example: "Title[text=\"Waltz\"]",
         visible: false,

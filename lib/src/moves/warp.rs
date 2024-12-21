@@ -17,8 +17,9 @@ pub struct Warp {
 }
 
 impl Warp {
+    pub const MOVE: &'static str = "Warp";
     pub const INFO: moves::Info = moves::Info {
-        name: "Warp",
+        name: Self::MOVE,
         summary: "Move skater to new location/position",
         example: "Warp[x=100,y=100,dir=270]",
         visible: false,

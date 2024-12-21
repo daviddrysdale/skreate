@@ -17,8 +17,9 @@ pub struct Shift {
 }
 
 impl Shift {
+    pub const MOVE: &'static str = "Shift";
     pub const INFO: moves::Info = moves::Info {
-        name: "Shift",
+        name: Self::MOVE,
         summary: "Move skater relative to current location and direction",
         example: "Shift[fwd=50,side=50,rotate=270]",
         visible: false,

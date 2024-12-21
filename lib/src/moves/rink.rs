@@ -22,8 +22,9 @@ pub struct Rink {
 }
 
 impl Rink {
+    pub const MOVE: &'static str = "Rink";
     pub const INFO: moves::Info = moves::Info {
-        name: "Rink",
+        name: Self::MOVE,
         summary: "Rink depiction",
         example: "Rink",
         visible: true,
@@ -126,6 +127,7 @@ impl Rink {
             show_faceoffs: to_bool(&params[8])?,
         })
     }
+
     fn rounding(&self) -> i32 {
         let dim = std::cmp::min(self.width, self.length);
         std::cmp::min(dim / 4, 850)

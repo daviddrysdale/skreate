@@ -17,8 +17,9 @@ pub struct Label {
 }
 
 impl Label {
+    pub const MOVE: &'static str = "Label";
     pub const INFO: moves::Info = moves::Info {
-        name: "Label",
+        name: Self::MOVE,
         summary: "Diagram label relative to current position",
         example: "Label[text=\"CoE\",fwd=50,side=20]",
         visible: false,

@@ -19,9 +19,10 @@ pub struct Info {
 }
 
 impl Info {
+    pub const MOVE: &'static str = "Info";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        name: "Info",
+        name: Self::MOVE,
         summary: "Set diagram rendering information",
         example: "Info[markers=true,grid=100,move-bounds=true]",
         visible: false,

@@ -17,8 +17,9 @@ pub struct Text {
 }
 
 impl Text {
+    pub const MOVE: &'static str = "Text";
     pub const INFO: moves::Info = moves::Info {
-        name: "Text",
+        name: Self::MOVE,
         summary: "Diagram text",
         example: "Text[text=\"Start\",x=500,y=200]",
         visible: false,
