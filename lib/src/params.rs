@@ -315,6 +315,21 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
 /// Populate a collection of [`MoveParam`]s from the given `input`.  Any values that are not mentioned in the input will
 /// get default values.
 pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, String> {
+    let (rest, (plus_minus, more_less, vals)) =
+        crate::parser::params::parse(input).map_err(|e| format!("parse failed: {e:?}"))?;
+    if !rest.is_empty() {
+        return Err(format!("input '{rest}' remains"));
+    }
+    populate_from(params_info, plus_minus, more_less, vals)
+}
+
+/// Populate a collection of [`MoveParam`]s that match `params_info` from the given parsed values.
+pub fn populate_from(
+    params_info: &[Info],
+    plus_minus: i32,
+    more_less: i32,
+    vals: Vec<MoveParamRef>,
+) -> Result<Vec<MoveParam>, String> {
     // Begin with default values.
     // Invariant: entries in `params_info` and `params` are in sync.
     let mut params: Vec<MoveParam> = params_info
@@ -325,12 +340,6 @@ pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, Str
         })
         .collect();
     trace!("  start with defaults {params:?}");
-
-    let (rest, (plus_minus, more_less, vals)) =
-        crate::parser::params::parse(input).map_err(|e| format!("parse failed: {e:?}"))?;
-    if !rest.is_empty() {
-        return Err(format!("input '{rest}' remains"));
-    }
 
     if plus_minus != 0 {
         let (idx, detents) = params_info
