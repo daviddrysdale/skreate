@@ -13,7 +13,7 @@ pub struct ThreeTurn;
 
 impl ThreeTurn {
     /// Move code.
-    pub const MOVE: char = '3';
+    pub const MOVE: &'static str = "3";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Three Turn",
