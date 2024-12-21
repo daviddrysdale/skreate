@@ -199,3 +199,20 @@ fn test_parse() {
         assert_eq!(got_rest, want_rest, "for input: {input}");
     }
 }
+
+#[test]
+fn test_parse_turn_count() {
+    let tests = [
+        ("1xy", 2, "xy"),
+        ("1.5xy", 3, "xy"),
+        ("2.5xy", 5, "xy"),
+        ("9xy", 18, "xy"),
+    ];
+
+    for (input, want, want_rest) in tests {
+        let (got_rest, got) = parse_turn_count(input)
+            .unwrap_or_else(|e| panic!("parse failed for input: {input}, {e:?}"));
+        assert_eq!(got, want, "for input: {input}");
+        assert_eq!(got_rest, want_rest, "for input: {input}");
+    }
+}

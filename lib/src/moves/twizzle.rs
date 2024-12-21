@@ -7,7 +7,6 @@ use crate::{
     parser::types::{parse_code, parse_pre_transition},
     Code, Input, Move,
 };
-use regex::Regex;
 use std::borrow::Cow;
 
 pub struct Twizzle;
@@ -15,7 +14,6 @@ pub struct Twizzle;
 impl Twizzle {
     /// Move code.
     pub const MOVE: &'static str = "-Tw";
-    const PATTERN: &'static str = r#"(?P<n>[0-9])(?P<half>\.5)?(?P<rest>.*)"#;
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Twizzle",
@@ -113,22 +111,8 @@ impl Twizzle {
         if rest.is_empty() {
             return Err(Error::Unrecognized);
         }
-        let re = Regex::new(Self::PATTERN).unwrap();
-        let Some(captures) = re.captures(rest) else {
-            return Err(Error::Unrecognized);
-        };
-        let Some(n) = captures.name("n") else {
-            return Err(Error::Unrecognized);
-        };
-        let Ok(n) = n.as_str().parse::<u32>() else {
-            return Err(Error::Unrecognized);
-        };
-        let Some(rest) = captures.name("rest") else {
-            return Err(Error::Unrecognized);
-        };
-        let rest = rest.as_str();
-        let half = captures.name("half").is_some();
-        let count = n * 2 + if half { 1 } else { 0 };
+        let (rest, count) =
+            crate::parser::params::parse_turn_count(rest).map_err(|_e| Error::Unrecognized)?;
         if count < 2 {
             log::warn!("need more than {count} turns in a twizzle");
             return Err(Error::Unrecognized);

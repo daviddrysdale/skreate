@@ -149,3 +149,12 @@ pub fn parse(input: &str) -> IResult<&str, (i32, i32, Vec<MoveParamRef>)> {
     )
     .parse(input)
 }
+
+/// Parse a turn count. Returns the number of half-turns.
+pub fn parse_turn_count(input: &str) -> IResult<&str, u32> {
+    map(
+        tuple((one_of("123456789"), opt(preceded(tag("."), tag("5"))))),
+        |(n, half)| 2 * n.to_digit(10).unwrap() + if half.is_some() { 1 } else { 0 },
+    )
+    .parse(input)
+}
