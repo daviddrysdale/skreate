@@ -124,6 +124,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     let mut info = Vec::new();
 
     // Insert moves in order of importance, as they will appear in the manual.
+    // First skating moves.
     register!(cons, info, edge::Curve);
     register!(cons, info, straight::StraightEdge);
     register!(cons, info, three::ThreeTurn);
@@ -134,6 +135,7 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, coe::ChangeOfEdge);
     register!(cons, info, twizzle::Twizzle);
 
+    // Then pseudo-moves.
     register!(cons, info, warp::Warp);
     register!(cons, info, shift::Shift);
     register!(cons, info, rink::Rink);
@@ -143,6 +145,98 @@ fn initialize() -> (Vec<Info>, Vec<Constructor>) {
     register!(cons, info, label::Label);
 
     (info, cons)
+}
+
+/// Identifier for skating moves.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SkatingMoveId {
+    /// Curved edge
+    Curve,
+    /// Straight Edge
+    StraightEdge,
+    /// Three Turn
+    ThreeTurn,
+    /// Open Mohawk
+    OpenMohawk,
+    /// Bracket
+    Bracket,
+    /// Rocker
+    Rocker,
+    /// Counter
+    Counter,
+    /// Change Of Edge
+    ChangeOfEdge,
+    /// Twizzle with count of half-turns.
+    Twizzle(u32),
+}
+
+impl SkatingMoveId {
+    /// Return the static move information for the given move.
+    pub fn info(&self) -> &'static Info {
+        match self {
+            Self::Curve => &edge::Curve::INFO,
+            Self::StraightEdge => &straight::StraightEdge::INFO,
+            Self::ThreeTurn => &three::ThreeTurn::INFO,
+            Self::OpenMohawk => &mohawk::OpenMohawk::INFO,
+            Self::Bracket => &bracket::Bracket::INFO,
+            Self::Rocker => &rocker::Rocker::INFO,
+            Self::Counter => &counter::Counter::INFO,
+            Self::ChangeOfEdge => &coe::ChangeOfEdge::INFO,
+            Self::Twizzle(_count) => &twizzle::Twizzle::INFO,
+        }
+    }
+}
+
+/// Identifier for pseudo-moves.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum PseudoMoveId {
+    /// Warp
+    Warp,
+    /// Shift
+    Shift,
+    /// Rink
+    Rink,
+    /// Info
+    Info,
+    /// Title
+    Title,
+    /// Text
+    Text,
+    /// Label
+    Label,
+}
+impl PseudoMoveId {
+    /// Return the static move information for the given move.
+    pub fn info(&self) -> &'static Info {
+        match self {
+            Self::Warp => &warp::Warp::INFO,
+            Self::Shift => &shift::Shift::INFO,
+            Self::Rink => &rink::Rink::INFO,
+            Self::Info => &info::Info::INFO,
+            Self::Title => &title::Title::INFO,
+            Self::Text => &text::Text::INFO,
+            Self::Label => &label::Label::INFO,
+        }
+    }
+}
+
+/// Move identifier
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum MoveId {
+    /// Skating move.
+    Skating(SkatingMoveId),
+    /// Pseudo-move.
+    Pseudo(PseudoMoveId),
+}
+
+impl MoveId {
+    /// Return the static move information for the given move.
+    pub fn info(&self) -> &'static Info {
+        match self {
+            Self::Skating(id) => id.info(),
+            Self::Pseudo(id) => id.info(),
+        }
+    }
 }
 
 /// Function that constructs a move from an [`Input`].
