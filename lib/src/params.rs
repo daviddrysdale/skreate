@@ -1,6 +1,6 @@
 //! Functionality for parsing and formatting parameters.
 
-use log::trace;
+use log::{error, trace};
 use serde::Serialize;
 use std::borrow::Cow;
 use std::fmt::{self, Display, Formatter};
@@ -232,6 +232,24 @@ pub struct Info {
     pub range: Range,
     /// Default value.
     pub default: Value,
+}
+
+/// Check that a set of move parameters is compatible with the move information.
+pub fn compatible(info: &[Info], params: &[MoveParam]) -> bool {
+    if info.len() != params.len() {
+        error!("len mismatch: info {} params {}", info.len(), params.len());
+        return false;
+    }
+    for idx in 0..info.len() {
+        if params[idx].name != info[idx].name {
+            error!(
+                "[{idx}] name mismatch: info '{}' params '{}'",
+                info[idx].name, params[idx].name
+            );
+            return false;
+        }
+    }
+    true
 }
 
 /// Generate a minimal string describing a set of [`MoveParam`]s.
