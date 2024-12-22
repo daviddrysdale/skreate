@@ -5,7 +5,7 @@ use crate::{
     code, moves, params,
     params::Value,
     parser::types::{parse_code, parse_pre_transition},
-    Code, Input, Move,
+    Code, Input, Move, MoveParam, PreTransition,
 };
 use std::borrow::Cow;
 
@@ -97,14 +97,6 @@ impl Twizzle {
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (rest, pre_transition) = parse_pre_transition(input.text)?;
         let (rest, entry_code) = parse_code(rest)?;
-        let sign = match entry_code {
-            // Clockwise
-            code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
-            // Widdershins
-            code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
-            _ => return Err(Error::Unrecognized),
-        };
-
         let Some(rest) = rest.strip_prefix(Self::MOVE) else {
             return Err(Error::Unrecognized);
         };
@@ -120,6 +112,31 @@ impl Twizzle {
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        Ok(Box::new(Self::from_params(
+            input,
+            pre_transition,
+            entry_code,
+            count,
+            params,
+        )?))
+    }
+
+    pub fn from_params(
+        input: &Input,
+        pre_transition: PreTransition,
+        entry_code: Code,
+        count: u32,
+        params: Vec<MoveParam>,
+    ) -> Result<Compound, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
+        let sign = match entry_code {
+            // Clockwise
+            code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
+            // Widdershins
+            code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
+            _ => return Err(Error::Unrecognized),
+        };
+
         let angle = params[0].value.as_i32().unwrap();
         let len = params[1].value.as_i32().unwrap();
         let pre_len = params[2].value.as_i32().unwrap();
@@ -197,6 +214,6 @@ impl Twizzle {
         debug = format!("{debug}{post}");
 
         log::info!("input {input:?} results in {debug}");
-        Ok(Box::new(Compound::new(input, moves, params, text)))
+        Ok(Compound::new(input, moves, params, text))
     }
 }

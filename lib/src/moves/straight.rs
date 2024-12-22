@@ -61,21 +61,35 @@ impl StraightEdge {
 
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (rest, pre_transition) = parse_pre_transition(input.text)?;
-        let (rest, Code { foot, dir, edge }) =
-            parse_code(rest).map_err(|_msg| Error::Unrecognized)?;
-        if edge != Edge::Flat {
+        let (rest, entry_code) = parse_code(rest)?;
+        if entry_code.edge != Edge::Flat {
             return Err(Error::Unrecognized);
         }
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        Ok(Box::new(Self::from_params(
+            input,
+            pre_transition,
+            entry_code,
+            params,
+        )?))
+    }
+
+    pub fn from_params(
+        input: &Input,
+        pre_transition: PreTransition,
+        entry_code: Code,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
         let label = params[1].value.as_str().unwrap();
 
-        Ok(Box::new(Self {
+        Ok(Self {
             input: input.owned(),
             pre_transition,
-            foot,
-            dir,
+            foot: entry_code.foot,
+            dir: entry_code.dir,
             len: params[0].value.as_i32().unwrap(),
             label: if label.is_empty() {
                 None
@@ -83,7 +97,7 @@ impl StraightEdge {
                 Some(label.to_string())
             },
             style: params[2].value.as_str().unwrap().to_string(),
-        }))
+        })
     }
     fn code(&self) -> Code {
         Code {

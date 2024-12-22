@@ -5,7 +5,7 @@ use crate::{
     code, moves, params,
     params::Value,
     parser::types::{parse_code, parse_pre_transition},
-    Code, Input, Move,
+    Code, Input, Move, MoveParam, PreTransition,
 };
 use std::borrow::Cow;
 
@@ -83,18 +83,33 @@ impl OpenMohawk {
     pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
         let (rest, pre_transition) = parse_pre_transition(input.text)?;
         let (rest, entry_code) = parse_code(rest)?;
-        let sign = match entry_code {
-            code!(LFI) => "-",
-            code!(RFI) => "",
-            _ => return Err(Error::Unrecognized),
-        };
-
         let Some(rest) = rest.strip_prefix(Self::MOVE) else {
             return Err(Error::Unrecognized);
         };
 
         let params =
             params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        Ok(Box::new(Self::from_params(
+            input,
+            pre_transition,
+            entry_code,
+            params,
+        )?))
+    }
+
+    pub fn from_params(
+        input: &Input,
+        pre_transition: PreTransition,
+        entry_code: Code,
+        params: Vec<MoveParam>,
+    ) -> Result<Compound, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
+        let sign = match entry_code {
+            code!(LFI) => "-",
+            code!(RFI) => "",
+            _ => return Err(Error::Unrecognized),
+        };
+
         let angle1 = params[0].value.as_i32().unwrap();
         let len1 = params[1].value.as_i32().unwrap();
         let delta_angle = params[2].value.as_i32().unwrap();
@@ -131,6 +146,6 @@ impl OpenMohawk {
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Box::new(Compound::new(input, moves, params, text)))
+        Ok(Compound::new(input, moves, params, text))
     }
 }
