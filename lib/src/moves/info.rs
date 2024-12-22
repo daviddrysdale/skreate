@@ -86,14 +86,6 @@ impl Info {
         ],
     };
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
-            return Err(Error::Unrecognized);
-        };
-        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
-        Ok(Box::new(Self::from_params(input, params)?))
-    }
-
     pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let grid = params[2].value.as_i32().unwrap();

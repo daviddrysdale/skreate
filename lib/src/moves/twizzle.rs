@@ -1,12 +1,7 @@
 //! Twizzle.
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, Error};
-use crate::{
-    code, moves, params,
-    params::Value,
-    parser::types::{parse_code, parse_pre_transition},
-    Code, Input, Move, MoveParam, PreTransition,
-};
+use crate::{code, moves, params, params::Value, Code, Input, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct Twizzle;
@@ -93,33 +88,6 @@ impl Twizzle {
             },
         ],
     };
-
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (rest, pre_transition) = parse_pre_transition(input.text)?;
-        let (rest, entry_code) = parse_code(rest)?;
-        let Some(rest) = rest.strip_prefix(Self::MOVE) else {
-            return Err(Error::Unrecognized);
-        };
-        if rest.is_empty() {
-            return Err(Error::Unrecognized);
-        }
-        let (rest, count) =
-            crate::parser::params::parse_turn_count(rest).map_err(|_e| Error::Unrecognized)?;
-        if count < 2 {
-            log::warn!("need more than {count} turns in a twizzle");
-            return Err(Error::Unrecognized);
-        }
-
-        let params =
-            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
-        Ok(Box::new(Self::from_params(
-            input,
-            pre_transition,
-            entry_code,
-            count,
-            params,
-        )?))
-    }
 
     pub fn from_params(
         input: &Input,

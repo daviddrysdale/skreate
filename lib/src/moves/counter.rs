@@ -3,12 +3,7 @@
 use super::{
     compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge, Error,
 };
-use crate::{
-    code, moves, params,
-    params::Value,
-    parser::types::{parse_code, parse_pre_transition},
-    Code, Edge, Input, Move, MoveParam, PreTransition,
-};
+use crate::{code, moves, params, params::Value, Code, Edge, Input, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct Counter;
@@ -81,23 +76,6 @@ impl Counter {
             },
         ],
     };
-
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (rest, pre_transition) = parse_pre_transition(input.text)?;
-        let (rest, entry_code) = parse_code(rest)?;
-        let Some(rest) = rest.strip_prefix(Self::MOVE) else {
-            return Err(Error::Unrecognized);
-        };
-
-        let params =
-            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
-        Ok(Box::new(Self::from_params(
-            input,
-            pre_transition,
-            entry_code,
-            params,
-        )?))
-    }
 
     pub fn from_params(
         input: &Input,

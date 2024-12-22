@@ -57,7 +57,7 @@ fn main() {
     }
     examples.sort();
 
-    let infos = moves::info();
+    let infos = moves::INFO;
     let json = json!({"infos": &infos, "examples": &examples});
     let filename = out_path.join("manual.html");
     let mut outfile = File::create(filename).expect("failed to create {filename:?}");

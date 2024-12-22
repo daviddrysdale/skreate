@@ -9,7 +9,7 @@ fn test_compare() {
     let _ = env_logger::try_init();
     let doc_dir = concat!(env!("CARGO_MANIFEST_DIR"), "/../doc/generated").to_string();
     let doc_dir = std::path::PathBuf::from(doc_dir);
-    for info in skreate::moves::info() {
+    for info in skreate::moves::INFO {
         let name = info.name;
         let input = info.example;
         let path = doc_dir.join(format!("{input}.svg"));

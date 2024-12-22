@@ -55,18 +55,6 @@ impl Warp {
         ],
     };
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        Ok(Box::new(Self::new(input)?))
-    }
-
-    pub fn new(input: &Input) -> Result<Self, Error> {
-        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
-            return Err(Error::Unrecognized);
-        };
-        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
-        Self::from_params(input, params)
-    }
-
     pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let code_str = params[3].value.as_str().map_err(Error::Failed)?;
@@ -130,42 +118,5 @@ impl Move for Warp {
             top_left: self.pos,
             bottom_right: self.pos,
         })
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use crate::{code, pos};
-
-    #[test]
-    fn test_params() {
-        let tests = [
-            ("Warp", pos!(0, 0), Direction(0), None),
-            ("Warp[x=20,y=30,dir=90]", pos!(20, 30), Direction(90), None),
-            (
-                "Warp[x=20,y=30,code=\"LFO\"]",
-                pos!(20, 30),
-                Direction(0),
-                Some(code!(LFO)),
-            ),
-        ];
-
-        for (text, pos, dir, code) in tests {
-            let input = Input {
-                pos: crate::TextPosition::default(),
-                text,
-            };
-            let want = Warp {
-                input: input.owned(),
-                pos,
-                dir,
-                code,
-            };
-            let got = Warp::new(&input).unwrap();
-            assert_eq!(got, want, "for input '{text}'");
-            let regen = got.text();
-            assert_eq!(text, regen);
-        }
     }
 }

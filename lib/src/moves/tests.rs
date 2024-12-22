@@ -17,7 +17,7 @@ fn check_consistent(mv: &dyn Move, input: &Input) {
 
 #[test]
 fn test_examples() {
-    for info in info() {
+    for info in INFO {
         let input = Input {
             pos: Default::default(),
             text: info.example,

@@ -1,12 +1,7 @@
 //! Change of Edge
 
 use super::{compound::Compound, edge::Curve, straight::StraightEdge, Error};
-use crate::{
-    moves, params,
-    params::Value,
-    parser::types::{parse_code, parse_pre_transition},
-    Code, Edge, Input, Move, MoveParam, PreTransition,
-};
+use crate::{moves, params, params::Value, Code, Edge, Input, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct ChangeOfEdge;
@@ -89,29 +84,6 @@ impl ChangeOfEdge {
             },
         ],
     };
-
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (rest, pre_transition) = parse_pre_transition(input.text)?;
-        let (rest, entry_code) = parse_code(rest)?;
-
-        let rest = match (
-            rest.strip_prefix(Self::MOVE),
-            rest.strip_prefix(Self::MOVE_ALT),
-        ) {
-            (Some(_), Some(_)) => unreachable!(),
-            (Some(rest), None) | (None, Some(rest)) => rest,
-            (None, None) => return Err(Error::Unrecognized),
-        };
-
-        let params =
-            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
-        Ok(Box::new(Self::from_params(
-            input,
-            pre_transition,
-            entry_code,
-            params,
-        )?))
-    }
 
     pub fn from_params(
         input: &Input,

@@ -6,7 +6,6 @@ use crate::{
 };
 use log::{info, warn};
 use serde::Serialize;
-use std::sync::OnceLock;
 
 pub(crate) mod bracket;
 pub(crate) mod coe;
@@ -62,36 +61,9 @@ pub struct Info {
 
 pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
     info!("parse '{input:?}' into move");
-
-    for constructor in constructors() {
-        match constructor(input) {
-            Ok(mv) => {
-                info!("success: canonical form {}", mv.text());
-                return Ok(mv);
-            }
-            Err(Error::Unrecognized) => {}
-            Err(Error::Failed(msg)) => {
-                warn!("constructor {constructor:?} failed: {msg}",);
-                return Err(ParseError {
-                    pos: input.pos,
-                    msg,
-                });
-            }
-        }
-    }
-
-    // TODO: make this the default, cope with rest
     crate::parser::mv::parse_move(input.text)
         .map(|(_rest, mv)| mv)
         .map_err(|_e| ParseError::from_input(input, &format!("unknown move {}", input.text)))
-}
-
-/// Macro to build a [`Path`] with a "d" attribute set to the formatted arguments.
-#[macro_export]
-macro_rules! path {
-    { $($arg:tt)+ } => {
-        svg::node::element::Path::new().set("d", format!("{}", format_args!($($arg)+)))
-    }
 }
 
 // Coordinates:
@@ -106,46 +78,36 @@ macro_rules! path {
 //  |
 //  v  y-axis
 
-/// Macro to register a move constructor by name (and lowercased name).
-macro_rules! register {
-    {  $constructors:ident, $info:ident, $( $typ:ty ),* } => {
-        $( $constructors.push(
-            <$typ>::construct as Constructor
-        ); )*
-        $( $info.push(
-            <$typ>::INFO,
-        ); )*
+/// Macro to build a [`Path`] with a "d" attribute set to the formatted arguments.
+#[macro_export]
+macro_rules! path {
+    { $($arg:tt)+ } => {
+        svg::node::element::Path::new().set("d", format!("{}", format_args!($($arg)+)))
     }
 }
 
-#[allow(clippy::vec_init_then_push)]
-fn initialize() -> (Vec<Info>, Vec<Constructor>) {
-    let mut cons = Vec::new();
-    let mut info = Vec::new();
-
+/// List of static move information.
+pub static INFO: &[Info] = &[
     // Insert moves in order of importance, as they will appear in the manual.
     // First skating moves.
-    register!(cons, info, edge::Curve);
-    register!(cons, info, straight::StraightEdge);
-    register!(cons, info, three::ThreeTurn);
-    register!(cons, info, mohawk::OpenMohawk);
-    register!(cons, info, bracket::Bracket);
-    register!(cons, info, rocker::Rocker);
-    register!(cons, info, counter::Counter);
-    register!(cons, info, coe::ChangeOfEdge);
-    register!(cons, info, twizzle::Twizzle);
-
+    edge::Curve::INFO,
+    straight::StraightEdge::INFO,
+    three::ThreeTurn::INFO,
+    mohawk::OpenMohawk::INFO,
+    bracket::Bracket::INFO,
+    rocker::Rocker::INFO,
+    counter::Counter::INFO,
+    coe::ChangeOfEdge::INFO,
+    twizzle::Twizzle::INFO,
     // Then pseudo-moves.
-    register!(cons, info, warp::Warp);
-    register!(cons, info, shift::Shift);
-    register!(cons, info, rink::Rink);
-    register!(cons, info, info::Info);
-    register!(cons, info, title::Title);
-    register!(cons, info, text::Text);
-    register!(cons, info, label::Label);
-
-    (info, cons)
-}
+    warp::Warp::INFO,
+    shift::Shift::INFO,
+    rink::Rink::INFO,
+    info::Info::INFO,
+    title::Title::INFO,
+    text::Text::INFO,
+    label::Label::INFO,
+];
 
 /// Identifier for skating moves.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -271,6 +233,7 @@ pub enum PseudoMoveId {
     /// Label
     Label,
 }
+
 impl PseudoMoveId {
     /// Return the static move information for the given move.
     pub fn info(&self) -> &'static Info {
@@ -320,24 +283,6 @@ impl MoveId {
             Self::Pseudo(id) => id.info(),
         }
     }
-}
-
-/// Function that constructs a move from an [`Input`].
-type Constructor = fn(&Input) -> Result<Box<dyn Move>, Error>;
-
-/// Registry of move information and constructors.
-static REGISTRY: OnceLock<(Vec<Info>, Vec<Constructor>)> = OnceLock::new();
-
-/// Return a collection of move constructors.
-fn constructors() -> &'static Vec<Constructor> {
-    let (_info, constructors) = REGISTRY.get_or_init(|| initialize());
-    constructors
-}
-
-/// Return a collection of move [`Info`] structures.
-pub fn info() -> &'static Vec<Info> {
-    let (info, _constructors) = REGISTRY.get_or_init(|| initialize());
-    info
 }
 
 /// Half-width of a standard stance.

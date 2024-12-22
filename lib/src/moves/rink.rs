@@ -95,18 +95,6 @@ impl Rink {
         ],
     };
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        Ok(Box::new(Self::new(input)?))
-    }
-
-    pub fn new(input: &Input) -> Result<Self, Error> {
-        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
-            return Err(Error::Unrecognized);
-        };
-        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
-        Self::from_params(input, params)
-    }
-
     pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let to_bool = |param: &MoveParam| param.value.as_bool().map_err(Error::Failed);
@@ -257,25 +245,5 @@ impl Move for Rink {
         // TODO: render `show_goals`
         // TODO: render `show_faceoffs`
         vec![(SvgId(self.text()), grp)]
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    #[test]
-    fn test_params() {
-        let input = Input {
-            pos: Default::default(),
-            text: "Rink",
-        };
-        let rink1 = Rink::new(&input).unwrap();
-        let mut rink2 = Rink::new(&Input {
-            pos: Default::default(),
-            text: "Rink [width=3000,length=6100]",
-        })
-        .unwrap();
-        rink2.input = input.owned();
-        assert_eq!(rink1, rink2);
     }
 }
