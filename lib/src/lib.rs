@@ -523,8 +523,10 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 
 /// User input.
 #[derive(Debug, Clone, PartialEq, Eq)]
-struct Input<'a> {
+pub struct Input<'a> {
+    /// Position of input chunk in original.
     pos: TextPosition,
+    /// Text of input.
     text: &'a str,
 }
 
