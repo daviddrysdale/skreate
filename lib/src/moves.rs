@@ -80,10 +80,10 @@ pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
         }
     }
 
-    Err(ParseError::from_input(
-        input,
-        &format!("unknown move {}", input.text),
-    ))
+    // TODO: make this the default, cope with rest
+    crate::parser::mv::parse_move(input.text)
+        .map(|(_rest, mv)| mv)
+        .map_err(|_e| ParseError::from_input(input, &format!("unknown move {}", input.text)))
 }
 
 /// Macro to build a [`Path`] with a "d" attribute set to the formatted arguments.

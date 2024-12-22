@@ -530,6 +530,16 @@ pub struct Input<'a> {
     text: &'a str,
 }
 
+impl<'a> From<&'a str> for Input<'a> {
+    // TODO: replace with nom-based tracking of input location
+    fn from(text: &'a str) -> Input<'a> {
+        Self {
+            pos: TextPosition::default(),
+            text,
+        }
+    }
+}
+
 impl<'a> Input<'a> {
     fn owned(&self) -> OwnedInput {
         OwnedInput {
