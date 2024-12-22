@@ -4,7 +4,7 @@
 pub use crate::error::ParseError;
 pub use crate::params::MoveParam;
 pub use crate::types::*;
-use log::{debug, info, trace};
+use log::{debug, error, info, trace};
 use std::collections::HashSet;
 use std::fmt::{self, Display, Formatter};
 use svg::{
@@ -299,26 +299,34 @@ trait Move {
 
 /// Generate canonicalized / minimized input.
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
-    // Convert the input into a list of move input strings.
-    let inputs = split_inputs(input)?;
+    // Convert the input into a list of moves.
+    let (_rest, moves) = crate::parser::parse(input).map_err(|e| ParseError {
+        pos: TextPosition::default(),
+        msg: format!("{e:?}"),
+    })?;
 
-    let moves = inputs
-        .iter()
-        .map(|input| moves::factory(input))
-        .collect::<Result<Vec<_>, ParseError>>()?;
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
     Ok(min_inputs.join(";"))
 }
 
 /// Generate SVG for the given input.
 pub fn generate(input: &str) -> Result<String, ParseError> {
-    // Convert the input into a list of move input strings.
-    let inputs = split_inputs(input)?;
-
-    let moves = inputs
-        .iter()
-        .map(|input| moves::factory(input))
-        .collect::<Result<Vec<_>, ParseError>>()?;
+    // Convert the input into a list of moves.
+    let (rest, moves) = crate::parser::parse(input).map_err(|e| ParseError {
+        pos: TextPosition::default(),
+        msg: format!("{e:?}"),
+    })?;
+    if !rest.trim().is_empty() {
+        error!("unparsed input remains:  '{}'", rest);
+        return Err(ParseError {
+            pos: TextPosition::default(),
+            msg: "unparsed input left".to_string(),
+        });
+    }
+    debug!("input parses as:");
+    for (idx, mv) in moves.iter().enumerate() {
+        debug!("  [{idx}] {}", mv.text());
+    }
 
     let mut doc = Document::new().set("xmlns:xlink", "http://www.w3.org/1999/xlink");
     let mut opts = RenderOptions {
@@ -566,174 +574,9 @@ impl OwnedInput {
     }
 }
 
-fn split_inputs(input: &str) -> Result<Vec<Input>, ParseError> {
-    // TODO: deal with quoted strings
-    Ok(input
-        .split('\n')
-        .map(strip_comment) // stripping trailing comments doesn't affect column numbers
-        .enumerate()
-        .map(|(row, l)| Input {
-            pos: TextPosition { row, col: 0 },
-            text: l,
-        })
-        .flat_map(split_inputs_in_line)
-        .map(trim_whitespace)
-        .filter(|input| !input.text.is_empty())
-        .collect::<Vec<_>>())
-}
-
-fn split_inputs_in_line(input: Input) -> Vec<Input> {
-    let Input {
-        pos: TextPosition { row, col },
-        text,
-    } = input;
-
-    let mut results = Vec::new();
-    let mut offset = 0; // in bytes
-    let mut col = col; // in characters
-    loop {
-        match text[offset..].find(';') {
-            Some(delta) => {
-                let text = &text[offset..offset + delta];
-                let num_chars = text.chars().count();
-                results.push(Input {
-                    pos: TextPosition { row, col },
-                    text,
-                });
-                offset += delta + 1;
-                col += num_chars + 1;
-            }
-            None => {
-                results.push(Input {
-                    pos: TextPosition { row, col },
-                    text: &text[offset..],
-                });
-                return results;
-            }
-        }
-    }
-}
-
-fn trim_whitespace(input: Input) -> Input {
-    let Input {
-        pos: TextPosition { row, col },
-        text,
-    } = input;
-    // Trimming whitespace off the end doesn't affect columns.
-    let text = text.trim_end();
-    let nonws_offset = text.find(|c: char| !c.is_whitespace()).unwrap_or(0);
-    let col = col + text[..nonws_offset].chars().count();
-    Input {
-        pos: TextPosition { row, col },
-        text: &text[nonws_offset..],
-    }
-}
-
-fn strip_comment(l: &str) -> &str {
-    match l.split_once('#') {
-        Some((before, _after)) => before,
-        None => l,
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn test_trim_whitespace() {
-        let tests = [
-            (
-                Input {
-                    pos: TextPosition { row: 0, col: 0 },
-                    text: "text",
-                },
-                Input {
-                    pos: TextPosition { row: 0, col: 0 },
-                    text: "text",
-                },
-            ),
-            (
-                Input {
-                    pos: TextPosition { row: 0, col: 0 },
-                    text: "  text  ",
-                },
-                Input {
-                    pos: TextPosition { row: 0, col: 2 },
-                    text: "text",
-                },
-            ),
-            (
-                Input {
-                    pos: TextPosition { row: 10, col: 10 },
-                    text: "  text with",
-                },
-                Input {
-                    pos: TextPosition { row: 10, col: 12 },
-                    text: "text with",
-                },
-            ),
-        ];
-        for (input, want) in tests {
-            let got = trim_whitespace(input.clone());
-            assert_eq!(got, want, "for input: {input:?}");
-        }
-    }
-
-    #[test]
-    fn test_split_inputs() {
-        let tests = [
-            ("", vec![]),
-            ("abc", vec![("abc", 0, 0)]),
-            ("a\nb\nc", vec![("a", 0, 0), ("b", 1, 0), ("c", 2, 0)]),
-            ("  a\nb  \n c ", vec![("a", 0, 2), ("b", 1, 0), ("c", 2, 1)]),
-            (
-                "  a #comment\nb  \n #just comment\n c ",
-                vec![("a", 0, 2), ("b", 1, 0), ("c", 3, 1)],
-            ),
-            (
-                "a;b\nc; d\n¥;e",
-                vec![
-                    ("a", 0, 0),
-                    ("b", 0, 2),
-                    ("c", 1, 0),
-                    ("d", 1, 3),
-                    ("¥", 2, 0),
-                    ("e", 2, 2), // Note: character offset not byte offset.
-                ],
-            ),
-        ];
-        for (input, want) in tests {
-            let want = want
-                .iter()
-                .map(|(text, row, col)| Input {
-                    text,
-                    pos: TextPosition {
-                        row: *row,
-                        col: *col,
-                    },
-                })
-                .collect::<Vec<_>>();
-            let got = split_inputs(input).unwrap();
-            assert_eq!(got, want, "for input: {input}");
-        }
-    }
-
-    #[test]
-    fn test_strip_comment() {
-        let tests = [
-            ("", ""),
-            ("text", "text"),
-            (" text ", " text "),
-            (" text # comment", " text "),
-            (" text # comment # comment", " text "),
-            ("# comment", ""),
-        ];
-        for (line, want) in tests {
-            let got = strip_comment(line);
-            assert_eq!(got, want, "for input: {line}");
-        }
-    }
 
     #[test]
     fn test_code() {

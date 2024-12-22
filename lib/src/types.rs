@@ -181,6 +181,7 @@ macro_rules! bounds {
 }
 
 /// Label for parts of a move.
+#[derive(Debug)]
 pub struct Label {
     /// Text to display
     pub text: String,

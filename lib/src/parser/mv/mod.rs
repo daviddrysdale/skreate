@@ -4,6 +4,7 @@ use crate::{
     moves::{self, PseudoMoveId, SkatingMoveId},
     parser, Move,
 };
+use log::info;
 use nom::{
     branch::alt,
     bytes::complete::tag,
@@ -59,6 +60,7 @@ pub(crate) fn parse_skating_move(input: &str) -> IResult<&str, Box<dyn Move>> {
     } else {
         parse_skating_move_id(rest)?
     };
+    info!("found {move_id:?}");
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let params = crate::params::populate_from(info.params, plus_minus, more_less, vals)
@@ -87,6 +89,7 @@ fn parse_pseudo_move_id(input: &str) -> IResult<&str, PseudoMoveId> {
 pub(crate) fn parse_pseudo_move(input: &str) -> IResult<&str, Box<dyn Move>> {
     let (rest, _) = space0(input)?;
     let (rest, move_id) = parse_pseudo_move_id(rest)?;
+    info!("found {move_id:?}");
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let params = crate::params::populate_from(info.params, plus_minus, more_less, vals)

@@ -1,6 +1,6 @@
 //! Error type.
 
-use crate::{Input, TextPosition};
+use crate::TextPosition;
 use std::fmt::{self, Display, Formatter};
 
 /// Error in parsing input.
@@ -10,16 +10,6 @@ pub struct ParseError {
     pub pos: TextPosition,
     /// Error information.
     pub msg: String,
-}
-
-impl ParseError {
-    /// Create a parse error for the given [`Input`]
-    pub(crate) fn from_input(input: &Input, msg: &str) -> Self {
-        Self {
-            pos: input.pos,
-            msg: msg.to_string(),
-        }
-    }
 }
 
 impl Display for ParseError {

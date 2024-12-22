@@ -1,10 +1,10 @@
 //! Skating move definitions.
 
 use crate::{
-    pos, Code, Foot, Input, Move, MoveParam, ParseError, Position, PreTransition, Rotation,
+    pos, Code, Foot, Input, Move, MoveParam, Position, PreTransition, Rotation,
     SkatingDirection::*, SpatialTransition, Transition,
 };
-use log::{info, warn};
+use log::warn;
 use serde::Serialize;
 
 pub(crate) mod bracket;
@@ -57,13 +57,6 @@ pub struct Info {
     pub visible: bool,
     /// Move parameter information.
     pub params: &'static [crate::params::Info],
-}
-
-pub(crate) fn factory(input: &Input) -> Result<Box<dyn Move>, ParseError> {
-    info!("parse '{input:?}' into move");
-    crate::parser::mv::parse_move(input.text)
-        .map(|(_rest, mv)| mv)
-        .map_err(|_e| ParseError::from_input(input, &format!("unknown move {}", input.text)))
 }
 
 // Coordinates:

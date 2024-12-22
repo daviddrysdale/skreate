@@ -22,7 +22,7 @@ fn test_examples() {
             pos: Default::default(),
             text: info.example,
         };
-        let mv = factory(&input)
+        let (_rest, mv) = crate::parser::mv::parse_move(input.text)
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
         check_consistent(&*mv, &input);
     }

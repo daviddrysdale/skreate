@@ -47,7 +47,7 @@
 - [x] Rink and start point/direction specification
 - [x] Title, text inserts
 - [x] Allow override of transition label
-- [ ] Proper parser, coping with quoted strings
+- [x] Proper parser, coping with quoted strings
 - [x] URL parameters for initial window sizes
 - [x] Add relative=bool parameter to Warp
 - [ ] Counts and count display options
