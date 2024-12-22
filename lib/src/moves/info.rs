@@ -91,11 +91,16 @@ impl Info {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        Ok(Box::new(Self::from_params(input, params)?))
+    }
+
+    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
         let grid = params[2].value.as_i32().unwrap();
         let font_size = params[6].value.as_i32().unwrap();
         let stroke_width = params[7].value.as_i32().unwrap();
 
-        Ok(Box::new(Self {
+        Ok(Self {
             input: input.owned(),
             markers: params[0].value.as_bool().unwrap(),
             bounds: params[1].value.as_bool().unwrap(),
@@ -112,7 +117,7 @@ impl Info {
             } else {
                 None
             },
-        }))
+        })
     }
 }
 

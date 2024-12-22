@@ -104,6 +104,11 @@ impl Rink {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        Self::from_params(input, params)
+    }
+
+    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
         let to_bool = |param: &MoveParam| param.value.as_bool().map_err(Error::Failed);
         let to_opt_i32 = |param: &MoveParam| {
             let val = param.value.as_i32().unwrap();
@@ -113,7 +118,6 @@ impl Rink {
                 None
             }
         };
-
         Ok(Self {
             input: input.owned(),
             width: params[0].value.as_i32().unwrap(),

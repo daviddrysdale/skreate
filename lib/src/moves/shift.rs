@@ -64,6 +64,11 @@ impl Shift {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        Self::from_params(input, params)
+    }
+
+    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
         let code_str = params[3].value.as_str().map_err(Error::Failed)?;
         let code = if code_str.is_empty() {
             None

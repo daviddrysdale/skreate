@@ -68,9 +68,14 @@ impl Label {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        Ok(Box::new(Self::from_params(input, params)?))
+    }
+
+    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
         let font_size = params[3].value.as_i32().unwrap();
 
-        Ok(Box::new(Self {
+        Ok(Self {
             input: input.owned(),
             text: params[0].value.as_str().unwrap().to_string(),
             delta: Position::from_params(&params[2], &params[1]),
@@ -80,7 +85,7 @@ impl Label {
                 None
             },
             rotate: params[4].value.as_i32().unwrap(),
-        }))
+        })
     }
 
     fn font_size(&self, opts: &RenderOptions) -> u32 {
