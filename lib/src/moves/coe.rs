@@ -1,7 +1,7 @@
 //! Change of Edge
 
 use super::{compound::Compound, edge::Curve, straight::StraightEdge, Error};
-use crate::{moves, params, params::Value, Code, Edge, Input, MoveParam, PreTransition};
+use crate::{moves, params, params::Value, Code, Edge, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct ChangeOfEdge;
@@ -86,7 +86,7 @@ impl ChangeOfEdge {
     };
 
     pub fn from_params(
-        input: &Input,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -115,16 +115,15 @@ impl ChangeOfEdge {
             edge: entry_code.edge.opposite(),
         };
 
-        let pos = input.pos;
         let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
         let flat = format!("{flat_code}[len={flat_len},label=\"COE\",style=\"{style}\"]");
         let exit = format!("{out_code}[angle={angle2},len={len2},style=\"{style}\"]");
         log::debug!("input {input:?} results in {entry};{flat};{exit}");
 
         let moves = vec![
-            Curve::construct(&Input { pos, text: &entry }).unwrap(),
-            StraightEdge::construct(&Input { pos, text: &flat }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit }).unwrap(),
+            Curve::construct(&entry).unwrap(),
+            StraightEdge::construct(&flat).unwrap(),
+            Curve::construct(&exit).unwrap(),
         ];
 
         let prefix = pre_transition.prefix();

@@ -68,7 +68,7 @@ pub(crate) fn parse_skating_move(input: &str) -> IResult<&str, Box<dyn Move>> {
     Ok((
         rest,
         move_id
-            .construct(&input.into(), pre_transition, code, params)
+            .construct(input, pre_transition, code, params)
             .map_err(|_e| fail(input))?,
     ))
 }
@@ -96,9 +96,7 @@ pub(crate) fn parse_pseudo_move(input: &str) -> IResult<&str, Box<dyn Move>> {
         .map_err(|_e| fail(input))?;
     Ok((
         rest,
-        move_id
-            .construct(&input.into(), params)
-            .map_err(|_e| fail(input))?,
+        move_id.construct(input, params).map_err(|_e| fail(input))?,
     ))
 }
 

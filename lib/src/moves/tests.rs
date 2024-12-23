@@ -3,27 +3,22 @@
 use super::*;
 use crate::code;
 
-fn check_consistent(mv: &dyn Move, input: &Input) {
+fn check_consistent(mv: &dyn Move, input: &str) {
     assert_eq!(
         mv.pre_transition(code!(BF)).code,
         mv.start(),
         "for '{}'",
-        input.text
+        input
     );
-    assert_eq!(mv.transition().code, mv.end(), "for '{}'", input.text);
-    assert_eq!(mv.input(), Some(input.owned()));
-    assert_eq!(mv.text(), input.text);
+    assert_eq!(mv.transition().code, mv.end(), "for '{}'", input);
+    assert_eq!(mv.text(), input);
 }
 
 #[test]
 fn test_examples() {
     for info in INFO {
-        let input = Input {
-            pos: Default::default(),
-            text: info.example,
-        };
-        let (_rest, mv) = crate::parser::mv::parse_move(input.text)
+        let (_rest, mv) = crate::parser::mv::parse_move(info.example)
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
-        check_consistent(&*mv, &input);
+        check_consistent(&*mv, info.example);
     }
 }

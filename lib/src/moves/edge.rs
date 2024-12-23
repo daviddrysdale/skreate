@@ -5,15 +5,14 @@ use crate::{
     apply_style, bounds, code, moves, param, params,
     params::Value,
     parser::types::{parse_code, parse_pre_transition},
-    path, pos, Bounds, Code, Edge, Input, Label, Move, MoveParam, OwnedInput, Position,
-    PreTransition, RenderOptions, Rotation, Skater, SpatialTransition, SvgId, Transition,
+    path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
+    Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
 
 pub struct Curve {
-    input: OwnedInput,
     pre_transition: PreTransition,
     code: Code,
     angle: i32,
@@ -83,8 +82,8 @@ impl Curve {
         ],
     };
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let (rest, pre_transition) = parse_pre_transition(input.text)?;
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
+        let (rest, pre_transition) = parse_pre_transition(input)?;
         let (rest, entry_code) = parse_code(rest)?;
         if entry_code.edge == Edge::Flat {
             return Err(Error::Unrecognized);
@@ -101,7 +100,7 @@ impl Curve {
     }
 
     pub fn from_params(
-        input: &Input,
+        _input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -111,7 +110,6 @@ impl Curve {
         let transition_label = params[4].value.as_str().unwrap();
 
         Ok(Self {
-            input: input.owned(),
             pre_transition,
             code: entry_code,
             angle: params[0].value.as_i32().unwrap(),
@@ -190,9 +188,6 @@ impl Move for Curve {
         let prefix = self.pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{suffix}", self.code)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn pre_transition(&self, from: Code) -> Transition {
         if let Some(start) = self.start() {

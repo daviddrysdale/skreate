@@ -2,15 +2,13 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, parser::types::parse_code, Bounds, Code, Document, Input,
-    Move, MoveParam, OwnedInput, Position, RenderOptions, Rotation, Skater, SpatialTransition,
-    SvgId, Transition,
+    moves, param, params, params::Value, parser::types::parse_code, Bounds, Code, Document, Move,
+    MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Shift {
-    input: OwnedInput,
     delta: Position,
     rotate: i32,
     code: Option<Code>,
@@ -55,19 +53,19 @@ impl Shift {
         ],
     };
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
         Ok(Box::new(Self::new(input)?))
     }
 
-    pub fn new(input: &Input) -> Result<Self, Error> {
-        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
+    pub fn new(input: &str) -> Result<Self, Error> {
+        let Some(rest) = input.strip_prefix(Self::INFO.name) else {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
         Self::from_params(input, params)
     }
 
-    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let code_str = params[3].value.as_str().map_err(Error::Failed)?;
         let code = if code_str.is_empty() {
@@ -78,7 +76,6 @@ impl Shift {
         };
 
         Ok(Self {
-            input: input.owned(),
             // Note that `fwd` is first, and is in (relative) y-direction.
             delta: Position::from_params(&params[1], &params[0]),
             rotate: params[2].value.as_i32().unwrap(),
@@ -104,9 +101,6 @@ impl Move for Shift {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn transition(&self) -> Transition {
         Transition {
@@ -154,17 +148,12 @@ mod tests {
         ];
 
         for (text, delta, rotate, code) in tests {
-            let input = Input {
-                pos: crate::TextPosition::default(),
-                text,
-            };
             let want = Shift {
-                input: input.owned(),
                 delta,
                 rotate,
                 code,
             };
-            let got = Shift::new(&input).unwrap();
+            let got = Shift::new(text).unwrap();
             assert_eq!(got, want, "for input '{text}'");
             let regen = got.text();
             assert_eq!(text, regen);

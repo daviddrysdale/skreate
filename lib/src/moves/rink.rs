@@ -2,14 +2,13 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, path, pos, Bounds, Input, Move, MoveParam, OwnedInput,
-    Position, RenderOptions, Skater, SvgId,
+    moves, param, params, params::Value, path, pos, Bounds, Move, MoveParam, Position,
+    RenderOptions, Skater, SvgId,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Rink {
-    input: OwnedInput,
     width: i32,
     length: i32,
     show_centre_line: bool,
@@ -95,7 +94,7 @@ impl Rink {
         ],
     };
 
-    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let to_bool = |param: &MoveParam| param.value.as_bool().map_err(Error::Failed);
         let to_opt_i32 = |param: &MoveParam| {
@@ -107,7 +106,6 @@ impl Rink {
             }
         };
         Ok(Self {
-            input: input.owned(),
             width: params[0].value.as_i32().unwrap(),
             length: params[1].value.as_i32().unwrap(),
             show_centre_line: to_bool(&params[2])?,
@@ -151,9 +149,6 @@ impl Move for Rink {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         Some(Bounds {

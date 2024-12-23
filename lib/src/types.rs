@@ -75,6 +75,10 @@ impl TextPosition {
         }
         TextPosition { row, col }
     }
+    /// Convert the position into an ID string.
+    pub fn unique_id(&self) -> String {
+        format!("r_{}_c_{}", self.row, self.col)
+    }
 }
 
 /// Helper macro to create [`Position`] instance.

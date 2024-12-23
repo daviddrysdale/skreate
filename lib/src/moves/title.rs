@@ -2,14 +2,13 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, Bounds, Group, Input, Move, MoveParam, OwnedInput,
-    Position, RenderOptions, Skater, SvgId,
+    moves, param, params, params::Value, Bounds, Group, Move, MoveParam, Position, RenderOptions,
+    Skater, SvgId,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
 
 pub struct Title {
-    input: OwnedInput,
     text: String,
     pos: Position,
     font_size: Option<u32>,
@@ -54,12 +53,11 @@ impl Title {
         ],
     };
 
-    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let font_size = params[3].value.as_i32().unwrap();
 
         Ok(Self {
-            input: input.owned(),
             text: params[0].value.as_str().unwrap().to_string(),
             pos: Position::from_params(&params[1], &params[2]),
             font_size: if font_size > 0 {
@@ -87,9 +85,6 @@ impl Move for Title {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn defs(&self, opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         opts.title.clone_from(&self.text);

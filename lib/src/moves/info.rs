@@ -2,13 +2,12 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, path, Bounds, Document, Input, Move, MoveParam,
-    OwnedInput, Position, RenderOptions, Skater, SvgId,
+    moves, param, params, params::Value, path, Bounds, Document, Move, MoveParam, Position,
+    RenderOptions, Skater, SvgId,
 };
 use svg::node::element::Group;
 
 pub struct Info {
-    input: OwnedInput,
     markers: bool,
     bounds: bool,
     grid: Option<i32>,
@@ -86,14 +85,13 @@ impl Info {
         ],
     };
 
-    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let grid = params[2].value.as_i32().unwrap();
         let font_size = params[6].value.as_i32().unwrap();
         let stroke_width = params[7].value.as_i32().unwrap();
 
         Ok(Self {
-            input: input.owned(),
             markers: params[0].value.as_bool().unwrap(),
             bounds: params[1].value.as_bool().unwrap(),
             grid: if grid > 0 { Some(grid) } else { None },
@@ -129,9 +127,6 @@ impl Move for Info {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None

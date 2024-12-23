@@ -1,7 +1,7 @@
 //! Mohawk.
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, Error};
-use crate::{code, moves, params, params::Value, Code, Input, MoveParam, PreTransition};
+use crate::{code, moves, params, params::Value, Code, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct OpenMohawk;
@@ -76,7 +76,7 @@ impl OpenMohawk {
     };
 
     pub fn from_params(
-        input: &Input,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -106,7 +106,6 @@ impl OpenMohawk {
             edge: entry_code.edge,
         };
 
-        let pos = input.pos;
         let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
         let label = format!("Label[fwd=30,side={sign}70,text=\"OpMo\"]");
         let shift = format!("Shift[side={sign}80,fwd=-65,rotate={sign}90,code=\"{out_code}\"]");
@@ -114,10 +113,10 @@ impl OpenMohawk {
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&Input { pos, text: &entry }).unwrap(),
-            Label::construct(&Input { pos, text: &label }).unwrap(),
-            Shift::construct(&Input { pos, text: &shift }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit }).unwrap(),
+            Curve::construct(&entry).unwrap(),
+            Label::construct(&label).unwrap(),
+            Shift::construct(&shift).unwrap(),
+            Curve::construct(&exit).unwrap(),
         ];
 
         let prefix = pre_transition.prefix();

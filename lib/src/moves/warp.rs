@@ -3,14 +3,13 @@
 use super::Error;
 use crate::{
     moves, param, params, params::Value, parser::types::parse_code, Bounds, Code, Direction,
-    Document, Input, Move, MoveParam, OwnedInput, Position, RenderOptions, Skater,
-    SpatialTransition, SvgId, Transition,
+    Document, Move, MoveParam, Position, RenderOptions, Skater, SpatialTransition, SvgId,
+    Transition,
 };
 use std::borrow::Cow;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Warp {
-    input: OwnedInput,
     pos: Position,
     dir: Direction,
     code: Option<Code>,
@@ -55,7 +54,7 @@ impl Warp {
         ],
     };
 
-    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let code_str = params[3].value.as_str().map_err(Error::Failed)?;
         let code = if code_str.is_empty() {
@@ -66,7 +65,6 @@ impl Warp {
         };
 
         Ok(Self {
-            input: input.owned(),
             pos: Position::from_params(&params[0], &params[1]),
             dir: Direction(params[2].value.as_i32().unwrap() as u32),
             code,
@@ -91,9 +89,6 @@ impl Move for Warp {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn transition(&self) -> Transition {
         Transition {

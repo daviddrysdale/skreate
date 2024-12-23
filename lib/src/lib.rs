@@ -260,8 +260,8 @@ trait Move {
             None => def_id,
         };
         let mut use_link = use_at(start, &def_id, opts);
-        if let Some(input) = self.input() {
-            use_link = use_link.set("id", input.unique_id());
+        if let Some(pos) = self.text_pos() {
+            use_link = use_link.set("id", pos.unique_id());
         }
         doc = doc.add(use_link);
         self.render_labels(doc, start, opts)
@@ -292,9 +292,10 @@ trait Move {
     /// same `Move` (although it may have different `input_text`).
     fn text(&self) -> String;
 
-    /// Emit the input that was used to originally create the move, if available.  This may have different text
-    /// (e.g. longer, using alias forms) than the result of [`text`].
-    fn input(&self) -> Option<OwnedInput>;
+    /// Return the position in the text that held the move, if available.
+    fn text_pos(&self) -> Option<TextPosition> {
+        None
+    }
 }
 
 /// Generate canonicalized / minimized input.
@@ -528,51 +529,6 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     let svg = String::from_utf8(svg)?;
     trace!("emit SVG:\n{svg}");
     Ok(svg)
-}
-
-/// User input.
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Input<'a> {
-    /// Position of input chunk in original.
-    pos: TextPosition,
-    /// Text of input.
-    text: &'a str,
-}
-
-impl<'a> From<&'a str> for Input<'a> {
-    // TODO: replace with nom-based tracking of input location
-    fn from(text: &'a str) -> Input<'a> {
-        Self {
-            pos: TextPosition::default(),
-            text,
-        }
-    }
-}
-
-impl<'a> Input<'a> {
-    fn owned(&self) -> OwnedInput {
-        OwnedInput {
-            pos: self.pos,
-            text: self.text.to_string(),
-        }
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-struct OwnedInput {
-    pos: TextPosition,
-    text: String,
-}
-
-impl OwnedInput {
-    fn unique_id(&self) -> String {
-        format!(
-            "r_{}_c_{}_{}",
-            self.pos.row,
-            self.pos.col,
-            self.pos.col + self.text.chars().count()
-        )
-    }
 }
 
 #[cfg(test)]

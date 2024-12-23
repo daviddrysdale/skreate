@@ -1,7 +1,7 @@
 //! Three-turn
 
 use super::{compound::Compound, edge::Curve, shift::Shift, Error};
-use crate::{code, moves, params, params::Value, Code, Input, MoveParam, PreTransition};
+use crate::{code, moves, params, params::Value, Code, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct ThreeTurn;
@@ -76,7 +76,7 @@ impl ThreeTurn {
     };
 
     pub fn from_params(
-        input: &Input,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -118,7 +118,6 @@ impl ThreeTurn {
         let angle2b = angle2 * 60 / 100;
         let angle2a = angle2 - angle2b;
 
-        let pos = input.pos;
         let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
         let entry2 =
             format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
@@ -129,11 +128,11 @@ impl ThreeTurn {
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![
-            Curve::construct(&Input { pos, text: &entry1 }).unwrap(),
-            Curve::construct(&Input { pos, text: &entry2 }).unwrap(),
-            Shift::construct(&Input { pos, text: &shift }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit2 }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit1 }).unwrap(),
+            Curve::construct(&entry1).unwrap(),
+            Curve::construct(&entry2).unwrap(),
+            Shift::construct(&shift).unwrap(),
+            Curve::construct(&exit2).unwrap(),
+            Curve::construct(&exit1).unwrap(),
         ];
 
         let suffix = params::to_string(Self::INFO.params, &params);

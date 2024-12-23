@@ -2,14 +2,13 @@
 
 use super::Error;
 use crate::{
-    moves, param, params, params::Value, Bounds, Input, Move, MoveParam, OwnedInput, Position,
-    RenderOptions, Rotation, Skater, SpatialTransition, SvgId, Transition,
+    moves, param, params, params::Value, Bounds, Move, MoveParam, Position, RenderOptions,
+    Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
 
 pub struct Label {
-    input: OwnedInput,
     text: String,
     delta: Position,
     font_size: Option<u32>,
@@ -63,20 +62,19 @@ impl Label {
         ],
     };
 
-    pub fn construct(input: &Input) -> Result<Box<dyn Move>, Error> {
-        let Some(rest) = input.text.strip_prefix(Self::INFO.name) else {
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
+        let Some(rest) = input.strip_prefix(Self::INFO.name) else {
             return Err(Error::Unrecognized);
         };
         let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
         Ok(Box::new(Self::from_params(input, params)?))
     }
 
-    pub fn from_params(input: &Input, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let font_size = params[3].value.as_i32().unwrap();
 
         Ok(Self {
-            input: input.owned(),
             text: params[0].value.as_str().unwrap().to_string(),
             delta: Position::from_params(&params[2], &params[1]),
             font_size: if font_size > 0 {
@@ -106,9 +104,6 @@ impl Move for Label {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None

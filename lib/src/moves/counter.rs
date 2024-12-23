@@ -3,7 +3,7 @@
 use super::{
     compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge, Error,
 };
-use crate::{code, moves, params, params::Value, Code, Edge, Input, MoveParam, PreTransition};
+use crate::{code, moves, params, params::Value, Code, Edge, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct Counter;
@@ -78,7 +78,7 @@ impl Counter {
     };
 
     pub fn from_params(
-        input: &Input,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -130,7 +130,6 @@ impl Counter {
         let angle2b = 80;
         let angle2a = angle2;
 
-        let pos = input.pos;
         let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
         let entry2 = format!("{entry_flat}[len={len1b},style=\"{style}\",label=\" \"]");
         let entry3 =
@@ -143,13 +142,13 @@ impl Counter {
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![
-            Curve::construct(&Input { pos, text: &entry1 }).unwrap(),
-            StraightEdge::construct(&Input { pos, text: &entry2 }).unwrap(),
-            Curve::construct(&Input { pos, text: &entry3 }).unwrap(),
-            Label::construct(&Input { pos, text: &label }).unwrap(),
-            Shift::construct(&Input { pos, text: &shift }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit2 }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit1 }).unwrap(),
+            Curve::construct(&entry1).unwrap(),
+            StraightEdge::construct(&entry2).unwrap(),
+            Curve::construct(&entry3).unwrap(),
+            Label::construct(&label).unwrap(),
+            Shift::construct(&shift).unwrap(),
+            Curve::construct(&exit2).unwrap(),
+            Curve::construct(&exit1).unwrap(),
         ];
 
         let suffix = params::to_string(Self::INFO.params, &params);

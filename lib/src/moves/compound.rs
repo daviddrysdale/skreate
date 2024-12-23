@@ -1,13 +1,12 @@
 //! Compound move definition.
 use crate::{
-    Bounds, Code, Input, Label, Move, MoveParam, OwnedInput, RenderOptions, Rotation, Skater,
-    SpatialTransition, SvgId, Transition,
+    Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater, SpatialTransition,
+    SvgId, Transition,
 };
 use svg::node::element::Group;
 use svg::Document;
 
 pub struct Compound {
-    input: OwnedInput,
     // Invariant: `moves` is assumed non-empty throughout.
     // Invariant: only `moves[0]` can have a pre-transition.
     moves: Vec<Box<dyn Move>>,
@@ -28,7 +27,7 @@ impl Compound {
     /// - `moves` has fewer than 2 entries
     /// - any move has an absolute transition
     pub fn new(
-        input: &Input,
+        _input: &str,
         moves: Vec<Box<dyn Move>>,
         params: Vec<MoveParam>,
         text: String,
@@ -51,7 +50,6 @@ impl Compound {
         }
 
         Self {
-            input: input.owned(),
             moves,
             start_code: start_code.expect("first move must have code"),
             params,
@@ -90,9 +88,6 @@ impl Move for Compound {
     }
     fn text(&self) -> String {
         self.text.clone()
-    }
-    fn input(&self) -> Option<OwnedInput> {
-        Some(self.input.clone())
     }
     fn pre_transition(&self, from: Code) -> Transition {
         self.moves[0].pre_transition(from)

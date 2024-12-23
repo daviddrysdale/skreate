@@ -3,7 +3,7 @@
 use super::{
     compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge, Error,
 };
-use crate::{code, moves, params, params::Value, Code, Edge, Input, MoveParam, PreTransition};
+use crate::{code, moves, params, params::Value, Code, Edge, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct Rocker;
@@ -78,7 +78,7 @@ impl Rocker {
     };
 
     pub fn from_params(
-        input: &Input,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -130,7 +130,6 @@ impl Rocker {
         let len2c = len2 - len2a - len2b;
         let angle2c = 80;
 
-        let pos = input.pos;
         let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
         let entry2 =
             format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
@@ -142,13 +141,13 @@ impl Rocker {
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![
-            Curve::construct(&Input { pos, text: &entry1 }).unwrap(),
-            Curve::construct(&Input { pos, text: &entry2 }).unwrap(),
-            Label::construct(&Input { pos, text: &label }).unwrap(),
-            Shift::construct(&Input { pos, text: &shift }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit3 }).unwrap(),
-            StraightEdge::construct(&Input { pos, text: &exit2 }).unwrap(),
-            Curve::construct(&Input { pos, text: &exit1 }).unwrap(),
+            Curve::construct(&entry1).unwrap(),
+            Curve::construct(&entry2).unwrap(),
+            Label::construct(&label).unwrap(),
+            Shift::construct(&shift).unwrap(),
+            Curve::construct(&exit3).unwrap(),
+            StraightEdge::construct(&exit2).unwrap(),
+            Curve::construct(&exit1).unwrap(),
         ];
 
         let suffix = params::to_string(Self::INFO.params, &params);

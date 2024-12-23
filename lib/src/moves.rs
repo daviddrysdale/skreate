@@ -1,8 +1,8 @@
 //! Skating move definitions.
 
 use crate::{
-    pos, Code, Foot, Input, Move, MoveParam, Position, PreTransition, Rotation,
-    SkatingDirection::*, SpatialTransition, Transition,
+    pos, Code, Foot, Move, MoveParam, Position, PreTransition, Rotation, SkatingDirection::*,
+    SpatialTransition, Transition,
 };
 use log::warn;
 use serde::Serialize;
@@ -143,7 +143,7 @@ impl SkatingMoveId {
     /// Construct an instance of a skating move.
     pub(crate) fn construct(
         &self,
-        input: &Input,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -244,7 +244,7 @@ impl PseudoMoveId {
     /// Construct an instance of a pseudo-move.
     pub(crate) fn construct(
         &self,
-        input: &Input,
+        input: &str,
         params: Vec<MoveParam>,
     ) -> Result<Box<dyn Move>, Error> {
         Ok(match self {
