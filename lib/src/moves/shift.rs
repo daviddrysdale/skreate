@@ -3,12 +3,13 @@
 use crate::{
     moves, param, params, params::Value, parser, parser::types::parse_code, Bounds, Code, Document,
     Move, MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId,
-    Transition,
+    TextPosition, Transition,
 };
 use std::borrow::Cow;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Shift {
+    text_pos: TextPosition,
     delta: Position,
     rotate: i32,
     code: Option<Code>,
@@ -53,19 +54,23 @@ impl Shift {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
-        Ok(Box::new(Self::new(input)?))
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
+        Ok(Box::new(Self::new(input, text_pos)?))
     }
 
-    pub fn new(input: &str) -> Result<Self, parser::Error> {
+    pub fn new(input: &str, text_pos: TextPosition) -> Result<Self, parser::Error> {
         let Some(rest) = input.strip_prefix(Self::INFO.name) else {
             return Err(parser::fail(input));
         };
         let params = params::populate(Self::INFO.params, rest)?;
-        Self::from_params(input, params)
+        Self::from_params(input, text_pos, params)
     }
 
-    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let code_str = params[3].value.as_str(input)?;
         let code = if code_str.is_empty() {
@@ -76,6 +81,7 @@ impl Shift {
         };
 
         Ok(Self {
+            text_pos,
             // Note that `fwd` is first, and is in (relative) y-direction.
             delta: Position::from_params(&params[1], &params[0]),
             rotate: params[2].value.as_i32(input)?,
@@ -101,6 +107,9 @@ impl Move for Shift {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn transition(&self) -> Transition {
         Transition {
@@ -146,14 +155,16 @@ mod tests {
                 Some(code!(LFO)),
             ),
         ];
+        let text_pos = TextPosition::default();
 
         for (text, delta, rotate, code) in tests {
             let want = Shift {
+                text_pos,
                 delta,
                 rotate,
                 code,
             };
-            let got = Shift::new(text).unwrap();
+            let got = Shift::new(text, text_pos).unwrap();
             assert_eq!(got, want, "for input '{text}'");
             let regen = got.text();
             assert_eq!(text, regen);

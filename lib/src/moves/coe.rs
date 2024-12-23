@@ -1,7 +1,9 @@
 //! Change of Edge
 
 use super::{compound::Compound, edge::Curve, straight::StraightEdge};
-use crate::{moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition};
+use crate::{
+    moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition, TextPosition,
+};
 use std::borrow::Cow;
 
 pub struct ChangeOfEdge;
@@ -87,6 +89,7 @@ impl ChangeOfEdge {
 
     pub fn from_params(
         input: &str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -121,15 +124,15 @@ impl ChangeOfEdge {
         log::debug!("input {input:?} results in {entry};{flat};{exit}");
 
         let moves = vec![
-            Curve::construct(&entry).unwrap(),
-            StraightEdge::construct(&flat).unwrap(),
-            Curve::construct(&exit).unwrap(),
+            Curve::construct(&entry, text_pos).unwrap(),
+            StraightEdge::construct(&flat, text_pos).unwrap(),
+            Curve::construct(&exit, text_pos).unwrap(),
         ];
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, moves, params, text))
+        Ok(Compound::new(input, text_pos, moves, params, text))
     }
 }

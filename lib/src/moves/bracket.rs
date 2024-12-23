@@ -1,7 +1,9 @@
 //! Bracket
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge};
-use crate::{code, moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition};
+use crate::{
+    code, moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition, TextPosition,
+};
 use std::borrow::Cow;
 
 pub struct Bracket;
@@ -77,6 +79,7 @@ impl Bracket {
 
     pub fn from_params(
         input: &str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -150,19 +153,19 @@ impl Bracket {
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![
-            Curve::construct(&entry1).unwrap(),
-            StraightEdge::construct(&entry2).unwrap(),
-            Curve::construct(&entry3).unwrap(),
-            Label::construct(&label).unwrap(),
-            Shift::construct(&shift).unwrap(),
-            Curve::construct(&exit3).unwrap(),
-            StraightEdge::construct(&exit2).unwrap(),
-            Curve::construct(&exit1).unwrap(),
+            Curve::construct(&entry1, text_pos).unwrap(),
+            StraightEdge::construct(&entry2, text_pos).unwrap(),
+            Curve::construct(&entry3, text_pos).unwrap(),
+            Label::construct(&label, text_pos).unwrap(),
+            Shift::construct(&shift, text_pos).unwrap(),
+            Curve::construct(&exit3, text_pos).unwrap(),
+            StraightEdge::construct(&exit2, text_pos).unwrap(),
+            Curve::construct(&exit1, text_pos).unwrap(),
         ];
 
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, moves, params, text))
+        Ok(Compound::new(input, text_pos, moves, params, text))
     }
 }

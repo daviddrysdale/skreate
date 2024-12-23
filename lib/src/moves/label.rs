@@ -2,12 +2,13 @@
 
 use crate::{
     moves, param, params, params::Value, parser, Bounds, Move, MoveParam, Position, RenderOptions,
-    Rotation, Skater, SpatialTransition, SvgId, Transition,
+    Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
 
 pub struct Label {
+    text_pos: TextPosition,
     text: String,
     delta: Position,
     font_size: Option<u32>,
@@ -61,19 +62,24 @@ impl Label {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
         let Some(rest) = input.strip_prefix(Self::INFO.name) else {
             return Err(parser::fail(input));
         };
         let params = params::populate(Self::INFO.params, rest)?;
-        Ok(Box::new(Self::from_params(input, params)?))
+        Ok(Box::new(Self::from_params(input, text_pos, params)?))
     }
 
-    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let font_size = params[3].value.as_i32(input)?;
 
         Ok(Self {
+            text_pos,
             text: params[0].value.as_str(input)?.to_string(),
             delta: Position::from_params(&params[2], &params[1]),
             font_size: if font_size > 0 {
@@ -103,6 +109,9 @@ impl Move for Label {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None

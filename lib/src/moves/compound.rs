@@ -1,7 +1,7 @@
 //! Compound move definition.
 use crate::{
     Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater, SpatialTransition,
-    SvgId, Transition,
+    SvgId, TextPosition, Transition,
 };
 use svg::node::element::Group;
 use svg::Document;
@@ -14,6 +14,7 @@ pub struct Compound {
 
     params: Vec<MoveParam>,
     text: String,
+    text_pos: TextPosition,
 }
 
 impl Compound {
@@ -28,6 +29,7 @@ impl Compound {
     /// - any move has an absolute transition
     pub fn new(
         _input: &str,
+        text_pos: TextPosition,
         moves: Vec<Box<dyn Move>>,
         params: Vec<MoveParam>,
         text: String,
@@ -50,6 +52,7 @@ impl Compound {
         }
 
         Self {
+            text_pos,
             moves,
             start_code: start_code.expect("first move must have code"),
             params,
@@ -88,6 +91,9 @@ impl Move for Compound {
     }
     fn text(&self) -> String {
         self.text.clone()
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn pre_transition(&self, from: Code) -> Transition {
         self.moves[0].pre_transition(from)

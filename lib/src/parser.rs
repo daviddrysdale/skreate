@@ -27,7 +27,7 @@ pub(crate) fn fail(input: &str) -> Error {
     Error::Failure(InnErr::new(input, nom::error::ErrorKind::Fail))
 }
 
-pub(crate) fn parse(input: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
+pub(crate) fn parse(start: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
     separated_list0(
         // Separate moves by...
         many1(alt((
@@ -41,8 +41,8 @@ pub(crate) fn parse(input: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
             // Comment to newline (inclusive).
             comment::parse,
         ))),
-        mv::parse_move,
-    )(input)
+        |input| mv::parse_move(start, input),
+    )(start)
 }
 
 /// Convert a nom error into a [`ParseError`].

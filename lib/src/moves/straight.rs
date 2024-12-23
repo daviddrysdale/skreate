@@ -7,12 +7,13 @@ use crate::{
     parser,
     parser::types::{parse_code, parse_pre_transition},
     path, pos, Code, Edge, Foot, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
-    Rotation, SkatingDirection, SpatialTransition, SvgId, Transition,
+    Rotation, SkatingDirection, SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
 
 pub struct StraightEdge {
+    text_pos: TextPosition,
     pre_transition: PreTransition,
     foot: Foot,
     dir: SkatingDirection,
@@ -59,7 +60,7 @@ impl StraightEdge {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
         let (rest, pre_transition) = parse_pre_transition(input)?;
         let (rest, entry_code) = parse_code(rest)?;
         if entry_code.edge != Edge::Flat {
@@ -69,6 +70,7 @@ impl StraightEdge {
         let params = params::populate(Self::INFO.params, rest)?;
         Ok(Box::new(Self::from_params(
             input,
+            text_pos,
             pre_transition,
             entry_code,
             params,
@@ -77,6 +79,7 @@ impl StraightEdge {
 
     pub fn from_params(
         input: &str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -85,6 +88,7 @@ impl StraightEdge {
         let label = params[1].value.as_str(input)?;
 
         Ok(Self {
+            text_pos,
             pre_transition,
             foot: entry_code.foot,
             dir: entry_code.dir,
@@ -121,6 +125,9 @@ impl Move for StraightEdge {
         let prefix = self.pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{}{suffix}", self.foot, self.dir)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn pre_transition(&self, from: Code) -> Transition {
         self.pre_transition.perform(from, self.code())

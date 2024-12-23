@@ -1,7 +1,9 @@
 //! Mohawk.
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift};
-use crate::{code, moves, params, params::Value, parser, Code, MoveParam, PreTransition};
+use crate::{
+    code, moves, params, params::Value, parser, Code, MoveParam, PreTransition, TextPosition,
+};
 use std::borrow::Cow;
 
 pub struct OpenMohawk;
@@ -77,6 +79,7 @@ impl OpenMohawk {
 
     pub fn from_params(
         input: &str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -113,16 +116,16 @@ impl OpenMohawk {
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&entry).unwrap(),
-            Label::construct(&label).unwrap(),
-            Shift::construct(&shift).unwrap(),
-            Curve::construct(&exit).unwrap(),
+            Curve::construct(&entry, text_pos).unwrap(),
+            Label::construct(&label, text_pos).unwrap(),
+            Shift::construct(&shift, text_pos).unwrap(),
+            Curve::construct(&exit, text_pos).unwrap(),
         ];
 
         let prefix = pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, moves, params, text))
+        Ok(Compound::new(input, text_pos, moves, params, text))
     }
 }

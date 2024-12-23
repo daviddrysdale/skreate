@@ -2,12 +2,13 @@
 
 use crate::{
     moves, param, params, params::Value, parser, path, pos, Bounds, Move, MoveParam, Position,
-    RenderOptions, Skater, SvgId,
+    RenderOptions, Skater, SvgId, TextPosition,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Rink {
+    text_pos: TextPosition,
     width: i32,
     length: i32,
     show_centre_line: bool,
@@ -93,7 +94,11 @@ impl Rink {
         ],
     };
 
-    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let to_opt_i32 = |param: &MoveParam| {
             let val = param.value.as_i32(input).unwrap();
@@ -104,6 +109,7 @@ impl Rink {
             }
         };
         Ok(Self {
+            text_pos,
             width: params[0].value.as_i32(input)?,
             length: params[1].value.as_i32(input)?,
             show_centre_line: params[2].value.as_bool(input)?,
@@ -147,6 +153,9 @@ impl Move for Rink {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         Some(Bounds {

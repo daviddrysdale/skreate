@@ -1,7 +1,9 @@
 //! Twizzle.
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift};
-use crate::{code, moves, params, params::Value, parser, Code, MoveParam, PreTransition};
+use crate::{
+    code, moves, params, params::Value, parser, Code, MoveParam, PreTransition, TextPosition,
+};
 use std::borrow::Cow;
 
 pub struct Twizzle;
@@ -91,6 +93,7 @@ impl Twizzle {
 
     pub fn from_params(
         input: &str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         count: u32,
@@ -136,7 +139,7 @@ impl Twizzle {
         let pre = format!(
             "{prefix}{code} [len={pre_len},angle={pre_angle},style=\"{style}\",label=\" \",transition-label=\"{transition_label}\"]"
         );
-        moves.push(Curve::construct(&pre).unwrap());
+        moves.push(Curve::construct(&pre, text_pos).unwrap());
         let mut debug = format!("{pre};");
 
         for n in 0..count {
@@ -156,20 +159,20 @@ impl Twizzle {
             let exit1 =
                 format!("{out_code}[angle={angle_a},len={len_a},style=\"{style}\",label=\" \"]");
 
-            moves.push(Curve::construct(&entry1).unwrap());
-            moves.push(Curve::construct(&entry2).unwrap());
+            moves.push(Curve::construct(&entry1, text_pos).unwrap());
+            moves.push(Curve::construct(&entry2, text_pos).unwrap());
             if count % 2 == 1 && n == count / 2 {
                 let label = format!("Label [fwd=100,side=30,text=\"{label_text}\"]");
-                moves.push(Label::construct(&label).unwrap());
+                moves.push(Label::construct(&label, text_pos).unwrap());
             }
 
-            moves.push(Shift::construct(&shift).unwrap());
-            moves.push(Curve::construct(&exit2).unwrap());
-            moves.push(Curve::construct(&exit1).unwrap());
+            moves.push(Shift::construct(&shift, text_pos).unwrap());
+            moves.push(Curve::construct(&exit2, text_pos).unwrap());
+            moves.push(Curve::construct(&exit1, text_pos).unwrap());
 
             if count % 2 == 0 && n == (count - 1) / 2 {
                 let label = format!("Label [side=100,text=\"{label_text}\"]");
-                moves.push(Label::construct(&label).unwrap());
+                moves.push(Label::construct(&label, text_pos).unwrap());
             }
 
             code = out_code;
@@ -177,10 +180,10 @@ impl Twizzle {
         }
         let post =
             format!("{code} [len={post_len},angle={post_angle},style=\"{style}\",label=\" \"]");
-        moves.push(Curve::construct(&post).unwrap());
+        moves.push(Curve::construct(&post, text_pos).unwrap());
         debug = format!("{debug}{post}");
 
         log::info!("input {input:?} results in {debug}");
-        Ok(Compound::new(input, moves, params, text))
+        Ok(Compound::new(input, text_pos, moves, params, text))
     }
 }

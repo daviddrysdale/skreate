@@ -17,7 +17,7 @@ fn check_consistent(mv: &dyn Move, input: &str) {
 #[test]
 fn test_examples() {
     for info in INFO {
-        let (_rest, mv) = crate::parser::mv::parse_move(info.example)
+        let (_rest, mv) = crate::parser::mv::parse_move(info.example, info.example)
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
         check_consistent(&*mv, info.example);
     }

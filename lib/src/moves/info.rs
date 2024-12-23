@@ -2,11 +2,12 @@
 
 use crate::{
     moves, param, params, params::Value, parser, path, Bounds, Document, Move, MoveParam, Position,
-    RenderOptions, Skater, SvgId,
+    RenderOptions, Skater, SvgId, TextPosition,
 };
 use svg::node::element::Group;
 
 pub struct Info {
+    text_pos: TextPosition,
     markers: bool,
     bounds: bool,
     grid: Option<i32>,
@@ -84,13 +85,18 @@ impl Info {
         ],
     };
 
-    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let grid = params[2].value.as_i32(input)?;
         let font_size = params[6].value.as_i32(input)?;
         let stroke_width = params[7].value.as_i32(input)?;
 
         Ok(Self {
+            text_pos,
             markers: params[0].value.as_bool(input)?,
             bounds: params[1].value.as_bool(input)?,
             grid: if grid > 0 { Some(grid) } else { None },
@@ -126,6 +132,9 @@ impl Move for Info {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None

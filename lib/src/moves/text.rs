@@ -2,12 +2,13 @@
 
 use crate::{
     moves, param, params, params::Value, parser, Bounds, Move, MoveParam, Position, RenderOptions,
-    Skater, SvgId,
+    Skater, SvgId, TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text as SvgText, Document};
 
 pub struct Text {
+    text_pos: TextPosition,
     text: String,
     pos: Position,
     font_size: Option<u32>,
@@ -60,11 +61,16 @@ impl Text {
         ],
     };
 
-    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let font_size = params[3].value.as_i32(input)?;
 
         Ok(Self {
+            text_pos,
             text: params[0].value.as_str(input)?.to_string(),
             pos: Position::from_params(&params[1], &params[2]),
             font_size: if font_size > 0 {
@@ -94,6 +100,9 @@ impl Move for Text {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         None

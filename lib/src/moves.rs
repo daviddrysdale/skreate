@@ -2,7 +2,7 @@
 
 use crate::{
     parser, pos, Code, Foot, Move, MoveParam, Position, PreTransition, Rotation,
-    SkatingDirection::*, SpatialTransition, Transition,
+    SkatingDirection::*, SpatialTransition, TextPosition, Transition,
 };
 use log::warn;
 use serde::Serialize;
@@ -128,6 +128,7 @@ impl SkatingMoveId {
     pub(crate) fn construct<'a>(
         &'_ self,
         input: &'a str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -135,54 +136,63 @@ impl SkatingMoveId {
         Ok(match self {
             Self::Curve => Box::new(edge::Curve::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::StraightEdge => Box::new(straight::StraightEdge::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::ThreeTurn => Box::new(three::ThreeTurn::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::OpenMohawk => Box::new(mohawk::OpenMohawk::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::Bracket => Box::new(bracket::Bracket::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::Rocker => Box::new(rocker::Rocker::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::Counter => Box::new(counter::Counter::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::ChangeOfEdge => Box::new(coe::ChangeOfEdge::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::Twizzle(count) => Box::new(twizzle::Twizzle::from_params(
                 input,
+                text_pos,
                 pre_transition,
                 entry_code,
                 *count,
@@ -229,16 +239,17 @@ impl PseudoMoveId {
     pub(crate) fn construct<'a>(
         &'_ self,
         input: &'a str,
+        text_pos: TextPosition,
         params: Vec<MoveParam>,
     ) -> Result<Box<dyn Move>, parser::Error<'a>> {
         Ok(match self {
-            Self::Warp => Box::new(warp::Warp::from_params(input, params)?),
-            Self::Shift => Box::new(shift::Shift::from_params(input, params)?),
-            Self::Rink => Box::new(rink::Rink::from_params(input, params)?),
-            Self::Info => Box::new(info::Info::from_params(input, params)?),
-            Self::Title => Box::new(title::Title::from_params(input, params)?),
-            Self::Text => Box::new(text::Text::from_params(input, params)?),
-            Self::Label => Box::new(label::Label::from_params(input, params)?),
+            Self::Warp => Box::new(warp::Warp::from_params(input, text_pos, params)?),
+            Self::Shift => Box::new(shift::Shift::from_params(input, text_pos, params)?),
+            Self::Rink => Box::new(rink::Rink::from_params(input, text_pos, params)?),
+            Self::Info => Box::new(info::Info::from_params(input, text_pos, params)?),
+            Self::Title => Box::new(title::Title::from_params(input, text_pos, params)?),
+            Self::Text => Box::new(text::Text::from_params(input, text_pos, params)?),
+            Self::Label => Box::new(label::Label::from_params(input, text_pos, params)?),
         })
     }
 }

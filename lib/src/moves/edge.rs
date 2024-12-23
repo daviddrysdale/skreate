@@ -6,13 +6,14 @@ use crate::{
     parser,
     parser::types::{parse_code, parse_pre_transition},
     path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
-    Rotation, Skater, SpatialTransition, SvgId, Transition,
+    Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
 
 pub struct Curve {
+    text_pos: TextPosition,
     pre_transition: PreTransition,
     code: Code,
     angle: i32,
@@ -82,7 +83,7 @@ impl Curve {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
         let (rest, pre_transition) = parse_pre_transition(input)?;
         let (rest, entry_code) = parse_code(rest)?;
         if entry_code.edge == Edge::Flat {
@@ -92,6 +93,7 @@ impl Curve {
         let params = params::populate(Self::INFO.params, rest)?;
         Ok(Box::new(Self::from_params(
             input,
+            text_pos,
             pre_transition,
             entry_code,
             params,
@@ -100,6 +102,7 @@ impl Curve {
 
     pub fn from_params(
         input: &str,
+        text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
@@ -109,6 +112,7 @@ impl Curve {
         let transition_label = params[4].value.as_str(input)?;
 
         Ok(Self {
+            text_pos,
             pre_transition,
             code: entry_code,
             angle: params[0].value.as_i32(input)?,
@@ -187,6 +191,9 @@ impl Move for Curve {
         let prefix = self.pre_transition.prefix();
         let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{suffix}", self.code)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn pre_transition(&self, from: Code) -> Transition {
         if let Some(start) = self.start() {

@@ -3,12 +3,13 @@
 use crate::{
     moves, param, params, params::Value, parser, parser::types::parse_code, Bounds, Code,
     Direction, Document, Move, MoveParam, Position, RenderOptions, Skater, SpatialTransition,
-    SvgId, Transition,
+    SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Warp {
+    text_pos: TextPosition,
     pos: Position,
     dir: Direction,
     code: Option<Code>,
@@ -53,7 +54,11 @@ impl Warp {
         ],
     };
 
-    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        params: Vec<MoveParam>,
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let code_str = params[3].value.as_str(input)?;
         let code = if code_str.is_empty() {
@@ -64,6 +69,7 @@ impl Warp {
         };
 
         Ok(Self {
+            text_pos,
             pos: Position::from_params(&params[0], &params[1]),
             dir: Direction(params[2].value.as_i32(input)? as u32),
             code,
@@ -88,6 +94,9 @@ impl Move for Warp {
     fn text(&self) -> String {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
+    }
+    fn text_pos(&self) -> Option<TextPosition> {
+        Some(self.text_pos)
     }
     fn transition(&self) -> Transition {
         Transition {
