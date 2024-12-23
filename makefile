@@ -1,4 +1,4 @@
-all: build
+all: build manual
 
 WASM_CRATE=skreate_wasm
 CLI=target/debug/skreate-cli
