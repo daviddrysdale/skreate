@@ -1,6 +1,6 @@
 //! Parser.
 
-use crate::Move;
+use crate::{Move, ParseError, TextPosition};
 use nom::{
     branch::alt,
     bytes::complete::tag,
@@ -33,6 +33,17 @@ pub(crate) fn parse(input: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
         ))),
         mv::parse_move,
     )(input)
+}
+
+/// Convert a nom error into a [`ParseError`].
+pub(crate) fn err(err: nom::Err<nom::error::Error<&str>>, input: &str) -> ParseError {
+    ParseError {
+        pos: match &err {
+            nom::Err::Incomplete(_) => TextPosition::default(),
+            nom::Err::Error(e) | nom::Err::Failure(e) => TextPosition::new(input, e.input),
+        },
+        msg: format!("{err:?}"),
+    }
 }
 
 /// Parser wrapper to help in debugging, for when the output implements `Debug`.

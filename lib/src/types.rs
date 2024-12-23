@@ -58,6 +58,25 @@ pub struct TextPosition {
     pub col: usize,
 }
 
+impl TextPosition {
+    /// Determine position from current location in input stream.
+    pub fn new(start: &str, cur: &str) -> Self {
+        let mut row = 0;
+        let mut col = 0;
+        let mut pos = start;
+        while pos.as_ptr() < cur.as_ptr() {
+            if pos.as_bytes().first() == Some(&b'\n') {
+                row += 1;
+                col = 0;
+            } else {
+                col += 1;
+            }
+            pos = &pos[1..]
+        }
+        TextPosition { row, col }
+    }
+}
+
 /// Helper macro to create [`Position`] instance.
 #[macro_export]
 macro_rules! pos {
@@ -507,5 +526,24 @@ mod tests {
 
         bounds.encompass_bounds(&bounds!(-50,-50 => 350,350));
         assert_eq!(bounds, bounds!(-50,-50 => 350,350));
+    }
+
+    #[test]
+    fn test_text_position() {
+        let text = "abc\nDEF\nXYZ";
+        let tests = [
+            ('a', TextPosition { row: 0, col: 0 }),
+            ('b', TextPosition { row: 0, col: 1 }),
+            ('c', TextPosition { row: 0, col: 2 }),
+            ('D', TextPosition { row: 1, col: 0 }),
+            ('X', TextPosition { row: 2, col: 0 }),
+            ('Z', TextPosition { row: 2, col: 2 }),
+        ];
+        for (needle, want) in tests {
+            let cur = text.find(needle).unwrap();
+            let end = &text[cur..];
+            let got = TextPosition::new(text, end);
+            assert_eq!(got, want, "for position of '{needle}' in '{text}'");
+        }
     }
 }

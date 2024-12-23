@@ -300,10 +300,14 @@ trait Move {
 /// Generate canonicalized / minimized input.
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     // Convert the input into a list of moves.
-    let (_rest, moves) = crate::parser::parse(input).map_err(|e| ParseError {
-        pos: TextPosition::default(),
-        msg: format!("{e:?}"),
-    })?;
+    let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
+    if !rest.trim().is_empty() {
+        error!("unparsed input remains: '{}'", rest);
+        return Err(ParseError {
+            pos: TextPosition::new(input, rest),
+            msg: "unparsed input left".to_string(),
+        });
+    }
 
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
     Ok(min_inputs.join(";"))
@@ -312,14 +316,11 @@ pub fn canonicalize(input: &str) -> Result<String, ParseError> {
 /// Generate SVG for the given input.
 pub fn generate(input: &str) -> Result<String, ParseError> {
     // Convert the input into a list of moves.
-    let (rest, moves) = crate::parser::parse(input).map_err(|e| ParseError {
-        pos: TextPosition::default(),
-        msg: format!("{e:?}"),
-    })?;
+    let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
     if !rest.trim().is_empty() {
-        error!("unparsed input remains:  '{}'", rest);
+        error!("unparsed input remains: '{}'", rest);
         return Err(ParseError {
-            pos: TextPosition::default(),
+            pos: TextPosition::new(input, rest),
             msg: "unparsed input left".to_string(),
         });
     }
