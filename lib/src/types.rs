@@ -56,11 +56,13 @@ pub struct TextPosition {
     pub row: usize,
     /// Column of input with error, zero-indexed.
     pub col: usize,
+    /// Count of chars.
+    pub count: usize,
 }
 
 impl TextPosition {
     /// Determine position from current location in input stream.
-    pub fn new(start: &str, cur: &str) -> Self {
+    pub fn new(start: &str, cur: &str, end: &str) -> Self {
         let mut row = 0;
         let mut col = 0;
         let mut pos = start;
@@ -73,11 +75,12 @@ impl TextPosition {
             }
             pos = &pos[1..]
         }
-        TextPosition { row, col }
+        let count = end.as_ptr() as usize - cur.as_ptr() as usize;
+        TextPosition { row, col, count }
     }
     /// Convert the position into an ID string.
     pub fn unique_id(&self) -> String {
-        format!("r_{}_c_{}", self.row, self.col)
+        format!("r_{}_c_{}_{}", self.row, self.col, self.col + self.count)
     }
 }
 
@@ -536,17 +539,59 @@ mod tests {
     fn test_text_position() {
         let text = "abc\nDEF\nXYZ";
         let tests = [
-            ('a', TextPosition { row: 0, col: 0 }),
-            ('b', TextPosition { row: 0, col: 1 }),
-            ('c', TextPosition { row: 0, col: 2 }),
-            ('D', TextPosition { row: 1, col: 0 }),
-            ('X', TextPosition { row: 2, col: 0 }),
-            ('Z', TextPosition { row: 2, col: 2 }),
+            (
+                'a',
+                TextPosition {
+                    row: 0,
+                    col: 0,
+                    count: 0,
+                },
+            ),
+            (
+                'b',
+                TextPosition {
+                    row: 0,
+                    col: 1,
+                    count: 0,
+                },
+            ),
+            (
+                'c',
+                TextPosition {
+                    row: 0,
+                    col: 2,
+                    count: 0,
+                },
+            ),
+            (
+                'D',
+                TextPosition {
+                    row: 1,
+                    col: 0,
+                    count: 0,
+                },
+            ),
+            (
+                'X',
+                TextPosition {
+                    row: 2,
+                    col: 0,
+                    count: 0,
+                },
+            ),
+            (
+                'Z',
+                TextPosition {
+                    row: 2,
+                    col: 2,
+                    count: 0,
+                },
+            ),
         ];
         for (needle, want) in tests {
             let cur = text.find(needle).unwrap();
             let end = &text[cur..];
-            let got = TextPosition::new(text, end);
+            let got = TextPosition::new(text, end, end);
             assert_eq!(got, want, "for position of '{needle}' in '{text}'");
         }
     }

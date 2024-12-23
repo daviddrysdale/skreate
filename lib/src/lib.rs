@@ -305,7 +305,7 @@ pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     if !rest.trim().is_empty() {
         error!("unparsed input remains: '{}'", rest);
         return Err(ParseError {
-            pos: TextPosition::new(input, rest),
+            pos: TextPosition::new(input, rest, rest),
             msg: "unparsed input left".to_string(),
         });
     }
@@ -321,7 +321,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     if !rest.trim().is_empty() {
         error!("unparsed input remains: '{}'", rest);
         return Err(ParseError {
-            pos: TextPosition::new(input, rest),
+            pos: TextPosition::new(input, rest, rest),
             msg: "unparsed input left".to_string(),
         });
     }

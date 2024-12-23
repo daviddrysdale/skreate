@@ -50,7 +50,7 @@ pub(crate) fn err(err: nom::Err<nom::error::Error<&str>>, input: &str) -> ParseE
     ParseError {
         pos: match &err {
             nom::Err::Incomplete(_) => TextPosition::default(),
-            nom::Err::Error(e) | nom::Err::Failure(e) => TextPosition::new(input, e.input),
+            nom::Err::Error(e) | nom::Err::Failure(e) => TextPosition::new(input, e.input, e.input),
         },
         msg: format!("{err:?}"),
     }

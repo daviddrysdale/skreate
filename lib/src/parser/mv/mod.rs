@@ -56,7 +56,7 @@ pub(crate) fn parse_skating_move<'a>(
     input: &'a str,
 ) -> IResult<&'a str, Box<dyn Move>> {
     let (rest, _) = space0(input)?;
-    let text_pos = TextPosition::new(start, rest);
+    let cur = rest;
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
     let (rest, code) = parser::types::parse_code(rest)?;
     let (rest, move_id) = if code.edge == crate::Edge::Flat {
@@ -64,11 +64,12 @@ pub(crate) fn parse_skating_move<'a>(
     } else {
         parse_skating_move_id(rest)?
     };
-    info!("found {move_id:?} at {text_pos:?}");
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
         .map_err(|_e| fail(input))?;
+    let text_pos = TextPosition::new(start, cur, rest);
+    info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
         move_id
@@ -95,13 +96,14 @@ pub(crate) fn parse_pseudo_move<'a>(
     input: &'a str,
 ) -> IResult<&'a str, Box<dyn Move>> {
     let (rest, _) = space0(input)?;
-    let text_pos = TextPosition::new(start, rest);
+    let cur = rest;
     let (rest, move_id) = parse_pseudo_move_id(rest)?;
-    info!("found {move_id:?} at {text_pos:?}");
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
         .map_err(|_e| fail(input))?;
+    let text_pos = TextPosition::new(start, cur, rest);
+    info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
         move_id
