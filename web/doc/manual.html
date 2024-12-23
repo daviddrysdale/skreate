@@ -21,18 +21,18 @@
   skating edge, optionally followed by an abbreviation for the move being performed. Blank lines are ignored, and
   anything after a hash (<b><code>#</code></b>) on a line is treated as a comment and ignored.
 
-<p>For example, the code <a href="#ref-Bracket"><b><code>LFO-Br</code></b></a> indicates a bracket turn being performed
+<p>For example, the code <a href="..?text=LFO-Br"><b><code>LFO-Br</code></b></a> indicates a bracket turn being performed
   from a left forward outside edge, thus ending on a left backward inside (<code>LBI</code>) edge.
 
 <p>As a shorthand, moves can be made longer or shorter by appending up to 3 plus (<b><code>+</code></b>) or minus
-  (<b><code>-</code></b>) signs, for example <code>LFO-Rk++</code>.  Moves can also be made to turn more or less tightly
-  by appending up to 3 greater-than (<b><code>&gt;</code></b>) or less-than (<b><code>&lt;</code></b>) signs, for
-  example <code>RBI-Ctr&lt;&lt;</code>.
+  (<b><code>-</code></b>) signs, for example <a href="..?text=LFO-Rk++"><code>LFO-Rk++</code></a>.  Moves can also be
+  made to turn more or less tightly by appending up to 3 greater-than (<b><code>&gt;</code></b>) or less-than
+  (<b><code>&lt;</code></b>) signs, for example <a href="..?text=RBI-Ctr%3C%3C"><code>RBI-Ctr&lt;&lt;</code></a>.
 
 <p>It's also possible to more precisely control exactly how big or tightly curved a particular move is. A move can be
-  followed by a comma-separated list of <i>parameters</i> enclosed in square brackets, e.g. <code>LFO
-  [len=350,angle=90]</code>.  The allowed parameters for each move are described in the <a href="#reference">Move
-  Reference</a> section below.
+  followed by a comma-separated list of <i>parameters</i> enclosed in square brackets, e.g.
+  <a href="..?text=LFO%5Bangle%3D90%2Clen%3D350%5D"><code>LFO [len=350,angle=90]</code></a>.  The allowed parameters for
+  each move are described in the <a href="#reference">Move Reference</a> section below.
 
 <p>To sum up, skating move codes are typically made up of:
 <ul>
@@ -41,14 +41,16 @@
     <li>a <code>xf-</code> prefix indicates a cross in front</li>
     <li>a <code>xb-</code> prefix indicates a cross behind</li>
    </ul></li>
-  <li>An edge code, indicating the skating foot, direction, and edge.  For example, <code>LBO</code> indicates skating
-  on the left foot, travelling backwards on an outside edge.</li>
-  <li>An optional suffix indicating a move, turn or foot change.  For example, <code>LFO3</code> indicates a three-turn
-  from a left forward outside edge, transitioning to a left backward inside edge.</li>
+  <li>An edge code, indicating the skating foot, direction, and edge.  For
+  example, <a href="..?text=LBO"><code>LBO</code><a/> indicates skating on the left foot, travelling backwards on an
+  outside edge.</li>
+  <li>An optional suffix indicating a move, turn or foot change.  For
+  example, <a href="..?text=LFO3"><code>LFO3</code></a> indicates a three-turn from a left forward outside edge,
+  transitioning to a left backward inside edge.</li>
   <li>Further optional suffices that adjust parameters for the move.  These can take two forms:<ul>
-    <li>A collection of comma-separated <code>name=value</code> parameters enclosed in square brackets.  For
-    example, <code>LFO [curve=120,len=900]</code> indicates a left forward outside edge that turns 120&deg; and travels
-    900 cm.</li>
+    <li>A collection of comma-separated <code>name=value</code> parameters enclosed in square brackets.  For example,
+      <a href="..?text=LFO%5Bangle%3D120%2Clen%3D900%5D"><code>LFO [angle=120,len=900]</code></a> indicates a left
+      forward outside edge that turns 120&deg; and travels 900 cm.</li>
     <li>Short code markers that adjust the most common parameters.  For example, <code>LFO>>++</code> indicates a left
     forward edge that curves more and travels further than the default.</li>
   </ul></li>

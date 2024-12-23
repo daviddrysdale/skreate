@@ -53,7 +53,7 @@
 - [ ] Counts and count display options
 - [x] Add in/out curvature for moves?
 - [x] Generate a manual from move registry via new `Move` methods
-- [ ] Add interactive examples to manual
+- [x] Add interactive examples to manual
 - [ ] Option to add direction-of-travel arrows?
 - [ ] Option to show body rotation
 - [ ] Option to set colours per-foot
