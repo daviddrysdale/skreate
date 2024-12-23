@@ -1,6 +1,13 @@
+<!DOCTYPE html>
 <html>
 <head>
-<title>Skating Diagram Creator</title>
+  <head>
+    <meta charset='utf-8'>
+    <link rel="stylesheet" type="text/css" href="../css/manual.css" media="screen" />
+
+    <title>Skating Diagram Creator</title>
+    <link rel="canonical" href="https://lurklurk.org/skreate/doc/manual.html" />
+  </head>
 </head>
 <body>
 <h1>Skating Diagram Creator</h1>
@@ -73,44 +80,56 @@
 
 <a id="reference"/><h2>Move Reference</h2>
 
-
-{{#each infos}}
-<a id="ref-{{this.name}}"/><h3>{{this.name}}</h3>
-<p>{{this.summary}}</p>
-
-{{#if this.visible}}
-<div class="example"><img src="{{this.example}}.svg" height="200"/></div>
-{{/if}}
-
-{{#if this.params}}
-<h4>Parameters</h4>
-{{/if}}
-
-<ul>
-{{#each this.params}}
-<li><code>{{this.name}}</code>: {{this.doc}}
-{{#if this.default.Number}}
-(default <code>{{this.default.Number}}</code>).
-{{/if}}
-{{#if this.default.Text}}
-(default <code>"{{this.default.Text}}"</code>).
-{{/if}}
-{{#if this.default.Boolean}}
-(default <code>{{this.default.Boolean}}</code>).
-{{/if}}
-{{#if this.short}}
-{{#if this.short.PlusMinus}}
-Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
-{{/if}}
-{{#if this.short.GreaterLess}}
-Can also be modified by a <code>&lt;</code> or <code>&gt;</code> (repeated) suffix.
-{{/if}}
-{{/if}}
-</li>
-{{/each}}
-</ul>
-
-{{/each}}
+<table>
+  <thead>
+    <tr>
+      <th>Example</th>
+      <th>Move</th>
+      <th></th>
+      <th>Parameters</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each infos}}
+    <a id="ref-{{this.name}}"/><tr>
+      <td class="center">
+        <b><code>{{this.example}}</code></b>
+      </td>
+      <td>{{this.summary}}</td>
+      <td class="center">
+        {{#if this.visible}}
+        <div class="example"><a href="../preview.html?text={{this.example}}"><img src="{{this.example}}.svg" height="150"/></a></div>
+        {{/if}}
+      </td>
+      <td>
+        <ul>
+          {{#each this.params}}
+          <li><code>{{this.name}}</code>: {{this.doc}}
+          {{#if this.default.Number}}
+          (default <code>{{this.default.Number}}</code>).
+          {{/if}}
+          {{#if this.default.Text}}
+          (default <code>"{{this.default.Text}}"</code>).
+          {{/if}}
+          {{#if this.default.Boolean}}
+          (default <code>{{this.default.Boolean}}</code>).
+          {{/if}}
+          {{#if this.short}}
+          {{#if this.short.PlusMinus}}
+          Can also be modified by a <code>+</code> or <code>-</code> (repeated) suffix.
+          {{/if}}
+          {{#if this.short.GreaterLess}}
+          Can also be modified by a <code>&lt;</code> or <code>&gt;</code> (repeated) suffix.
+          {{/if}}
+          {{/if}}
+          </li>
+          {{/each}}
+        </ul>
+      </td>
+    </tr>
+  {{/each}}
+  </tbody>
+</table>
 
 </body>
 </html>
