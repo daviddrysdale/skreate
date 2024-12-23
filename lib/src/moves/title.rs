@@ -1,9 +1,8 @@
 //! Pseudo-move definition for diagram title.
 
-use super::Error;
 use crate::{
-    moves, param, params, params::Value, Bounds, Group, Move, MoveParam, Position, RenderOptions,
-    Skater, SvgId,
+    moves, param, params, params::Value, parser, Bounds, Group, Move, MoveParam, Position,
+    RenderOptions, Skater, SvgId,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -53,12 +52,12 @@ impl Title {
         ],
     };
 
-    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32().unwrap();
+        let font_size = params[3].value.as_i32(input)?;
 
         Ok(Self {
-            text: params[0].value.as_str().unwrap().to_string(),
+            text: params[0].value.as_str(input)?.to_string(),
             pos: Position::from_params(&params[1], &params[2]),
             font_size: if font_size > 0 {
                 Some(font_size as u32)

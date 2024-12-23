@@ -1,8 +1,8 @@
 //! Skating move definitions.
 
 use crate::{
-    pos, Code, Foot, Move, MoveParam, Position, PreTransition, Rotation, SkatingDirection::*,
-    SpatialTransition, Transition,
+    parser, pos, Code, Foot, Move, MoveParam, Position, PreTransition, Rotation,
+    SkatingDirection::*, SpatialTransition, Transition,
 };
 use log::warn;
 use serde::Serialize;
@@ -27,22 +27,6 @@ pub(crate) mod warp;
 
 #[cfg(test)]
 mod tests;
-
-/// Errors arising from attempting to create move instances.
-#[derive(Debug, Clone)]
-pub(crate) enum Error {
-    /// Indicates that the constructor doesn't apply to this input.
-    Unrecognized,
-    /// Indicates that the constructor does apply to this input, but failed to parse correctly.
-    Failed(String),
-}
-
-impl From<nom::Err<nom::error::Error<&str>>> for Error {
-    fn from(_err: nom::Err<nom::error::Error<&str>>) -> Self {
-        // TODO: move location into error
-        Error::Unrecognized
-    }
-}
 
 /// Information about a class of moves.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -141,13 +125,13 @@ impl SkatingMoveId {
         }
     }
     /// Construct an instance of a skating move.
-    pub(crate) fn construct(
-        &self,
-        input: &str,
+    pub(crate) fn construct<'a>(
+        &'_ self,
+        input: &'a str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Box<dyn Move>, Error> {
+    ) -> Result<Box<dyn Move>, parser::Error<'a>> {
         Ok(match self {
             Self::Curve => Box::new(edge::Curve::from_params(
                 input,
@@ -242,11 +226,11 @@ impl PseudoMoveId {
     }
 
     /// Construct an instance of a pseudo-move.
-    pub(crate) fn construct(
-        &self,
-        input: &str,
+    pub(crate) fn construct<'a>(
+        &'_ self,
+        input: &'a str,
         params: Vec<MoveParam>,
-    ) -> Result<Box<dyn Move>, Error> {
+    ) -> Result<Box<dyn Move>, parser::Error<'a>> {
         Ok(match self {
             Self::Warp => Box::new(warp::Warp::from_params(input, params)?),
             Self::Shift => Box::new(shift::Shift::from_params(input, params)?),

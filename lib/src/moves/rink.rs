@@ -1,8 +1,7 @@
 //! Pseudo-move definition for rink description.
 
-use super::Error;
 use crate::{
-    moves, param, params, params::Value, path, pos, Bounds, Move, MoveParam, Position,
+    moves, param, params, params::Value, parser, path, pos, Bounds, Move, MoveParam, Position,
     RenderOptions, Skater, SvgId,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
@@ -94,11 +93,10 @@ impl Rink {
         ],
     };
 
-    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let to_bool = |param: &MoveParam| param.value.as_bool().map_err(Error::Failed);
         let to_opt_i32 = |param: &MoveParam| {
-            let val = param.value.as_i32().unwrap();
+            let val = param.value.as_i32(input).unwrap();
             if val > 0 {
                 Some(val)
             } else {
@@ -106,15 +104,15 @@ impl Rink {
             }
         };
         Ok(Self {
-            width: params[0].value.as_i32().unwrap(),
-            length: params[1].value.as_i32().unwrap(),
-            show_centre_line: to_bool(&params[2])?,
+            width: params[0].value.as_i32(input)?,
+            length: params[1].value.as_i32(input)?,
+            show_centre_line: params[2].value.as_bool(input)?,
             centre_circle: to_opt_i32(&params[3]),
-            show_centre_faceoff: to_bool(&params[4])?,
+            show_centre_faceoff: params[4].value.as_bool(input)?,
             mid_lines: to_opt_i32(&params[5]),
             goal_lines: to_opt_i32(&params[6]),
-            show_goals: to_bool(&params[7])?,
-            show_faceoffs: to_bool(&params[8])?,
+            show_goals: params[7].value.as_bool(input)?,
+            show_faceoffs: params[8].value.as_bool(input)?,
         })
     }
 

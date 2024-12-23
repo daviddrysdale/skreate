@@ -1,8 +1,7 @@
 //! Pseudo-move definition for diagram info.
 
-use super::Error;
 use crate::{
-    moves, param, params, params::Value, path, Bounds, Document, Move, MoveParam, Position,
+    moves, param, params, params::Value, parser, path, Bounds, Document, Move, MoveParam, Position,
     RenderOptions, Skater, SvgId,
 };
 use svg::node::element::Group;
@@ -85,18 +84,18 @@ impl Info {
         ],
     };
 
-    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let grid = params[2].value.as_i32().unwrap();
-        let font_size = params[6].value.as_i32().unwrap();
-        let stroke_width = params[7].value.as_i32().unwrap();
+        let grid = params[2].value.as_i32(input)?;
+        let font_size = params[6].value.as_i32(input)?;
+        let stroke_width = params[7].value.as_i32(input)?;
 
         Ok(Self {
-            markers: params[0].value.as_bool().unwrap(),
-            bounds: params[1].value.as_bool().unwrap(),
+            markers: params[0].value.as_bool(input)?,
+            bounds: params[1].value.as_bool(input)?,
             grid: if grid > 0 { Some(grid) } else { None },
             margin: Position::from_params(&params[3], &params[4]),
-            move_bounds: params[5].value.as_bool().unwrap(),
+            move_bounds: params[5].value.as_bool(input)?,
             font_size: if font_size > 0 {
                 Some(font_size as u32)
             } else {

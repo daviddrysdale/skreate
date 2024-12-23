@@ -17,6 +17,16 @@ pub mod params;
 pub mod string;
 pub mod types;
 
+/// Parsing error.
+pub(crate) type InnErr<'a> = nom::error::Error<&'a str>;
+
+/// Parsing error.
+pub(crate) type Error<'a> = nom::Err<InnErr<'a>>;
+
+pub(crate) fn fail(input: &str) -> Error {
+    Error::Failure(InnErr::new(input, nom::error::ErrorKind::Fail))
+}
+
 pub(crate) fn parse(input: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
     separated_list0(
         // Separate moves by...

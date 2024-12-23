@@ -108,8 +108,8 @@ impl Position {
     /// Create a `Position` from (x, y) move parameters.
     pub fn from_params(x: &MoveParam, y: &MoveParam) -> Self {
         Self {
-            x: x.value.as_i32().unwrap() as i64,
-            y: y.value.as_i32().unwrap() as i64,
+            x: x.value.as_i32("<internal>").unwrap() as i64,
+            y: y.value.as_i32("<internal>").unwrap() as i64,
         }
     }
 }

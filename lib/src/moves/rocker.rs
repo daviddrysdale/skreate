@@ -1,9 +1,7 @@
 //! Rocker
 
-use super::{
-    compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge, Error,
-};
-use crate::{code, moves, params, params::Value, Code, Edge, MoveParam, PreTransition};
+use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge};
+use crate::{code, moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct Rocker;
@@ -82,22 +80,22 @@ impl Rocker {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, Error> {
+    ) -> Result<Compound, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let sign = match entry_code {
             // Clockwise
             code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
             // Widdershins
             code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
-            _ => return Err(Error::Unrecognized),
+            _ => return Err(parser::fail(input)),
         };
 
-        let angle1 = params[0].value.as_i32().unwrap();
-        let len1 = params[1].value.as_i32().unwrap();
-        let delta_angle = params[2].value.as_i32().unwrap();
-        let delta_len = params[3].value.as_i32().unwrap();
-        let style = params[4].value.as_str().unwrap();
-        let transition_label = params[5].value.as_str().unwrap();
+        let angle1 = params[0].value.as_i32(input)?;
+        let len1 = params[1].value.as_i32(input)?;
+        let delta_angle = params[2].value.as_i32(input)?;
+        let delta_len = params[3].value.as_i32(input)?;
+        let style = params[4].value.as_str(input)?;
+        let transition_label = params[5].value.as_str(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;

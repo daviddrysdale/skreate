@@ -1,9 +1,10 @@
 //! Move definition for simple straight edges.
 
-use super::{Error, HW};
+use super::HW;
 use crate::{
     apply_style, moves, param, params,
     params::Value,
+    parser,
     parser::types::{parse_code, parse_pre_transition},
     path, pos, Code, Edge, Foot, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
     Rotation, SkatingDirection, SpatialTransition, SvgId, Transition,
@@ -58,15 +59,14 @@ impl StraightEdge {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
         let (rest, pre_transition) = parse_pre_transition(input)?;
         let (rest, entry_code) = parse_code(rest)?;
         if entry_code.edge != Edge::Flat {
-            return Err(Error::Unrecognized);
+            return Err(parser::fail(input));
         }
 
-        let params =
-            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        let params = params::populate(Self::INFO.params, rest)?;
         Ok(Box::new(Self::from_params(
             input,
             pre_transition,
@@ -76,25 +76,25 @@ impl StraightEdge {
     }
 
     pub fn from_params(
-        _input: &str,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Self, Error> {
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let label = params[1].value.as_str().unwrap();
+        let label = params[1].value.as_str(input)?;
 
         Ok(Self {
             pre_transition,
             foot: entry_code.foot,
             dir: entry_code.dir,
-            len: params[0].value.as_i32().unwrap(),
+            len: params[0].value.as_i32(input)?,
             label: if label.is_empty() {
                 None
             } else {
                 Some(label.to_string())
             },
-            style: params[2].value.as_str().unwrap().to_string(),
+            style: params[2].value.as_str(input)?.to_string(),
         })
     }
     fn code(&self) -> Code {

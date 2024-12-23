@@ -1,5 +1,6 @@
 //! Functionality for parsing and formatting parameters.
 
+use crate::parser;
 use log::{error, trace};
 use serde::Serialize;
 use std::borrow::Cow;
@@ -45,7 +46,7 @@ pub struct MoveParamRef<'a> {
 pub enum Value {
     /// Numeric value.
     Number(i32),
-    /// Text value.
+    /// Text value, either owned or a static string.
     Text(Cow<'static, str>),
     /// Boolean value.
     Boolean(bool),
@@ -53,37 +54,45 @@ pub enum Value {
 
 impl Value {
     /// Extract the numeric value.
-    pub fn as_i32(&self) -> Result<i32, String> {
+    pub fn as_i32<'a>(&'_ self, input: &'a str) -> Result<i32, parser::Error<'a>> {
         match self {
             Value::Number(v) => Ok(*v),
-            Value::Boolean(v) => Err(format!(
-                "Trying to extract number from boolean parameter '{v}'"
-            )),
-            Value::Text(v) => Err(format!(
-                "Trying to extract number from text parameter '{v}'!"
-            )),
+            Value::Boolean(v) => {
+                error!("Trying to extract number from boolean parameter '{v}'");
+                Err(parser::fail(input))
+            }
+            Value::Text(v) => {
+                error!("Trying to extract number from text parameter '{v}'");
+                Err(parser::fail(input))
+            }
         }
     }
     /// Extract the text value.
-    pub fn as_str(&self) -> Result<&str, String> {
+    pub fn as_str<'a, 'b>(&'b self, input: &'a str) -> Result<&'b str, parser::Error<'a>> {
         match self {
-            Value::Number(v) => Err(format!(
-                "Trying to extract number from text parameter '{v}'!"
-            )),
-            Value::Boolean(v) => Err(format!(
-                "Trying to extract number from boolean parameter '{v}'!"
-            )),
+            Value::Number(v) => {
+                error!("Trying to extract number from text parameter '{v}'!");
+                Err(parser::fail(input))
+            }
+            Value::Boolean(v) => {
+                error!("Trying to extract number from boolean parameter '{v}'!");
+                Err(parser::fail(input))
+            }
             Value::Text(v) => Ok(v),
         }
     }
     /// Extract the boolean value.
-    pub fn as_bool(&self) -> Result<bool, String> {
+    pub fn as_bool<'a>(&'_ self, input: &'a str) -> Result<bool, parser::Error<'a>> {
         match self {
-            Value::Number(v) => Err(format!("Trying to extract bool from text parameter '{v}'!")),
+            Value::Number(v) => {
+                error!("Trying to extract bool from text parameter '{v}'!");
+                Err(parser::fail(input))
+            }
             Value::Boolean(v) => Ok(*v),
-            Value::Text(v) => Err(format!(
-                "Trying to extract number from text parameter '{v}'!"
-            )),
+            Value::Text(v) => {
+                error!("Trying to extract number from text parameter '{v}'!");
+                Err(parser::fail(input))
+            }
         }
     }
 }
@@ -198,7 +207,7 @@ pub enum Range {
 
 impl Range {
     /// Indicate whether the given value is valid for this range.
-    pub fn valid(&self, val: &Value) -> Result<(), String> {
+    pub fn valid<'a>(&'_ self, input: &'a str, val: &'_ Value) -> Result<(), parser::Error<'a>> {
         match (val, self) {
             (Value::Number(_v), Range::Any) => Ok(()),
             (Value::Number(v), Range::Text) => Err(format!("{v} unexpected, want \"string\"")),
@@ -216,6 +225,10 @@ impl Range {
             (Value::Boolean(_v), Range::Boolean) => Ok(()),
             (Value::Boolean(v), range) => Err(format!("'{v}' unexpected, want {range:?}")),
         }
+        .map_err(|e| {
+            error!("{e}");
+            parser::fail(input)
+        })
     }
 }
 
@@ -284,7 +297,7 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
         } else if let Some(abbrev) = info.short {
             let detents = abbrev.detents();
             let (u, d) = abbrev.chars();
-            let value = param.value.as_i32().unwrap();
+            let value = param.value.as_i32("<internal>").unwrap();
             let short = if value == detents.add1 {
                 format!("{u}")
             } else if value == detents.add2 {
@@ -332,22 +345,25 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
 
 /// Populate a collection of [`MoveParam`]s from the given `input`.  Any values that are not mentioned in the input will
 /// get default values.
-pub fn populate(params_info: &[Info], input: &str) -> Result<Vec<MoveParam>, String> {
-    let (rest, (plus_minus, more_less, vals)) =
-        crate::parser::params::parse(input).map_err(|e| format!("parse failed: {e:?}"))?;
+pub fn populate<'a>(
+    params_info: &'_ [Info],
+    input: &'a str,
+) -> Result<Vec<MoveParam>, parser::Error<'a>> {
+    let (rest, (plus_minus, more_less, vals)) = crate::parser::params::parse(input)?;
     if !rest.is_empty() {
-        return Err(format!("input '{rest}' remains"));
+        return Err(parser::fail(input));
     }
-    populate_from(params_info, plus_minus, more_less, vals)
+    populate_from(params_info, input, plus_minus, more_less, vals)
 }
 
 /// Populate a collection of [`MoveParam`]s that match `params_info` from the given parsed values.
-pub fn populate_from(
-    params_info: &[Info],
+pub fn populate_from<'a>(
+    params_info: &'_ [Info],
+    input: &'a str,
     plus_minus: i32,
     more_less: i32,
     vals: Vec<MoveParamRef>,
-) -> Result<Vec<MoveParam>, String> {
+) -> Result<Vec<MoveParam>, parser::Error<'a>> {
     // Begin with default values.
     // Invariant: entries in `params_info` and `params` are in sync.
     let mut params: Vec<MoveParam> = params_info
@@ -370,7 +386,7 @@ pub fn populate_from(
                     None
                 }
             })
-            .ok_or_else(|| format!("found unexpected +/- short code val {plus_minus}"))?;
+            .ok_or_else(|| parser::fail(input))?;
         params[idx].value = detents.value(plus_minus);
     }
     if more_less != 0 {
@@ -384,7 +400,7 @@ pub fn populate_from(
                     None
                 }
             })
-            .ok_or_else(|| format!("found unexpected >/< short code val {more_less}"))?;
+            .ok_or_else(|| parser::fail(input))?;
         params[idx].value = detents.value(more_less);
     }
 
@@ -398,10 +414,10 @@ pub fn populate_from(
                 None
             }
         }) {
-            params_info[idx].range.valid(&val.value)?;
+            params_info[idx].range.valid(input, &val.value)?;
             params[idx].value = val.value;
         } else {
-            return Err(format!("'{}' is not a valid parameter name", val.name));
+            return Err(parser::fail(input));
         }
     }
 

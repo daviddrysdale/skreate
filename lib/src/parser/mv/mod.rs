@@ -63,7 +63,7 @@ pub(crate) fn parse_skating_move(input: &str) -> IResult<&str, Box<dyn Move>> {
     info!("found {move_id:?}");
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
-    let params = crate::params::populate_from(info.params, plus_minus, more_less, vals)
+    let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
         .map_err(|_e| fail(input))?;
     Ok((
         rest,
@@ -92,7 +92,7 @@ pub(crate) fn parse_pseudo_move(input: &str) -> IResult<&str, Box<dyn Move>> {
     info!("found {move_id:?}");
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
-    let params = crate::params::populate_from(info.params, plus_minus, more_less, vals)
+    let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
         .map_err(|_e| fail(input))?;
     Ok((
         rest,

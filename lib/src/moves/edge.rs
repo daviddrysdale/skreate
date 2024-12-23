@@ -1,9 +1,9 @@
 //! Move definition for simple curved edges.
 
-use super::Error;
 use crate::{
     apply_style, bounds, code, moves, param, params,
     params::Value,
+    parser,
     parser::types::{parse_code, parse_pre_transition},
     path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
     Rotation, Skater, SpatialTransition, SvgId, Transition,
@@ -82,15 +82,14 @@ impl Curve {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
         let (rest, pre_transition) = parse_pre_transition(input)?;
         let (rest, entry_code) = parse_code(rest)?;
         if entry_code.edge == Edge::Flat {
-            return Err(Error::Unrecognized);
+            return Err(parser::fail(input));
         }
 
-        let params =
-            params::populate(Self::INFO.params, rest).map_err(|_msg| Error::Unrecognized)?;
+        let params = params::populate(Self::INFO.params, rest)?;
         Ok(Box::new(Self::from_params(
             input,
             pre_transition,
@@ -100,20 +99,20 @@ impl Curve {
     }
 
     pub fn from_params(
-        _input: &str,
+        input: &str,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Self, Error> {
+    ) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let label = params[2].value.as_str().unwrap();
-        let transition_label = params[4].value.as_str().unwrap();
+        let label = params[2].value.as_str(input)?;
+        let transition_label = params[4].value.as_str(input)?;
 
         Ok(Self {
             pre_transition,
             code: entry_code,
-            angle: params[0].value.as_i32().unwrap(),
-            len: params[1].value.as_i32().unwrap(),
+            angle: params[0].value.as_i32(input)?,
+            len: params[1].value.as_i32(input)?,
             label: if label.is_empty() {
                 None
             } else {
@@ -124,7 +123,7 @@ impl Curve {
             } else {
                 Some(transition_label.to_string())
             },
-            style: params[3].value.as_str().unwrap().to_string(),
+            style: params[3].value.as_str(input)?.to_string(),
         })
     }
 

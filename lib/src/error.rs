@@ -3,7 +3,7 @@
 use crate::TextPosition;
 use std::fmt::{self, Display, Formatter};
 
-/// Error in parsing input.
+/// Error in parsing input, as reported on the external boundary.
 #[derive(Debug, Clone)]
 pub struct ParseError {
     /// Position of the error.

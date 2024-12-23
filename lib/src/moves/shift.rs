@@ -1,9 +1,9 @@
 //! Pseudo-move definition for moving skater relative to current location.
 
-use super::Error;
 use crate::{
-    moves, param, params, params::Value, parser::types::parse_code, Bounds, Code, Document, Move,
-    MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId, Transition,
+    moves, param, params, params::Value, parser, parser::types::parse_code, Bounds, Code, Document,
+    Move, MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId,
+    Transition,
 };
 use std::borrow::Cow;
 
@@ -53,32 +53,32 @@ impl Shift {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
         Ok(Box::new(Self::new(input)?))
     }
 
-    pub fn new(input: &str) -> Result<Self, Error> {
+    pub fn new(input: &str) -> Result<Self, parser::Error> {
         let Some(rest) = input.strip_prefix(Self::INFO.name) else {
-            return Err(Error::Unrecognized);
+            return Err(parser::fail(input));
         };
-        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        let params = params::populate(Self::INFO.params, rest)?;
         Self::from_params(input, params)
     }
 
-    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let code_str = params[3].value.as_str().map_err(Error::Failed)?;
+        let code_str = params[3].value.as_str(input)?;
         let code = if code_str.is_empty() {
             None
         } else {
-            let (_rest, code) = parse_code(code_str)?;
+            let (_rest, code) = parse_code(code_str).map_err(|_e| parser::fail(input))?;
             Some(code)
         };
 
         Ok(Self {
             // Note that `fwd` is first, and is in (relative) y-direction.
             delta: Position::from_params(&params[1], &params[0]),
-            rotate: params[2].value.as_i32().unwrap(),
+            rotate: params[2].value.as_i32(input)?,
             code,
         })
     }

@@ -1,7 +1,7 @@
 //! Change of Edge
 
-use super::{compound::Compound, edge::Curve, straight::StraightEdge, Error};
-use crate::{moves, params, params::Value, Code, Edge, MoveParam, PreTransition};
+use super::{compound::Compound, edge::Curve, straight::StraightEdge};
+use crate::{moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct ChangeOfEdge;
@@ -90,15 +90,15 @@ impl ChangeOfEdge {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, Error> {
+    ) -> Result<Compound, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let angle1 = params[0].value.as_i32().unwrap();
-        let len1 = params[1].value.as_i32().unwrap();
-        let flat_len = params[2].value.as_i32().unwrap();
-        let delta_angle = params[3].value.as_i32().unwrap();
-        let delta_len = params[4].value.as_i32().unwrap();
-        let style = params[5].value.as_str().unwrap();
-        let transition_label = params[6].value.as_str().unwrap();
+        let angle1 = params[0].value.as_i32(input)?;
+        let len1 = params[1].value.as_i32(input)?;
+        let flat_len = params[2].value.as_i32(input)?;
+        let delta_angle = params[3].value.as_i32(input)?;
+        let delta_len = params[4].value.as_i32(input)?;
+        let style = params[5].value.as_str(input)?;
+        let transition_label = params[6].value.as_str(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;

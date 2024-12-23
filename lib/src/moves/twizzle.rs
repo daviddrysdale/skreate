@@ -1,7 +1,7 @@
 //! Twizzle.
 
-use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, Error};
-use crate::{code, moves, params, params::Value, Code, MoveParam, PreTransition};
+use super::{compound::Compound, edge::Curve, label::Label, shift::Shift};
+use crate::{code, moves, params, params::Value, parser, Code, MoveParam, PreTransition};
 use std::borrow::Cow;
 
 pub struct Twizzle;
@@ -95,24 +95,24 @@ impl Twizzle {
         entry_code: Code,
         count: u32,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, Error> {
+    ) -> Result<Compound, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let sign = match entry_code {
             // Clockwise
             code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
             // Widdershins
             code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
-            _ => return Err(Error::Unrecognized),
+            _ => return Err(parser::fail(input)),
         };
 
-        let angle = params[0].value.as_i32().unwrap();
-        let len = params[1].value.as_i32().unwrap();
-        let pre_len = params[2].value.as_i32().unwrap();
-        let pre_angle = params[3].value.as_i32().unwrap();
-        let post_len = params[4].value.as_i32().unwrap();
-        let post_angle = params[5].value.as_i32().unwrap();
-        let style = params[6].value.as_str().unwrap();
-        let transition_label = params[7].value.as_str().unwrap();
+        let angle = params[0].value.as_i32(input)?;
+        let len = params[1].value.as_i32(input)?;
+        let pre_len = params[2].value.as_i32(input)?;
+        let pre_angle = params[3].value.as_i32(input)?;
+        let post_len = params[4].value.as_i32(input)?;
+        let post_angle = params[5].value.as_i32(input)?;
+        let style = params[6].value.as_str(input)?;
+        let transition_label = params[7].value.as_str(input)?;
 
         let len_a = len * 75 / 100;
         let len_b = len - len_a;

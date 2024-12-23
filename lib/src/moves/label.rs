@@ -1,8 +1,7 @@
 //! Pseudo-move definition for label positioned relative to current position.
 
-use super::Error;
 use crate::{
-    moves, param, params, params::Value, Bounds, Move, MoveParam, Position, RenderOptions,
+    moves, param, params, params::Value, parser, Bounds, Move, MoveParam, Position, RenderOptions,
     Rotation, Skater, SpatialTransition, SvgId, Transition,
 };
 use std::borrow::Cow;
@@ -62,27 +61,27 @@ impl Label {
         ],
     };
 
-    pub fn construct(input: &str) -> Result<Box<dyn Move>, Error> {
+    pub fn construct(input: &str) -> Result<Box<dyn Move>, parser::Error> {
         let Some(rest) = input.strip_prefix(Self::INFO.name) else {
-            return Err(Error::Unrecognized);
+            return Err(parser::fail(input));
         };
-        let params = params::populate(Self::INFO.params, rest).map_err(Error::Failed)?;
+        let params = params::populate(Self::INFO.params, rest)?;
         Ok(Box::new(Self::from_params(input, params)?))
     }
 
-    pub fn from_params(_input: &str, params: Vec<MoveParam>) -> Result<Self, Error> {
+    pub fn from_params(input: &str, params: Vec<MoveParam>) -> Result<Self, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32().unwrap();
+        let font_size = params[3].value.as_i32(input)?;
 
         Ok(Self {
-            text: params[0].value.as_str().unwrap().to_string(),
+            text: params[0].value.as_str(input)?.to_string(),
             delta: Position::from_params(&params[2], &params[1]),
             font_size: if font_size > 0 {
                 Some(font_size as u32)
             } else {
                 None
             },
-            rotate: params[4].value.as_i32().unwrap(),
+            rotate: params[4].value.as_i32(input)?,
         })
     }
 
