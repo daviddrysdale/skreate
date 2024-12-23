@@ -31,6 +31,13 @@ pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     Ok(skreate::canonicalize(input)?)
 }
 
+/// Generate canonical input displayed vertically.
+#[wasm_bindgen]
+pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
+    trace!("In canonicalize('{input}')");
+    Ok(skreate::canonicalize_vert(input)?)
+}
+
 /// Error in parsing input.  Direct equivalent of [`skreate::ParseError`], mirrored here to allow conversion to
 /// Javascript.
 #[wasm_bindgen]

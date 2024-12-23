@@ -298,33 +298,37 @@ trait Move {
     }
 }
 
-/// Generate canonicalized / minimized input.
-pub fn canonicalize(input: &str) -> Result<String, ParseError> {
-    // Convert the input into a list of moves.
+/// Convert the input into a list of moves.
+fn moves(input: &str) -> Result<Vec<Box<dyn Move>>, ParseError> {
     let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
     if !rest.trim().is_empty() {
         error!("unparsed input remains: '{}'", rest);
-        return Err(ParseError {
+        Err(ParseError {
             pos: TextPosition::new(input, rest, rest),
             msg: "unparsed input left".to_string(),
-        });
+        })
+    } else {
+        Ok(moves)
     }
+}
 
+/// Generate canonicalized / minimized input.
+pub fn canonicalize(input: &str) -> Result<String, ParseError> {
+    let moves = moves(input)?;
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
-    Ok(min_inputs.join(";"))
+    Ok(urlencoding::encode(&min_inputs.join(";")).to_string())
+}
+
+/// Generate canonicalized / minimized input for vertical display
+pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
+    let moves = moves(input)?;
+    let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
+    Ok(urlencoding::encode(&min_inputs.join("\n")).to_string())
 }
 
 /// Generate SVG for the given input.
 pub fn generate(input: &str) -> Result<String, ParseError> {
-    // Convert the input into a list of moves.
-    let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
-    if !rest.trim().is_empty() {
-        error!("unparsed input remains: '{}'", rest);
-        return Err(ParseError {
-            pos: TextPosition::new(input, rest, rest),
-            msg: "unparsed input left".to_string(),
-        });
-    }
+    let moves = moves(input)?;
     debug!("input parses as:");
     for (idx, mv) in moves.iter().enumerate() {
         debug!("  [{idx}] {}", mv.text());

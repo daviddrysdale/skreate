@@ -4,6 +4,7 @@
     <meta charset='utf-8'>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" type="text/css" href="css/style.css" media="screen" />
+
     <title>Diagram</title>
     <link rel="canonical" href="https://lurklurk.org/skreate/" />
   </head>
@@ -17,6 +18,8 @@
         <tr>
           <td>
           <a href="#" class="download">Download as SVG</a>
+          |
+          <a href="#" class="edit">Edit</a>
           </td>
         </tr>
       </table>
@@ -37,7 +40,7 @@
 
     <!-- Note the usage of `type=module` here as this is an ES6 module -->
     <script type="module">
-      import {set_svg, setup_download} from './skreate.js';
+      import {set_svg, setup_download, setup_edit} from './skreate.js';
 
       $(document).ready(function() {
         var div = $('#main');
@@ -50,6 +53,7 @@
           return text;
         }
         setup_download(div, diagram_div, getValue);
+        setup_edit(div, getValue);
       });
     </script>
   </body>
