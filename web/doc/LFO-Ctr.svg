@@ -25,17 +25,17 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 243,243 0 0 1 -243,243"/>
 </g>
 </defs>
-<use id="r_0_c_0_66" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO-Ctr&quot;]"/>
+<use id="r_0_c_0_7" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO-Ctr&quot;]"/>
 <text style="font-size:12pt;" x="87" y="126">
 LFO-Ctr
 </text>
-<use id="r_0_c_0_29" style="stroke-width:1;" transform="translate(214 214) rotate(270)" xlink:href="#LFO-Ctr_1::LF[len=20,label=&quot; &quot;]"/>
-<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(234 214) rotate(270)" xlink:href="#LFO-Ctr_2::LFI[angle=80,len=93,label=&quot; &quot;]"/>
+<use id="r_0_c_0_7" style="stroke-width:1;" transform="translate(214 214) rotate(270)" xlink:href="#LFO-Ctr_1::LF[len=20,label=&quot; &quot;]"/>
+<use id="r_0_c_0_7" style="stroke-width:1;" transform="translate(234 214) rotate(270)" xlink:href="#LFO-Ctr_2::LFI[angle=80,len=93,label=&quot; &quot;]"/>
 <text style="font-size:12pt;" x="305" y="308">
 Ctr
 </text>
-<use id="r_0_c_0_39" style="stroke-width:1;" transform="translate(299 269) rotate(215)" xlink:href="#LFO-Ctr_5::LBO[angle=80,len=68,label=&quot; &quot;]"/>
-<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(358 253) rotate(295)" xlink:href="#LFO-Ctr_6::LBO[angle=90,len=382]"/>
+<use id="r_0_c_0_7" style="stroke-width:1;" transform="translate(299 269) rotate(215)" xlink:href="#LFO-Ctr_5::LBO[angle=80,len=68,label=&quot; &quot;]"/>
+<use id="r_0_c_0_7" style="stroke-width:1;" transform="translate(358 253) rotate(295)" xlink:href="#LFO-Ctr_6::LBO[angle=90,len=382]"/>
 <text style="font-size:12pt;" x="449" y="401">
 LBO
 </text>

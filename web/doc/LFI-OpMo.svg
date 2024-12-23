@@ -16,14 +16,14 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 286,286 0 0 1 -286,286"/>
 </g>
 </defs>
-<use id="r_0_c_0_50" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-OpMo_0::LFI[angle=90]"/>
+<use id="r_0_c_0_8" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-OpMo_0::LFI[angle=90]"/>
 <text style="font-size:12pt;" x="-108" y="177">
 LFI
 </text>
 <text style="font-size:12pt;" x="-316" y="216">
 OpMo
 </text>
-<use id="r_0_c_0_30" style="stroke-width:1;" transform="translate(-221 206) rotate(0)" xlink:href="#LFI-OpMo_3::RBI[angle=90]"/>
+<use id="r_0_c_0_8" style="stroke-width:1;" transform="translate(-221 206) rotate(0)" xlink:href="#LFI-OpMo_3::RBI[angle=90]"/>
 <text style="font-size:12pt;" x="-329" y="383">
 RBI
 </text>

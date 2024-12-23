@@ -52,21 +52,21 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 127,127 0 0 1 -37,90"/>
 </g>
 </defs>
-<use id="r_0_c_0_61" style="stroke-width:2;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-Tw1.5_0::LFI---[angle=45,label=&quot; &quot;]"/>
-<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-37 90) rotate(45)" xlink:href="#LFI-Tw1.5_1::LFI[angle=24,len=150,label=&quot; &quot;]"/>
-<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-160 171) rotate(69)" xlink:href="#LFI-Tw1.5_2::LFI[angle=36,len=50,label=&quot; &quot;]"/>
-<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-208 173) rotate(345)" xlink:href="#LFI-Tw1.5_4::LBO[angle=36,len=50,label=&quot; &quot;]"/>
-<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-210 221) rotate(21)" xlink:href="#LFI-Tw1.5_5::LBO[angle=24,len=150,label=&quot; &quot;]"/>
-<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-289 345) rotate(45)" xlink:href="#LFI-Tw1.5_6::LBO[angle=24,len=150,label=&quot; &quot;]"/>
-<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-412 426) rotate(69)" xlink:href="#LFI-Tw1.5_7::LBO[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-Tw1.5_0::LFI---[angle=45,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-37 90) rotate(45)" xlink:href="#LFI-Tw1.5_1::LFI[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-160 171) rotate(69)" xlink:href="#LFI-Tw1.5_2::LFI[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-208 173) rotate(345)" xlink:href="#LFI-Tw1.5_4::LBO[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-210 221) rotate(21)" xlink:href="#LFI-Tw1.5_5::LBO[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-289 345) rotate(45)" xlink:href="#LFI-Tw1.5_6::LBO[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-412 426) rotate(69)" xlink:href="#LFI-Tw1.5_7::LBO[angle=36,len=50,label=&quot; &quot;]"/>
 <text style="font-size:20pt;" x="-564" y="431">
 LFI-Tw1.5
 </text>
-<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-460 428) rotate(345)" xlink:href="#LFI-Tw1.5_10::LFI[angle=36,len=50,label=&quot; &quot;]"/>
-<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-462 476) rotate(21)" xlink:href="#LFI-Tw1.5_11::LFI[angle=24,len=150,label=&quot; &quot;]"/>
-<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-541 600) rotate(45)" xlink:href="#LFI-Tw1.5_12::LFI[angle=24,len=150,label=&quot; &quot;]"/>
-<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-664 681) rotate(69)" xlink:href="#LFI-Tw1.5_13::LFI[angle=36,len=50,label=&quot; &quot;]"/>
-<use id="r_0_c_0_39" style="stroke-width:2;" transform="translate(-712 683) rotate(345)" xlink:href="#LFI-Tw1.5_15::LBO[angle=36,len=50,label=&quot; &quot;]"/>
-<use id="r_0_c_0_40" style="stroke-width:2;" transform="translate(-714 731) rotate(21)" xlink:href="#LFI-Tw1.5_16::LBO[angle=24,len=150,label=&quot; &quot;]"/>
-<use id="r_0_c_0_41" style="stroke-width:2;" transform="translate(-793 855) rotate(45)" xlink:href="#LFI-Tw1.5_17::LBO---[angle=45,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-460 428) rotate(345)" xlink:href="#LFI-Tw1.5_10::LFI[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-462 476) rotate(21)" xlink:href="#LFI-Tw1.5_11::LFI[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-541 600) rotate(45)" xlink:href="#LFI-Tw1.5_12::LFI[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-664 681) rotate(69)" xlink:href="#LFI-Tw1.5_13::LFI[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-712 683) rotate(345)" xlink:href="#LFI-Tw1.5_15::LBO[angle=36,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-714 731) rotate(21)" xlink:href="#LFI-Tw1.5_16::LBO[angle=24,len=150,label=&quot; &quot;]"/>
+<use id="r_0_c_0_9" style="stroke-width:2;" transform="translate(-793 855) rotate(45)" xlink:href="#LFI-Tw1.5_17::LBO---[angle=45,label=&quot; &quot;]"/>
 </svg>
