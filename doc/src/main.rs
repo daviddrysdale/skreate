@@ -1,3 +1,5 @@
+//! Documentation generator.
+
 use clap::Parser;
 use serde_json::json;
 use skreate::moves;
@@ -34,6 +36,25 @@ fn check_dir(dir: &str) -> &Path {
     path
 }
 
+use handlebars::JsonRender;
+
+fn edit_helper(
+    h: &handlebars::Helper,
+    _hbs: &handlebars::Handlebars,
+    _ctx: &handlebars::Context,
+    _rc: &mut handlebars::RenderContext,
+    out: &mut dyn handlebars::Output,
+) -> handlebars::HelperResult {
+    let param = h.param(0).unwrap();
+
+    out.write("<a href=\"..?text=")?;
+    out.write(urlencoding::encode(param.value().render().as_ref()).as_ref())?;
+    out.write("\"><b><code>")?;
+    out.write(param.value().render().as_ref())?;
+    out.write("</code></b></a>")?;
+    Ok(())
+}
+
 fn main() {
     let extension = OsStr::new("skate");
     let opts = Options::parse();
@@ -41,8 +62,9 @@ fn main() {
     let out_path = check_dir(&opts.out_dir);
 
     let mut hbs = handlebars::Handlebars::new();
+    hbs.register_helper("edit", Box::new(edit_helper));
     hbs.register_template_file(TEMPLATE, &opts.in_file)
-        .unwrap_or_else(|_| panic!("failed to load template at {}", opts.in_file));
+        .unwrap_or_else(|e| panic!("failed to load template at {}: {e:?}", opts.in_file));
 
     let mut examples: Vec<String> = Vec::new();
     if let Some(eg_dir) = &opts.eg_dir {

@@ -485,6 +485,7 @@ dependencies = [
  "handlebars",
  "serde_json",
  "skreate",
+ "urlencoding",
 ]
 
 [[package]]
