@@ -34,3 +34,73 @@ pub(crate) fn parse(input: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
         mv::parse_move,
     )(input)
 }
+
+/// Parser wrapper to help in debugging, for when the output implements `Debug`.
+#[allow(dead_code)]
+fn dbg<'a, O, E, F>(tag: &'static str, mut f: F) -> impl FnMut(&'a str) -> IResult<&'a str, O, E>
+where
+    F: nom::Parser<&'a str, O, E>,
+    E: nom::error::ParseError<&'a str>,
+    O: std::fmt::Debug,
+{
+    move |i: &'a str| {
+        log::warn!("[{tag}] attempt to parse '{}'", starts(i));
+        let result = f.parse(i);
+        match &result {
+            Ok((rest, output)) => {
+                let start = i.as_ptr() as usize;
+                let end = rest.as_ptr() as usize;
+                log::warn!(
+                    "[{tag}] consumed {} bytes to produce {output:?}, now at '{}'",
+                    end - start,
+                    starts(rest)
+                );
+            }
+            Err(_e) => {
+                log::debug!("[{tag}] parser rejected input from '{}'", starts(i));
+            }
+        }
+        result
+    }
+}
+
+/// Parser wrapper to help in debugging, for when the output does not implement `Debug`.
+#[allow(dead_code)]
+fn dbg_raw<'a, O, E, F>(
+    tag: &'static str,
+    mut f: F,
+) -> impl FnMut(&'a str) -> IResult<&'a str, O, E>
+where
+    F: nom::Parser<&'a str, O, E>,
+    E: nom::error::ParseError<&'a str>,
+{
+    move |i: &'a str| {
+        log::warn!("[{tag}]: attempt to parse '{}'", starts(i));
+        let result = f.parse(i);
+        match &result {
+            Ok((rest, _output)) => {
+                let start = i.as_ptr() as usize;
+                let end = rest.as_ptr() as usize;
+                log::warn!(
+                    "[{tag}] consumed {} bytes , now at '{}'",
+                    end - start,
+                    starts(rest)
+                );
+            }
+            Err(_e) => {
+                log::debug!("[{tag}] parser rejected input from '{}'", starts(i));
+            }
+        }
+        result
+    }
+}
+
+#[allow(dead_code)]
+fn starts(text: &str) -> String {
+    let len = std::cmp::min(4, text.len());
+    if len < text.len() {
+        format!("{}...", &text[..len])
+    } else {
+        text[..len].to_string()
+    }
+}
