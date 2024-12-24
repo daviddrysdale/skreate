@@ -301,11 +301,12 @@ trait Move {
 /// Convert the input into a list of moves.
 fn moves(input: &str) -> Result<Vec<Box<dyn Move>>, ParseError> {
     let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
-    if !rest.trim().is_empty() {
-        error!("unparsed input remains: '{}'", rest);
+    if !rest.is_empty() {
+        let pos = TextPosition::new(input, rest, rest);
+        error!("failed to parse remainder at {pos:?}: '{}'", rest);
         Err(ParseError {
-            pos: TextPosition::new(input, rest, rest),
-            msg: "unparsed input left".to_string(),
+            pos,
+            msg: "failed to parse".to_string(),
         })
     } else {
         Ok(moves)

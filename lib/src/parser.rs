@@ -5,7 +5,7 @@ use nom::{
     branch::alt,
     bytes::complete::tag,
     character::complete::{multispace0, space0},
-    combinator::map,
+    combinator::{map, opt},
     multi::{many1, separated_list0},
     sequence::tuple,
     IResult,
@@ -27,22 +27,34 @@ pub(crate) fn fail(input: &str) -> Error {
     Error::Failure(InnErr::new(input, nom::error::ErrorKind::Fail))
 }
 
+fn parse_separator(input: &str) -> IResult<&str, Vec<&str>> {
+    // Separate moves by...
+    many1(alt((
+        // Whitespace including at least one newline.
+        map(
+            tuple((space0, nom::bytes::complete::is_a("\n\r"), multispace0)),
+            |(_sp0, eol, _sp1)| eol,
+        ),
+        // Semi-colon
+        tag(";"),
+        // Comment to newline (inclusive).
+        comment::parse,
+    )))(input)
+}
 pub(crate) fn parse(start: &str) -> IResult<&str, Vec<Box<dyn Move>>> {
-    separated_list0(
-        // Separate moves by...
-        many1(alt((
-            // Whitespace including at least one newline.
-            map(
-                tuple((space0, nom::bytes::complete::is_a("\n\r"), multispace0)),
-                |(_sp0, eol, _sp1)| eol,
-            ),
-            // Semi-colon
-            tag(";"),
-            // Comment to newline (inclusive).
-            comment::parse,
-        ))),
-        |input| mv::parse_move(start, input),
-    )(start)
+    // Allow separators before the move text
+    let (rest, (_, moves)) = tuple((
+        opt(parse_separator),
+        separated_list0(parse_separator, |input| mv::parse_move(start, input)),
+    ))(start)?;
+    // The `separated_list0` combinator will leave a final separator in place if the thing after it doesn't parse as a
+    // move, so consume that too.
+    let result = parse_separator(rest);
+    if let Ok((rest, _)) = result {
+        Ok((rest, moves))
+    } else {
+        Ok((rest, moves))
+    }
 }
 
 /// Convert a nom error into a [`ParseError`].
