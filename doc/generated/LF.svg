@@ -7,13 +7,13 @@ Skating Diagram
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 <g id="LF">
 <path d="M 0,0 l 0,450"/>
 </g>
 </defs>
-<use id="r_0_c_0_2" style="stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LF"/>
+<use id="r_0_c_0_2" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LF"/>
 <text style="font-size:10pt;" x="30" y="225">
 LF
 </text>

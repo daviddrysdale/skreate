@@ -7,7 +7,7 @@ Skating Diagram
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 </defs>
 <text style="font-size:10pt;" x="500" y="200">

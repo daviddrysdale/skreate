@@ -7,13 +7,13 @@ Skills 1 Exercise 2
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 <g id="Rink">
 <clipPath id="clip-rink">
 <rect height="6100" rx="750" ry="750" width="3000" x="0" y="0"/>
 </clipPath>
-<rect height="6100" rx="750" ry="750" style="text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; } clip-path:url(#clip-rink)" width="3000" x="0" y="0"/>
+<rect height="6100" rx="750" ry="750" style="text { text-anchor: middle } path,rect,circle { fill:none; } clip-path:url(#clip-rink)" width="3000" x="0" y="0"/>
 <path d="M 0,3050 l 3000,0" style="stroke:red;"/>
 <circle cx="1500" cy="3050" r="400" style="stroke:red;"/>
 <circle cx="1500" cy="3050" r="2" style="fill: black;"/>
@@ -40,87 +40,87 @@ text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
 <path d="M 0,0 a 859,859 0 0 1 -1667,293"/>
 </g>
 </defs>
-<use id="r_0_c_0_4" style="stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink"/>
+<use id="r_0_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#Rink"/>
 <text style="font-size: 90pt;" x="1500" y="200">
 Skills 1 Exercise 2
 </text>
 <text style="font-size:50pt;" x="1200" y="2800">
 START CIRCLE 1
 </text>
-<use id="r_7_c_0_4" style="stroke-width:4;" transform="translate(1600 2780) rotate(270)" xlink:href="#RBO-"/>
+<use id="r_7_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(1600 2780) rotate(270)" xlink:href="#RBO-"/>
 <text style="font-size:24pt;" x="1737" y="2697">
 RBO
 </text>
-<use id="r_8_c_0_7" style="stroke-width:4;" transform="translate(1901 2709) rotate(250)" xlink:href="#xf-LBI-"/>
+<use id="r_8_c_0_7" style="stroke-width:4; stroke: black;" transform="translate(1901 2709) rotate(250)" xlink:href="#xf-LBI-"/>
 <text style="font-size:24pt;" x="2001" y="2584">
 LBI
 </text>
 <text style="font-size:24pt;" x="1930" y="2749">
 XF
 </text>
-<use id="r_9_c_0_4" style="stroke-width:4;" transform="translate(2138 2537) rotate(230)" xlink:href="#RBO-"/>
+<use id="r_9_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(2138 2537) rotate(230)" xlink:href="#RBO-"/>
 <text style="font-size:24pt;" x="2189" y="2385">
 RBO
 </text>
-<use id="r_10_c_0_7" style="stroke-width:4;" transform="translate(2323 2288) rotate(210)" xlink:href="#xf-LBI-"/>
+<use id="r_10_c_0_7" style="stroke-width:4; stroke: black;" transform="translate(2323 2288) rotate(210)" xlink:href="#xf-LBI-"/>
 <text style="font-size:24pt;" x="2319" y="2127">
 LBI
 </text>
 <text style="font-size:24pt;" x="2371" y="2299">
 XF
 </text>
-<use id="r_11_c_0_4" style="stroke-width:4;" transform="translate(2395 2002) rotate(190)" xlink:href="#RBO-"/>
+<use id="r_11_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(2395 2002) rotate(190)" xlink:href="#RBO-"/>
 <text style="font-size:24pt;" x="2337" y="1852">
 RBO
 </text>
-<use id="r_12_c_0_7" style="stroke-width:4;" transform="translate(2377 1691) rotate(170)" xlink:href="#xf-LBI-"/>
+<use id="r_12_c_0_7" style="stroke-width:4; stroke: black;" transform="translate(2377 1691) rotate(170)" xlink:href="#xf-LBI-"/>
 <text style="font-size:24pt;" x="2271" y="1570">
 LBI
 </text>
 <text style="font-size:24pt;" x="2421" y="1668">
 XF
 </text>
-<use id="r_13_c_0_24" style="stroke-width:4;" transform="translate(2249 1426) rotate(150)" xlink:href="#RBO[angle=160,len=2400]"/>
+<use id="r_13_c_0_24" style="stroke-width:4; stroke: black;" transform="translate(2249 1426) rotate(150)" xlink:href="#RBO[angle=160,len=2400]"/>
 <text style="font-size:24pt;" x="1235" y="1114">
 RBO
 </text>
 <text style="font-size:50pt;" x="1200" y="3340">
 START CIRCLE 2
 </text>
-<use id="r_18_c_0_4" style="stroke-width:4;" transform="translate(1600 3310) rotate(270)" xlink:href="#LBO-"/>
+<use id="r_18_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(1600 3310) rotate(270)" xlink:href="#LBO-"/>
 <text style="font-size:24pt;" x="1737" y="3393">
 LBO
 </text>
-<use id="r_19_c_0_7" style="stroke-width:4;" transform="translate(1901 3380) rotate(290)" xlink:href="#xf-RBI-"/>
+<use id="r_19_c_0_7" style="stroke-width:4; stroke: black;" transform="translate(1901 3380) rotate(290)" xlink:href="#xf-RBI-"/>
 <text style="font-size:24pt;" x="2001" y="3504">
 RBI
 </text>
 <text style="font-size:24pt;" x="1930" y="3339">
 XF
 </text>
-<use id="r_20_c_0_4" style="stroke-width:4;" transform="translate(2138 3550) rotate(310)" xlink:href="#LBO-"/>
+<use id="r_20_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(2138 3550) rotate(310)" xlink:href="#LBO-"/>
 <text style="font-size:24pt;" x="2189" y="3701">
 LBO
 </text>
-<use id="r_21_c_0_7" style="stroke-width:4;" transform="translate(2323 3797) rotate(330)" xlink:href="#xf-RBI-"/>
+<use id="r_21_c_0_7" style="stroke-width:4; stroke: black;" transform="translate(2323 3797) rotate(330)" xlink:href="#xf-RBI-"/>
 <text style="font-size:24pt;" x="2319" y="3957">
 RBI
 </text>
 <text style="font-size:24pt;" x="2371" y="3785">
 XF
 </text>
-<use id="r_22_c_0_4" style="stroke-width:4;" transform="translate(2395 4081) rotate(350)" xlink:href="#LBO-"/>
+<use id="r_22_c_0_4" style="stroke-width:4; stroke: black;" transform="translate(2395 4081) rotate(350)" xlink:href="#LBO-"/>
 <text style="font-size:24pt;" x="2337" y="4230">
 LBO
 </text>
-<use id="r_23_c_0_7" style="stroke-width:4;" transform="translate(2377 4390) rotate(10)" xlink:href="#xf-RBI-"/>
+<use id="r_23_c_0_7" style="stroke-width:4; stroke: black;" transform="translate(2377 4390) rotate(10)" xlink:href="#xf-RBI-"/>
 <text style="font-size:24pt;" x="2271" y="4510">
 RBI
 </text>
 <text style="font-size:24pt;" x="2421" y="4412">
 XF
 </text>
-<use id="r_24_c_0_24" style="stroke-width:4;" transform="translate(2249 4654) rotate(30)" xlink:href="#LBO[angle=160,len=2400]"/>
+<use id="r_24_c_0_24" style="stroke-width:4; stroke: black;" transform="translate(2249 4654) rotate(30)" xlink:href="#LBO[angle=160,len=2400]"/>
 <text style="font-size:24pt;" x="1235" y="4965">
 LBO
 </text>

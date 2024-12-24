@@ -7,7 +7,7 @@ Waltz
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 </defs>
 <text style="font-size: 20pt;" x="0" y="100">

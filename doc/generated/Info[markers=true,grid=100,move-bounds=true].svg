@@ -7,7 +7,7 @@ Skating Diagram
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }
+text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 <g id="Info[markers=true,grid=100,move-bounds=true]">
 <path d="M 0,0 l 10,0 l -20,0 l 10,0 l 0,20 l 8,-8 l -8,8 l-8,-8 l 8,8 l 0,-30 l 0,10" id="end-mark" style="stroke:red;"/>
