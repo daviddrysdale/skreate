@@ -73,6 +73,18 @@ function change_elt_colour(text_pos, col) {
   }
 }
 
+var currently_highlighted;
+function highlight_elt(text_pos) {
+  if (text_pos == currently_highlighted) {
+    return;
+  }
+  change_elt_colour(currently_highlighted, "black");
+  currently_highlighted = text_pos;
+  if (text_pos) {
+    change_elt_colour(text_pos, "red");
+  }
+}
+
 export function setup_editor(div, autofocus, text) {
   var editor_div = div.find(".editor");
   editor_div.html(text);
@@ -98,6 +110,27 @@ export function setup_editor(div, autofocus, text) {
       var options = { scale: 1 };
 
       var positions = set_svg(editor.getValue(), diagram_div);
+
+      editor.session.selection.on('changeCursor', function(e) {
+        var cursor = editor.selection.getCursor();
+        var to_highlight = null;
+        for (const text_pos of positions) {
+          var re = /r_(\d+)_c_(\d+)_(\d+)/;
+          var m = text_pos.match(re);
+          if (!m) {
+            continue;
+          }
+          var row = Number(m[1]);
+          var col = Number(m[2]);
+          var count = Number(m[3]);
+          if ((cursor.row == row) &&
+              (cursor.column >= col) && (cursor.column <= (col + count))) {
+            to_highlight = text_pos;
+            break;
+          }
+        }
+        highlight_elt(to_highlight);
+      });
     } catch(err) {
       var annotation = {
         type: "error", // also warning and information
@@ -113,6 +146,7 @@ export function setup_editor(div, autofocus, text) {
       editor.getSession().setAnnotations([annotation]);
     }
   }
+
 }
 
 // Return the text content of the URL or an error.  Loads the URL synchronously.

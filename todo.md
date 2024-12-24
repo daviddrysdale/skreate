@@ -61,7 +61,7 @@
 - [x] Option for arbitrary text annotation on move ("LFI3 (waves arms)")
 - [ ] SVG to HTML linkage
     - [ ] mouse over move => highlight text in editor
-    - [ ] cursor on move => highlight corresponding move
+    - [x] cursor on move => highlight corresponding move
     - [ ] animation: highlight move in diagram and corresponding text in editor
 - [ ] Reproduce skills diagrams
     - [x] Skills 1-1
