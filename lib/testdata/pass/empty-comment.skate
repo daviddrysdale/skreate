@@ -1,0 +1,9 @@
+LFO          #
+xf-RFI3      # line above and below have empty comments
+LFO; xf-RFI  #
+
+# blank lines are ignored
+LFO-Rk
+
+Title [text="My Program"]
+Text [text="add text centred here",x=400,y=400]

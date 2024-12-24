@@ -1,0 +1,8 @@
+
+LFO          # cope with blank line at start
+xf-RFI3
+LFO; xf-RFI
+
+LFO-Rk
+
+Title [text="Start with blank line"]

@@ -1,8 +1,9 @@
 //! Integration test to compare against canned output.
 
 use log::{debug, info};
-use std::fs;
-use std::io::Write;
+use std::ffi::OsStr;
+use std::fs::{self, read_dir, File};
+use std::io::{Read, Write};
 
 #[test]
 fn test_compare() {
@@ -25,6 +26,28 @@ fn test_compare() {
                 .unwrap_or_else(|_e| panic!("failed to find file for {name}"));
             assert_eq!(got.trim(), want.trim(), "for '{name}'");
         }
+    }
+}
+
+#[test]
+fn test_parse_success() {
+    let _ = env_logger::try_init();
+    let extension = OsStr::new("skate");
+    let eg_dir = concat!(env!("CARGO_MANIFEST_DIR"), "/testdata/pass").to_string();
+    let eg_path = std::path::PathBuf::from(eg_dir);
+
+    for entry in read_dir(eg_path).unwrap() {
+        let entry = entry.unwrap();
+        let path = entry.path();
+        if !path.is_file() || path.extension() != Some(extension) {
+            continue;
+        }
+        let mut reader = File::open(path.clone()).unwrap();
+        let mut input = String::new();
+        reader.read_to_string(&mut input).unwrap();
+        let result = skreate::generate(&input);
+        assert!(result.is_ok());
+        info!("file '{path:?}' parsed successfully");
     }
 }
 
