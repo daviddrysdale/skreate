@@ -22,8 +22,7 @@ mod types;
 const MARGIN: i64 = 50;
 
 /// Common style definitions.
-pub const STYLE_DEF: &str =
-    "text { text-anchor: middle } path,rect,circle { fill:none; stroke: black; }";
+pub const STYLE_DEF: &str = "text { text-anchor: middle } path,rect,circle { fill:none; }";
 
 /// Description of current skater state.
 #[derive(Debug, Clone, Copy)]
@@ -187,7 +186,10 @@ fn use_at(skater: &Skater, def_id: &SvgId, opts: &RenderOptions) -> Use {
                 skater.pos.x, skater.pos.y, skater.dir.0
             ),
         )
-        .set("style", format!("stroke-width:{};", opts.stroke_width()))
+        .set(
+            "style",
+            format!("stroke-width:{}; stroke: black;", opts.stroke_width()),
+        )
 }
 
 fn apply_style(path: Path, style: &str) -> Path {
