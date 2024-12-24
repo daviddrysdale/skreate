@@ -24,6 +24,37 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     Ok(skreate::generate(input)?)
 }
 
+/// Generated SVG and move positions.
+#[wasm_bindgen]
+pub struct GeneratedSvgPositions {
+    /// Generated SVG
+    svg: String,
+    /// List of move positions in the form "r_<row>_c_<col>_<count>".
+    positions: Vec<String>,
+}
+
+#[wasm_bindgen]
+impl GeneratedSvgPositions {
+    /// Retrieve the SVG.
+    #[wasm_bindgen(getter)]
+    pub fn svg(&self) -> String {
+        self.svg.clone()
+    }
+    /// Retrieve the move positions.
+    #[wasm_bindgen(getter)]
+    pub fn positions(&self) -> Vec<String> {
+        self.positions.clone()
+    }
+}
+
+/// Generate output with positions.
+#[wasm_bindgen]
+pub fn generate_with_positions(input: &str) -> Result<GeneratedSvgPositions, ParseError> {
+    trace!("In generate_with_positions('{input}')");
+    let (svg, positions) = skreate::generate_with_positions(input)?;
+    Ok(GeneratedSvgPositions { svg, positions })
+}
+
 /// Generate canonical input.
 #[wasm_bindgen]
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
@@ -60,7 +91,7 @@ impl ParseError {
 
     /// Set the message associated with the error.
     #[wasm_bindgen(setter)]
-    pub fn set_field(&mut self, msg: String) {
+    pub fn set_msg(&mut self, msg: String) {
         self.msg = msg;
     }
 }

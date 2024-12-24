@@ -345,6 +345,11 @@ pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
 
 /// Generate SVG for the given input.
 pub fn generate(input: &str) -> Result<String, ParseError> {
+    generate_with_positions(input).map(|(svg, _text_positions)| svg)
+}
+
+/// Generate SVG for the given input, also returning a comma-separated list of text positions that correspond to moves.
+pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), ParseError> {
     let moves = moves(input)?;
     debug!("input parses as:");
     for (idx, mv) in moves.iter().enumerate() {
@@ -439,6 +444,7 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
 
     // Third pass: render all the moves.
     info!("========= render ===========");
+    let mut text_positions = Vec::new();
     let mut skater = Skater {
         pos: Position::default(),
         dir: Direction::new(0),
@@ -471,6 +477,11 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
         debug!("post: {skater} + {transition} ==> {after}");
         if show_marker {
             doc = doc.add(use_at(&after, &SvgId("end-mark".to_string()), &opts));
+        }
+
+        // Accumulate the collection of text positions for the move specifications along the way.
+        if let Some(text_pos) = mv.text_pos() {
+            text_positions.push(text_pos);
         }
 
         skater = after;
@@ -549,7 +560,13 @@ pub fn generate(input: &str) -> Result<String, ParseError> {
     svg::write(&mut svg, &doc)?;
     let svg = String::from_utf8(svg)?;
     trace!("emit SVG:\n{svg}");
-    Ok(svg)
+
+    let text_positions = text_positions
+        .iter()
+        .map(|pos| pos.unique_id())
+        .collect::<Vec<_>>();
+
+    Ok((svg, text_positions))
 }
 
 #[cfg(test)]

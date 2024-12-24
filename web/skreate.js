@@ -5,7 +5,7 @@
 // will "boot" the module and make it ready to use. Currently browsers
 // don't support natively imported WebAssembly as an ES module, but
 // eventually the manual initialization won't be required!
-import init, { initialize, generate, canonicalize, canonicalize_vert, ParseError } from './pkg/skreate_wasm.js';
+import init, { initialize, generate_with_positions, canonicalize, canonicalize_vert, ParseError } from './pkg/skreate_wasm.js';
 
 async function run() {
   // First up we need to actually load the wasm file, so we use the
@@ -20,8 +20,10 @@ async function run() {
 await run();
 
 export function set_svg(text, div) {
-  var diagram_svg = generate(text);
+  var result = generate_with_positions(text);
+  var diagram_svg = result.svg;
   div.html(diagram_svg);
+  return result.positions;
 }
 
 export function setup_download(div, diagram_div, get_value) {
@@ -95,7 +97,7 @@ export function setup_editor(div, autofocus, text) {
       editor.getSession().setAnnotations([]);
       var options = { scale: 1 };
 
-      set_svg(editor.getValue(), diagram_div);
+      var positions = set_svg(editor.getValue(), diagram_div);
     } catch(err) {
       var annotation = {
         type: "error", // also warning and information
