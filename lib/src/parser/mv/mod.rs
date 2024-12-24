@@ -33,6 +33,10 @@ fn parse_skating_move_id(input: &str) -> IResult<&str, SkatingMoveId> {
             SkatingMoveId::OpenMohawk,
             tag(moves::mohawk::OpenMohawk::MOVE),
         ),
+        value(
+            SkatingMoveId::ClosedMohawk,
+            tag(moves::mohawk::ClosedMohawk::MOVE),
+        ),
         value(SkatingMoveId::Bracket, tag(moves::bracket::Bracket::MOVE)),
         value(SkatingMoveId::Rocker, tag(moves::rocker::Rocker::MOVE)),
         value(SkatingMoveId::Counter, tag(moves::counter::Counter::MOVE)),

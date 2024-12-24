@@ -71,6 +71,7 @@ pub static INFO: &[Info] = &[
     straight::StraightEdge::INFO,
     three::ThreeTurn::INFO,
     mohawk::OpenMohawk::INFO,
+    mohawk::ClosedMohawk::INFO,
     bracket::Bracket::INFO,
     rocker::Rocker::INFO,
     counter::Counter::INFO,
@@ -97,6 +98,8 @@ pub enum SkatingMoveId {
     ThreeTurn,
     /// Open Mohawk
     OpenMohawk,
+    /// Closed Mohawk
+    ClosedMohawk,
     /// Bracket
     Bracket,
     /// Rocker
@@ -117,6 +120,7 @@ impl SkatingMoveId {
             Self::StraightEdge => &straight::StraightEdge::INFO,
             Self::ThreeTurn => &three::ThreeTurn::INFO,
             Self::OpenMohawk => &mohawk::OpenMohawk::INFO,
+            Self::ClosedMohawk => &mohawk::ClosedMohawk::INFO,
             Self::Bracket => &bracket::Bracket::INFO,
             Self::Rocker => &rocker::Rocker::INFO,
             Self::Counter => &counter::Counter::INFO,
@@ -156,6 +160,13 @@ impl SkatingMoveId {
                 params,
             )?),
             Self::OpenMohawk => Box::new(mohawk::OpenMohawk::from_params(
+                input,
+                text_pos,
+                pre_transition,
+                entry_code,
+                params,
+            )?),
+            Self::ClosedMohawk => Box::new(mohawk::ClosedMohawk::from_params(
                 input,
                 text_pos,
                 pre_transition,

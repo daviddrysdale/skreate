@@ -18,7 +18,7 @@
     - [x] Rocker
     - [x] Counter
     - [x] Open Mohawk
-    - [ ] Closed Mohawk
+    - [x] Closed Mohawk
     - [ ] Open Choctaw
     - [ ] Closed Choctaw
     - [x] Twizzle
