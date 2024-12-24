@@ -85,7 +85,7 @@
     - [ ] Skills 4-5: needs closed choctaw, open mohawk
     - [ ] Skills 5-1: needs 3-turn, mohawk
     - [ ] Skills 5-2: needs rocker
-    - [ ] Skills 5-3: needs 3-turn, closed mohawk
+    - [x] Skills 5-3: needs 3-turn, closed mohawk, open choctaw
     - [ ] Skills 5-4: needs bracket
     - [ ] Skills 5-5: needs 3-turn, open mohawk
     - [ ] Skills 6-1: needs open mohawk, rocker, closed mohawk

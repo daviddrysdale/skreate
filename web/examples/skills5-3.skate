@@ -1,0 +1,79 @@
+Rink
+Title [text="Skills 5 Exercise 3",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1350,y=725,text="SIDE 1",font-size=50]
+Warp [x=1200,y=700,dir=90,code="RBO"]
+
+RB [len=500,label=" ",style="dashed"]
+RBO [angle=30,len=300]
+xf-LBI [angle=30,len=250]
+RBO-ClMo [angle=50,len=250,delta-angle=10]
+
+Shift[rotate=-20]
+RFO3 [len=250]
+
+LBO [angle=30,len=300]
+xf-RBI [angle=30,len=250]
+LBO-ClMo [angle=50,len=250]
+
+Shift[rotate=-10]
+LFO3 [len=200]
+
+RBO [angle=30,len=300]
+xf-LBI [angle=30,len=250]
+RBO-ClMo [angle=45,len=350,delta-len=50]
+
+Shift[rotate=-20]
+RFO3 [len=300,angle=100]
+
+LBO [angle=40,len=300]
+xf-RBI [angle=30,len=350]
+LBO-ClMo [angle=60,len=300,delta-angle=-20]
+
+Shift[rotate=-10]
+LFO3 [len=250]
+
+
+#-------------------------
+Text [x=1750,y=5625,text="SIDE 2",font-size=50]
+Warp [x=1900,y=5600,dir=270,code="LFO"]
+
+RF [label=" ",style="dashed"]
+RFI [label=" ",style="dashed",angle=90]
+
+# TODO -OpCho
+RFI [angle=90]
+Label [text="OpCho",side=-50]
+Shift [code="LBO",side=40]
+LBO [len=300]
+
+xf-RBI [len=200,angle=30]
+LBO-ClMo [angle=30,len=350]
+
+# TODO -OpCho
+LFI [angle=65,len=350,transition-label="Slip Chasse"]
+Label [text="OpCho",side=50]
+Shift [code="LBO",side=-80]
+RBO [len=300]
+
+xf-LBI [len=300,angle=30]
+RBO-ClMo [angle=30,len=350]
+
+# TODO -OpCho
+RFI [angle=70,transition-label="Slip Chasse"]
+Label [text="OpCho",side=-50]
+Shift [code="LBO",side=40]
+LBO [len=200]
+
+xf-RBI [len=200,angle=30]
+LBO-ClMo [angle=30,len=350,delta-len=-50]
+
+# TODO -OpCho
+LFI [angle=65,len=350,transition-label="Slip Chasse"]
+Label [text="OpCho",side=50]
+Shift [code="LBO",side=-80]
+RBO [len=300]
+
+xf-LBI [len=250,angle=25]
+RBO-ClMo [angle=25,len=300]
