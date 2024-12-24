@@ -5,7 +5,7 @@ pub use crate::error::ParseError;
 pub use crate::params::MoveParam;
 pub use crate::types::*;
 use log::{debug, error, info, trace};
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 use std::fmt::{self, Display, Formatter};
 use svg::{
     node::element::{Definitions, Description, Group, Path, Rectangle, Style, Text, Title, Use},
@@ -119,9 +119,22 @@ struct RenderOptions {
     font_size: Option<u32>,
     /// Stroke width; auto-scale with bounds if [`None`].
     stroke_width: Option<u32>,
+    /// Next unique ID associated with a particular [`TextPosition`].
+    next_for_pos: HashMap<TextPosition, usize>,
 }
 
 impl RenderOptions {
+    fn next_unique_id(&mut self, pos: TextPosition) -> String {
+        let pos_str = pos.unique_id();
+        let n = self.next_for_pos.entry(pos).or_insert(0);
+        *n += 1;
+        if *n == 1 {
+            pos_str
+        } else {
+            format!("{pos_str}_n{n}")
+        }
+    }
+
     fn bounds_diag(&self) -> f64 {
         let diag_squared =
             self.bounds.width() * self.bounds.width() + self.bounds.height() * self.bounds.height();
@@ -263,7 +276,8 @@ trait Move {
         };
         let mut use_link = use_at(start, &def_id, opts);
         if let Some(pos) = self.text_pos() {
-            use_link = use_link.set("id", pos.unique_id());
+            let unique_id = opts.next_unique_id(pos);
+            use_link = use_link.set("id", unique_id);
         }
         doc = doc.add(use_link);
         self.render_labels(doc, start, opts)

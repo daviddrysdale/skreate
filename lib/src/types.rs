@@ -50,7 +50,7 @@ impl std::ops::Sub<Direction> for Direction {
 }
 
 /// Position in input text.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
 pub struct TextPosition {
     /// Row of input with error, zero-indexed.
     pub row: usize,
