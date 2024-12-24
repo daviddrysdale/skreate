@@ -55,6 +55,22 @@ export function setup_edit(div, get_value) {
   });
 }
 
+function change_elt_colour(text_pos, col) {
+  // Assume at most 10 <use> elements for a given text_pos.
+  let suffixes = ["", "_n2", "_n3", "_n4", "_n5", "_n6", "_n7", "_n8", "_n9"];
+  for (const suffix of suffixes) {
+    var use_id = text_pos + suffix;
+    let elt = document.getElementById(use_id);
+    if (!elt) {
+        continue;
+    }
+    const cur_style = elt.getAttribute("style");
+    let regexp = /stroke: *[^;]+;/;
+    let new_style = cur_style.replace(regexp, "stroke: " + col + ";");
+    elt.setAttribute("style", new_style);
+  }
+}
+
 export function setup_editor(div, autofocus, text) {
   var editor_div = div.find(".editor");
   editor_div.html(text);
