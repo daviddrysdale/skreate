@@ -15,6 +15,9 @@ use nom::{
     IResult, Parser,
 };
 
+#[cfg(test)]
+mod tests;
+
 fn parse_twizzle_id(input: &str) -> IResult<&str, SkatingMoveId> {
     map(
         preceded(

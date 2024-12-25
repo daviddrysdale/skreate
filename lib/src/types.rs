@@ -61,11 +61,12 @@ pub struct TextPosition {
 }
 
 impl TextPosition {
-    /// Determine position from current location in input stream.
+    /// Determine position from current location in input stream, subtracting any trailing whitespace.
     pub fn new(start: &str, cur: &str, end: &str) -> Self {
         let mut row = 0;
         let mut col = 0;
         let mut pos = start;
+        // Calculate the (row, col) of `cur` relative to `start`.
         while pos.as_ptr() < cur.as_ptr() {
             if pos.as_bytes().first() == Some(&b'\n') {
                 row += 1;
@@ -75,8 +76,14 @@ impl TextPosition {
             }
             pos = &pos[1..]
         }
+        // To calculate the length of the matched chunk of input we want to subtract off any trailing whitespace.
         let count = end.as_ptr() as usize - cur.as_ptr() as usize;
-        TextPosition { row, col, count }
+        let chunk = &cur[..std::cmp::min(count, cur.len())];
+        TextPosition {
+            row,
+            col,
+            count: chunk.trim_end().len(),
+        }
     }
     /// Convert the position into an ID string.
     pub fn unique_id(&self) -> String {
