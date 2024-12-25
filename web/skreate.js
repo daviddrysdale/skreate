@@ -51,7 +51,17 @@ function set_svg_with_events(editor, div) {
       });
     }
   }
+  setup_playthrough(editor, positions);
   return positions;
+}
+
+function setup_playthrough(editor, positions) {
+  var playthrough_link = document.getElementById('playthrough');
+    if (playthrough_link) {
+    playthrough_link.onclick = function() {
+      playthrough(editor, positions, 500)
+    };
+  }
 }
 
 export function setup_download(div, diagram_div, get_value) {
@@ -154,6 +164,21 @@ function highlight_text(editor, text_pos, enabled) {
     console.log("set text marker at " + text_pos + " == " + range + " => marker_id=" + current_text_marker);
     marked_text_position = text_pos;
   }
+}
+
+function playthrough(editor, positions, timeout) {
+  if (!positions || positions.length === 0) {
+    highlight_elt(null);
+    highlight_text(editor, null, false);
+    return;
+  }
+  let text_pos = positions[0];
+  let rest = positions.slice(1);
+  highlight_elt(text_pos);
+  highlight_text(editor, text_pos, true);
+  setTimeout(() => {
+    playthrough(editor, rest, timeout)
+  }, timeout);
 }
 
 export function setup_editor(div, autofocus, text) {
