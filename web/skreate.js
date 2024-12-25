@@ -57,7 +57,19 @@ export function setup_edit(div, get_value) {
   });
 }
 
-function change_elt_colour(text_pos, col) {
+function parse_text_pos(text_pos) {
+  var re = /r_(\d+)_c_(\d+)_(\d+)/;
+  var m = text_pos.match(re);
+  if (!m) {
+    return null;
+  }
+  var row = Number(m[1]);
+  var col = Number(m[2]);
+  var count = Number(m[3]);
+  return { row: row, col: col, count: count};
+}
+
+function change_elt_colour(text_pos, colour) {
   // Assume at most 10 <use> elements for a given text_pos.
   let suffixes = ["", "_n2", "_n3", "_n4", "_n5", "_n6", "_n7", "_n8", "_n9"];
   for (const suffix of suffixes) {
@@ -68,7 +80,7 @@ function change_elt_colour(text_pos, col) {
     }
     const cur_style = elt.getAttribute("style");
     let regexp = /stroke: *[^;]+;/;
-    let new_style = cur_style.replace(regexp, "stroke: " + col + ";");
+    let new_style = cur_style.replace(regexp, "stroke: " + colour + ";");
     elt.setAttribute("style", new_style);
   }
 }
@@ -115,16 +127,12 @@ export function setup_editor(div, autofocus, text) {
         var cursor = editor.selection.getCursor();
         var to_highlight = null;
         for (const text_pos of positions) {
-          var re = /r_(\d+)_c_(\d+)_(\d+)/;
-          var m = text_pos.match(re);
-          if (!m) {
+          var pos = parse_text_pos(text_pos);
+          if (!pos) {
             continue;
           }
-          var row = Number(m[1]);
-          var col = Number(m[2]);
-          var count = Number(m[3]);
-          if ((cursor.row == row) &&
-              (cursor.column >= col) && (cursor.column <= (col + count))) {
+          if ((cursor.row == pos.row) &&
+              (cursor.column >= pos.col) && (cursor.column <= (pos.col + pos.count))) {
             to_highlight = text_pos;
             break;
           }
