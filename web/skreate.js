@@ -46,6 +46,9 @@ function set_svg_with_events(editor, div) {
       use_elt.addEventListener("mouseout", () => {
         highlight_text(editor, use_id, false);
       });
+      use_elt.addEventListener("click", () => {
+        move_cursor(editor, use_id);
+      });
     }
   }
   return positions;
@@ -93,6 +96,13 @@ function parse_text_pos(text_pos) {
   var col = Number(m[2]);
   var endcol = Number(m[3]);
   return { row: row, col: col, endcol: endcol};
+}
+
+function move_cursor(editor, text_pos) {
+  var pos = parse_text_pos(text_pos);
+  if (pos) {
+      editor.moveCursorTo(pos.row, pos.col);
+  }
 }
 
 function change_elt_colour(text_pos, colour) {
