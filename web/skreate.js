@@ -19,11 +19,36 @@ async function run() {
 }
 await run();
 
+// Possible suffixes after a text position in a <use> id attribute.
+const use_id_suffixes = ["", "_n2", "_n3", "_n4", "_n5", "_n6", "_n7", "_n8", "_n9"];
+
 export function set_svg(text, div) {
   var result = generate_with_positions(text);
   var diagram_svg = result.svg;
   div.html(diagram_svg);
   return result.positions;
+}
+
+function set_svg_with_events(editor, div) {
+  var text = editor.getValue();
+  var positions = set_svg(text, div);
+
+  for (const text_pos of positions) {
+    for (const suffix of use_id_suffixes) {
+      let use_id = text_pos + suffix;
+      let use_elt = document.getElementById(use_id);
+      if (!use_elt) {
+        continue;
+      }
+      use_elt.addEventListener("mouseover", () => {
+        highlight_text(editor, use_id, true);
+      });
+      use_elt.addEventListener("mouseout", () => {
+        highlight_text(editor, use_id, false);
+      });
+    }
+  }
+  return positions;
 }
 
 export function setup_download(div, diagram_div, get_value) {
@@ -58,6 +83,7 @@ export function setup_edit(div, get_value) {
 }
 
 function parse_text_pos(text_pos) {
+  // This also copes with suffixed versions (e.g. "r_0_c_0_5_n2").
   var re = /r_(\d+)_c_(\d+)_(\d+)/;
   var m = text_pos.match(re);
   if (!m) {
@@ -65,14 +91,13 @@ function parse_text_pos(text_pos) {
   }
   var row = Number(m[1]);
   var col = Number(m[2]);
-  var count = Number(m[3]);
-  return { row: row, col: col, count: count};
+  var endcol = Number(m[3]);
+  return { row: row, col: col, endcol: endcol};
 }
 
 function change_elt_colour(text_pos, colour) {
   // Assume at most 10 <use> elements for a given text_pos.
-  let suffixes = ["", "_n2", "_n3", "_n4", "_n5", "_n6", "_n7", "_n8", "_n9"];
-  for (const suffix of suffixes) {
+  for (const suffix of use_id_suffixes) {
     var use_id = text_pos + suffix;
     let elt = document.getElementById(use_id);
     if (!elt) {
@@ -94,6 +119,30 @@ function highlight_elt(text_pos) {
   currently_highlighted = text_pos;
   if (text_pos) {
     change_elt_colour(text_pos, "red");
+  }
+}
+
+var AceRange = ace.require('ace/range').Range;
+
+var current_text_marker;
+var marked_text_position;
+function highlight_text(editor, text_pos, enabled) {
+  if (enabled && text_pos == marked_text_position) {
+      return;
+  }
+  if (current_text_marker) {
+    console.log("clear text marker_id=" + current_text_marker + " at " + marked_text_position);
+    editor.getSession().removeMarker(current_text_marker);
+    current_text_marker = null;
+    marked_text_position = null;
+  }
+
+  if (enabled) {
+    var pos = parse_text_pos(text_pos);
+    var range = new AceRange(pos.row, pos.col, pos.row, pos.endcol);
+    current_text_marker = editor.getSession().addMarker(range, "ace_selected_word", "text");
+    console.log("set text marker at " + text_pos + " == " + range + " => marker_id=" + current_text_marker);
+    marked_text_position = text_pos;
   }
 }
 
@@ -121,7 +170,7 @@ export function setup_editor(div, autofocus, text) {
       editor.getSession().setAnnotations([]);
       var options = { scale: 1 };
 
-      var positions = set_svg(editor.getValue(), diagram_div);
+      var positions = set_svg_with_events(editor, diagram_div);
 
       editor.session.selection.on('changeCursor', function(e) {
         var cursor = editor.selection.getCursor();
@@ -132,7 +181,7 @@ export function setup_editor(div, autofocus, text) {
             continue;
           }
           if ((cursor.row == pos.row) &&
-              (cursor.column >= pos.col) && (cursor.column <= (pos.col + pos.count))) {
+              (cursor.column >= pos.col) && (cursor.column <= pos.endcol)) {
             to_highlight = text_pos;
             break;
           }

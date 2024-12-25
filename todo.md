@@ -60,7 +60,7 @@
     - [ ] Can standalone SVG share CSS with web?
 - [x] Option for arbitrary text annotation on move ("LFI3 (waves arms)")
 - [ ] SVG to HTML linkage
-    - [ ] mouse over move => highlight text in editor
+    - [x] mouse over move => highlight text in editor
     - [x] cursor on move => highlight corresponding move
     - [ ] animation: highlight move in diagram and corresponding text in editor
 - [ ] Reproduce skills diagrams
