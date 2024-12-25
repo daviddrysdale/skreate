@@ -56,8 +56,8 @@ $(DOCGEN): doc/src/main.rs $(LIBRARY_SRC)
 
 publish: clean clean_manual build regenerate publish_build publish_tag
 publish_build:
-	git diff-index --quiet HEAD -- && \
-	rm -rf published && \
+	git diff-index --quiet HEAD --
+	rm -rf published
 	cp -r web published
 
 publish_tag:
