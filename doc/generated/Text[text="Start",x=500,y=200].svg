@@ -10,7 +10,7 @@ Skating Diagram
 text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 </defs>
-<text style="font-size:10pt;" x="500" y="200">
+<text id="r_0_c_0_30" style="stroke:black; fill:black; font-size:10pt;" x="500" y="200">
 Start
 </text>
 </svg>

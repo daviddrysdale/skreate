@@ -19,16 +19,16 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 286,286 0 0 1 -286,286"/>
 </g>
 </defs>
-<use id="r_0_c_0_7" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-CoE_0::LFO[angle=90]"/>
-<text style="font-size:14pt;" x="112" y="173">
+<use id="r_0_c_0_7" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-CoE_0::LFO[angle=90]"/>
+<text id="r_0_c_0_7_n2" style="stroke:black; fill:black; font-size:14pt;" x="112" y="173">
 LFO
 </text>
-<use id="r_0_c_0_7_n2" style="stroke-width:1; stroke: black;" transform="translate(286 286) rotate(270)" xlink:href="#LFO-CoE_1::LF[len=50,label=&quot;COE&quot;]"/>
-<text style="font-size:14pt;" x="311" y="256">
+<use id="r_0_c_0_7_n3" style="stroke:black; stroke-width:1;" transform="translate(286 286) rotate(270)" xlink:href="#LFO-CoE_1::LF[len=50,label=&quot;COE&quot;]"/>
+<text id="r_0_c_0_7_n4" style="stroke:black; fill:black; font-size:14pt;" x="311" y="256">
 COE
 </text>
-<use id="r_0_c_0_7_n3" style="stroke-width:1; stroke: black;" transform="translate(336 286) rotate(270)" xlink:href="#LFO-CoE_2::LFI[angle=90]"/>
-<text style="font-size:14pt;" x="509" y="398">
+<use id="r_0_c_0_7_n5" style="stroke:black; stroke-width:1;" transform="translate(336 286) rotate(270)" xlink:href="#LFO-CoE_2::LFI[angle=90]"/>
+<text id="r_0_c_0_7_n6" style="stroke:black; fill:black; font-size:14pt;" x="509" y="398">
 LFI
 </text>
 </svg>

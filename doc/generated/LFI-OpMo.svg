@@ -16,15 +16,15 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 286,286 0 0 1 -286,286"/>
 </g>
 </defs>
-<use id="r_0_c_0_8" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-OpMo_0::LFI[angle=90]"/>
-<text style="font-size:12pt;" x="-108" y="177">
+<use id="r_0_c_0_8" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFI-OpMo_0::LFI[angle=90]"/>
+<text id="r_0_c_0_8_n2" style="stroke:black; fill:black; font-size:12pt;" x="-108" y="177">
 LFI
 </text>
-<text style="font-size:12pt;" x="-316" y="216">
+<text id="r_0_c_0_8_n3" style="stroke:black; fill:black; font-size:12pt;" x="-316" y="216">
 OpMo
 </text>
-<use id="r_0_c_0_8_n2" style="stroke-width:1; stroke: black;" transform="translate(-221 206) rotate(0)" xlink:href="#LFI-OpMo_3::RBI[angle=90]"/>
-<text style="font-size:12pt;" x="-329" y="383">
+<use id="r_0_c_0_8_n4" style="stroke:black; stroke-width:1;" transform="translate(-221 206) rotate(0)" xlink:href="#LFI-OpMo_3::RBI[angle=90]"/>
+<text id="r_0_c_0_8_n5" style="stroke:black; fill:black; font-size:12pt;" x="-329" y="383">
 RBI
 </text>
 </svg>

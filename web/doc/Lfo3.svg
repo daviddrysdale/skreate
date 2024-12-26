@@ -22,14 +22,14 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 536,536 0 0 0 102,315"/>
 </g>
 </defs>
-<use id="r_0_c_0_4" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LFO3_0::LFO[angle=36,len=337,label=&quot;LFO3&quot;]"/>
-<text style="font-size:14pt;" x="65" y="153">
+<use id="r_0_c_0_4" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO3_0::LFO[angle=36,len=337,label=&quot;LFO3&quot;]"/>
+<text id="r_0_c_0_4_n2" style="stroke:black; fill:black; font-size:14pt;" x="65" y="153">
 LFO3
 </text>
-<use id="r_0_c_0_4_n2" style="stroke-width:1; stroke: black;" transform="translate(102 315) rotate(324)" xlink:href="#LFO3_1::LFO[angle=54,len=113,label=&quot; &quot;]"/>
-<use id="r_0_c_0_4_n3" style="stroke-width:1; stroke: black;" transform="translate(198 363) rotate(45)" xlink:href="#LFO3_3::LBI[angle=54,len=113,label=&quot; &quot;]"/>
-<use id="r_0_c_0_4_n4" style="stroke-width:1; stroke: black;" transform="translate(164 465) rotate(351)" xlink:href="#LFO3_4::LBI[angle=36,len=337]"/>
-<text style="font-size:14pt;" x="252" y="605">
+<use id="r_0_c_0_4_n3" style="stroke:black; stroke-width:1;" transform="translate(102 315) rotate(324)" xlink:href="#LFO3_1::LFO[angle=54,len=113,label=&quot; &quot;]"/>
+<use id="r_0_c_0_4_n4" style="stroke:black; stroke-width:1;" transform="translate(198 363) rotate(45)" xlink:href="#LFO3_3::LBI[angle=54,len=113,label=&quot; &quot;]"/>
+<use id="r_0_c_0_4_n5" style="stroke:black; stroke-width:1;" transform="translate(164 465) rotate(351)" xlink:href="#LFO3_4::LBI[angle=36,len=337]"/>
+<text id="r_0_c_0_4_n6" style="stroke:black; fill:black; font-size:14pt;" x="252" y="605">
 LBI
 </text>
 </svg>

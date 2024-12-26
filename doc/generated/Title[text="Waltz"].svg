@@ -10,7 +10,7 @@ Waltz
 text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 </defs>
-<text style="font-size: 20pt;" x="0" y="100">
+<text id="r_0_c_0_19" style="stroke:black; fill:black; font-size: 20pt;" x="0" y="100">
 Waltz
 </text>
 </svg>

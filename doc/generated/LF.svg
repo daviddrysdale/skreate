@@ -13,8 +13,8 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 l 0,450"/>
 </g>
 </defs>
-<use id="r_0_c_0_2" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LF"/>
-<text style="font-size:10pt;" x="30" y="225">
+<use id="r_0_c_0_2" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LF"/>
+<text id="r_0_c_0_2_n2" style="stroke:black; fill:black; font-size:10pt;" x="30" y="225">
 LF
 </text>
 </svg>

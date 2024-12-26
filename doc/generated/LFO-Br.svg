@@ -28,19 +28,19 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 214,214 0 0 0 214,214"/>
 </g>
 </defs>
-<use id="r_0_c_0_6" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Br_0::LFO[angle=90,len=337,label=&quot;LFO-Br&quot;]"/>
-<text style="font-size:12pt;" x="87" y="126">
+<use id="r_0_c_0_6" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Br_0::LFO[angle=90,len=337,label=&quot;LFO-Br&quot;]"/>
+<text id="r_0_c_0_6_n2" style="stroke:black; fill:black; font-size:12pt;" x="87" y="126">
 LFO-Br
 </text>
-<use id="r_0_c_0_6_n2" style="stroke-width:1; stroke: black;" transform="translate(214 214) rotate(270)" xlink:href="#LFO-Br_1::LF[len=40,label=&quot; &quot;]"/>
-<use id="r_0_c_0_6_n3" style="stroke-width:1; stroke: black;" transform="translate(254 214) rotate(270)" xlink:href="#LFO-Br_2::LFI[angle=80,len=73,label=&quot; &quot;]"/>
-<text style="font-size:12pt;" x="311" y="296">
+<use id="r_0_c_0_6_n3" style="stroke:black; stroke-width:1;" transform="translate(214 214) rotate(270)" xlink:href="#LFO-Br_1::LF[len=40,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n4" style="stroke:black; stroke-width:1;" transform="translate(254 214) rotate(270)" xlink:href="#LFO-Br_2::LFI[angle=80,len=73,label=&quot; &quot;]"/>
+<text id="r_0_c_0_6_n5" style="stroke:black; fill:black; font-size:12pt;" x="311" y="296">
 Br
 </text>
-<use id="r_0_c_0_6_n4" style="stroke-width:1; stroke: black;" transform="translate(305 257) rotate(215)" xlink:href="#LFO-Br_5::LBO[angle=80,len=73,label=&quot; &quot;]"/>
-<use id="r_0_c_0_6_n5" style="stroke-width:1; stroke: black;" transform="translate(369 239) rotate(295)" xlink:href="#LFO-Br_6::LB[len=40,label=&quot; &quot;]"/>
-<use id="r_0_c_0_6_n6" style="stroke-width:1; stroke: black;" transform="translate(405 255) rotate(295)" xlink:href="#LFO-Br_7::LBI[angle=90,len=337]"/>
-<text style="font-size:12pt;" x="555" y="229">
+<use id="r_0_c_0_6_n6" style="stroke:black; stroke-width:1;" transform="translate(305 257) rotate(215)" xlink:href="#LFO-Br_5::LBO[angle=80,len=73,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n7" style="stroke:black; stroke-width:1;" transform="translate(369 239) rotate(295)" xlink:href="#LFO-Br_6::LB[len=40,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n8" style="stroke:black; stroke-width:1;" transform="translate(405 255) rotate(295)" xlink:href="#LFO-Br_7::LBI[angle=90,len=337]"/>
+<text id="r_0_c_0_6_n9" style="stroke:black; fill:black; font-size:12pt;" x="555" y="229">
 LBI
 </text>
 </svg>

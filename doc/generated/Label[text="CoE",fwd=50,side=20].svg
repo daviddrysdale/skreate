@@ -10,7 +10,7 @@ Skating Diagram
 text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
 </defs>
-<text style="font-size:10pt;" x="20" y="50">
+<text id="r_0_c_0_32" style="stroke:black; fill:black; font-size:10pt;" x="20" y="50">
 CoE
 </text>
 </svg>

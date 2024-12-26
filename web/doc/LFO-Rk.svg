@@ -25,18 +25,18 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 214,214 0 0 1 -214,214"/>
 </g>
 </defs>
-<use id="r_0_c_0_6" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO-Rk&quot;]"/>
-<text style="font-size:12pt;" x="96" y="146">
+<use id="r_0_c_0_6" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO-Rk&quot;]"/>
+<text id="r_0_c_0_6_n2" style="stroke:black; fill:black; font-size:12pt;" x="96" y="146">
 LFO-Rk
 </text>
-<use id="r_0_c_0_6_n2" style="stroke-width:1; stroke: black;" transform="translate(243 243) rotate(270)" xlink:href="#LFO-Rk_1::LFO[angle=80,len=68,label=&quot; &quot;]"/>
-<text style="font-size:12pt;" x="296" y="163">
+<use id="r_0_c_0_6_n3" style="stroke:black; stroke-width:1;" transform="translate(243 243) rotate(270)" xlink:href="#LFO-Rk_1::LFO[angle=80,len=68,label=&quot; &quot;]"/>
+<text id="r_0_c_0_6_n4" style="stroke:black; fill:black; font-size:12pt;" x="296" y="163">
 Rk
 </text>
-<use id="r_0_c_0_6_n3" style="stroke-width:1; stroke: black;" transform="translate(290 203) rotate(325)" xlink:href="#LFO-Rk_4::LBI[angle=80,len=93,label=&quot; &quot;]"/>
-<use id="r_0_c_0_6_n4" style="stroke-width:1; stroke: black;" transform="translate(372 224) rotate(245)" xlink:href="#LFO-Rk_5::LB[len=20,label=&quot; &quot;]"/>
-<use id="r_0_c_0_6_n5" style="stroke-width:1; stroke: black;" transform="translate(390 215) rotate(245)" xlink:href="#LFO-Rk_6::LBO[angle=90,len=337]"/>
-<text style="font-size:12pt;" x="540" y="240">
+<use id="r_0_c_0_6_n5" style="stroke:black; stroke-width:1;" transform="translate(290 203) rotate(325)" xlink:href="#LFO-Rk_4::LBI[angle=80,len=93,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n6" style="stroke:black; stroke-width:1;" transform="translate(372 224) rotate(245)" xlink:href="#LFO-Rk_5::LB[len=20,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n7" style="stroke:black; stroke-width:1;" transform="translate(390 215) rotate(245)" xlink:href="#LFO-Rk_6::LBO[angle=90,len=337]"/>
+<text id="r_0_c_0_6_n8" style="stroke:black; fill:black; font-size:12pt;" x="540" y="240">
 LBO
 </text>
 </svg>
