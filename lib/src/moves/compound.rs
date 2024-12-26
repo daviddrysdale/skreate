@@ -1,8 +1,9 @@
 //! Compound move definition.
 use crate::{
-    Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater, SpatialTransition,
-    SvgId, TextPosition, Transition,
+    params, params::Value, Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater,
+    SpatialTransition, SvgId, TextPosition, Transition,
 };
+use std::borrow::Cow;
 use svg::node::element::Group;
 use svg::Document;
 
@@ -178,4 +179,167 @@ impl Move for Compound {
         }
         doc
     }
+}
+
+/// Generate move parameters for a two-part compound move.
+#[allow(clippy::too_many_arguments)]
+pub const fn params(
+    aless3: i32,
+    aless2: i32,
+    aless1: i32,
+    adflt: i32,
+    aadd1: i32,
+    aadd2: i32,
+    aadd3: i32,
+    lless3: i32,
+    lless2: i32,
+    lless1: i32,
+    ldflt: i32,
+    ladd1: i32,
+    ladd2: i32,
+    ladd3: i32,
+) -> [params::Info; 6] {
+    [
+        params::Info {
+            name: "angle",
+            doc: "Angle of rotation for each curved part, in degrees",
+            default: Value::Number(adflt),
+            range: params::Range::StrictlyPositive,
+            short: Some(params::Abbrev::GreaterLess(params::Detents {
+                add1: aadd1,
+                add2: aadd2,
+                add3: aadd3,
+                less1: aless1,
+                less2: aless2,
+                less3: aless3,
+            })),
+        },
+        params::Info {
+            name: "len",
+            doc: "Length of each curved part in centimetres",
+            default: Value::Number(ldflt),
+            range: params::Range::StrictlyPositive,
+            short: Some(params::Abbrev::PlusMinus(params::Detents {
+                add1: ladd1,
+                add2: ladd2,
+                add3: ladd3,
+                less1: lless1,
+                less2: lless2,
+                less3: lless3,
+            })),
+        },
+        params::Info {
+            name: "delta-angle",
+            doc: "Difference in angle for second curved part, in degrees",
+            default: Value::Number(0),
+            range: params::Range::Any,
+            short: None,
+        },
+        params::Info {
+            name: "delta-len",
+            doc: "Difference in length for second curved part, in centimetres",
+            default: Value::Number(0),
+            range: params::Range::Any,
+            short: None,
+        },
+        params::Info {
+            name: "style",
+            doc: "Style of line",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "transition-label",
+            doc: "Replacement transition label, used if non-empty",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+    ]
+}
+
+/// Generate move parameters for a two-part compound move with a flat join.
+#[allow(clippy::too_many_arguments)]
+pub const fn params_flat(
+    aless3: i32,
+    aless2: i32,
+    aless1: i32,
+    adflt: i32,
+    aadd1: i32,
+    aadd2: i32,
+    aadd3: i32,
+    lless3: i32,
+    lless2: i32,
+    lless1: i32,
+    ldflt: i32,
+    ladd1: i32,
+    ladd2: i32,
+    ladd3: i32,
+) -> [params::Info; 7] {
+    [
+        params::Info {
+            name: "angle",
+            doc: "Angle of rotation for each curved part, in degrees",
+            default: Value::Number(adflt),
+            range: params::Range::StrictlyPositive,
+            short: Some(params::Abbrev::GreaterLess(params::Detents {
+                add1: aadd1,
+                add2: aadd2,
+                add3: aadd3,
+                less1: aless1,
+                less2: aless2,
+                less3: aless3,
+            })),
+        },
+        params::Info {
+            name: "len",
+            doc: "Length of each curved part in centimetres",
+            default: Value::Number(ldflt),
+            range: params::Range::StrictlyPositive,
+            short: Some(params::Abbrev::PlusMinus(params::Detents {
+                add1: ladd1,
+                add2: ladd2,
+                add3: ladd3,
+                less1: lless1,
+                less2: lless2,
+                less3: lless3,
+            })),
+        },
+        params::Info {
+            name: "delta-angle",
+            doc: "Difference in angle for second curved part, in degrees",
+            default: Value::Number(0),
+            range: params::Range::Any,
+            short: None,
+        },
+        params::Info {
+            name: "delta-len",
+            doc: "Difference in length for second curved part, in centimetres",
+            default: Value::Number(0),
+            range: params::Range::Any,
+            short: None,
+        },
+        params::Info {
+            name: "style",
+            doc: "Style of line",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "transition-label",
+            doc: "Replacement transition label, used if non-empty",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "flat-len",
+            doc: "Length between edges in centimetres",
+            default: Value::Number(50),
+            range: params::Range::StrictlyPositive,
+            short: None,
+        },
+    ]
 }

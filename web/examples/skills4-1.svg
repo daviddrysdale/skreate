@@ -30,13 +30,13 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="xf-LBI-[angle=45]">
 <path d="M 0,0 a 381,381 0 0 0 111,270"/>
 </g>
-<g id="RBO-CoE+[flat-len=100,delta-angle=90,delta-len=500]_0::RBO+[angle=90]">
+<g id="RBO-CoE+[delta-angle=90,delta-len=500,flat-len=100]_0::RBO+[angle=90]">
 <path d="M 0,0 a 381,381 0 0 0 381,381"/>
 </g>
-<g id="RBO-CoE+[flat-len=100,delta-angle=90,delta-len=500]_1::RB---[label=&quot;COE&quot;]">
+<g id="RBO-CoE+[delta-angle=90,delta-len=500,flat-len=100]_1::RB---[label=&quot;COE&quot;]">
 <path d="M 0,0 l 0,100"/>
 </g>
-<g id="RBO-CoE+[flat-len=100,delta-angle=90,delta-len=500]_2::RBI&gt;&gt;&gt;[len=1100]">
+<g id="RBO-CoE+[delta-angle=90,delta-len=500,flat-len=100]_2::RBI&gt;&gt;&gt;[len=1100]">
 <path d="M 0,0 a 350,350 0 1 1 -700,0"/>
 </g>
 <g id="LBO[angle=45,len=200]">
@@ -188,15 +188,15 @@ LBI
 <text style="font-size:24pt;" x="386" y="607">
 XF
 </text>
-<use id="r_11_c_0_68" style="stroke-width:4; stroke: black;" transform="translate(347 901) rotate(0)" xlink:href="#RBO-CoE+[flat-len=100,delta-angle=90,delta-len=500]_0::RBO+[angle=90]"/>
+<use id="r_11_c_0_68" style="stroke-width:4; stroke: black;" transform="translate(347 901) rotate(0)" xlink:href="#RBO-CoE+[delta-angle=90,delta-len=500,flat-len=100]_0::RBO+[angle=90]"/>
 <text style="font-size:24pt;" x="508" y="1121">
 RBO
 </text>
-<use id="r_11_c_0_68_n2" style="stroke-width:4; stroke: black;" transform="translate(728 1282) rotate(270)" xlink:href="#RBO-CoE+[flat-len=100,delta-angle=90,delta-len=500]_1::RB---[label=&quot;COE&quot;]"/>
+<use id="r_11_c_0_68_n2" style="stroke-width:4; stroke: black;" transform="translate(728 1282) rotate(270)" xlink:href="#RBO-CoE+[delta-angle=90,delta-len=500,flat-len=100]_1::RB---[label=&quot;COE&quot;]"/>
 <text style="font-size:24pt;" x="778" y="1252">
 COE
 </text>
-<use id="r_11_c_0_68_n3" style="stroke-width:4; stroke: black;" transform="translate(828 1282) rotate(270)" xlink:href="#RBO-CoE+[flat-len=100,delta-angle=90,delta-len=500]_2::RBI&gt;&gt;&gt;[len=1100]"/>
+<use id="r_11_c_0_68_n3" style="stroke-width:4; stroke: black;" transform="translate(828 1282) rotate(270)" xlink:href="#RBO-CoE+[delta-angle=90,delta-len=500,flat-len=100]_2::RBI&gt;&gt;&gt;[len=1100]"/>
 <text style="font-size:24pt;" x="1106" y="1632">
 RBI
 </text>

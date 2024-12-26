@@ -1,10 +1,13 @@
 //! Rocker
 
-use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, straight::StraightEdge};
-use crate::{
-    code, moves, params, params::Value, parser, Code, Edge, MoveParam, PreTransition, TextPosition,
+use super::{
+    compound::{self, Compound},
+    edge::Curve,
+    label::Label,
+    shift::Shift,
+    straight::StraightEdge,
 };
-use std::borrow::Cow;
+use crate::{code, moves, params, parser, Code, Edge, MoveParam, PreTransition, TextPosition};
 
 pub struct Rocker;
 
@@ -17,64 +20,10 @@ impl Rocker {
         summary: "Rocker turn",
         example: "LFO-Rk",
         visible: true,
-        params: &[
-            params::Info {
-                name: "angle",
-                doc: "Angle of rotation for each curved part, in degrees",
-                default: Value::Number(90),
-                range: params::Range::StrictlyPositive,
-                short: Some(params::Abbrev::GreaterLess(params::Detents {
-                    add1: 100,
-                    add2: 120,
-                    add3: 140,
-                    less1: 80,
-                    less2: 70,
-                    less3: 60,
-                })),
-            },
-            params::Info {
-                name: "len",
-                doc: "Length of each curved part in centimetres",
-                default: Value::Number(450),
-                range: params::Range::StrictlyPositive,
-                short: Some(params::Abbrev::PlusMinus(params::Detents {
-                    add1: 600,
-                    add2: 850,
-                    add3: 1000,
-                    less1: 300,
-                    less2: 240,
-                    less3: 100,
-                })),
-            },
-            params::Info {
-                name: "delta-angle",
-                doc: "Difference in angle for second curved part, in degrees",
-                default: Value::Number(0),
-                range: params::Range::Any,
-                short: None,
-            },
-            params::Info {
-                name: "delta-len",
-                doc: "Difference in length for second curved part, in centimetres",
-                default: Value::Number(0),
-                range: params::Range::Any,
-                short: None,
-            },
-            params::Info {
-                name: "style",
-                doc: "Style of line",
-                default: Value::Text(Cow::Borrowed("")),
-                range: params::Range::Text,
-                short: None,
-            },
-            params::Info {
-                name: "transition-label",
-                doc: "Replacement transition label, used if non-empty",
-                default: Value::Text(Cow::Borrowed("")),
-                range: params::Range::Text,
-                short: None,
-            },
-        ],
+        params: &compound::params(
+            60, 70, 80, 90, 100, 120, 140, // Angle values
+            100, 240, 300, 450, 600, 850, 1000, // Length values
+        ),
     };
 
     pub fn from_params(
