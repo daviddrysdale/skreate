@@ -126,9 +126,11 @@ function change_elt_colour(text_pos, colour) {
         continue;
     }
     const cur_style = elt.getAttribute("style");
-    let regexp = /stroke: *[^;]+;/;
-    let new_style = cur_style.replace(regexp, "stroke: " + colour + ";");
-    elt.setAttribute("style", new_style);
+    let stroke_regexp = /stroke: *[^;]+;/;
+    let red_stroke = cur_style.replace(stroke_regexp, "stroke:" + colour + ";");
+    let fill_regexp = /fill: *[^;]+;/;
+    let red_fill = red_stroke.replace(fill_regexp, "fill:" + colour + ";");
+    elt.setAttribute("style", red_fill);
   }
 }
 
