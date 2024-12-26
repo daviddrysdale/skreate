@@ -42,38 +42,22 @@ Warp [x=1900,y=5600,dir=270,code="LFO"]
 RF [label=" ",style="dashed"]
 RFI [label=" ",style="dashed",angle=90]
 
-# TODO -OpCho
-RFI [angle=90]
-Label [text="OpCho",side=-50]
-Shift [code="LBO",side=40]
-LBO [len=300]
+RFI-OpCho [angle=90,delta-angle=-50,delta-len=-200]
 
-xf-RBI [len=200,angle=30]
-LBO-ClMo [angle=30,len=350]
+xf-RBI [len=200,angle=20]
+LBO-ClMo [angle=20,len=250]
 
-# TODO -OpCho
-LFI [angle=65,len=350,transition-label="Slip Chasse"]
-Label [text="OpCho",side=50]
-Shift [code="LBO",side=-80]
-RBO [len=300]
+LFI-OpCho [angle=75,len=350,delta-len=-200,delta-angle=-40,transition-label="Slip Chasse"]
 
-xf-LBI [len=300,angle=30]
-RBO-ClMo [angle=30,len=350]
+xf-LBI [len=200,angle=20]
+RBO-ClMo [angle=20,len=250]
 
-# TODO -OpCho
-RFI [angle=70,transition-label="Slip Chasse"]
-Label [text="OpCho",side=-50]
-Shift [code="LBO",side=40]
-LBO [len=200]
+RFI-OpCho [angle=75,len=450,delta-len=-200,delta-angle=-40,transition-label="Slip Chasse"]
 
-xf-RBI [len=200,angle=30]
-LBO-ClMo [angle=30,len=350,delta-len=-50]
+xf-RBI [len=200,angle=20]
+LBO-ClMo [angle=20,len=300,delta-len=-50]
 
-# TODO -OpCho
-LFI [angle=65,len=350,transition-label="Slip Chasse"]
-Label [text="OpCho",side=50]
-Shift [code="LBO",side=-80]
-RBO [len=300]
+LFI-OpCho [angle=75,len=450,delta-len=-200,delta-angle=-40,transition-label="Slip Chasse"]
 
-xf-LBI [len=250,angle=25]
+xf-LBI [len=200,angle=20]
 RBO-ClMo [angle=25,len=300]
