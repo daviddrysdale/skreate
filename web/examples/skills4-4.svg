@@ -20,7 +20,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,2250 l 3000,0" style="stroke: blue;"/>
 <path d="M 0,3850 l 3000,0" style="stroke: blue;"/>
 </g>
-<g id="Info[grid=100,font-size=30]"/>
+<g id="Info[font-size=30]"/>
 <g id="LF[len=400,label=&quot; &quot;,style=&quot;dashed&quot;]">
 <path d="M 0,0 l 0,400" stroke-dasharray="50 30"/>
 </g>
@@ -555,95 +555,4 @@ RBO-Tw1
 <use id="r_58_c_0_78_n8" style="stroke-width:4; stroke: black;" transform="translate(2409 1464) rotate(300)" xlink:href="#xb-RBO-Tw1[angle=120,len=40,pre-angle=40,post-angle=40,transition-label=&quot;CR&quot;]_10::RBO[angle=72,len=10,label=&quot; &quot;]"/>
 <use id="r_58_c_0_78_n9" style="stroke-width:4; stroke: black;" transform="translate(2417 1463) rotate(228)" xlink:href="#xb-RBO-Tw1[angle=120,len=40,pre-angle=40,post-angle=40,transition-label=&quot;CR&quot;]_11::RBO[angle=48,len=30,label=&quot; &quot;]"/>
 <use id="r_58_c_0_78_n10" style="stroke-width:4; stroke: black;" transform="translate(2428 1437) rotate(180)" xlink:href="#xb-RBO-Tw1[angle=120,len=40,pre-angle=40,post-angle=40,transition-label=&quot;CR&quot;]_12::RBO---[angle=40,label=&quot; &quot;]"/>
-<path d="M 0,0 L 0,6100" style="stroke:gray; stroke-width:2;"/>
-<path d="M 100,0 L 100,6100" style="stroke:lightgray"/>
-<path d="M 200,0 L 200,6100" style="stroke:lightgray"/>
-<path d="M 300,0 L 300,6100" style="stroke:lightgray"/>
-<path d="M 400,0 L 400,6100" style="stroke:lightgray"/>
-<path d="M 500,0 L 500,6100" style="stroke:lightgray"/>
-<path d="M 600,0 L 600,6100" style="stroke:lightgray"/>
-<path d="M 700,0 L 700,6100" style="stroke:lightgray"/>
-<path d="M 800,0 L 800,6100" style="stroke:lightgray"/>
-<path d="M 900,0 L 900,6100" style="stroke:lightgray"/>
-<path d="M 1000,0 L 1000,6100" style="stroke:lightgray"/>
-<path d="M 1100,0 L 1100,6100" style="stroke:lightgray"/>
-<path d="M 1200,0 L 1200,6100" style="stroke:lightgray"/>
-<path d="M 1300,0 L 1300,6100" style="stroke:lightgray"/>
-<path d="M 1400,0 L 1400,6100" style="stroke:lightgray"/>
-<path d="M 1500,0 L 1500,6100" style="stroke:lightgray"/>
-<path d="M 1600,0 L 1600,6100" style="stroke:lightgray"/>
-<path d="M 1700,0 L 1700,6100" style="stroke:lightgray"/>
-<path d="M 1800,0 L 1800,6100" style="stroke:lightgray"/>
-<path d="M 1900,0 L 1900,6100" style="stroke:lightgray"/>
-<path d="M 2000,0 L 2000,6100" style="stroke:lightgray"/>
-<path d="M 2100,0 L 2100,6100" style="stroke:lightgray"/>
-<path d="M 2200,0 L 2200,6100" style="stroke:lightgray"/>
-<path d="M 2300,0 L 2300,6100" style="stroke:lightgray"/>
-<path d="M 2400,0 L 2400,6100" style="stroke:lightgray"/>
-<path d="M 2500,0 L 2500,6100" style="stroke:lightgray"/>
-<path d="M 2600,0 L 2600,6100" style="stroke:lightgray"/>
-<path d="M 2700,0 L 2700,6100" style="stroke:lightgray"/>
-<path d="M 2800,0 L 2800,6100" style="stroke:lightgray"/>
-<path d="M 2900,0 L 2900,6100" style="stroke:lightgray"/>
-<path d="M 0,0 L 3000,0" style="stroke:gray; stroke-width:2;"/>
-<path d="M 0,100 L 3000,100" style="stroke:lightgray"/>
-<path d="M 0,200 L 3000,200" style="stroke:lightgray"/>
-<path d="M 0,300 L 3000,300" style="stroke:lightgray"/>
-<path d="M 0,400 L 3000,400" style="stroke:lightgray"/>
-<path d="M 0,500 L 3000,500" style="stroke:lightgray"/>
-<path d="M 0,600 L 3000,600" style="stroke:lightgray"/>
-<path d="M 0,700 L 3000,700" style="stroke:lightgray"/>
-<path d="M 0,800 L 3000,800" style="stroke:lightgray"/>
-<path d="M 0,900 L 3000,900" style="stroke:lightgray"/>
-<path d="M 0,1000 L 3000,1000" style="stroke:lightgray"/>
-<path d="M 0,1100 L 3000,1100" style="stroke:lightgray"/>
-<path d="M 0,1200 L 3000,1200" style="stroke:lightgray"/>
-<path d="M 0,1300 L 3000,1300" style="stroke:lightgray"/>
-<path d="M 0,1400 L 3000,1400" style="stroke:lightgray"/>
-<path d="M 0,1500 L 3000,1500" style="stroke:lightgray"/>
-<path d="M 0,1600 L 3000,1600" style="stroke:lightgray"/>
-<path d="M 0,1700 L 3000,1700" style="stroke:lightgray"/>
-<path d="M 0,1800 L 3000,1800" style="stroke:lightgray"/>
-<path d="M 0,1900 L 3000,1900" style="stroke:lightgray"/>
-<path d="M 0,2000 L 3000,2000" style="stroke:lightgray"/>
-<path d="M 0,2100 L 3000,2100" style="stroke:lightgray"/>
-<path d="M 0,2200 L 3000,2200" style="stroke:lightgray"/>
-<path d="M 0,2300 L 3000,2300" style="stroke:lightgray"/>
-<path d="M 0,2400 L 3000,2400" style="stroke:lightgray"/>
-<path d="M 0,2500 L 3000,2500" style="stroke:lightgray"/>
-<path d="M 0,2600 L 3000,2600" style="stroke:lightgray"/>
-<path d="M 0,2700 L 3000,2700" style="stroke:lightgray"/>
-<path d="M 0,2800 L 3000,2800" style="stroke:lightgray"/>
-<path d="M 0,2900 L 3000,2900" style="stroke:lightgray"/>
-<path d="M 0,3000 L 3000,3000" style="stroke:lightgray"/>
-<path d="M 0,3100 L 3000,3100" style="stroke:lightgray"/>
-<path d="M 0,3200 L 3000,3200" style="stroke:lightgray"/>
-<path d="M 0,3300 L 3000,3300" style="stroke:lightgray"/>
-<path d="M 0,3400 L 3000,3400" style="stroke:lightgray"/>
-<path d="M 0,3500 L 3000,3500" style="stroke:lightgray"/>
-<path d="M 0,3600 L 3000,3600" style="stroke:lightgray"/>
-<path d="M 0,3700 L 3000,3700" style="stroke:lightgray"/>
-<path d="M 0,3800 L 3000,3800" style="stroke:lightgray"/>
-<path d="M 0,3900 L 3000,3900" style="stroke:lightgray"/>
-<path d="M 0,4000 L 3000,4000" style="stroke:lightgray"/>
-<path d="M 0,4100 L 3000,4100" style="stroke:lightgray"/>
-<path d="M 0,4200 L 3000,4200" style="stroke:lightgray"/>
-<path d="M 0,4300 L 3000,4300" style="stroke:lightgray"/>
-<path d="M 0,4400 L 3000,4400" style="stroke:lightgray"/>
-<path d="M 0,4500 L 3000,4500" style="stroke:lightgray"/>
-<path d="M 0,4600 L 3000,4600" style="stroke:lightgray"/>
-<path d="M 0,4700 L 3000,4700" style="stroke:lightgray"/>
-<path d="M 0,4800 L 3000,4800" style="stroke:lightgray"/>
-<path d="M 0,4900 L 3000,4900" style="stroke:lightgray"/>
-<path d="M 0,5000 L 3000,5000" style="stroke:lightgray"/>
-<path d="M 0,5100 L 3000,5100" style="stroke:lightgray"/>
-<path d="M 0,5200 L 3000,5200" style="stroke:lightgray"/>
-<path d="M 0,5300 L 3000,5300" style="stroke:lightgray"/>
-<path d="M 0,5400 L 3000,5400" style="stroke:lightgray"/>
-<path d="M 0,5500 L 3000,5500" style="stroke:lightgray"/>
-<path d="M 0,5600 L 3000,5600" style="stroke:lightgray"/>
-<path d="M 0,5700 L 3000,5700" style="stroke:lightgray"/>
-<path d="M 0,5800 L 3000,5800" style="stroke:lightgray"/>
-<path d="M 0,5900 L 3000,5900" style="stroke:lightgray"/>
-<path d="M 0,6000 L 3000,6000" style="stroke:lightgray"/>
 </svg>

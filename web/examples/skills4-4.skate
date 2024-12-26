@@ -1,6 +1,6 @@
 Rink
 Title [text="Skills 4 Exercise 4",y=200,font-size=90]
-Info [grid=100,markers=false,font-size=30]
+Info [grid=0,markers=false,font-size=30]
 
 Text [x=1350,y=1630,text="SIDE 1",font-size=50]
 Warp [x=1200,y=1600,dir=90,code="LFO"]
