@@ -113,11 +113,20 @@ impl Move for Title {
         } else {
             opts.bounds.midpoint().x
         };
-        doc.add(
-            Text::new(self.text.clone())
-                .set("x", x)
-                .set("y", self.pos.y)
-                .set("style", format!("font-size: {}pt;", self.font_size(opts))),
-        )
+        let mut text = Text::new(self.text.clone())
+            .set("x", x)
+            .set("y", self.pos.y)
+            .set(
+                "style",
+                format!(
+                    "stroke:black; fill:black; font-size: {}pt;",
+                    self.font_size(opts)
+                ),
+            );
+        if let Some(pos) = self.text_pos() {
+            let unique_id = opts.next_unique_id(pos);
+            text = text.set("id", unique_id);
+        }
+        doc.add(text)
     }
 }

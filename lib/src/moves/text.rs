@@ -117,12 +117,22 @@ impl Move for Text {
         let mut text = SvgText::new(self.text.clone())
             .set("x", self.pos.x)
             .set("y", self.pos.y)
-            .set("style", format!("font-size:{}pt;", self.font_size(opts)));
+            .set(
+                "style",
+                format!(
+                    "stroke:black; fill:black; font-size:{}pt;",
+                    self.font_size(opts)
+                ),
+            );
         if self.rotate != 0 {
             text = text.set(
                 "transform",
                 format!("rotate({},{},{})", self.rotate, self.pos.x, self.pos.y),
             )
+        }
+        if let Some(pos) = self.text_pos() {
+            let unique_id = opts.next_unique_id(pos);
+            text = text.set("id", unique_id);
         }
         doc.add(text)
     }

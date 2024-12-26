@@ -201,7 +201,7 @@ fn use_at(skater: &Skater, def_id: &SvgId, opts: &RenderOptions) -> Use {
         )
         .set(
             "style",
-            format!("stroke-width:{}; stroke: black;", opts.stroke_width()),
+            format!("stroke:black; stroke-width:{};", opts.stroke_width()),
         )
 }
 
@@ -295,10 +295,20 @@ trait Move {
                 continue;
             }
             let loc = *start + label.pos;
-            let text = Text::new(label.text)
+            let mut text = Text::new(label.text)
                 .set("x", loc.pos.x)
                 .set("y", loc.pos.y)
-                .set("style", format!("font-size:{}pt;", opts.font_size()));
+                .set(
+                    "style",
+                    format!(
+                        "stroke:black; fill:black; font-size:{}pt;",
+                        opts.font_size()
+                    ),
+                );
+            if let Some(pos) = self.text_pos() {
+                let unique_id = opts.next_unique_id(pos);
+                text = text.set("id", unique_id);
+            }
             doc = doc.add(text);
         }
         doc
