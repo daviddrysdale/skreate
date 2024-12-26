@@ -6,10 +6,7 @@ use super::{
     label::Label,
     shift::Shift,
 };
-use crate::{
-    code, moves, params, params::Value, parser, Code, MoveParam, PreTransition, TextPosition,
-};
-use std::borrow::Cow;
+use crate::{code, moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
 pub struct OpenMohawk;
 
