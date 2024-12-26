@@ -15,7 +15,7 @@ fn test_move_locations() {
     let tests = [
         ("LFO  ", 0, text_pos!(0, 0, 3), "r_0_c_0_3"),
         ("  LFO-Br  ", 2, text_pos!(0, 2, 6), "r_0_c_2_8"),
-        ("  \n  LFO  ", 5, text_pos!(1, 2, 3), "r_2_c_2_5"),
+        ("  \n  LFO  ", 5, text_pos!(1, 2, 3), "r_1_c_2_5"),
     ];
     for (input, offset, want_pos, want_id) in tests {
         let (_rest, mv) = parse_move(input, &input[offset..]).unwrap();
