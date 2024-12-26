@@ -44,6 +44,14 @@ fn parse_skating_move_id(input: &str) -> IResult<&str, SkatingMoveId> {
         value(SkatingMoveId::Rocker, tag(moves::rocker::Rocker::MOVE)),
         value(SkatingMoveId::Counter, tag(moves::counter::Counter::MOVE)),
         value(
+            SkatingMoveId::OpenChoctaw,
+            tag(moves::choctaw::OpenChoctaw::MOVE),
+        ),
+        value(
+            SkatingMoveId::ClosedChoctaw,
+            tag(moves::choctaw::ClosedChoctaw::MOVE),
+        ),
+        value(
             SkatingMoveId::ChangeOfEdge,
             tag(moves::coe::ChangeOfEdge::MOVE),
         ),

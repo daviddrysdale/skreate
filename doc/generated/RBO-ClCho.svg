@@ -1,0 +1,30 @@
+<svg height="642" viewBox="-50 -50 642 642" width="642" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; }
+</style>
+<g id="RBO-ClCho_0::RBO[angle=90]">
+<path d="M 0,0 a 286,286 0 0 0 286,286"/>
+</g>
+<g id="RBO-ClCho_3::LFI[angle=90]">
+<path d="M 0,0 a 286,286 0 0 1 -286,286"/>
+</g>
+</defs>
+<use id="r_0_c_0_9" style="stroke-width:1; stroke: black;" transform="translate(0 0) rotate(0)" xlink:href="#RBO-ClCho_0::RBO[angle=90]"/>
+<text style="font-size:12pt;" x="108" y="177">
+RBO
+</text>
+<text style="font-size:12pt;" x="286" y="226">
+ClCho
+</text>
+<use id="r_0_c_0_9_n2" style="stroke-width:1; stroke: black;" transform="translate(256 256) rotate(270)" xlink:href="#RBO-ClCho_3::LFI[angle=90]"/>
+<text style="font-size:12pt;" x="433" y="364">
+LFI
+</text>
+</svg>

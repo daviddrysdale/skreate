@@ -19,8 +19,8 @@
     - [x] Counter
     - [x] Open Mohawk
     - [x] Closed Mohawk
-    - [ ] Open Choctaw
-    - [ ] Closed Choctaw
+    - [x] Open Choctaw
+    - [x] Closed Choctaw
     - [x] Twizzle
     - [ ] Loop
     - [ ] Pivot

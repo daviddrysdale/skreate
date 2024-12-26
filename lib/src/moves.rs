@@ -8,6 +8,7 @@ use log::warn;
 use serde::Serialize;
 
 pub(crate) mod bracket;
+pub(crate) mod choctaw;
 pub(crate) mod coe;
 pub(crate) mod compound;
 pub(crate) mod counter;
@@ -75,6 +76,8 @@ pub static INFO: &[Info] = &[
     bracket::Bracket::INFO,
     rocker::Rocker::INFO,
     counter::Counter::INFO,
+    choctaw::OpenChoctaw::INFO,
+    choctaw::ClosedChoctaw::INFO,
     coe::ChangeOfEdge::INFO,
     twizzle::Twizzle::INFO,
     // Then pseudo-moves.
@@ -106,6 +109,10 @@ pub enum SkatingMoveId {
     Rocker,
     /// Counter
     Counter,
+    /// Open Choctaw
+    OpenChoctaw,
+    /// Closed Choctaw
+    ClosedChoctaw,
     /// Change Of Edge
     ChangeOfEdge,
     /// Twizzle with count of half-turns.
@@ -124,6 +131,8 @@ impl SkatingMoveId {
             Self::Bracket => &bracket::Bracket::INFO,
             Self::Rocker => &rocker::Rocker::INFO,
             Self::Counter => &counter::Counter::INFO,
+            Self::OpenChoctaw => &choctaw::OpenChoctaw::INFO,
+            Self::ClosedChoctaw => &choctaw::ClosedChoctaw::INFO,
             Self::ChangeOfEdge => &coe::ChangeOfEdge::INFO,
             Self::Twizzle(_count) => &twizzle::Twizzle::INFO,
         }
@@ -188,6 +197,20 @@ impl SkatingMoveId {
                 params,
             )?),
             Self::Counter => Box::new(counter::Counter::from_params(
+                input,
+                text_pos,
+                pre_transition,
+                entry_code,
+                params,
+            )?),
+            Self::OpenChoctaw => Box::new(choctaw::OpenChoctaw::from_params(
+                input,
+                text_pos,
+                pre_transition,
+                entry_code,
+                params,
+            )?),
+            Self::ClosedChoctaw => Box::new(choctaw::ClosedChoctaw::from_params(
                 input,
                 text_pos,
                 pre_transition,
