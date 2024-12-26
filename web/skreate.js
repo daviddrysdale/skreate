@@ -31,6 +31,8 @@ export function set_svg(text, div) {
 
 function set_svg_with_events(editor, div) {
   var text = editor.getValue();
+  highlight_elt(null);
+  highlight_text(editor, null, null);
   var positions = set_svg(text, div);
 
   for (const text_pos of positions) {
@@ -135,9 +137,14 @@ function highlight_elt(text_pos) {
   if (text_pos == currently_highlighted) {
     return;
   }
-  change_elt_colour(currently_highlighted, "black");
+  if (currently_highlighted) {
+    console.log("clear highlight for " + currently_highlighted);
+    change_elt_colour(currently_highlighted, "black");
+    currently_highlighted = null;
+  }
   currently_highlighted = text_pos;
   if (text_pos) {
+    console.log("highlight " + text_pos);
     change_elt_colour(text_pos, "red");
   }
 }
