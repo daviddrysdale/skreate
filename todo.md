@@ -90,7 +90,7 @@
     - [ ] Skills 5-5: needs 3-turn, open mohawk
     - [ ] Skills 6-1: needs open mohawk, rocker, closed mohawk
     - [ ] Skills 6-2: needs counter, open mohawk
-    - [ ] Skills 6-3: needs 3-turn, loop
+    - [x] Skills 6-3: needs 3-turn, loop
     - [ ] Skills 6-4: needs rocker, closed choctaw
     - [ ] Skills 6-5: needs 3-turn, closed choctaw
     - [ ] Skills 7-1: needs closed choctaw, 3-turn, counter
