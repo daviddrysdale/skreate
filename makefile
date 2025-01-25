@@ -60,8 +60,14 @@ publish_build:
 	rm -rf published
 	cp -r web published
 
+published_update:
+	rm -rf published
+	cp -r web published
+
 publish_tag:
 	git tag -f `date "+published-%Y%m%dT%H%M"`
+
+force_publish: published_update publish_tag
 
 web/pkg:
 	mkdir -p $@
