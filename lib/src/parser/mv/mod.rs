@@ -60,6 +60,7 @@ fn parse_skating_move_id(input: &str) -> IResult<&str, SkatingMoveId> {
             tag(moves::coe::ChangeOfEdge::MOVE_ALT),
         ),
         parse_twizzle_id,
+        value(SkatingMoveId::Loop, tag(moves::loopfig::Loop::MOVE)),
         // Match an empty string last.
         value(SkatingMoveId::Curve, tag("")),
     ))(input)

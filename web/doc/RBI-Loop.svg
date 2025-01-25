@@ -1,0 +1,36 @@
+<svg height="422" viewBox="-721 -50 771 422" width="771" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; }
+</style>
+<g id="RBI-Loop_0::RBI[angle=90]">
+<path d="M 0,0 a 286,286 0 0 1 -286,286"/>
+</g>
+<g id="RBI-Loop_1::RBI[angle=100,len=80,label=&quot; &quot;]">
+<path d="M 0,0 a 45,45 0 0 1 -53,45"/>
+</g>
+<g id="RBI-Loop_2::RBI[angle=130,len=80,label=&quot; &quot;]">
+<path d="M 0,0 a 35,35 0 0 1 -57,27"/>
+</g>
+<g id="RBI-Loop_3::RBI[angle=100,len=80,label=&quot; &quot;]">
+<path d="M 0,0 a 45,45 0 0 1 -53,45"/>
+</g>
+<g id="RBI-Loop_4::RBI[angle=90,label=&quot; &quot;]">
+<path d="M 0,0 a 286,286 0 0 1 -286,286"/>
+</g>
+</defs>
+<use id="r_0_c_0_8" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#RBI-Loop_0::RBI[angle=90]"/>
+<text id="r_0_c_0_8_n2" style="stroke:black; fill:black; font-size:12pt;" x="-108" y="177">
+RBI
+</text>
+<use id="r_0_c_0_8_n3" style="stroke:black; stroke-width:1;" transform="translate(-286 286) rotate(90)" xlink:href="#RBI-Loop_1::RBI[angle=100,len=80,label=&quot; &quot;]"/>
+<use id="r_0_c_0_8_n4" style="stroke:black; stroke-width:1;" transform="translate(-331 233) rotate(190)" xlink:href="#RBI-Loop_2::RBI[angle=130,len=80,label=&quot; &quot;]"/>
+<use id="r_0_c_0_8_n5" style="stroke:black; stroke-width:1;" transform="translate(-270 216) rotate(320)" xlink:href="#RBI-Loop_3::RBI[angle=100,len=80,label=&quot; &quot;]"/>
+<use id="r_0_c_0_8_n6" style="stroke:black; stroke-width:1;" transform="translate(-281 284) rotate(60)" xlink:href="#RBI-Loop_4::RBI[angle=90,label=&quot; &quot;]"/>
+</svg>
