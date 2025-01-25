@@ -14,7 +14,7 @@
 
 <h2>Overview</h2>
 
-<p>This page allows interactive creation of skating choreography diagrams.
+<p><a href="../">This page</a> allows interactive creation of skating choreography diagrams.
 
 <p>To build a skating diagram, enter <i>move codes</i> into the text entry box, one per line (or separated from the
   previous move by a semi-colon <b><code>;</code></b>).  A move code is typically a three letter code denoting the
@@ -37,9 +37,9 @@
 <p>To sum up, skating move codes are typically made up of:
 <ul>
   <li>An optional prefix, indicating how a change of foot is performed.  For example: <ul>
-    <li>a <code>wd-</code> prefix indicates a wide step</li>
-    <li>a <code>xf-</code> prefix indicates a cross in front</li>
-    <li>a <code>xb-</code> prefix indicates a cross behind</li>
+    <li>a <b><code>wd-</code></b> prefix indicates a wide step</li>
+    <li>an <b><code>xf-</code></b> prefix indicates a cross in front</li>
+    <li>an <b><code>xb-</code></b> prefix indicates a cross behind</li>
    </ul></li>
   <li>An edge code, indicating the skating foot, direction, and edge.  For example, {{edit LBO}} indicates skating on
     the left foot, travelling backwards on an outside edge.</li>
@@ -54,6 +54,13 @@
   </ul></li>
 </ul>
 
+<p>So a code like <b><code>xf-RFO3></code></b> describes:
+<ul>
+  <li>Crossing the right foot in front of the (skating) left foot, onto a forward outside edge.</li>
+  <li>Performing a 3-turn from that right forward outside edge (thus ending on a right backward inside edge).</li>
+  <li>With a slightly tighter turn than normal.</li>
+</ul>
+
 <h2>Diagram Commands</h2>
 
 <p>A skating diagram can also include commands that relate to the layout of the diagram, rather than to a particular
@@ -61,8 +68,8 @@
   and <code>Title</code> adds a title for the diagram.
 
 <p>The <a href="#ref-Info"><code>Info</code></a> is worth specifically mentioning; this allows various layout helpers
-  to be enabled, including a grid, and markers for the position and direction of the skater at the start and end of each
-  move.
+to be enabled, including a grid, and markers for the position and direction of the skater at the start and end of each
+move (e.g <b><code>Info [grid=100,markers=true]</code></b>).
 
 <p>The position and direction of the skater at each point is particularly relevant for
   the <a href="#ref-Shift"><code>Shift</code></a> command, because it moves and rotates the skater relative to their
