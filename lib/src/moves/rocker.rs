@@ -80,7 +80,7 @@ impl Rocker {
         let len2c = len2 - len2a - len2b;
         let angle2c = 80;
 
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}\",transition-label=\"{transition_label}\"]");
         let entry2 =
             format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
         let label = "Label[text=\"Rk\",fwd=40]".to_string();

@@ -9,7 +9,7 @@ Skating Diagram
 <style>
 text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
-<g id="LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO-Rk&quot;]">
+<g id="LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO&quot;]">
 <path d="M 0,0 a 243,243 0 0 0 243,243"/>
 </g>
 <g id="LFO-Rk_1::LFO[angle=80,len=68,label=&quot; &quot;]">
@@ -25,9 +25,9 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 214,214 0 0 1 -214,214"/>
 </g>
 </defs>
-<use id="r_0_c_0_6" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO-Rk&quot;]"/>
+<use id="r_0_c_0_6" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Rk_0::LFO[angle=90,len=382,label=&quot;LFO&quot;]"/>
 <text id="r_0_c_0_6_n2" style="stroke:black; fill:black; font-size:12pt;" x="96" y="146">
-LFO-Rk
+LFO
 </text>
 <use id="r_0_c_0_6_n3" style="stroke:black; stroke-width:1;" transform="translate(243 243) rotate(270)" xlink:href="#LFO-Rk_1::LFO[angle=80,len=68,label=&quot; &quot;]"/>
 <text id="r_0_c_0_6_n4" style="stroke:black; fill:black; font-size:12pt;" x="296" y="163">

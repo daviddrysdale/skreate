@@ -27,7 +27,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="RFI---[label=&quot; &quot;]">
 <path d="M 0,0 a 286,286 0 0 0 17,97"/>
 </g>
-<g id="RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI-Rk&quot;]">
+<g id="RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI&quot;]">
 <path d="M 0,0 a 270,270 0 0 0 270,270"/>
 </g>
 <g id="RFI-Rk[len=500,delta-angle=20]_1::RFI[angle=80,len=75,label=&quot; &quot;]">
@@ -42,7 +42,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="RFI-Rk[len=500,delta-angle=20]_6::RBI&gt;&gt;[len=375]">
 <path d="M 0,0 a 195,195 0 0 1 -262,183"/>
 </g>
-<g id="LBI-Rk[len=500,delta-angle=20]_0::LBI[angle=90,len=425,label=&quot;LBI-Rk&quot;]">
+<g id="LBI-Rk[len=500,delta-angle=20]_0::LBI[angle=90,len=425,label=&quot;LBI&quot;]">
 <path d="M 0,0 a 270,270 0 0 0 270,270"/>
 </g>
 <g id="LBI-Rk[len=500,delta-angle=20]_1::LBI[angle=80,len=75,label=&quot; &quot;]">
@@ -57,7 +57,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LBI-Rk[len=500,delta-angle=20]_6::LFI&gt;&gt;[len=375]">
 <path d="M 0,0 a 195,195 0 0 1 -262,183"/>
 </g>
-<g id="LBI-Rk&lt;[len=500,delta-angle=20]_0::LBI[angle=80,len=425,label=&quot;LBI-Rk&quot;]">
+<g id="LBI-Rk&lt;[len=500,delta-angle=20]_0::LBI[angle=80,len=425,label=&quot;LBI&quot;]">
 <path d="M 0,0 a 304,304 0 0 0 251,299"/>
 </g>
 <g id="LBI-Rk&lt;[len=500,delta-angle=20]_1::LBI[angle=80,len=75,label=&quot; &quot;]">
@@ -81,7 +81,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LFI---[label=&quot; &quot;]">
 <path d="M 0,0 a 286,286 0 0 1 -17,97"/>
 </g>
-<g id="LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI-Rk&quot;]">
+<g id="LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI&quot;]">
 <path d="M 0,0 a 270,270 0 0 1 -270,270"/>
 </g>
 <g id="LFI-Rk[len=500,delta-angle=20]_1::LFI[angle=80,len=75,label=&quot; &quot;]">
@@ -96,7 +96,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LFI-Rk[len=500,delta-angle=20]_6::LBI&gt;&gt;[len=375]">
 <path d="M 0,0 a 195,195 0 0 0 262,183"/>
 </g>
-<g id="RBI-Rk[len=500,delta-angle=20]_0::RBI[angle=90,len=425,label=&quot;RBI-Rk&quot;]">
+<g id="RBI-Rk[len=500,delta-angle=20]_0::RBI[angle=90,len=425,label=&quot;RBI&quot;]">
 <path d="M 0,0 a 270,270 0 0 1 -270,270"/>
 </g>
 <g id="RBI-Rk[len=500,delta-angle=20]_1::RBI[angle=80,len=75,label=&quot; &quot;]">
@@ -111,7 +111,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="RBI-Rk[len=500,delta-angle=20]_6::RFI&gt;&gt;[len=375]">
 <path d="M 0,0 a 195,195 0 0 0 262,183"/>
 </g>
-<g id="RBI-Rk&lt;[len=500,delta-angle=20]_0::RBI[angle=80,len=425,label=&quot;RBI-Rk&quot;]">
+<g id="RBI-Rk&lt;[len=500,delta-angle=20]_0::RBI[angle=80,len=425,label=&quot;RBI&quot;]">
 <path d="M 0,0 a 304,304 0 0 1 -251,299"/>
 </g>
 <g id="RBI-Rk&lt;[len=500,delta-angle=20]_1::RBI[angle=80,len=75,label=&quot; &quot;]">
@@ -136,9 +136,9 @@ SIDE 1
 </text>
 <use id="r_6_c_0_37" style="stroke:black; stroke-width:4;" transform="translate(1200 600) rotate(90)" xlink:href="#RF[len=400,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
 <use id="r_8_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(800 600) rotate(90)" xlink:href="#RFI---[label=&quot; &quot;]"/>
-<use id="r_9_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(703 617) rotate(70)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI-Rk&quot;]"/>
+<use id="r_9_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(703 617) rotate(70)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI&quot;]"/>
 <text id="r_9_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="614" y="786">
-RFI-Rk
+RFI
 </text>
 <use id="r_9_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(541 963) rotate(340)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_1::RFI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_9_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="639" y="989">
@@ -150,9 +150,9 @@ Rk
 <text id="r_9_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="606" y="1265">
 RBI
 </text>
-<use id="r_10_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(554 1392) rotate(65)" xlink:href="#LBI-Rk[len=500,delta-angle=20]_0::LBI[angle=90,len=425,label=&quot;LBI-Rk&quot;]"/>
+<use id="r_10_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(554 1392) rotate(65)" xlink:href="#LBI-Rk[len=500,delta-angle=20]_0::LBI[angle=90,len=425,label=&quot;LBI&quot;]"/>
 <text id="r_10_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="480" y="1568">
-LBI-Rk
+LBI
 </text>
 <use id="r_10_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(423 1750) rotate(335)" xlink:href="#LBI-Rk[len=500,delta-angle=20]_1::LBI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_10_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="522" y="1767">
@@ -164,9 +164,9 @@ Rk
 <text id="r_10_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="513" y="2045">
 LFI
 </text>
-<use id="r_11_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(474 2178) rotate(60)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI-Rk&quot;]"/>
+<use id="r_11_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(474 2178) rotate(60)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI&quot;]"/>
 <text id="r_11_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="416" y="2360">
-RFI-Rk
+RFI
 </text>
 <use id="r_11_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(375 2546) rotate(330)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_1::RFI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_11_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="476" y="2555">
@@ -178,9 +178,9 @@ Rk
 <text id="r_11_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="491" y="2833">
 RBI
 </text>
-<use id="r_12_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(462 2968) rotate(55)" xlink:href="#LBI-Rk[len=500,delta-angle=20]_0::LBI[angle=90,len=425,label=&quot;LBI-Rk&quot;]"/>
+<use id="r_12_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(462 2968) rotate(55)" xlink:href="#LBI-Rk[len=500,delta-angle=20]_0::LBI[angle=90,len=425,label=&quot;LBI&quot;]"/>
 <text id="r_12_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="420" y="3154">
-LBI-Rk
+LBI
 </text>
 <use id="r_12_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(395 3344) rotate(325)" xlink:href="#LBI-Rk[len=500,delta-angle=20]_1::LBI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_12_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="496" y="3344">
@@ -192,9 +192,9 @@ Rk
 <text id="r_12_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="535" y="3619">
 LFI
 </text>
-<use id="r_13_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(519 3756) rotate(50)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI-Rk&quot;]"/>
+<use id="r_13_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(519 3756) rotate(50)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_0::RFI[angle=90,len=425,label=&quot;RFI&quot;]"/>
 <text id="r_13_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="493" y="3945">
-RFI-Rk
+RFI
 </text>
 <use id="r_13_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(485 4136) rotate(320)" xlink:href="#RFI-Rk[len=500,delta-angle=20]_1::RFI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_13_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="586" y="4127">
@@ -206,9 +206,9 @@ Rk
 <text id="r_13_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="650" y="4397">
 RBI
 </text>
-<use id="r_14_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(644 4535) rotate(45)" xlink:href="#LBI-Rk&lt;[len=500,delta-angle=20]_0::LBI[angle=80,len=425,label=&quot;LBI-Rk&quot;]"/>
+<use id="r_14_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(644 4535) rotate(45)" xlink:href="#LBI-Rk&lt;[len=500,delta-angle=20]_0::LBI[angle=80,len=425,label=&quot;LBI&quot;]"/>
 <text id="r_14_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="627" y="4729">
-LBI-Rk
+LBI
 </text>
 <use id="r_14_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(610 4923) rotate(325)" xlink:href="#LBI-Rk&lt;[len=500,delta-angle=20]_1::LBI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_14_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="711" y="4923">
@@ -226,9 +226,9 @@ SIDE 2
 <use id="r_19_c_0_37" style="stroke:black; stroke-width:4;" transform="translate(1900 5870) rotate(270)" xlink:href="#LF+[label=&quot; &quot;,style=&quot;dashed&quot;]"/>
 <use id="r_20_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2500 5870) rotate(270)" xlink:href="#LFO&gt;&gt;&gt;[label=&quot; &quot;,style=&quot;dashed&quot;]"/>
 <use id="r_22_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(2500 5584) rotate(90)" xlink:href="#LFI---[label=&quot; &quot;]"/>
-<use id="r_23_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2403 5567) rotate(110)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI-Rk&quot;]"/>
+<use id="r_23_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2403 5567) rotate(110)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI&quot;]"/>
 <text id="r_23_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="2314" y="5397">
-LFI-Rk
+LFI
 </text>
 <use id="r_23_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(2241 5220) rotate(200)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_1::LFI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_23_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="2339" y="5192">
@@ -240,9 +240,9 @@ Rk
 <text id="r_23_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="2306" y="4914">
 LBI
 </text>
-<use id="r_24_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2254 4790) rotate(115)" xlink:href="#RBI-Rk[len=500,delta-angle=20]_0::RBI[angle=90,len=425,label=&quot;RBI-Rk&quot;]"/>
+<use id="r_24_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2254 4790) rotate(115)" xlink:href="#RBI-Rk[len=500,delta-angle=20]_0::RBI[angle=90,len=425,label=&quot;RBI&quot;]"/>
 <text id="r_24_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="2180" y="4613">
-RBI-Rk
+RBI
 </text>
 <use id="r_24_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(2123 4431) rotate(205)" xlink:href="#RBI-Rk[len=500,delta-angle=20]_1::RBI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_24_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="2222" y="4412">
@@ -254,9 +254,9 @@ Rk
 <text id="r_24_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="2213" y="4132">
 RFI
 </text>
-<use id="r_25_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2174 4002) rotate(120)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI-Rk&quot;]"/>
+<use id="r_25_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2174 4002) rotate(120)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI&quot;]"/>
 <text id="r_25_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="2116" y="3819">
-LFI-Rk
+LFI
 </text>
 <use id="r_25_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(2075 3633) rotate(210)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_1::LFI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_25_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="2176" y="3622">
@@ -268,9 +268,9 @@ Rk
 <text id="r_25_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="2191" y="3342">
 LBI
 </text>
-<use id="r_26_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2162 3210) rotate(125)" xlink:href="#RBI-Rk[len=500,delta-angle=20]_0::RBI[angle=90,len=425,label=&quot;RBI-Rk&quot;]"/>
+<use id="r_26_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2162 3210) rotate(125)" xlink:href="#RBI-Rk[len=500,delta-angle=20]_0::RBI[angle=90,len=425,label=&quot;RBI&quot;]"/>
 <text id="r_26_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="2120" y="3023">
-RBI-Rk
+RBI
 </text>
 <use id="r_26_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(2095 2833) rotate(215)" xlink:href="#RBI-Rk[len=500,delta-angle=20]_1::RBI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_26_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="2196" y="2831">
@@ -282,9 +282,9 @@ Rk
 <text id="r_26_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="2235" y="2555">
 RFI
 </text>
-<use id="r_27_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2219 2420) rotate(130)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI-Rk&quot;]"/>
+<use id="r_27_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2219 2420) rotate(130)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_0::LFI[angle=90,len=425,label=&quot;LFI&quot;]"/>
 <text id="r_27_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="2193" y="2230">
-LFI-Rk
+LFI
 </text>
 <use id="r_27_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(2185 2039) rotate(220)" xlink:href="#LFI-Rk[len=500,delta-angle=20]_1::LFI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_27_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="2286" y="2047">
@@ -296,9 +296,9 @@ Rk
 <text id="r_27_c_0_40_n8" style="stroke:black; fill:black; font-size:24pt;" x="2350" y="1774">
 LBI
 </text>
-<use id="r_28_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2344 1639) rotate(135)" xlink:href="#RBI-Rk&lt;[len=500,delta-angle=20]_0::RBI[angle=80,len=425,label=&quot;RBI-Rk&quot;]"/>
+<use id="r_28_c_0_40" style="stroke:black; stroke-width:4;" transform="translate(2344 1639) rotate(135)" xlink:href="#RBI-Rk&lt;[len=500,delta-angle=20]_0::RBI[angle=80,len=425,label=&quot;RBI&quot;]"/>
 <text id="r_28_c_0_40_n2" style="stroke:black; fill:black; font-size:24pt;" x="2327" y="1444">
-RBI-Rk
+RBI
 </text>
 <use id="r_28_c_0_40_n3" style="stroke:black; stroke-width:4;" transform="translate(2310 1250) rotate(215)" xlink:href="#RBI-Rk&lt;[len=500,delta-angle=20]_1::RBI[angle=80,len=75,label=&quot; &quot;]"/>
 <text id="r_28_c_0_40_n4" style="stroke:black; fill:black; font-size:24pt;" x="2411" y="1248">

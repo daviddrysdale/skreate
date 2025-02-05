@@ -90,7 +90,7 @@ impl Bracket {
         let len2c = len2 - len2a - len2b;
         let angle2c = angle1c;
 
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\"]", Self::MOVE);
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}\",transition-label=\"{transition_label}\"]");
         let entry2 = format!("{entry_flat}[len={len1b},style=\"{style}\",label=\" \"]");
         let entry3 =
             format!("{entry_rev}[angle={angle1c},len={len1c},style=\"{style}\",label=\" \"]");
