@@ -326,11 +326,13 @@ trait Move {
         opts: &mut RenderOptions,
     ) -> Document {
         for label in self.labels(opts) {
-            if label.text.trim().is_empty() {
+            if !label.display {
                 continue;
             }
             let loc = *start + label.pos;
-            let mut text = Text::new(label.text)
+            let mut text = label
+                .text
+                .clone()
                 .set("x", loc.pos.x)
                 .set("y", loc.pos.y)
                 .set(

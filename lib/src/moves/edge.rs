@@ -13,6 +13,7 @@ use crate::{
 use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
+use svg::node::element::Text as SvgText;
 
 pub struct Curve {
     text_pos: TextPosition,
@@ -253,11 +254,13 @@ impl Move for Curve {
         } else {
             "".to_string()
         };
+        let text = match &self.label {
+            Some(label) => format!("{prefix}{label}"),
+            None => format!("{prefix}{}", self.code),
+        };
         let mut labels = vec![Label {
-            text: match &self.label {
-                Some(label) => format!("{prefix}{label}"),
-                None => format!("{prefix}{}", self.code),
-            },
+            display: !text.trim().is_empty(),
+            text: SvgText::new(text),
             pos: mid_pt
                 + pos!(
                     (distance * half_theta.cos()) as i64,
@@ -266,7 +269,8 @@ impl Move for Curve {
         }];
         if let Some(duration) = opts.duration {
             labels.push(Label {
-                text: format!("{}", duration.0),
+                display: true,
+                text: SvgText::new(format!("{}", duration.0)),
                 pos: mid_pt
                     + pos!(
                         (-distance * half_theta.cos()) as i64,
@@ -285,8 +289,10 @@ impl Move for Curve {
             // Assume that 5% along the curve is still pretty much vertical,
             // so the pre-transition label can just be inset horizontally.
             let early_pt = self.percent_point(5);
+            let text = transition.to_string();
             labels.push(Label {
-                text: transition.to_string(),
+                display: !text.trim().is_empty(),
+                text: SvgText::new(text),
                 pos: early_pt + pos!(self.sign() as i64 * 2 * font_size, 0),
             });
         }

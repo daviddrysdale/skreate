@@ -11,6 +11,7 @@ use crate::{
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
+use svg::node::element::Text as SvgText;
 
 pub struct StraightEdge {
     text_pos: TextPosition,
@@ -158,11 +159,13 @@ impl Move for StraightEdge {
         if self.foot == Foot::Both {
             vec![]
         } else {
+            let text = match &self.label {
+                Some(label) => label.clone(),
+                None => format!("{}{}", self.foot, self.dir),
+            };
             vec![Label {
-                text: match &self.label {
-                    Some(label) => label.clone(),
-                    None => format!("{}{}", self.foot, self.dir),
-                },
+                display: !text.trim().is_empty(),
+                text: SvgText::new(text),
                 pos: pos!(30, self.len as i64 / 2),
             }]
         }

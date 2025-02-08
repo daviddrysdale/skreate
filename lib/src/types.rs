@@ -6,6 +6,7 @@ use crate::{
 };
 use log::trace;
 use std::fmt::{self, Display, Formatter};
+use svg::node::element::Text as SvgText;
 
 const DEGREES: i32 = 360;
 
@@ -216,8 +217,10 @@ macro_rules! bounds {
 /// Label for parts of a move.
 #[derive(Debug)]
 pub struct Label {
+    /// Whether to display the label.
+    pub display: bool,
     /// Text to display
-    pub text: String,
+    pub text: SvgText,
     /// Where to centre the text.
     pub pos: Position,
 }
