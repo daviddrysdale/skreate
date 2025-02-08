@@ -1,13 +1,13 @@
 //! Parameter parsing.
 
 use crate::params::{MoveParamRef, Value};
-use crate::parser;
+use crate::parser::{self, parse_i32};
 use nom::{
     branch::alt,
     bytes::complete::tag,
     character::complete::{alpha1, alphanumeric1, char, one_of, space0},
-    combinator::{map, map_res, opt, recognize, value},
-    multi::{many0, many1, separated_list0},
+    combinator::{map, opt, recognize, value},
+    multi::{many0, separated_list0},
     sequence::{delimited, pair, preceded, terminated, tuple},
     IResult, Parser,
 };
@@ -15,20 +15,6 @@ use std::borrow::Cow;
 
 #[cfg(test)]
 mod tests;
-
-fn parse_i32(input: &str) -> IResult<&str, i32> {
-    map_res(
-        recognize(tuple((
-            // May start with + or -
-            opt(one_of("-+")),
-            // Followed by at least one digit
-            many1(one_of("0123456789")),
-        ))),
-        // Convert `&str` to `i32` on the way out.
-        |out: &str| out.parse::<i32>(),
-    )
-    .parse(input)
-}
 
 fn parse_bool(input: &str) -> IResult<&str, bool> {
     alt((

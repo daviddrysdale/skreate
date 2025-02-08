@@ -4,11 +4,11 @@ use crate::{ParseError, TextPosition, TimedMove};
 use nom::{
     branch::alt,
     bytes::complete::tag,
-    character::complete::{multispace0, space0},
-    combinator::{map, opt},
+    character::complete::{multispace0, one_of, space0},
+    combinator::{map, map_res, opt, recognize},
     multi::{many1, separated_list0},
     sequence::tuple,
-    IResult,
+    IResult, Parser,
 };
 
 pub mod comment;
@@ -25,6 +25,20 @@ pub(crate) type Error<'a> = nom::Err<InnErr<'a>>;
 
 pub(crate) fn fail(input: &str) -> Error {
     Error::Failure(InnErr::new(input, nom::error::ErrorKind::Fail))
+}
+
+fn parse_i32(input: &str) -> IResult<&str, i32> {
+    map_res(
+        recognize(tuple((
+            // May start with + or -
+            opt(one_of("-+")),
+            // Followed by at least one digit
+            many1(one_of("0123456789")),
+        ))),
+        // Convert `&str` to `i32` on the way out.
+        |out: &str| out.parse::<i32>(),
+    )
+    .parse(input)
 }
 
 fn parse_separator(input: &str) -> IResult<&str, Vec<&str>> {
