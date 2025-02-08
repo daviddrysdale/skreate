@@ -52,8 +52,8 @@
 - [x] URL parameters for initial window sizes
 - [x] Add relative=bool parameter to Warp
 - [ ] Counts and count display options
-    - [ ] Put numbering at start of edge label (<b>1</b> LFO, <b>2</b> RFI etc.)
-    - [ ] Put beat count (1/2/4) as extra label, opposite side to move count
+    - [x] Put numbering at start of edge label (<b>1</b> LFO, <b>2</b> RFI etc.)
+    - [x] Put beat count (1/2/4) as extra label, opposite side to move count
     - [ ] Make count/duration bold
     - [x] Info param to auto-number, with annotations to skip or reset
     - [ ] Info option to completely disable labels (e.g. Fiesta Tango second half,)

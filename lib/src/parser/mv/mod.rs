@@ -2,16 +2,18 @@
 
 use crate::{
     moves::{self, PseudoMoveId, SkatingMoveId},
-    parser, TextPosition, TimedMove,
+    parser::timing::{parse_count, parse_duration},
+    parser::{self, InnErr},
+    Move, TextPosition, TimedMove,
 };
 use log::info;
 use nom::{
     branch::alt,
     bytes::complete::tag,
     character::complete::space0,
-    combinator::{map, value},
+    combinator::{map, map_res, opt, value},
     error,
-    sequence::preceded,
+    sequence::{preceded, tuple},
     IResult, Parser,
 };
 
@@ -67,10 +69,7 @@ fn parse_skating_move_id(input: &str) -> IResult<&str, SkatingMoveId> {
 }
 
 /// Parse a skating move.
-pub(crate) fn parse_skating_move<'a>(
-    start: &'a str,
-    input: &'a str,
-) -> IResult<&'a str, TimedMove> {
+fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, Box<dyn Move>> {
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
@@ -90,9 +89,39 @@ pub(crate) fn parse_skating_move<'a>(
         rest,
         move_id
             .construct(input, text_pos, pre_transition, code, params)
-            .map_err(|_e| fail(input))?
-            .into(),
+            .map_err(|_e| fail(input))?,
     ))
+}
+
+/// Parse a skating move with optional timing info beforehand.
+fn parse_timed_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
+    map_res(
+        tuple((
+            space0,
+            opt(parse_count),
+            space0,
+            opt(parse_duration),
+            |input| parse_skating_move(start, input),
+        )),
+        |(_, count, _, duration, mv)| {
+            Ok::<_, InnErr>(TimedMove {
+                count,
+                duration,
+                mv,
+            })
+        },
+    )
+    .parse(input)
+    /*
+    let (rest, mv) = parse_skating_move(start, input)?;
+    Ok((
+        rest,
+        TimedMove {
+            count: None,
+            duration: None,
+            mv,
+        },
+    ))*/
 }
 
 fn parse_pseudo_move_id(input: &str) -> IResult<&str, PseudoMoveId> {
@@ -130,7 +159,7 @@ pub(crate) fn parse_pseudo_move<'a>(start: &'a str, input: &'a str) -> IResult<&
 /// Parse a move.
 pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
     alt((
-        |input| parse_skating_move(start, input),
+        |input| parse_timed_skating_move(start, input),
         |input| parse_pseudo_move(start, input),
     ))(input)
 }
