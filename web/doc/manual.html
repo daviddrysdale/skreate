@@ -76,6 +76,22 @@ move (e.g <b><code>Info [grid=100,markers=true]</code></b>).
   current position/direction.  (In contrast, the <a href="#ref-Warp"><code>Warp</code></a> command moves the skater to
   an absolute position and direction on the diagram.)
 
+<h2>Counts and Timing</h2>
+
+<p>Dance choreographies often need to display a running count of moves, or an indication of how many beats of music a
+step should take.  This is done by prefixing the move code with:
+<ul>
+  <li>A <i>move number</i> followed by a bracket <b><code>)</code></b>.
+  <li>A <i>beat count</i> after a slash <b><code>/</code></b>.
+</ul>
+
+<p>For example, an input of <a href="..?text=3%29%20%2F2%20RFI"><b><code>3) /2 RFI</code></b></a> indicates that a right forward inside edge as the third step, which
+should hold for 2 beats.
+
+<p>The <a href="#ref-Info"><code>Info</code></a> command includes an <b><code>auto-count</code></b> parameter that turns
+on automatic numbering of skating moves.  The <b><code>count-from</code></b> option also allows the next count value
+to be specified.
+
 <h2>Examples</h2>
 
 <p>Example diagrams that approximately match <a href="https://www.iceskating.org.uk/skills">British Ice Skating's Skills tests</a>:
