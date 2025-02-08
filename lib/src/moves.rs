@@ -35,6 +35,8 @@ mod tests;
 pub struct Info {
     /// Name of the move.
     pub name: &'static str,
+    /// Id of the move.
+    pub id: MoveId,
     /// Summary of the move.
     pub summary: &'static str,
     /// Example input for move.
@@ -93,7 +95,7 @@ pub static INFO: &[Info] = &[
 ];
 
 /// Identifier for skating moves.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum SkatingMoveId {
     /// Curved edge
     Curve,
@@ -249,7 +251,7 @@ impl SkatingMoveId {
 }
 
 /// Identifier for pseudo-moves.
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum PseudoMoveId {
     /// Warp
     Warp,
@@ -301,7 +303,7 @@ impl PseudoMoveId {
 }
 
 /// Move identifier
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum MoveId {
     /// Skating move.
     Skating(SkatingMoveId),

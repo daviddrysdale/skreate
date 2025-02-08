@@ -6,7 +6,7 @@ use super::{
     label::Label,
     shift::Shift,
     straight::StraightEdge,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, Edge, MoveParam, PreTransition, TextPosition};
 
@@ -18,6 +18,7 @@ impl Counter {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Counter",
+        id: MoveId::Skating(SkatingMoveId::Counter),
         summary: "Counter turn",
         example: "LFO-Ctr",
         visible: true,

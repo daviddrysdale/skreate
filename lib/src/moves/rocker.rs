@@ -6,7 +6,7 @@ use super::{
     label::Label,
     shift::Shift,
     straight::StraightEdge,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, Edge, MoveParam, PreTransition, TextPosition};
 
@@ -18,6 +18,7 @@ impl Rocker {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Rocker",
+        id: MoveId::Skating(SkatingMoveId::Rocker),
         summary: "Rocker turn",
         example: "LFO-Rk",
         visible: true,

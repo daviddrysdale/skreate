@@ -5,7 +5,7 @@ use super::{
     edge::Curve,
     label::Label,
     shift::Shift,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
@@ -17,6 +17,7 @@ impl OpenMohawk {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Open Mohawk",
+        id: MoveId::Skating(SkatingMoveId::OpenMohawk),
         summary: "Open mohawk",
         example: "LFI-OpMo",
         visible: true,
@@ -94,6 +95,7 @@ impl ClosedMohawk {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Closed Mohawk",
+        id: MoveId::Skating(SkatingMoveId::ClosedMohawk),
         summary: "Closed mohawk",
         example: "RBO-ClMo",
         visible: true,

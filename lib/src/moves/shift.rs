@@ -23,6 +23,7 @@ impl Shift {
     pub const MOVE: &'static str = "Shift";
     pub const INFO: moves::Info = moves::Info {
         name: Self::MOVE,
+        id: MoveId::Pseudo(PseudoMoveId::Shift),
         summary: "Move skater relative to current location and direction",
         example: "Shift[fwd=50,side=50,rotate=270]",
         visible: false,

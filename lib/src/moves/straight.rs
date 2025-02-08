@@ -26,6 +26,7 @@ pub struct StraightEdge {
 impl StraightEdge {
     pub const INFO: moves::Info = moves::Info {
         name: "Straight Edge",
+        id: MoveId::Skating(SkatingMoveId::StraightEdge),
         summary: "Straight edge",
         example: "LF",
         visible: true,

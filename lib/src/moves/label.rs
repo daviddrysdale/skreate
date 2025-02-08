@@ -22,6 +22,7 @@ impl Label {
     pub const MOVE: &'static str = "Label";
     pub const INFO: moves::Info = moves::Info {
         name: Self::MOVE,
+        id: MoveId::Pseudo(PseudoMoveId::Label),
         summary: "Diagram label relative to current position",
         example: "Label[text=\"CoE\",fwd=50,side=20]",
         visible: false,

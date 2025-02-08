@@ -4,7 +4,7 @@ use super::{
     compound::{self, Compound},
     edge::Curve,
     shift::Shift,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
@@ -16,6 +16,7 @@ impl ThreeTurn {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Three Turn",
+        id: MoveId::Skating(SkatingMoveId::ThreeTurn),
         summary: "Three turn",
         example: "LFO3",
         visible: true,

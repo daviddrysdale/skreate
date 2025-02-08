@@ -21,6 +21,7 @@ impl Text {
     pub const MOVE: &'static str = "Text";
     pub const INFO: moves::Info = moves::Info {
         name: Self::MOVE,
+        id: MoveId::Pseudo(PseudoMoveId::Text),
         summary: "Diagram text",
         example: "Text[text=\"Start\",x=500,y=200]",
         visible: false,

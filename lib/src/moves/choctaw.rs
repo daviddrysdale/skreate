@@ -5,7 +5,7 @@ use super::{
     edge::Curve,
     label::Label,
     shift::Shift,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
@@ -17,6 +17,7 @@ impl OpenChoctaw {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Open Choctaw",
+        id: MoveId::Skating(SkatingMoveId::OpenChoctaw),
         summary: "Open choctaw",
         example: "LFI-OpCho",
         visible: true,
@@ -94,6 +95,7 @@ impl ClosedChoctaw {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Closed Choctaw",
+        id: MoveId::Skating(SkatingMoveId::ClosedChoctaw),
         summary: "Closed choctaw",
         example: "RBO-ClCho",
         visible: true,

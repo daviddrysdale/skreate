@@ -20,6 +20,7 @@ impl Title {
     pub const MOVE: &'static str = "Title";
     pub const INFO: moves::Info = moves::Info {
         name: Self::MOVE,
+        id: MoveId::Pseudo(PseudoMoveId::Title),
         summary: "Diagram title",
         example: "Title[text=\"Waltz\"]",
         visible: false,

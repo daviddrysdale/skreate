@@ -3,7 +3,7 @@
 use super::{
     compound::{self, Compound},
     edge::Curve,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
@@ -15,6 +15,7 @@ impl Loop {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Loop",
+        id: MoveId::Skating(SkatingMoveId::Loop),
         summary: "Loop figure",
         example: "RBI-Loop",
         visible: true,

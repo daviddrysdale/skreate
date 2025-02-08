@@ -4,7 +4,7 @@ use super::{
     compound::{self, Compound},
     edge::Curve,
     straight::StraightEdge,
-    SkatingMoveId,
+    MoveId, SkatingMoveId,
 };
 use crate::{moves, params, parser, Code, Edge, MoveParam, PreTransition, TextPosition};
 
@@ -19,6 +19,7 @@ impl ChangeOfEdge {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Change of Edge",
+        id: MoveId::Skating(SkatingMoveId::ChangeOfEdge),
         summary: "Change of edge",
         example: "LFO-CoE",
         visible: true,

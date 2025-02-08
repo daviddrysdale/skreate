@@ -27,6 +27,7 @@ impl Info {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: Self::MOVE,
+        id: MoveId::Pseudo(PseudoMoveId::Info),
         summary: "Set diagram rendering information",
         example: "Info[markers=true,grid=100,move-bounds=true]",
         visible: false,

@@ -27,6 +27,7 @@ impl Rink {
     pub const MOVE: &'static str = "Rink";
     pub const INFO: moves::Info = moves::Info {
         name: Self::MOVE,
+        id: MoveId::Pseudo(PseudoMoveId::Rink),
         summary: "Rink depiction",
         example: "Rink",
         visible: true,

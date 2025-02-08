@@ -32,6 +32,7 @@ impl Curve {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Edge",
+        id: MoveId::Skating(SkatingMoveId::Curve),
         summary: "Curving edge",
         example: "LFO",
         visible: true,

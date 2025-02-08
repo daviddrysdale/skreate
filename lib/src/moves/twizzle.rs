@@ -1,6 +1,6 @@
 //! Twizzle.
 
-use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, SkatingMoveId};
+use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, MoveId, SkatingMoveId};
 use crate::{
     code, moves, params, params::Value, parser, Code, MoveParam, PreTransition, TextPosition,
 };
@@ -14,6 +14,7 @@ impl Twizzle {
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Twizzle",
+        id: MoveId::Skating(SkatingMoveId::Twizzle(2)),
         summary: "Twizzle",
         example: "LFI-Tw1.5",
         visible: true,
