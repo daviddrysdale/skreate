@@ -69,6 +69,18 @@
     - [x] mouse over move => highlight text in editor
     - [x] cursor on move => highlight corresponding move
     - [x] animation: highlight move in diagram and corresponding text in editor
+- [ ] Reproduce dance choreographies
+    - [ ] Novice Foxtrot
+    - [ ] Rhythm Blues
+    - [ ] Canasta Tango
+    - [x] Golden Skaters Waltz
+    - [ ] Swing Dance (W)
+    - [ ] Swing Dance (M)
+    - [ ] Fiesta Tango
+    - [ ] Willow Waltz
+    - [ ] Riverside Rhumba
+    - [ ] Rocker Foxtrot
+    - [ ] Kilian
 - [ ] Reproduce skills diagrams
     - [x] Skills 1-1
     - [x] Skills 1-2
