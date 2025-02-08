@@ -20,6 +20,7 @@ pub struct Compound {
     params: Vec<MoveParam>,
     text: String,
     text_pos: TextPosition,
+    move_for_count: Option<usize>,
 }
 
 impl Compound {
@@ -33,12 +34,33 @@ impl Compound {
     /// - `moves` has fewer than 2 entries
     /// - any move has an absolute transition
     pub fn new(
+        input: &str,
+        text_pos: TextPosition,
+        id: SkatingMoveId,
+        moves: Vec<Box<dyn Move>>,
+        params: Vec<MoveParam>,
+        text: String,
+    ) -> Self {
+        Compound::new_with_count_idx(input, text_pos, id, moves, params, text, Some(0))
+    }
+
+    /// Create a compound move, identifying which one gets count labels.
+    ///
+    /// Ignores any pre-transitions other than for first constituent move.
+    ///
+    /// # Panics
+    ///
+    /// Panics if:
+    /// - `moves` has fewer than 2 entries
+    /// - any move has an absolute transition
+    pub fn new_with_count_idx(
         _input: &str,
         text_pos: TextPosition,
         id: SkatingMoveId,
         moves: Vec<Box<dyn Move>>,
         params: Vec<MoveParam>,
         text: String,
+        move_for_count: Option<usize>,
     ) -> Self {
         assert!(moves.len() >= 2);
         let mut start_code = None;
@@ -64,6 +86,7 @@ impl Compound {
             id: MoveId::Skating(id),
             params,
             text,
+            move_for_count,
         }
     }
 
@@ -175,6 +198,8 @@ impl Move for Compound {
         opts: &mut RenderOptions,
         ns: Option<&SvgId>,
     ) -> Document {
+        let count_marker = opts.count;
+        let duration_marker = opts.duration;
         let id = self.text();
         let mut skater = *start;
         for (idx, mv) in self.moves.iter().enumerate() {
@@ -183,12 +208,18 @@ impl Move for Compound {
                 Some(outer) => mv_ns.in_ns(outer),
                 None => mv_ns,
             };
+
+            // Only render timing information on one component.
+            if Some(idx) == self.move_for_count {
+                opts.count = count_marker;
+                opts.duration = duration_marker;
+            } else {
+                opts.count = None;
+                opts.duration = None;
+            }
+
             doc = mv.render(doc, &skater, opts, Some(&ns));
             skater = skater + mv.transition();
-
-            // Only render timing information on first component.
-            opts.count = None;
-            opts.duration = None;
         }
         doc
     }

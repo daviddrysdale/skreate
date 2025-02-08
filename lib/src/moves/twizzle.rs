@@ -184,13 +184,14 @@ impl Twizzle {
         debug = format!("{debug}{post}");
 
         log::info!("input {input:?} results in {debug}");
-        Ok(Compound::new(
+        Ok(Compound::new_with_count_idx(
             input,
             text_pos,
             SkatingMoveId::Twizzle(count),
             moves,
             params,
             text,
+            None,
         ))
     }
 }
