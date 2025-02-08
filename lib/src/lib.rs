@@ -234,6 +234,20 @@ struct TimedMove {
     mv: Box<dyn Move>,
 }
 
+impl TimedMove {
+    fn text(&self) -> String {
+        let count = match self.count {
+            Some(Count(n)) => format!("{n}) "),
+            None => String::new(),
+        };
+        let duration = match self.duration {
+            Some(Duration(n)) => format!("/{n} "),
+            None => String::new(),
+        };
+        format!("{count}{duration}{}", self.mv.text())
+    }
+}
+
 impl From<Box<dyn Move>> for TimedMove {
     fn from(mv: Box<dyn Move>) -> TimedMove {
         TimedMove {
@@ -379,14 +393,14 @@ fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
 /// Generate canonicalized / minimized input.
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
-    let min_inputs = moves.into_iter().map(|m| m.mv.text()).collect::<Vec<_>>();
+    let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
     Ok(urlencoding::encode(&min_inputs.join(";")).to_string())
 }
 
 /// Generate canonicalized / minimized input for vertical display
 pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
-    let min_inputs = moves.into_iter().map(|m| m.mv.text()).collect::<Vec<_>>();
+    let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
     Ok(urlencoding::encode(&min_inputs.join("\n")).to_string())
 }
 
@@ -400,7 +414,7 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
     let moves = moves(input)?;
     debug!("input parses as:");
     for (idx, mv) in moves.iter().enumerate() {
-        debug!("  [{idx}] {}", mv.mv.text());
+        debug!("  [{idx}] {}", mv.text());
     }
 
     let mut doc = Document::new().set("xmlns:xlink", "http://www.w3.org/1999/xlink");
