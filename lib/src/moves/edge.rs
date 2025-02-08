@@ -243,10 +243,15 @@ impl Move for Curve {
         let mid_pt = self.percent_point(50);
         let half_theta = (self.sign() * self.angle) as f64 * PI / (2.0 * 180.0); // radians
         let distance = (-3 * font_size) as f64 * self.sign() as f64;
+        let prefix = if let Some(count) = opts.count {
+            format!("{} ", count.0)
+        } else {
+            "".to_string()
+        };
         let mut labels = vec![Label {
             text: match &self.label {
-                Some(label) => label.clone(),
-                None => format!("{}", self.code),
+                Some(label) => format!("{prefix}{label}"),
+                None => format!("{prefix}{}", self.code),
             },
             pos: mid_pt
                 + pos!(
@@ -254,6 +259,16 @@ impl Move for Curve {
                     (distance * half_theta.sin()) as i64
                 ),
         }];
+        if let Some(duration) = opts.duration {
+            labels.push(Label {
+                text: format!("{}", duration.0),
+                pos: mid_pt
+                    + pos!(
+                        (-distance * half_theta.cos()) as i64,
+                        (-distance * half_theta.sin()) as i64
+                    ),
+            });
+        }
 
         let transition: Option<&str> = if self.transition_label.is_some() {
             self.transition_label.as_deref()

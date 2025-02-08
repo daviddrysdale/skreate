@@ -23,6 +23,7 @@
     - [x] Closed Choctaw
     - [x] Twizzle
     - [x] Loop
+    - [ ] Hop
     - [ ] Pivot
     - [ ] Schramm
     - [ ] Schafer push
@@ -51,6 +52,11 @@
 - [x] URL parameters for initial window sizes
 - [x] Add relative=bool parameter to Warp
 - [ ] Counts and count display options
+    - [ ] Put numbering at start of edge label, in bold (<b>1</b> LFO, <b>2</b> RFI etc.)
+    - [ ] Put beat count (1/2/4) as extra label in bold, opposite side to move count
+    - [ ] Info param to auto-number, with annotations to skip or reset
+    - [ ] (Rare) Increasing beat numbers (1 2 3 4 5 6 1 2 3 4 5 6) spread out along curve
+    - [ ] Info option to completely disable labels (e.g. Fiesta Tango second half,)
 - [x] Add in/out curvature for moves?
 - [x] Generate a manual from move registry via new `Move` methods
 - [x] Add interactive examples to manual

@@ -2,7 +2,7 @@
 
 use crate::{
     moves::{self, PseudoMoveId, SkatingMoveId},
-    parser, Move, TextPosition,
+    parser, TextPosition, TimedMove,
 };
 use log::info;
 use nom::{
@@ -70,7 +70,7 @@ fn parse_skating_move_id(input: &str) -> IResult<&str, SkatingMoveId> {
 pub(crate) fn parse_skating_move<'a>(
     start: &'a str,
     input: &'a str,
-) -> IResult<&'a str, Box<dyn Move>> {
+) -> IResult<&'a str, TimedMove> {
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
@@ -90,7 +90,8 @@ pub(crate) fn parse_skating_move<'a>(
         rest,
         move_id
             .construct(input, text_pos, pre_transition, code, params)
-            .map_err(|_e| fail(input))?,
+            .map_err(|_e| fail(input))?
+            .into(),
     ))
 }
 
@@ -107,10 +108,7 @@ fn parse_pseudo_move_id(input: &str) -> IResult<&str, PseudoMoveId> {
 }
 
 /// Parse a pseudo-move.
-pub(crate) fn parse_pseudo_move<'a>(
-    start: &'a str,
-    input: &'a str,
-) -> IResult<&'a str, Box<dyn Move>> {
+pub(crate) fn parse_pseudo_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, move_id) = parse_pseudo_move_id(rest)?;
@@ -124,12 +122,13 @@ pub(crate) fn parse_pseudo_move<'a>(
         rest,
         move_id
             .construct(input, text_pos, params)
-            .map_err(|_e| fail(input))?,
+            .map_err(|_e| fail(input))?
+            .into(),
     ))
 }
 
 /// Parse a move.
-pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, Box<dyn Move>> {
+pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
     alt((
         |input| parse_skating_move(start, input),
         |input| parse_pseudo_move(start, input),

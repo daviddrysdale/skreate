@@ -1,8 +1,8 @@
 //! Pseudo-move definition for diagram info.
 
 use crate::{
-    moves, param, params, params::Value, parser, path, Bounds, Document, Move, MoveParam, Position,
-    RenderOptions, Skater, SvgId, TextPosition,
+    moves, param, params, params::Value, parser, path, Bounds, Count, Document, Move, MoveParam,
+    Position, RenderOptions, Skater, SvgId, TextPosition,
 };
 use svg::node::element::Group;
 
@@ -15,6 +15,8 @@ pub struct Info {
     move_bounds: bool,
     font_size: Option<u32>,
     stroke_width: Option<u32>,
+    auto_count: bool,
+    count_from: i32,
 }
 
 impl Info {
@@ -82,6 +84,20 @@ impl Info {
                 range: params::Range::Positive,
                 short: None,
             },
+            params::Info {
+                name: "auto-count",
+                doc: "Whether to automatically count moves",
+                default: Value::Boolean(false),
+                range: params::Range::Boolean,
+                short: None,
+            },
+            params::Info {
+                name: "count-from",
+                doc: "First number to count from when auto-counting",
+                default: Value::Number(1),
+                range: params::Range::Any,
+                short: None,
+            },
         ],
     };
 
@@ -112,6 +128,8 @@ impl Info {
             } else {
                 None
             },
+            auto_count: params[8].value.as_bool(input)?,
+            count_from: params[9].value.as_i32(input)?,
         })
     }
 }
@@ -127,6 +145,8 @@ impl Move for Info {
             param!("move-bounds" = self.move_bounds),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
             param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
+            param!("auto-count" = self.auto_count),
+            param!("count-from" = self.count_from),
         ]
     }
     fn text(&self) -> String {
@@ -175,6 +195,9 @@ impl Move for Info {
         opts.markers = self.markers;
         opts.font_size = self.font_size;
         opts.stroke_width = self.stroke_width;
+        if self.auto_count {
+            opts.auto_count = Some(Count(self.count_from));
+        }
 
         doc
     }

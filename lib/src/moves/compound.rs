@@ -176,6 +176,10 @@ impl Move for Compound {
             };
             doc = mv.render(doc, &skater, opts, Some(&ns));
             skater = skater + mv.transition();
+
+            // Only render timing information on first component.
+            opts.count = None;
+            opts.duration = None;
         }
         doc
     }

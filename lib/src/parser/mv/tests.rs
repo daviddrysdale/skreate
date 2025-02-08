@@ -19,7 +19,7 @@ fn test_move_locations() {
     ];
     for (input, offset, want_pos, want_id) in tests {
         let (_rest, mv) = parse_move(input, &input[offset..]).unwrap();
-        let got_pos = mv.text_pos().unwrap();
+        let got_pos = mv.mv.text_pos().unwrap();
         assert_eq!(got_pos, want_pos, "for input '{input}'");
         let got_id = got_pos.unique_id();
         assert_eq!(got_id, want_id, "for input '{input}'");

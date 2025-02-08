@@ -100,7 +100,7 @@ impl std::ops::Add<Transition> for Skater {
     }
 }
 
-/// Options for how to render the diagram.
+/// Options for how to render the diagram's next move.
 #[derive(Debug, Clone, Default)]
 struct RenderOptions {
     /// Diagram title.
@@ -121,6 +121,13 @@ struct RenderOptions {
     stroke_width: Option<u32>,
     /// Next unique ID associated with a particular [`TextPosition`].
     next_for_pos: HashMap<TextPosition, usize>,
+    /// Current auto-count; `None` if not auto-counting, and any explicitly specified count takes precedence.
+    auto_count: Option<Count>,
+
+    /// Count to display for current move.
+    count: Option<Count>,
+    /// Duration of current move.
+    duration: Option<Duration>,
 }
 
 impl RenderOptions {
@@ -209,6 +216,31 @@ fn apply_style(path: Path, style: &str) -> Path {
     match style {
         "dashed" => path.set("stroke-dasharray", "50 30"),
         _ => path,
+    }
+}
+
+/// Count number within a sequence.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Count(pub i32);
+
+/// Duration of a move in beats.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Duration(pub i32);
+
+/// A move with associated timing information.
+struct TimedMove {
+    count: Option<Count>,
+    duration: Option<Duration>,
+    mv: Box<dyn Move>,
+}
+
+impl From<Box<dyn Move>> for TimedMove {
+    fn from(mv: Box<dyn Move>) -> TimedMove {
+        TimedMove {
+            count: None,
+            duration: None,
+            mv,
+        }
     }
 }
 
@@ -325,7 +357,7 @@ trait Move {
 }
 
 /// Convert the input into a list of moves.
-fn moves(input: &str) -> Result<Vec<Box<dyn Move>>, ParseError> {
+fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
     let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
     if !rest.is_empty() {
         let pos = TextPosition::new(input, rest, rest);
@@ -342,14 +374,14 @@ fn moves(input: &str) -> Result<Vec<Box<dyn Move>>, ParseError> {
 /// Generate canonicalized / minimized input.
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
-    let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
+    let min_inputs = moves.into_iter().map(|m| m.mv.text()).collect::<Vec<_>>();
     Ok(urlencoding::encode(&min_inputs.join(";")).to_string())
 }
 
 /// Generate canonicalized / minimized input for vertical display
 pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
-    let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
+    let min_inputs = moves.into_iter().map(|m| m.mv.text()).collect::<Vec<_>>();
     Ok(urlencoding::encode(&min_inputs.join("\n")).to_string())
 }
 
@@ -363,7 +395,7 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
     let moves = moves(input)?;
     debug!("input parses as:");
     for (idx, mv) in moves.iter().enumerate() {
-        debug!("  [{idx}] {}", mv.text());
+        debug!("  [{idx}] {}", mv.mv.text());
     }
 
     let mut doc = Document::new().set("xmlns:xlink", "http://www.w3.org/1999/xlink");
@@ -377,7 +409,8 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
     let style = Style::new(STYLE_DEF);
     let mut seen = HashSet::new();
     let mut defs = Definitions::new().add(style);
-    for mv in &moves {
+    for timed_mv in &moves {
+        let mv = &timed_mv.mv;
         for (id, grp) in mv.defs(&mut opts) {
             if seen.contains(&id) {
                 continue;
@@ -396,7 +429,8 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
     let mut bounds: Option<Bounds> = None;
     let mut skater = Skater::at_zero(code!(BF));
     let mut first = true;
-    for mv in &moves {
+    for timed_mv in &moves {
+        let mv = &timed_mv.mv;
         if first {
             // Don't apply pre-transition for first move.
             if let Some(start_code) = mv.start() {
@@ -461,7 +495,8 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
         code: code!(BF),
     };
     let mut first = true;
-    for mv in &moves {
+    for timed_mv in &moves {
+        let mv = &timed_mv.mv;
         if first {
             // Don't apply pre-transition for first move.
             if let Some(start_code) = mv.start() {
@@ -480,6 +515,16 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
             doc = doc.add(use_at(&skater, &SvgId("start-mark".to_string()), &opts));
         }
         let show_marker = opts.markers;
+
+        // Set the timing information for this rendered move.
+        opts.duration = timed_mv.duration;
+        opts.count = match (timed_mv.count, opts.auto_count) {
+            // Explicitly specified count takes priority.
+            (Some(count), _) => Some(count),
+            (None, Some(count)) => Some(count),
+            (None, None) => None,
+        };
+
         doc = mv.render(doc, &skater, &mut opts, None);
 
         let transition = mv.transition();
@@ -492,6 +537,11 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
         // Accumulate the collection of text positions for the move specifications along the way.
         if let Some(text_pos) = mv.text_pos() {
             text_positions.push(text_pos);
+        }
+
+        if let Some(Count(n)) = opts.auto_count {
+            opts.auto_count = Some(Count(n + 1));
+            debug!("use auto-{:?} for next move", opts.auto_count);
         }
 
         skater = after;
