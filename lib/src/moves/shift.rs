@@ -1,9 +1,13 @@
 //! Pseudo-move definition for moving skater relative to current location.
 
 use crate::{
-    moves, param, params, params::Value, parser, parser::types::parse_code, Bounds, Code, Document,
-    Move, MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition, SvgId,
-    TextPosition, Transition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser,
+    parser::types::parse_code,
+    Bounds, Code, Document, Move, MoveParam, Position, RenderOptions, Rotation, Skater,
+    SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 
@@ -91,6 +95,9 @@ impl Shift {
 }
 
 impl Move for Shift {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Shift)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!("fwd" = (self.delta.y as i32)),

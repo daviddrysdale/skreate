@@ -1,9 +1,13 @@
 //! Pseudo-move definition for moving skater to new position.
 
 use crate::{
-    moves, param, params, params::Value, parser, parser::types::parse_code, Bounds, Code,
-    Direction, Document, Move, MoveParam, Position, RenderOptions, Skater, SpatialTransition,
-    SvgId, TextPosition, Transition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser,
+    parser::types::parse_code,
+    Bounds, Code, Direction, Document, Move, MoveParam, Position, RenderOptions, Skater,
+    SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 
@@ -78,6 +82,9 @@ impl Warp {
 }
 
 impl Move for Warp {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Warp)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!("x" = (self.pos.x as i32)),

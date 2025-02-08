@@ -1,6 +1,6 @@
 //! Twizzle.
 
-use super::{compound::Compound, edge::Curve, label::Label, shift::Shift};
+use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, SkatingMoveId};
 use crate::{
     code, moves, params, params::Value, parser, Code, MoveParam, PreTransition, TextPosition,
 };
@@ -184,6 +184,13 @@ impl Twizzle {
         debug = format!("{debug}{post}");
 
         log::info!("input {input:?} results in {debug}");
-        Ok(Compound::new(input, text_pos, moves, params, text))
+        Ok(Compound::new(
+            input,
+            text_pos,
+            SkatingMoveId::Twizzle(count),
+            moves,
+            params,
+            text,
+        ))
     }
 }

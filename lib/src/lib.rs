@@ -246,6 +246,9 @@ impl From<Box<dyn Move>> for TimedMove {
 
 /// Trait describing the external behavior of a move.
 trait Move {
+    /// Move identifier corresponding to the move.
+    fn id(&self) -> moves::MoveId;
+
     /// Parameters for the move.
     fn params(&self) -> Vec<MoveParam>;
 

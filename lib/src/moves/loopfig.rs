@@ -3,6 +3,7 @@
 use super::{
     compound::{self, Compound},
     edge::Curve,
+    SkatingMoveId,
 };
 use crate::{moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
@@ -64,6 +65,13 @@ impl Loop {
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, text_pos, moves, params, text))
+        Ok(Compound::new(
+            input,
+            text_pos,
+            SkatingMoveId::Loop,
+            moves,
+            params,
+            text,
+        ))
     }
 }

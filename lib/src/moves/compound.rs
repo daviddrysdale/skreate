@@ -1,7 +1,10 @@
 //! Compound move definition.
 use crate::{
-    params, params::Value, Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater,
-    SpatialTransition, SvgId, TextPosition, Transition,
+    moves::{MoveId, SkatingMoveId},
+    params,
+    params::Value,
+    Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater, SpatialTransition,
+    SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
@@ -13,6 +16,7 @@ pub struct Compound {
     moves: Vec<Box<dyn Move>>,
     start_code: Code,
 
+    id: MoveId,
     params: Vec<MoveParam>,
     text: String,
     text_pos: TextPosition,
@@ -31,6 +35,7 @@ impl Compound {
     pub fn new(
         _input: &str,
         text_pos: TextPosition,
+        id: SkatingMoveId,
         moves: Vec<Box<dyn Move>>,
         params: Vec<MoveParam>,
         text: String,
@@ -56,6 +61,7 @@ impl Compound {
             text_pos,
             moves,
             start_code: start_code.expect("first move must have code"),
+            id: MoveId::Skating(id),
             params,
             text,
         }
@@ -81,6 +87,9 @@ impl Compound {
 }
 
 impl Move for Compound {
+    fn id(&self) -> MoveId {
+        self.id
+    }
     fn params(&self) -> Vec<MoveParam> {
         self.params.clone()
     }

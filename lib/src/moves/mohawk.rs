@@ -5,6 +5,7 @@ use super::{
     edge::Curve,
     label::Label,
     shift::Shift,
+    SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
 
@@ -74,7 +75,14 @@ impl OpenMohawk {
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, text_pos, moves, params, text))
+        Ok(Compound::new(
+            input,
+            text_pos,
+            SkatingMoveId::OpenMohawk,
+            moves,
+            params,
+            text,
+        ))
     }
 }
 
@@ -144,6 +152,13 @@ impl ClosedMohawk {
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, text_pos, moves, params, text))
+        Ok(Compound::new(
+            input,
+            text_pos,
+            SkatingMoveId::ClosedMohawk,
+            moves,
+            params,
+            text,
+        ))
     }
 }

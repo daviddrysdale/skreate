@@ -1,8 +1,10 @@
 //! Pseudo-move definition for diagram text.
 
 use crate::{
-    moves, param, params, params::Value, parser, Bounds, Move, MoveParam, Position, RenderOptions,
-    Skater, SvgId, TextPosition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser, Bounds, Move, MoveParam, Position, RenderOptions, Skater, SvgId, TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text as SvgText, Document};
@@ -88,6 +90,9 @@ impl Text {
 }
 
 impl Move for Text {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Text)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),

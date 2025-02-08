@@ -1,6 +1,6 @@
 //! Move definition for simple straight edges.
 
-use super::HW;
+use super::{MoveId, SkatingMoveId, HW};
 use crate::{
     apply_style, moves, param, params,
     params::Value,
@@ -111,6 +111,9 @@ impl StraightEdge {
 }
 
 impl Move for StraightEdge {
+    fn id(&self) -> MoveId {
+        MoveId::Skating(SkatingMoveId::StraightEdge)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.len),

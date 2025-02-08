@@ -1,8 +1,11 @@
 //! Pseudo-move definition for label positioned relative to current position.
 
 use crate::{
-    moves, param, params, params::Value, parser, Bounds, Move, MoveParam, Position, RenderOptions,
-    Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser, Bounds, Move, MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition,
+    SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -97,6 +100,9 @@ impl Label {
 }
 
 impl Move for Label {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Label)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),

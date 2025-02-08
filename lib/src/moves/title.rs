@@ -1,8 +1,10 @@
 //! Pseudo-move definition for diagram title.
 
 use crate::{
-    moves, param, params, params::Value, parser, Bounds, Group, Move, MoveParam, Position,
-    RenderOptions, Skater, SvgId, TextPosition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser, Bounds, Group, Move, MoveParam, Position, RenderOptions, Skater, SvgId, TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -79,6 +81,9 @@ impl Title {
 }
 
 impl Move for Title {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Title)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),

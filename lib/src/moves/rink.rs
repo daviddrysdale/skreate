@@ -1,8 +1,11 @@
 //! Pseudo-move definition for rink description.
 
 use crate::{
-    moves, param, params, params::Value, parser, path, pos, Bounds, Move, MoveParam, Position,
-    RenderOptions, Skater, SvgId, TextPosition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser, path, pos, Bounds, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
+    TextPosition,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 
@@ -136,6 +139,9 @@ impl Rink {
 }
 
 impl Move for Rink {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Rink)
+    }
     fn params(&self) -> Vec<MoveParam> {
         let from_opt_i32 = |val: Option<i32>| val.unwrap_or(0);
         vec![

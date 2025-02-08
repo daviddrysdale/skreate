@@ -1,7 +1,9 @@
 //! Move definition for simple curved edges.
 
 use crate::{
-    apply_style, bounds, code, moves, param, params,
+    apply_style, bounds, code,
+    moves::{self, MoveId, SkatingMoveId},
+    param, params,
     params::Value,
     parser,
     parser::types::{parse_code, parse_pre_transition},
@@ -175,6 +177,9 @@ impl Curve {
 }
 
 impl Move for Curve {
+    fn id(&self) -> MoveId {
+        MoveId::Skating(SkatingMoveId::Curve)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.angle),

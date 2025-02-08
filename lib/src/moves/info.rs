@@ -1,8 +1,11 @@
 //! Pseudo-move definition for diagram info.
 
 use crate::{
-    moves, param, params, params::Value, parser, path, Bounds, Count, Document, Move, MoveParam,
-    Position, RenderOptions, Skater, SvgId, TextPosition,
+    moves::{self, MoveId, PseudoMoveId},
+    param, params,
+    params::Value,
+    parser, path, Bounds, Count, Document, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
+    TextPosition,
 };
 use svg::node::element::Group;
 
@@ -135,6 +138,9 @@ impl Info {
 }
 
 impl Move for Info {
+    fn id(&self) -> MoveId {
+        MoveId::Pseudo(PseudoMoveId::Info)
+    }
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.markers),

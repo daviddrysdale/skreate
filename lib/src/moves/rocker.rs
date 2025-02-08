@@ -6,6 +6,7 @@ use super::{
     label::Label,
     shift::Shift,
     straight::StraightEdge,
+    SkatingMoveId,
 };
 use crate::{code, moves, params, parser, Code, Edge, MoveParam, PreTransition, TextPosition};
 
@@ -103,6 +104,13 @@ impl Rocker {
         let suffix = params::to_string(Self::INFO.params, &params);
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
-        Ok(Compound::new(input, text_pos, moves, params, text))
+        Ok(Compound::new(
+            input,
+            text_pos,
+            SkatingMoveId::Rocker,
+            moves,
+            params,
+            text,
+        ))
     }
 }
