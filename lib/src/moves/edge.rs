@@ -13,7 +13,9 @@ use crate::{
 use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
+use svg::node::element::TSpan as SvgTSpan;
 use svg::node::element::Text as SvgText;
+use svg::node::Text as NodeText;
 
 pub struct Curve {
     text_pos: TextPosition,
@@ -249,18 +251,22 @@ impl Move for Curve {
         let mid_pt = self.percent_point(50);
         let half_theta = (self.sign() * self.angle) as f64 * PI / (2.0 * 180.0); // radians
         let distance = (-3 * font_size) as f64 * self.sign() as f64;
-        let prefix = if let Some(count) = opts.count {
-            format!("{} ", count.0)
-        } else {
-            "".to_string()
-        };
+
         let text = match &self.label {
-            Some(label) => format!("{prefix}{label}"),
-            None => format!("{prefix}{}", self.code),
+            Some(label) => label.to_string(),
+            None => format!("{}", self.code),
         };
+        let display = opts.count.is_some() || !text.trim().is_empty();
+
+        let svg_text = if let Some(count) = opts.count {
+            timing_text(count.0).add(NodeText::new(text))
+        } else {
+            SvgText::new(text)
+        };
+
         let mut labels = vec![Label {
-            display: !text.trim().is_empty(),
-            text: SvgText::new(text),
+            display,
+            text: svg_text,
             pos: mid_pt
                 + pos!(
                     (distance * half_theta.cos()) as i64,
@@ -270,7 +276,7 @@ impl Move for Curve {
         if let Some(duration) = opts.duration {
             labels.push(Label {
                 display: true,
-                text: SvgText::new(format!("{}", duration.0)),
+                text: timing_text(duration.0),
                 pos: mid_pt
                     + pos!(
                         (-distance * half_theta.cos()) as i64,
@@ -298,4 +304,13 @@ impl Move for Curve {
         }
         labels
     }
+}
+
+fn timing_text(val: i32) -> SvgText {
+    SvgText::new("").add(
+        SvgTSpan::new(format!("{val}"))
+            .set("font-weight", "bolder")
+            .set("fill", "purple")
+            .set("stroke", "purple"),
+    )
 }
