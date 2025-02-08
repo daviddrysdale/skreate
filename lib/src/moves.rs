@@ -319,6 +319,20 @@ impl MoveId {
             Self::Pseudo(id) => id.info(),
         }
     }
+    #[cfg(test)]
+    pub(crate) fn construct<'a>(
+        &'_ self,
+        input: &'a str,
+        text_pos: TextPosition,
+        pre_transition: PreTransition,
+        entry_code: Code,
+        params: Vec<MoveParam>,
+    ) -> Result<Box<dyn Move>, parser::Error<'a>> {
+        match self {
+            Self::Skating(id) => id.construct(input, text_pos, pre_transition, entry_code, params),
+            Self::Pseudo(id) => id.construct(input, text_pos, params),
+        }
+    }
 }
 
 /// Half-width of a standard stance.
