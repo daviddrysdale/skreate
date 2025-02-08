@@ -14,9 +14,9 @@ pub struct Rink {
     text_pos: TextPosition,
     width: i32,
     length: i32,
-    show_centre_line: bool,
+    centre_line: bool,
     centre_circle: Option<i32>,
-    show_centre_faceoff: bool,
+    centre_faceoff: bool,
     mid_lines: Option<i32>,
     goal_lines: Option<i32>,
     show_goals: bool,
@@ -116,9 +116,9 @@ impl Rink {
             text_pos,
             width: params[0].value.as_i32(input)?,
             length: params[1].value.as_i32(input)?,
-            show_centre_line: params[2].value.as_bool(input)?,
+            centre_line: params[2].value.as_bool(input)?,
             centre_circle: to_opt_i32(&params[3]),
-            show_centre_faceoff: params[4].value.as_bool(input)?,
+            centre_faceoff: params[4].value.as_bool(input)?,
             mid_lines: to_opt_i32(&params[5]),
             goal_lines: to_opt_i32(&params[6]),
             show_goals: params[7].value.as_bool(input)?,
@@ -148,9 +148,9 @@ impl Move for Rink {
         vec![
             param!(self.width),
             param!(self.length),
-            param!("show-centre-line" = self.show_centre_line),
+            param!("centre-line" = self.centre_line),
             param!("centre-circle" = from_opt_i32(self.centre_circle)),
-            param!("centre-faceoff" = self.show_centre_faceoff),
+            param!("centre-faceoff" = self.centre_faceoff),
             param!("mid-lines" = from_opt_i32(self.mid_lines)),
             param!("goal-lines" = from_opt_i32(self.goal_lines)),
             param!("goals" = self.show_goals),
@@ -185,7 +185,7 @@ impl Move for Rink {
             "style",
             format!("{} clip-path:url(#clip-rink)", crate::STYLE_DEF),
         ));
-        if self.show_centre_line {
+        if self.centre_line {
             if self.portrait() {
                 grp = grp.add(
                     path!("M 0,{0} l {1},0", self.length / 2, self.width)
@@ -207,7 +207,7 @@ impl Move for Rink {
                     .set("style", "stroke:red;"),
             )
         }
-        if self.show_centre_faceoff {
+        if self.centre_faceoff {
             grp = grp.add(
                 Circle::new()
                     .set("cx", self.width / 2)
