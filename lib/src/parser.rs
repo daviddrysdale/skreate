@@ -15,6 +15,7 @@ pub mod comment;
 pub mod mv;
 pub mod params;
 pub mod string;
+pub mod timing;
 pub mod types;
 
 /// Parsing error.
