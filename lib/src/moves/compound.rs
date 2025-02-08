@@ -170,6 +170,7 @@ impl Move for Compound {
         result
     }
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
+        // Note that this method isn't actually used -- each sub-move invokes its own `labels()` impl separately.
         let mut result = Vec::new();
         self.for_each_move(|skater, _idx, mv| {
             let labels = mv.labels(opts);
