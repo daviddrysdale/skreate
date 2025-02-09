@@ -270,8 +270,8 @@ impl Move for Curve {
             text: svg_text,
             pos: mid_pt
                 + pos!(
-                    (distance * half_theta.cos()) as i64,
-                    (distance * half_theta.sin()) as i64
+                    (distance * opts.label_offset.as_f64() * half_theta.cos()) as i64,
+                    (distance * opts.label_offset.as_f64() * half_theta.sin()) as i64
                 ),
         }];
         if let Some(duration) = opts.duration {
@@ -280,8 +280,8 @@ impl Move for Curve {
                 text: timing_text(duration.0),
                 pos: mid_pt
                     + pos!(
-                        (-distance * half_theta.cos()) as i64,
-                        (-distance * half_theta.sin()) as i64
+                        (-distance * opts.label_offset.as_f64() * half_theta.cos()) as i64,
+                        (-distance * opts.label_offset.as_f64() * half_theta.sin()) as i64
                     ),
             });
         }

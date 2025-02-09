@@ -4,8 +4,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, path, Bounds, Count, Document, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
-    TextPosition,
+    parser, path, Bounds, Count, Document, Move, MoveParam, Percentage, Position, RenderOptions,
+    Skater, SvgId, TextPosition,
 };
 use svg::node::element::Group;
 
@@ -18,6 +18,7 @@ pub struct Info {
     move_bounds: bool,
     font_size: Option<u32>,
     stroke_width: Option<u32>,
+    label_offset: Percentage,
     auto_count: bool,
     count_from: i32,
 }
@@ -89,6 +90,13 @@ impl Info {
                 short: None,
             },
             params::Info {
+                name: "label-offset",
+                doc: "Amount to scale label offsets by, as a percentage",
+                default: Value::Number(100),
+                range: params::Range::Any,
+                short: None,
+            },
+            params::Info {
                 name: "auto-count",
                 doc: "Whether to automatically count moves",
                 default: Value::Boolean(false),
@@ -132,8 +140,9 @@ impl Info {
             } else {
                 None
             },
-            auto_count: params[8].value.as_bool(input)?,
-            count_from: params[9].value.as_i32(input)?,
+            label_offset: Percentage(params[8].value.as_i32(input)?),
+            auto_count: params[9].value.as_bool(input)?,
+            count_from: params[10].value.as_i32(input)?,
         })
     }
 }
@@ -152,6 +161,7 @@ impl Move for Info {
             param!("move-bounds" = self.move_bounds),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
             param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
+            param!("label-offset" = self.label_offset.0),
             param!("auto-count" = self.auto_count),
             param!("count-from" = self.count_from),
         ]
@@ -202,6 +212,7 @@ impl Move for Info {
         opts.markers = self.markers;
         opts.font_size = self.font_size;
         opts.stroke_width = self.stroke_width;
+        opts.label_offset = self.label_offset;
         if self.auto_count {
             opts.auto_count = Some(Count(self.count_from));
         }

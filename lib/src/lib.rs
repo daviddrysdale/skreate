@@ -100,6 +100,22 @@ impl std::ops::Add<Transition> for Skater {
     }
 }
 
+/// Percentage value.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+pub struct Percentage(pub i32);
+
+impl Default for Percentage {
+    fn default() -> Self {
+        Self(100)
+    }
+}
+
+impl Percentage {
+    fn as_f64(&self) -> f64 {
+        (self.0 as f64) / 100.0
+    }
+}
+
 /// Options for how to render the diagram's next move.
 #[derive(Debug, Clone, Default)]
 struct RenderOptions {
@@ -121,6 +137,9 @@ struct RenderOptions {
     stroke_width: Option<u32>,
     /// Next unique ID associated with a particular [`TextPosition`].
     next_for_pos: HashMap<TextPosition, usize>,
+    /// Label offset scaling percentage.
+    label_offset: Percentage,
+
     /// Current auto-count; `None` if not auto-counting, and any explicitly specified count takes precedence.
     auto_count: Option<Count>,
 

@@ -1,6 +1,6 @@
 Title [text="Golden Skaters Waltz",font-size=80,y=200]
 Rink [centre-circle=0,mid-lines=0,centre-line=false]
-Info [auto-count=true,font-size=36,stroke-width=12]
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=-100]
 
 Warp [x=2100,y=5700,dir=270]
 /2 LFO [angle=110,len=800]

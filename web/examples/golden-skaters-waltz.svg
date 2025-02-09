@@ -16,7 +16,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <rect height="6100" rx="750" ry="750" style="text { text-anchor: middle } path,rect,circle { fill:none; } clip-path:url(#clip-rink)" width="3000" x="0" y="0"/>
 <circle cx="1500" cy="3050" r="2" style="fill: black;"/>
 </g>
-<g id="Info[font-size=36,stroke-width=12,auto-count=true]"/>
+<g id="Info[font-size=36,stroke-width=12,label-offset=-100,auto-count=true]"/>
 <g id="LFO&gt;&gt;[len=800]">
 <path d="M 0,0 a 416,416 0 0 0 559,391"/>
 </g>
@@ -71,42 +71,42 @@ Golden Skaters Waltz
 </text>
 <use id="r_1_c_0_52" style="stroke:black; stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink[centre-line=false,centre-circle=0,mid-lines=0]"/>
 <use id="r_5_c_3_26" style="stroke:black; stroke-width:12;" transform="translate(2100 5685) rotate(270)" xlink:href="#LFO&gt;&gt;[len=800]"/>
-<text id="r_5_c_3_26_n2" style="stroke:black; fill:black; font-size:36pt;" x="2353" y="5447">
+<text id="r_5_c_3_26_n2" style="stroke:black; fill:black; font-size:36pt;" x="2529" y="5569">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">1</tspan>
 LFO
 </text>
-<text id="r_5_c_3_26_n3" style="stroke:black; fill:black; font-size:36pt;" x="2529" y="5569">
+<text id="r_5_c_3_26_n3" style="stroke:black; fill:black; font-size:36pt;" x="2353" y="5447">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">2</tspan>
 </text>
 <use id="r_7_c_3_42" style="stroke:black; stroke-width:12;" transform="translate(2513 5145) rotate(220)" xlink:href="#RFI&gt;&gt;--[label=&quot;RFI Pr&quot;]"/>
-<text id="r_7_c_3_42_n2" style="stroke:black; fill:black; font-size:36pt;" x="2434" y="5060">
+<text id="r_7_c_3_42_n2" style="stroke:black; fill:black; font-size:36pt;" x="2641" y="5004">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">2</tspan>
 RFI Pr
 </text>
-<text id="r_7_c_3_42_n3" style="stroke:black; fill:black; font-size:36pt;" x="2641" y="5004">
+<text id="r_7_c_3_42_n3" style="stroke:black; fill:black; font-size:36pt;" x="2434" y="5060">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">1</tspan>
 </text>
 <use id="r_9_c_3_27" style="stroke:black; stroke-width:12;" transform="translate(2430 4942) rotate(190)" xlink:href="#LFO&gt;&gt;+"/>
-<text id="r_9_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2268" y="4742">
+<text id="r_9_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2418" y="4590">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 LFO
 </text>
-<text id="r_9_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2418" y="4590">
+<text id="r_9_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2268" y="4742">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
 <use id="r_10_c_3_10" style="stroke:black; stroke-width:12;" transform="translate(2055 4597) rotate(80)" xlink:href="#xf-RFO&gt;"/>
-<text id="r_10_c_3_10_n2" style="stroke:black; fill:black; font-size:36pt;" x="1870" y="4477">
+<text id="r_10_c_3_10_n2" style="stroke:black; fill:black; font-size:36pt;" x="1798" y="4678">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">4</tspan>
 RFO
 </text>
-<text id="r_10_c_3_10_n3" style="stroke:black; fill:black; font-size:36pt;" x="1798" y="4678">
+<text id="r_10_c_3_10_n3" style="stroke:black; fill:black; font-size:36pt;" x="1870" y="4477">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
@@ -114,12 +114,12 @@ RFO
 XF
 </text>
 <use id="r_11_c_3_10" style="stroke:black; stroke-width:12;" transform="translate(1652 4428) rotate(140)" xlink:href="#xb-LFI&gt;"/>
-<text id="r_11_c_3_10_n2" style="stroke:black; fill:black; font-size:36pt;" x="1663" y="4208">
+<text id="r_11_c_3_10_n2" style="stroke:black; fill:black; font-size:36pt;" x="1452" y="4246">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">5</tspan>
 LFI
 </text>
-<text id="r_11_c_3_10_n3" style="stroke:black; fill:black; font-size:36pt;" x="1452" y="4246">
+<text id="r_11_c_3_10_n3" style="stroke:black; fill:black; font-size:36pt;" x="1663" y="4208">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
@@ -127,42 +127,42 @@ LFI
 XB
 </text>
 <use id="r_13_c_3_42" style="stroke:black; stroke-width:12;" transform="translate(1604 3994) rotate(160)" xlink:href="#RFO&gt;&gt;[len=900,label=&quot;RFO Sr&quot;]"/>
-<text id="r_13_c_3_42_n2" style="stroke:black; fill:black; font-size:36pt;" x="1747" y="3626">
+<text id="r_13_c_3_42_n2" style="stroke:black; fill:black; font-size:36pt;" x="1572" y="3503">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">6</tspan>
 RFO Sr
 </text>
-<text id="r_13_c_3_42_n3" style="stroke:black; fill:black; font-size:36pt;" x="1572" y="3503">
+<text id="r_13_c_3_42_n3" style="stroke:black; fill:black; font-size:36pt;" x="1747" y="3626">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">6</tspan>
 </text>
 <use id="r_14_c_3_25" style="stroke:black; stroke-width:12;" transform="translate(2044 3335) rotate(270)" xlink:href="#LFO++[angle=90]"/>
-<text id="r_14_c_3_25_n2" style="stroke:black; fill:black; font-size:36pt;" x="2350" y="3101">
+<text id="r_14_c_3_25_n2" style="stroke:black; fill:black; font-size:36pt;" x="2502" y="3253">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">7</tspan>
 LFO
 </text>
-<text id="r_14_c_3_25_n3" style="stroke:black; fill:black; font-size:36pt;" x="2502" y="3253">
+<text id="r_14_c_3_25_n3" style="stroke:black; fill:black; font-size:36pt;" x="2350" y="3101">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
 <use id="r_15_c_3_27" style="stroke:black; stroke-width:12;" transform="translate(2615 2794) rotate(180)" xlink:href="#RFI&gt;[label=&quot;RFI Sl Ch&quot;]"/>
-<text id="r_15_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2465" y="2633">
+<text id="r_15_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2651" y="2527">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">8</tspan>
 RFI Sl Ch
 </text>
-<text id="r_15_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2651" y="2527">
+<text id="r_15_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2465" y="2633">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
 <use id="r_16_c_3_31" style="stroke:black; stroke-width:12;" transform="translate(2371 2473) rotate(120)" xlink:href="#wd-LFI&gt;&gt;+++[label=&quot;LFI Sr&quot;]"/>
-<text id="r_16_c_3_31_n2" style="stroke:black; fill:black; font-size:36pt;" x="2219" y="2058">
+<text id="r_16_c_3_31_n2" style="stroke:black; fill:black; font-size:36pt;" x="2006" y="2076">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">9</tspan>
 LFI Sr
 </text>
-<text id="r_16_c_3_31_n3" style="stroke:black; fill:black; font-size:36pt;" x="2006" y="2076">
+<text id="r_16_c_3_31_n3" style="stroke:black; fill:black; font-size:36pt;" x="2219" y="2058">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">6</tspan>
 </text>
@@ -170,52 +170,52 @@ LFI Sr
 Wd
 </text>
 <use id="r_18_c_3_27" style="stroke:black; stroke-width:12;" transform="translate(2302 1652) rotate(260)" xlink:href="#RFI&gt;&gt;++[label=&quot;RFI Sr&quot;]"/>
-<text id="r_18_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2528" y="1359">
+<text id="r_18_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2723" y="1448">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">10</tspan>
 RFI Sr
 </text>
-<text id="r_18_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2723" y="1448">
+<text id="r_18_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2528" y="1359">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">6</tspan>
 </text>
 <use id="r_19_c_3_8" style="stroke:black; stroke-width:12;" transform="translate(2582 1009) rotate(150)" xlink:href="#LFO&gt;-"/>
-<text id="r_19_c_3_8_n2" style="stroke:black; fill:black; font-size:36pt;" x="2423" y="996">
+<text id="r_19_c_3_8_n2" style="stroke:black; fill:black; font-size:36pt;" x="2531" y="811">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">11</tspan>
 LFO
 </text>
-<text id="r_19_c_3_8_n3" style="stroke:black; fill:black; font-size:36pt;" x="2531" y="811">
+<text id="r_19_c_3_8_n3" style="stroke:black; fill:black; font-size:36pt;" x="2423" y="996">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">2</tspan>
 </text>
 <use id="r_21_c_3_27" style="stroke:black; stroke-width:12;" transform="translate(2353 842) rotate(130)" xlink:href="#RFI&gt;---[label=&quot;RFI Ch&quot;]"/>
-<text id="r_21_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2290" y="926">
+<text id="r_21_c_3_27_n2" style="stroke:black; fill:black; font-size:36pt;" x="2328" y="715">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">12</tspan>
 RFI Ch
 </text>
-<text id="r_21_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2328" y="715">
+<text id="r_21_c_3_27_n3" style="stroke:black; fill:black; font-size:36pt;" x="2290" y="926">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">1</tspan>
 </text>
 <use id="r_23_c_3_25" style="stroke:black; stroke-width:12;" transform="translate(2253 854) rotate(100)" xlink:href="#LFO[angle=70,len=700]"/>
-<text id="r_23_c_3_25_n2" style="stroke:black; fill:black; font-size:36pt;" x="1956" y="995">
+<text id="r_23_c_3_25_n2" style="stroke:black; fill:black; font-size:36pt;" x="1867" y="801">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">13</tspan>
 LFO
 </text>
-<text id="r_23_c_3_25_n3" style="stroke:black; fill:black; font-size:36pt;" x="1867" y="801">
+<text id="r_23_c_3_25_n3" style="stroke:black; fill:black; font-size:36pt;" x="1956" y="995">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
 <use id="r_24_c_3_68" style="stroke:black; stroke-width:12;" transform="translate(1662 1150) rotate(30)" xlink:href="#xf-RFO[angle=120,len=800,label=&quot;RFO Sw&quot;,transition-label=&quot;CR&quot;]"/>
-<text id="r_24_c_3_68_n2" style="stroke:black; fill:black; font-size:36pt;" x="1332" y="1233">
+<text id="r_24_c_3_68_n2" style="stroke:black; fill:black; font-size:36pt;" x="1332" y="1448">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">14</tspan>
 RFO Sw
 </text>
-<text id="r_24_c_3_68_n3" style="stroke:black; fill:black; font-size:36pt;" x="1332" y="1448">
+<text id="r_24_c_3_68_n3" style="stroke:black; fill:black; font-size:36pt;" x="1332" y="1233">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">6</tspan>
 </text>
@@ -223,22 +223,22 @@ RFO Sw
 CR
 </text>
 <use id="r_26_c_3_25" style="stroke:black; stroke-width:12;" transform="translate(971 1149) rotate(180)" xlink:href="#LFO[angle=80,len=400]"/>
-<text id="r_26_c_3_25_n2" style="stroke:black; fill:black; font-size:36pt;" x="822" y="1034">
+<text id="r_26_c_3_25_n2" style="stroke:black; fill:black; font-size:36pt;" x="986" y="896">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">15</tspan>
 LFO
 </text>
-<text id="r_26_c_3_25_n3" style="stroke:black; fill:black; font-size:36pt;" x="986" y="896">
+<text id="r_26_c_3_25_n3" style="stroke:black; fill:black; font-size:36pt;" x="822" y="1034">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
 <use id="r_27_c_3_28" style="stroke:black; stroke-width:12;" transform="translate(740 837) rotate(100)" xlink:href="#RFI&gt;-[label=&quot;RFI Sl Ch&quot;]"/>
-<text id="r_27_c_3_28_n2" style="stroke:black; fill:black; font-size:36pt;" x="628" y="950">
+<text id="r_27_c_3_28_n2" style="stroke:black; fill:black; font-size:36pt;" x="556" y="748">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">16</tspan>
 RFI Sl Ch
 </text>
-<text id="r_27_c_3_28_n3" style="stroke:black; fill:black; font-size:36pt;" x="556" y="748">
+<text id="r_27_c_3_28_n3" style="stroke:black; fill:black; font-size:36pt;" x="628" y="950">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">3</tspan>
 </text>
