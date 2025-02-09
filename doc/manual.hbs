@@ -129,13 +129,13 @@ tests</a> and dance choreographies:
         <ul>
           {{#each this.params}}
           <li><code>{{this.name}}</code>: {{this.doc}}
-          {{#if this.default.Number}}
+          {{#if this.default.isNumber}}
           (default <code>{{this.default.Number}}</code>).
           {{/if}}
-          {{#if this.default.Text}}
+          {{#if this.default.isText}}
           (default <code>"{{this.default.Text}}"</code>).
           {{/if}}
-          {{#if this.default.Boolean}}
+          {{#if this.default.isBoolean}}
           (default <code>{{this.default.Boolean}}</code>).
           {{/if}}
           {{#if this.short}}

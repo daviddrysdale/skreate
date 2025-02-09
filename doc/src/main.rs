@@ -1,6 +1,7 @@
 //! Documentation generator.
 
 use clap::Parser;
+use handlebars::JsonValue;
 use serde_json::json;
 use skreate::moves;
 use std::ffi::OsStr;
@@ -80,7 +81,27 @@ fn main() {
     examples.sort();
 
     let infos = moves::INFO;
-    let json = json!({"infos": &infos, "examples": &examples});
+    let mut json = json!({"infos": &infos, "examples": &examples});
+
+    // Add an explicit discriminant for `infos.params.default` so the template can spot
+    // variants that have falsy values (e.g. `default: Value::Bool(false)`).
+    let jinfos: &mut JsonValue = json.as_object_mut().unwrap().get_mut("infos").unwrap();
+    for jinfo in jinfos.as_array_mut().unwrap() {
+        let jinfo = jinfo.as_object_mut().unwrap();
+        let jparams: &mut JsonValue = jinfo.get_mut("params").unwrap();
+        for jparam in jparams.as_array_mut().unwrap() {
+            let jparam = jparam.as_object_mut().unwrap();
+            let jdflt = jparam.get_mut("default").unwrap().as_object_mut().unwrap();
+            if jdflt.contains_key("Number") {
+                jdflt.insert("isNumber".to_string(), true.into());
+            } else if jdflt.contains_key("Boolean") {
+                jdflt.insert("isBoolean".to_string(), true.into());
+            } else if jdflt.contains_key("Text") {
+                jdflt.insert("isText".to_string(), true.into());
+            }
+        }
+    }
+
     let filename = out_path.join("manual.html");
     let mut outfile = File::create(filename).expect("failed to create {filename:?}");
     outfile
