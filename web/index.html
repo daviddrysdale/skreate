@@ -86,15 +86,22 @@
           var url = urlParams.get('load');
           text = load_skate(url);
         } else {
-          text = `LFO          # text after a hash is a comment and ignored
-xf-RFI3      # put each move on its own line
-LFO; xf-RFI  # or use a semi-colon to separate moves
+            text = `# hash starts a comment to end of line
 
-# blank lines are ignored
-LFO-Rk
+LFO        # give an edge code
+RFI3       # followed by a move like '3' for 3-turn
+LBI-Br     # or -Br for bracket
+xf-RFI     # can also have a transition prefix
+LFI>>      # appending >'s gives a tighter turn
+RFO---     # or +/- for longer/shorter
 
-Title [text="My Program"]
-Text [text="add text centred here",x=400,y=400]`
+# But more precise control needs the full form
+LFI-Ctr [angle=80,len=350,delta-angle=40]
+
+# Can also add titles, labels, rink shapes etc.
+Title [text="Example Title",x=1200,y=200]
+# See the manual for full details
+RBO-Rk`
         }
 
         setup_editor($('#demo'), true, text);
