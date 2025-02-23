@@ -55,25 +55,8 @@ impl Display for Skater {
 impl std::ops::Add<Position> for Skater {
     type Output = Self;
     fn add(self, delta: Position) -> Self {
-        // Start position
-        let start_x = self.pos.x as f64;
-        let start_y = self.pos.y as f64;
-
-        // Delta in coords if we were aligned with `Direction(0)` ...
-        let delta_x = delta.x as f64;
-        let delta_y = delta.y as f64;
-
-        // ... but we're not, we're moving at an angle:
-        let angle = self.dir.0 as f64 * std::f64::consts::PI / 180.0;
-        let dx = delta_x * angle.cos() - delta_y * angle.sin();
-        let dy = delta_y * angle.cos() + delta_x * angle.sin();
-        trace!("  ({delta_x:+.1},{delta_y:+.1}) at {angle} radians => move ({dx:+.1},{dy:+.1})");
-
-        let new_x = start_x + dx;
-        let new_y = start_y + dy;
-
         Skater {
-            pos: pos!(new_x as i64, new_y as i64),
+            pos: self.pos.add_rotated(self.dir, delta),
             dir: self.dir,
             code: self.code,
         }
