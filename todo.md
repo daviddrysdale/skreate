@@ -71,7 +71,7 @@
     - [x] animation: highlight move in diagram and corresponding text in editor
 - [ ] Reproduce dance choreographies
     - [x] Novice Foxtrot
-    - [ ] Rhythm Blues
+    - [x] Rhythm Blues
     - [ ] Canasta Tango
     - [x] Golden Skaters Waltz
     - [ ] Swing Dance (W)
