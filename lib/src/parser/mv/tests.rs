@@ -28,18 +28,23 @@ fn test_move_locations() {
 
 #[test]
 fn test_valid_text() {
+    let _ = env_logger::try_init();
     // All of the following should parse OK.
     let tests = [
         "LFO",
         "LFO+",
         "LFO+>>",
         "LFO+>> # comment",
+        "LFO+>> # comment\nRFI",
         "LFO [len=600]",
         "LFO [len=600] ",
         "LFO [len=600] # end of line comment after explicit params",
+        "LFO [len=600] # end of line comment after explicit params\nLFO",
+        "LFO [len=600] # end of line comment after explicit params\nLFO;RFI",
         "LFO\n\n# comment at end",
         "LFO\n\n# comment at end\n",
         "LFO [len=300] # comment\n",
+        "Warp [x=200,y=4400,dir=270] # extend bounds\nWarp [x=200,y=4200,dir=270]",
     ];
     for input in tests {
         let result = crate::parser::parse(input);

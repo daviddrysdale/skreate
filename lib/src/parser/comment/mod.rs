@@ -3,9 +3,9 @@
 use nom::{
     branch::alt,
     bytes::complete::{is_a, is_not},
-    character::complete::char,
+    character::complete::{char, space0},
     combinator::{all_consuming, map, opt},
-    sequence::{pair, terminated},
+    sequence::{terminated, tuple},
     IResult,
 };
 
@@ -17,12 +17,12 @@ fn parse_to_eol(input: &str) -> IResult<&str, &str> {
     map(
         terminated(
             // Start from '#' to end-of-line
-            pair(char('#'), opt(is_not("\n\r"))),
+            tuple((space0, char('#'), opt(is_not("\n\r")))),
             // Also consume and discard the end-of-line
             is_a("\n\r"),
         ),
         // Only interested in the non-hash result
-        |(_hash, comment)| {
+        |(_ws, _hash, comment)| {
             log::debug!("found comment '{comment:?}'");
             comment.unwrap_or_default()
         },
@@ -32,9 +32,9 @@ fn parse_to_eol(input: &str) -> IResult<&str, &str> {
 /// Parse an end-of-line comment that finishes the input.
 fn parse_to_eof(input: &str) -> IResult<&str, &str> {
     all_consuming(map(
-        pair(char('#'), opt(is_not("\n\r"))),
+        tuple((space0, char('#'), opt(is_not("\n\r")))),
         // Only interested in the non-hash result
-        |(_hash, comment)| {
+        |(_ws, _hash, comment)| {
             log::debug!("found comment '{comment:?}'");
             comment.unwrap_or_default()
         },
