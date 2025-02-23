@@ -64,7 +64,8 @@ pub(crate) fn parse(start: &str) -> IResult<&str, Vec<TimedMove>> {
         separated_list0(parse_separator, |input| mv::parse_move(start, input)),
     ))(start)?;
     // The `separated_list0` combinator will leave a final separator in place if the thing after it doesn't parse as a
-    // move, so consume that too.
+    // move, so consume that (and any leading whitespace) too.
+    let rest = rest.trim_start();
     let result = parse_separator(rest);
     if let Ok((rest, _)) = result {
         Ok((rest, moves))

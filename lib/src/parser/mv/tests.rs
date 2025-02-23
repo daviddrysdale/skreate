@@ -25,3 +25,29 @@ fn test_move_locations() {
         assert_eq!(got_id, want_id, "for input '{input}'");
     }
 }
+
+#[test]
+fn test_valid_text() {
+    // All of the following should parse OK.
+    let tests = [
+        "LFO",
+        "LFO+",
+        "LFO+>>",
+        "LFO+>> # comment",
+        "LFO [len=600]",
+        "LFO [len=600] ",
+        "LFO [len=600] # end of line comment after explicit params",
+        "LFO\n\n# comment at end",
+        "LFO\n\n# comment at end\n",
+        "LFO [len=300] # comment\n",
+    ];
+    for input in tests {
+        let result = crate::parser::parse(input);
+        assert!(result.is_ok(), "for input '{input}'");
+        let (rest, _moves) = result.unwrap();
+        assert!(
+            rest.is_empty(),
+            "got '{rest}' left over after parsing '{input}'"
+        );
+    }
+}

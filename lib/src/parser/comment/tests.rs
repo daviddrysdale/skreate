@@ -6,6 +6,7 @@ fn test_parse() {
         ("#comment\nNext Line", "Next Line"),
         ("# comment with space \rNext Line", "Next Line"),
         ("#\nNext Line", "Next Line"),
+        ("# at end of text", ""),
     ];
     for (input, want_rest) in tests {
         let (got_rest, _got) =
