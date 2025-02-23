@@ -77,9 +77,9 @@ impl Info {
             },
             params::Info {
                 name: "font-size",
-                doc: "Font size for labels; 0 for auto-scaling",
-                default: Value::Number(0),
-                range: params::Range::Positive,
+                doc: "Font size for labels; 0 for no labels, -1 for auto-scaling",
+                default: Value::Number(-1),
+                range: params::Range::Any,
                 short: None,
             },
             params::Info {
@@ -130,7 +130,7 @@ impl Info {
             grid: if grid > 0 { Some(grid) } else { None },
             margin: Position::from_params(&params[3], &params[4]),
             move_bounds: params[5].value.as_bool(input)?,
-            font_size: if font_size > 0 {
+            font_size: if font_size >= 0 {
                 Some(font_size as u32)
             } else {
                 None
@@ -159,7 +159,7 @@ impl Move for Info {
             param!("margin-x" = (self.margin.x as i32)),
             param!("margin-y" = (self.margin.y as i32)),
             param!("move-bounds" = self.move_bounds),
-            param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
+            param!("font-size" = (self.font_size.map(|v| v as i32).unwrap_or(-1))),
             param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
             param!("label-offset" = self.label_offset.0),
             param!("auto-count" = self.auto_count),

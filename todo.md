@@ -56,7 +56,7 @@
     - [x] Put beat count (1/2/4) as extra label, opposite side to move count
     - [x] Make count/duration bold
     - [x] Info param to auto-number, with annotations to skip or reset
-    - [ ] Info option to completely disable labels (e.g. Fiesta Tango second half)
+    - [x] Info option to completely disable labels (e.g. Fiesta Tango second half)
 - [x] Add in/out curvature for moves?
 - [x] Generate a manual from move registry via new `Move` methods
 - [x] Add interactive examples to manual
