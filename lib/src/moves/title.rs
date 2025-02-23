@@ -106,7 +106,7 @@ impl Move for Title {
         Vec::new()
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
-        if self.pos.x >= 0 {
+        if self.pos.x != -1 {
             // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 20).
             let font_size = self.font_size.unwrap_or(20) as i64;
             Some(Bounds::for_text_at(
@@ -127,7 +127,7 @@ impl Move for Title {
         opts: &mut RenderOptions,
         _ns: Option<&SvgId>,
     ) -> Document {
-        let x = if self.pos.x >= 0 {
+        let x = if self.pos.x != -1 {
             self.pos.x
         } else {
             opts.bounds.midpoint().x
