@@ -4,7 +4,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, Bounds, Move, MoveParam, Position, RenderOptions, Skater, SvgId, TextPosition,
+    parser, Bounds, Direction, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
+    TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text as SvgText, Document};
@@ -111,7 +112,10 @@ impl Move for Text {
         Some(self.text_pos)
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
-        None
+        // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 10).
+        let font_size = self.font_size.unwrap_or(10) as i64;
+        let dir = Direction::new(self.rotate);
+        Some(Bounds::for_text_at(&self.text, self.pos, font_size, dir))
     }
     fn render(
         &self,

@@ -4,7 +4,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, Bounds, Group, Move, MoveParam, Position, RenderOptions, Skater, SvgId, TextPosition,
+    parser, Bounds, Direction, Group, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
+    TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -105,7 +106,19 @@ impl Move for Title {
         Vec::new()
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
-        None
+        if self.pos.x >= 0 {
+            // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 20).
+            let font_size = self.font_size.unwrap_or(20) as i64;
+            Some(Bounds::for_text_at(
+                &self.text,
+                self.pos,
+                font_size,
+                Direction(0),
+            ))
+        } else {
+            // TODO: calculate bounds for auto-centered title.
+            None
+        }
     }
     fn render(
         &self,
