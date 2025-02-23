@@ -70,7 +70,7 @@
     - [x] cursor on move => highlight corresponding move
     - [x] animation: highlight move in diagram and corresponding text in editor
 - [ ] Reproduce dance choreographies
-    - [ ] Novice Foxtrot
+    - [x] Novice Foxtrot
     - [ ] Rhythm Blues
     - [ ] Canasta Tango
     - [x] Golden Skaters Waltz

@@ -1,0 +1,23 @@
+Warp [x=10,y=-80]
+Title [text="Novice Foxtrot",font-size=80,x=10,y=10]
+
+Text [x=80,y=4220,text="START",font-size=50]
+
+# extend bounds
+Warp [x=200,y=4400,dir=270,code="LFO"]
+Warp [x=200,y=4200,dir=270,code="LFO"]
+
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=-120]
+/1 LFO [angle=35]
+/1 xf-RFI [transition-label=" ", label="RFI Pr",angle=55]
+/4 LFO [label="LFO Sr",angle=90,len=1200]
+
+Info [auto-count=true,count-from=4,font-size=36,stroke-width=12,label-offset=150]
+/1 RFO [angle=35]
+/1 xf-LFI [transition-label=" ", label="LFI Pr",angle=55]
+/4 RFO [label="RFO Sr",angle=90,len=1200]
+
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=-120]
+/1 LFO [angle=35]
+/1 xf-RFI [transition-label=" ", label="RFI Pr",angle=55]
+/4 LFO [label="LFO Sr",angle=90,len=1200]
