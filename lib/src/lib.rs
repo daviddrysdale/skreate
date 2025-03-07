@@ -562,9 +562,14 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
 
         if mv.id().info().visible {
             if let Some(Count(n)) = opts.auto_count {
-                opts.auto_count = Some(Count(n + 1));
+                let next = if let Some(current) = opts.count {
+                    current.0 + 1
+                } else {
+                    n + 1
+                };
+                opts.auto_count = Some(Count(next));
                 debug!("use auto-{:?} for next move", opts.auto_count);
-            }
+            };
         }
 
         skater = after;
