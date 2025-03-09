@@ -11,8 +11,8 @@ Info [auto-count=true,font-size=36,stroke-width=12,label-offset=-120]
 /1 xf-RFI [transition-label=" ", label="RFI Pr",angle=55]
 /4 LFO [label="LFO Sr",angle=90,len=1200]
 
-Info [auto-count=true,count-from=4,font-size=36,stroke-width=12,label-offset=150]
-/1 RFO [angle=35]
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=150]
+4) /1 RFO [angle=35]
 /1 xf-LFI [transition-label=" ", label="LFI Pr",angle=55]
 /4 RFO [label="RFO Sr",angle=90,len=1200]
 

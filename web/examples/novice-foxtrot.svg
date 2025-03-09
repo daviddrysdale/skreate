@@ -19,7 +19,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LFO[angle=90,len=1200,label=&quot;LFO Sr&quot;]">
 <path d="M 0,0 a 763,763 0 0 0 763,763"/>
 </g>
-<g id="Info[font-size=36,stroke-width=12,label-offset=150,auto-count=true,count-from=4]"/>
+<g id="Info[font-size=36,stroke-width=12,label-offset=150,auto-count=true]"/>
 <g id="RFO[angle=35]">
 <path d="M 0,0 a 736,736 0 0 1 -133,422"/>
 </g>
@@ -66,13 +66,13 @@ LFO Sr
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">4</tspan>
 </text>
-<use id="r_14_c_3_17" style="stroke:black; stroke-width:12;" transform="translate(30 2869) rotate(90)" xlink:href="#RFO[angle=35]"/>
-<text id="r_14_c_3_17_n2" style="stroke:black; fill:black; font-size:36pt;" x="-143" y="2681">
+<use id="r_14_c_6_20" style="stroke:black; stroke-width:12;" transform="translate(30 2869) rotate(90)" xlink:href="#RFO[angle=35]"/>
+<text id="r_14_c_6_20_n2" style="stroke:black; fill:black; font-size:36pt;" x="-143" y="2681">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">4</tspan>
 RFO
 </text>
-<text id="r_14_c_3_17_n3" style="stroke:black; fill:black; font-size:36pt;" x="-239" y="2989">
+<text id="r_14_c_6_20_n3" style="stroke:black; fill:black; font-size:36pt;" x="-239" y="2989">
 
 <tspan fill="purple" font-weight="bolder" stroke="purple">1</tspan>
 </text>

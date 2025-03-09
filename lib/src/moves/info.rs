@@ -20,7 +20,6 @@ pub struct Info {
     stroke_width: Option<u32>,
     label_offset: Percentage,
     auto_count: bool,
-    count_from: i32,
 }
 
 impl Info {
@@ -103,13 +102,6 @@ impl Info {
                 range: params::Range::Boolean,
                 short: None,
             },
-            params::Info {
-                name: "count-from",
-                doc: "First number to count from when auto-counting",
-                default: Value::Number(1),
-                range: params::Range::Any,
-                short: None,
-            },
         ],
     };
 
@@ -142,7 +134,6 @@ impl Info {
             },
             label_offset: Percentage(params[8].value.as_i32(input)?),
             auto_count: params[9].value.as_bool(input)?,
-            count_from: params[10].value.as_i32(input)?,
         })
     }
 }
@@ -163,7 +154,6 @@ impl Move for Info {
             param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
             param!("label-offset" = self.label_offset.0),
             param!("auto-count" = self.auto_count),
-            param!("count-from" = self.count_from),
         ]
     }
     fn text(&self) -> String {
@@ -213,9 +203,11 @@ impl Move for Info {
         opts.font_size = self.font_size;
         opts.stroke_width = self.stroke_width;
         opts.label_offset = self.label_offset;
-        if self.auto_count {
-            opts.auto_count = Some(Count(self.count_from));
-        }
+        opts.auto_count = if self.auto_count {
+            Some(Count(1))
+        } else {
+            None
+        };
 
         doc
     }
