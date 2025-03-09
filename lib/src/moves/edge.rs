@@ -7,8 +7,8 @@ use crate::{
     params::Value,
     parser,
     parser::types::{parse_code, parse_pre_transition},
-    path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
-    Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
+    path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Percentage, Position, PreTransition,
+    RenderOptions, Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use std::f64::consts::PI;
@@ -16,6 +16,9 @@ use svg::node::element::Group;
 use svg::node::element::TSpan as SvgTSpan;
 use svg::node::element::Text as SvgText;
 use svg::node::Text as NodeText;
+
+/// Sentinel value used to indicate that the global value of a parameter should be used.
+const GLOBAL_SENTINEL: Percentage = Percentage(-1);
 
 pub struct Curve {
     text_pos: TextPosition,
@@ -26,6 +29,7 @@ pub struct Curve {
     label: Option<String>,
     transition_label: Option<String>,
     style: String,
+    label_offset: Percentage,
 }
 
 impl Curve {
@@ -86,6 +90,13 @@ impl Curve {
                 range: params::Range::Text,
                 short: None,
             },
+            params::Info {
+                name: "label-offset",
+                doc: "Amount to scale label offsets by, as a percentage, or -1 to use global value",
+                default: Value::Number(-1),
+                range: params::Range::Any,
+                short: None,
+            },
         ],
     };
 
@@ -134,6 +145,7 @@ impl Curve {
                 Some(transition_label.to_string())
             },
             style: params[3].value.as_str(input)?.to_string(),
+            label_offset: Percentage(params[5].value.as_i32(input)?),
         })
     }
 
@@ -191,6 +203,7 @@ impl Move for Curve {
             param!("label" = (self.label.clone().unwrap_or("".to_string()))),
             param!(self.style),
             param!("transition-label" = (self.transition_label.clone().unwrap_or("".to_string()))),
+            param!("label-offset" = self.label_offset.0),
         ]
     }
     fn start(&self) -> Option<Code> {
@@ -264,14 +277,20 @@ impl Move for Curve {
         } else {
             SvgText::new(text)
         };
+        let label_offset = if self.label_offset == GLOBAL_SENTINEL {
+            // -1 is an ugly sentinel value indicating that the global value should be used.
+            opts.label_offset.as_f64()
+        } else {
+            self.label_offset.as_f64()
+        };
 
         let mut labels = vec![Label {
             display,
             text: svg_text,
             pos: mid_pt
                 + pos!(
-                    (distance * opts.label_offset.as_f64() * half_theta.cos()) as i64,
-                    (distance * opts.label_offset.as_f64() * half_theta.sin()) as i64
+                    (distance * label_offset * half_theta.cos()) as i64,
+                    (distance * label_offset * half_theta.sin()) as i64
                 ),
         }];
         if let Some(duration) = opts.duration {
@@ -280,8 +299,8 @@ impl Move for Curve {
                 text: timing_text(duration.0),
                 pos: mid_pt
                     + pos!(
-                        (-distance * opts.label_offset.as_f64() * half_theta.cos()) as i64,
-                        (-distance * opts.label_offset.as_f64() * half_theta.sin()) as i64
+                        (-distance * label_offset * half_theta.cos()) as i64,
+                        (-distance * label_offset * half_theta.sin()) as i64
                     ),
             });
         }
