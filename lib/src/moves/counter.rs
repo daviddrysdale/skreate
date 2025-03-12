@@ -50,6 +50,7 @@ impl Counter {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
+        let label_offset = params[6].value.as_i32(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -82,7 +83,7 @@ impl Counter {
         let angle2b = 80;
         let angle2a = angle2;
 
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}\",transition-label=\"{transition_label}\"]");
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",label=\"{entry_code}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
         let entry2 = format!("{entry_flat}[len={len1b},style=\"{style}\",label=\" \"]");
         let entry3 =
             format!("{entry_rev}[angle={angle1c},len={len1c},style=\"{style}\",label=\" \"]");
@@ -90,7 +91,9 @@ impl Counter {
         let shift = format!("Shift[rotate={sign}135,code=\"{out_code}\"]");
         let exit2 =
             format!("{out_code}[angle={angle2b},len={len2b},style=\"{style}\",label=\" \"]");
-        let exit1 = format!("{out_code}[angle={angle2a},len={len2a},style=\"{style}\"]");
+        let exit1 = format!(
+            "{out_code}[angle={angle2a},len={len2a},style=\"{style}\",label-offset={label_offset}]"
+        );
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![

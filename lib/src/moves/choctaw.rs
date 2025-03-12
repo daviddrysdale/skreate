@@ -47,6 +47,7 @@ impl OpenChoctaw {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
+        let label_offset = params[6].value.as_i32(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -59,10 +60,12 @@ impl OpenChoctaw {
             edge: entry_code.edge.opposite(),
         };
 
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
         let label = format!("Label[fwd=10,side={sign}80,text=\"OpCho\"]");
         let shift = format!("Shift[side={sign}40,code=\"{out_code}\"]");
-        let exit = format!("{out_code}[angle={angle2},len={len2},style=\"{style}\"]");
+        let exit = format!(
+            "{out_code}[angle={angle2},len={len2},style=\"{style}\",label-offset={label_offset}]"
+        );
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
@@ -125,6 +128,7 @@ impl ClosedChoctaw {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
+        let label_offset = params[6].value.as_i32(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -137,10 +141,12 @@ impl ClosedChoctaw {
             edge: entry_code.edge.opposite(),
         };
 
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
         let label = format!("Label[side={sign}60,text=\"ClCho\"]");
         let shift = format!("Shift[side={sign}30,fwd=-30,code=\"{out_code}\"]");
-        let exit = format!("{out_code}[angle={angle2},len={len2},style=\"{style}\"]");
+        let exit = format!(
+            "{out_code}[angle={angle2},len={len2},style=\"{style}\",label-offset={label_offset}]"
+        );
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![

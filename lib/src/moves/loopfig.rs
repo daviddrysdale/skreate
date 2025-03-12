@@ -40,12 +40,13 @@ impl Loop {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
+        let label_offset = params[6].value.as_i32(input)?;
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
 
         let prefix = pre_transition.prefix();
 
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\"]");
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
 
         // The loop itself is a fixed size and net rotates 330 degrees.
         let start = format!("{entry_code}[angle=100,len=80,style=\"{style}\",label=\" \"]");
