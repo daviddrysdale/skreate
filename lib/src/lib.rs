@@ -225,6 +225,9 @@ fn apply_style(path: Path, style: &str) -> Path {
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Count(pub i32);
 
+/// Count of zero means don't display a count.
+pub const COUNT_ZERO: Count = Count(0);
+
 /// Duration of a move in beats.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Duration(pub i32);
@@ -541,6 +544,7 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
         opts.duration = timed_mv.duration;
         opts.count = match (timed_mv.count, opts.auto_count) {
             // Explicitly specified count takes priority.
+            (Some(COUNT_ZERO), _) => None,
             (Some(count), _) => Some(count),
             (None, Some(count)) => Some(count),
             (None, None) => None,
