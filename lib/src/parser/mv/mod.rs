@@ -112,16 +112,6 @@ fn parse_timed_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a s
         },
     )
     .parse(input)
-    /*
-    let (rest, mv) = parse_skating_move(start, input)?;
-    Ok((
-        rest,
-        TimedMove {
-            count: None,
-            duration: None,
-            mv,
-        },
-    ))*/
 }
 
 fn parse_pseudo_move_id(input: &str) -> IResult<&str, PseudoMoveId> {
