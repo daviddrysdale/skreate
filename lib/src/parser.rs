@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Parser.
 
 use crate::{ParseError, TextPosition, TimedMove};

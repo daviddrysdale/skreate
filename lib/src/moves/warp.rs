@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Pseudo-move definition for moving skater to new position.
 
 use crate::{

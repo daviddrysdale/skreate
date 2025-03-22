@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Bracket
 
 use super::{

@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Compound move definition.
 use crate::{
     moves::{MoveId, SkatingMoveId},

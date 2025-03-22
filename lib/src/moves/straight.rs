@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Move definition for simple straight edges.
 
 use super::{MoveId, SkatingMoveId, HW};

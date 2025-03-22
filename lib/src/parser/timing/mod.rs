@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Parsing for timing info.
 
 use crate::parser::{parse_i32, InnErr};

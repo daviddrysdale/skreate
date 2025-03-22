@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Wasm to Javascript interaction code.
 #![warn(missing_docs)]
 

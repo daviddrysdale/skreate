@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 // Use ES module import syntax to import functionality from the module
 // that we have compiled.
 //

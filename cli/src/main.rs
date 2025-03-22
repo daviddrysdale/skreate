@@ -1,3 +1,6 @@
+// Copyright 2024-2025 David Drysdale
+
+//! Command line driver for diagram generation.
 use anyhow::Result;
 use log::debug;
 use std::io::Write;

@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Parsers for base types.
 
 use crate::{Code, Edge, Foot, PreTransition, SkatingDirection};

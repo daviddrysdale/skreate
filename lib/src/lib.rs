@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Skating diagram creator.
 #![warn(missing_docs)]
 

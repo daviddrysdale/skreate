@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Pseudo-move definition for label positioned relative to current position.
 
 use crate::{

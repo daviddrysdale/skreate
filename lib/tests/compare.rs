@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Integration test to compare against canned output.
 
 use log::{debug, info};

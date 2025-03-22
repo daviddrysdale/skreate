@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Pseudo-move definition for moving skater relative to current location.
 
 use crate::{

@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Functionality for parsing and formatting parameters.
 
 use crate::parser;

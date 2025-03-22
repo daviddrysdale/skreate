@@ -1,3 +1,5 @@
+// Copyright 2024-2025 David Drysdale
+
 //! Twizzle.
 
 use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, MoveId, SkatingMoveId};
