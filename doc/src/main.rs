@@ -4,12 +4,14 @@
 
 use clap::Parser;
 use handlebars::JsonValue;
+use regex::Regex;
 use serde_json::json;
 use skreate::moves;
 use std::ffi::OsStr;
 use std::fs::{read_dir, File};
 use std::io::Write;
 use std::path::Path;
+use std::sync::Mutex;
 
 const TEMPLATE: &str = "template";
 
@@ -58,12 +60,63 @@ fn edit_helper(
     Ok(())
 }
 
+static NEXT: Mutex<u32> = Mutex::new(1);
+
+fn next() -> u32 {
+    let mut next = NEXT.lock().unwrap();
+    let val = *next;
+    *next += 1;
+    val
+}
+
+fn example_helper(
+    h: &handlebars::Helper,
+    _hbs: &handlebars::Handlebars,
+    _ctx: &handlebars::Context,
+    _rc: &mut handlebars::RenderContext,
+    out: &mut dyn handlebars::Output,
+) -> handlebars::HelperResult {
+    let semicolon_re = Regex::new(r"\s*;\s*").unwrap();
+
+    let text: String = h.param(0).unwrap().value().render();
+    // Use ';;' for actual semicolon, so temporarily make it something else.
+    let text = str::replace(&text, r#";;"#, r#"@"#);
+    // Convert ';' to newline (and remove whitespace).
+    let text = semicolon_re.replace_all(&text, "\n");
+    // Restore desired semicolons.
+    let text = str::replace(&text, r#"@"#, r#";"#);
+    // Now that the semicolon shenanigans are done, it's OK to put the HTML entity for double quotes (which uses a
+    // semi-colon) in.
+    let text = str::replace(&text, r#"""#, r#"&quot;"#);
+    let num = next();
+
+    out.write(&format!(
+        r##"
+<section class="skreate" id="example_{num}" data-skreate="{text}">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+"##
+    ))?;
+
+    Ok(())
+}
+
 fn main() {
     let extension = OsStr::new("skate");
     let opts = Options::parse();
 
     let mut hbs = handlebars::Handlebars::new();
     hbs.register_helper("edit", Box::new(edit_helper));
+    hbs.register_helper("example", Box::new(example_helper));
     hbs.register_template_file(TEMPLATE, &opts.in_file)
         .unwrap_or_else(|e| panic!("failed to load template at {}: {e:?}", opts.in_file));
 

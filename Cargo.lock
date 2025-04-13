@@ -491,6 +491,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "handlebars",
+ "regex",
  "serde_json",
  "skreate",
  "urlencoding",
