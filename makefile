@@ -3,6 +3,7 @@ all: build manual
 WASM_CRATE=skreate_wasm
 CLI=target/debug/skreate-cli
 DOCGEN=target/debug/skreate-docgen
+EXAMPLE_GEN=target/debug/example-gen
 
 # All of the source code.  Keep updated if new source subdirs arrive
 LIBRARY_SRC=wasm/src/lib.rs $(wildcard lib/src/*.rs) $(wildcard lib/src/moves/*rs) $(wildcard lib/src/parser/*/mod.rs)
@@ -55,14 +56,17 @@ regenerate: regenerate_examples manual
 regenerate_examples: $(EXAMPLES_SVG)
 
 manual: web/doc/manual.html
-web/doc/manual.html: doc/manual.hbs $(DOCGEN) $(LIBRARY_SRC)
+web/doc/manual.html: doc/manual.hbs $(DOCGEN) $(EXAMPLE_GEN) $(LIBRARY_SRC)
 	rm -f web/doc/*
 	$(DOCGEN) --in-file $< --eg-dir web/examples/ --out-dir web/doc/
+	$(EXAMPLE_GEN) --out-dir web/doc/
 clean_manual:
 	rm -f web/doc/* web/doc/manual.html
 
 $(DOCGEN): doc/src/main.rs $(LIBRARY_SRC)
 	cargo build --manifest-path doc/Cargo.toml
+$(EXAMPLE_GEN): example-gen/src/main.rs $(LIBRARY_SRC)
+	cargo build --manifest-path example-gen/Cargo.toml
 
 publish: clean clean_manual build regenerate publish_build publish_tag
 publish_build:

@@ -196,6 +196,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "example-gen"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "skreate",
+]
+
+[[package]]
 name = "generic-array"
 version = "0.14.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"

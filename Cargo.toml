@@ -1,6 +1,7 @@
 [workspace]
 members = [
   "cli",
+  "example-gen",
   "lib",
   "doc",
   "wasm",
