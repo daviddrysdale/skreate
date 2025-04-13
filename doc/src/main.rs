@@ -18,9 +18,9 @@ struct Options {
     /// Input file.
     #[arg(short, long)]
     in_file: String,
-    /// Output directory.
+    /// Output file.
     #[arg(short, long)]
-    out_dir: String,
+    out_file: String,
     /// Directory holding examples.
     #[arg(short, long)]
     eg_dir: Option<String>,
@@ -61,8 +61,6 @@ fn edit_helper(
 fn main() {
     let extension = OsStr::new("skate");
     let opts = Options::parse();
-
-    let out_path = check_dir(&opts.out_dir);
 
     let mut hbs = handlebars::Handlebars::new();
     hbs.register_helper("edit", Box::new(edit_helper));
@@ -106,7 +104,7 @@ fn main() {
         }
     }
 
-    let filename = out_path.join("manual.html");
+    let filename = Path::new(&opts.out_file);
     println!("Render to {filename:?}");
     let mut outfile = File::create(filename).expect("failed to create {filename:?}");
     outfile
