@@ -76,7 +76,9 @@ fn main() {
             let entry = entry.unwrap();
             let path = entry.path();
             if path.is_file() && Some(extension) == path.extension() {
-                examples.push(entry.file_name().into_string().unwrap());
+                let example = entry.file_name().into_string().unwrap();
+                println!("Add '{example}' to examples list");
+                examples.push(example);
             }
         }
     }
@@ -105,6 +107,7 @@ fn main() {
     }
 
     let filename = out_path.join("manual.html");
+    println!("Render to {filename:?}");
     let mut outfile = File::create(filename).expect("failed to create {filename:?}");
     outfile
         .write_all(
@@ -123,6 +126,7 @@ fn main() {
             .unwrap_or_else(|_| panic!("example for {} does not parse!", info.example));
 
         let filename = out_path.join(format!("{}.svg", info.example));
+        println!("Output sample SVG file {filename:?}");
         let mut svgfile = File::create(filename).expect("failed to create {filename:?}");
         svgfile
             .write_all(svg.as_bytes())
