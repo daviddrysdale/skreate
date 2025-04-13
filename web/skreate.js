@@ -207,6 +207,7 @@ export function setup_editor(div, autofocus, text) {
 
   setup_download(div, diagram_div, getValue);
   setup_preview(div, getValue);
+  setup_edit(div, getValue);
 
   on_change();
 
