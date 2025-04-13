@@ -1,5 +1,9 @@
 # To Do
 
+- [ ] Allow save/load
+- [ ] Make manual more prominent
+- [ ] Shortcut for including multiple live examples in manual
+- [ ] Tutorial section
 - [x] Share? Maybe via minimized input format
 - [x] Print preview (no editor)
 - [x] Tests for round trip from move.text to input to move
