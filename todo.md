@@ -3,7 +3,7 @@
 - [ ] Allow save/load
 - [x] Make manual more prominent
 - [x] Shortcut for including multiple live examples in manual
-- [ ] Tutorial section
+- [x] Tutorial section
 - [x] Share? Maybe via minimized input format
 - [x] Print preview (no editor)
 - [x] Tests for round trip from move.text to input to move

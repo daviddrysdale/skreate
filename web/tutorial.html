@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/manual.css" media="screen" />
+    <title>Skating Diagram Generator Tutorial</title>
+
+    <script src="third_party/js/jquery-3.7.1.min.js"></script>
+    <script src="third_party/js/ace-1.33.2.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="third_party/js/underscore-fragments-1.13.6.js" type="text/javascript" charset="utf-8"></script>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Skating Diagram Generator Tutorial</h1>
+      </div>
+    </header>
+
+    <!-- Copyright 2024-2025 David Drysdale -->
+
+    <div id="main">
+
+      <h2>Basics</h2>
+
+      <p>This is a tutorial for the <a href="./">Figure Skating Diagram Generator</a>, starting from the basics and
+        progressing on to cover all the details that are needed for generating precise diagrams.
+
+      <p>The generator relies on a notation system, and the core of that notation system is an <i>edge code</i>.  This
+        code describes what the skater is doing by abbreviating which foot they are skating on, which direction they are
+        travelling, and which edge they are on.  For example, <b>LFO</b> means that the skater is travelling forwards on
+        their left foot, on the outside edge of the blade.
+
+      
+<section class="skreate" id="example_1" data-skreate="LFO">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The skater might follow this by moving onto their right foot, while still travelling forwards and turning to
+      the left:
+
+      
+<section class="skreate" id="example_2" data-skreate="LFO
+RFI">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The example here has a new line for the second edge, but it's also possible to make the notation more compact
+      by using a semi-colon instead of a new line:
+
+      
+<section class="skreate" id="example_3" data-skreate="LFO ; RFI">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The generator assumes that the skater will carry on in the same direction as the previous edge (we'll see later
+        how to change that).  Also, because the skater has changed foot (from left to right), there's a slight sideways
+        gap corresponding to a natural change of weight.
+
+      <p>However, a <i>crossover</i> is a common skating move, where the new skating foot is crossed in front of the
+      previous foot.  To indicate this, we can add a <b>xf-</b> prefix and see that the second edge now starts in a
+      different place:
+
+      
+<section class="skreate" id="example_4" data-skreate="LFO
+xf-RFI">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>We now understand enough about the notation to give a more complicated example: <i>Russian stroking</i>:
+
+      
+<section class="skreate" id="example_5" data-skreate="RFI
+LFO
+xf-RFI
+LFI
+RFO
+xf-LFI
+RFI
+LFO
+xf-RFI">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>This looks OK as a first approximation, but it's not quite the trace that a real skater would have.  This gives
+        us the chance to introduce some more aspects of the notation.
+
+      <p>First, it's common to take a wider step when changing the direction of rotation.  This can be indicated with
+        a <b>wd-</b> prefix, similarly to the xf- prefix above.
+
+      
+<section class="skreate" id="example_6" data-skreate="RFI
+LFO
+xf-RFI
+wd-LFI
+RFO
+xf-LFI
+wd-RFI
+LFO
+xf-RFI">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>Next, the edges aren't quite what a real skater would perform &ndash; some of them should be longer, and some
+      should be a deeper edge.  The notation allows for a rough and ready adjustment of these aspcts by adding suffixes
+        after the move:<ul>
+          <li>The <b>&gt;</b> suffix makes a turn tighter, and can be repeated up to 3 times. Similarly, a <b>&lt;</b> suffix makes
+            a turn less tight.</li>
+          <li>The <b>+</b> suffix makes an edge longer, and can also be repeated up to 3 times. As you might expect,
+            a <b>-</b> suffix makes an edge shorter.</li>
+        </ul>
+
+      <p>
+
+      
+<section class="skreate" id="example_7" data-skreate="RFI+
+LFO>
+xf-RFI>
+wd-LFI+
+RFO>
+xf-LFI>
+wd-RFI+
+LFO>
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>Finally, we can make the diagram a little bit more helpful by including a <b>Title</b>. This is the first
+      example of a part of the notation that doesn't describe what the skater is doing, but instead gives information
+      about how to format the diagram.
+
+      
+<section class="skreate" id="example_8" data-skreate="Title [text=&quot;Russian Stroking&quot;]
+RFI+
+LFO>
+xf-RFI>
+wd-LFI+
+RFO>
+xf-LFI>
+wd-RFI+
+LFO>
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The notation here is a little bit different, which gives us a chance to explain somethings that
+      become vital when generating precise choreographies.
+
+      <p>The first is the square brackets after <b>Title</b>. These square brackets hold precise details of what should
+        be displayed, which can vary from move to move. In this case, the specific detail is the text that should be
+        displayed as the title, given in double-quotes after <b>text=</b>.
+
+      <p>Under the covers, the "&gt;" and "+" modifiers we encountered earlier are just short cuts for some specific
+      parameters.  For example, most moves include parameters like <b>len=</b> and <b>angle=</b>, and the shortcuts
+      change to different values for them.  But they can be explicitly specified for precise control:
+
+      
+<section class="skreate" id="example_9" data-skreate="Title [text=&quot;Russian Stroking&quot;]
+RFI [len=850]
+LFO [angle=60]
+xf-RFI [angle=60]
+wd-LFI [len=850]
+RFO [angle=60]
+xf-LFI [angle=60]
+wd-RFI [len=850]
+LFO [angle=60]
+xf-RFI [angle=60]">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>In general, all distances are measured in centimetres, and angles are measured in degrees.
+      However, some measurements are <i>absolute</i> and some are <i>relative</i>.  What does that mean?
+
+      <p><b>Absolute</b> measurements are given in the coordinates for the diagram as a whole.  For example, our title
+      isn't in quite the right place, so we can adjust where it gets centred:
+
+      
+<section class="skreate" id="example_10" data-skreate="Title [text=&quot;Russian Stroking&quot;,x=300,y=200]
+RFI+
+LFO>
+xf-RFI>
+wd-LFI+
+RFO>
+xf-LFI>
+wd-RFI+
+LFO>
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>Try changing the <b>x=</b> and <b>y=</b> values to see where the title looks best.  This will also help you get
+        a sense of the coordinate &ndash; the X-axis goes from left to right, and the Y-axis goes from top to bottom.
+
+      <p>There's also a way to avoid trial and error when making things more precise.  The <b>Info</b> command changes
+        various things about how the diagram is displayed, and one thing that can help is to enable a <b>grid=</b>:
+
+      
+<section class="skreate" id="example_11" data-skreate="Info [grid=100]
+Title [text=&quot;Russian Stroking&quot;,x=300,y=200]
+RFI+
+LFO>
+xf-RFI>
+wd-LFI+
+RFO>
+xf-LFI>
+wd-RFI+
+LFO>
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>This displays a grid at 100cm intervals to help you do precise alignment, and the X- and Y- axes are shown
+        slightly darker. Once everything is in the right place, you can remove the <b>Info</b>.
+
+      <p><b>Relative</b> measurements are given according to where the skater is at a moment in the choreography, and in
+        which direction they're facing.  Let's return to a simple example to demonstrate this:
+
+      
+<section class="skreate" id="example_12" data-skreate="LFO>
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>Let's suppose we want to make the cross-in-front more substantial. To do that, we can use the <b>Shift</b>
+        command between the two edges to alter the skater's position.
+
+      
+<section class="skreate" id="example_13" data-skreate="LFO>
+Shift [side=60]
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The <b>side=60</b> parameter here moves the skater 60cm to the side, <i>relative to the direction that the
+      skater is facing</i>.  That means that if we add another move beforehand, the later two steps stay the same
+      &ndash; just in a different position on the page.
+
+      
+<section class="skreate" id="example_14" data-skreate="RFI>
+LFO>
+Shift [side=60]
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The <b>Info</b> command we covered earlier has another option, <b>markers=true</b>, that helps with this:
+
+        
+<section class="skreate" id="example_15" data-skreate="Info [markers=true,grid=100]
+LFO>
+Shift [side=60]
+xf-RFI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>When this option is enabled, the start of each move gets a green cross (indicating position) and arrow
+        (indicating direction), and the end of each move gets a red one.  We can see that the <b>Shift</b> command has
+        moved sideways relative to the direction at the end of the first edge.
+
+      <p>This example also shows how to specify more than one parameter at a time: just put a comma between them.
+      Again, once the diagram is how you want it, you can remove the <b>Info</b> to get a cleaner image.
+
+
+      <h2>Moves</h2>
+
+      <p>It's possible to create a picture of a 3-turn by breaking down the individual parts: an entry edge, a rotation,
+        and an exit edge.
+
+        
+<section class="skreate" id="example_16" data-skreate="LFO>
+Shift [rotate=-90]
+LBI>">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>(As an aside, this illustrates another variant of the <b>Shift</b> command described previously.  Here, the
+        position is kept the same, but the skater is rotated 90&deg; anticlockwise between the two edges.)
+
+      <p>However, describing turns like that would get tiresome very quickly, so the generator includes shortcuts for
+      all of the standard skating turns.  These are indicated by adding a turn indicator after the move code:
+
+        
+<section class="skreate" id="example_17" data-skreate="LFO3">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The three-turn is traditionally notated like "LFO3", but for other turns there's normally a dash before the
+        indicator of the move:
+
+        
+<section class="skreate" id="example_18" data-skreate="LFO-Br">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>As with simple edges, there are <b>len=</b> and <b>angle=</b> parameters that can adjust the shape of the move,
+        and basic changes can be made with <b>&gt;</b> and <b>+</b> etc.
+
+        
+<section class="skreate" id="example_19" data-skreate="LFI-Rk>
+LBI-Ctr [len=800]">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The <b>len=</b> and <b>angle=</b> parameters affect both the entry and exit edges for a turn. If you want to
+      separate them, there are <b>delta-len</b> and <b>delta-angle</b> parameters that say how different the exit edge
+        should be from the entry edge:
+
+        
+<section class="skreate" id="example_20" data-skreate="LFI-OpMo [len=800,delta-len=-300,delta-angle=45]">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The twizzle is a move that gets notated slightly differently; a count of the number of turns needs to follow
+        the <b>-Tw</b> turn indicator:
+
+        
+<section class="skreate" id="example_21" data-skreate="LFI-Tw1.5">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>Jumps also need to include a turn count, although this only affects the label attached to the figure rather
+        than the positioning.  Each jump also needs to be preceded by the relevant entry edge, which allows for both
+        regular (e.g. <b>LFO-1A</b>) and goofy (e.g. <b>RFO-1A</b>) variants.
+
+        
+<section class="skreate" id="example_22" data-skreate="LFO-2A
+RBO-2T">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The turn count also means that the system can distinguish between a loop <i>figure</i>, and a loop <i>jump</i>:
+
+        
+<section class="skreate" id="example_23" data-skreate="RBO-Loop
+RBO-1Lo">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+
+      <h2>Timings</h2>
+
+      <p>Dance choreography often needs additional timing or sequencing information.  To support this, a number in
+      brackets before a move means that it gets additionally labelled with that number:
+
+        
+<section class="skreate" id="example_24" data-skreate="1) LFO
+2) RFI>
+3) LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>To make this easier for longer choreographies, the <b>Info</b> command can have the <b>auto-count=true</b>
+        option set.  This assumes that each new step takes the next number, giving automatic numbering:
+
+        
+<section class="skreate" id="example_25" data-skreate="Info [auto-count=true]
+LFO
+RFI>
+LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>This can be combined with the explicit numbers, to reset the count so it starts at a particular value:
+
+        
+<section class="skreate" id="example_26" data-skreate="Info [auto-count=true]
+3) LFO
+RFI>
+LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The <i>duration</i> of a move (in beats) can also be specified by putting a beat count after a slash <b>/</b>:
+
+        
+<section class="skreate" id="example_27" data-skreate="Info [auto-count=true]
+/2 LFO
+/2 RFI>
+/4 LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>However, any duration value has to come <i>after</i> a number:
+
+        
+<section class="skreate" id="example_28" data-skreate="1) /2 LFO
+2) /2 RFI>
+3) /4 LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <h2>Complete Diagrams</h2>
+
+      <p>To create a complete choreography diagram, a few more elements are needed.
+
+      <p>Firstly, it often makes sense to put the figures inside a <b>Rink</b>
+
+        
+<section class="skreate" id="example_29" data-skreate="Rink
+1) /2 LFO
+2) /2 RFI>
+3) /4 LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>That's a start, but the moves are in the wrong place.  Turning on some <b>Info</b> features can help us figure
+        out where things should be:
+
+        
+<section class="skreate" id="example_30" data-skreate="Rink
+Info [markers=true,grid=100]
+1) /2 LFO
+2) /2 RFI>
+3) /4 LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The <b>Warp</b> command moves the skater to a different absolute position in the diagram, facing in a
+        particular direction:
+
+        
+<section class="skreate" id="example_31" data-skreate="Rink
+Info [markers=true,grid=100]
+Warp [x=500,y=2000,dir=270]
+1) /2 LFO
+2) /2 RFI>
+3) /4 LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>There are lots of details that can be adjusted to get the precise diagram you want.  For the next example,<ul>
+          <li>A "Start" marker has been added with the <b>Text</b> command.</li>
+          <li>The rink has been made shorter with the <b>length</b> parameter to <b>Rink</b>.</li>
+          <li>The lines have been made wider with the <b>stroke-width</b> parameter to <b>Info</b>.</li>
+          <li>The font size has been set with the <b>font-size</b> parameter to <b>Info</b>.</li>
+          <li>The labels for each move have been flipped to the other side, and moved further away, with
+          the <b>label-offset</b> parameter to <b>Info</b>. This is a percentage value, so -150 is 50% further away,
+          and the minus sign flips the labels.</li>
+
+        
+<section class="skreate" id="example_32" data-skreate="Rink [length=5000]
+Info [auto-count=true,stroke-width=10,font-size=60,label-offset=-150]
+Text [text=&quot;Start&quot;,x=350,y=2000]
+Warp [x=500,y=2000,dir=270]
+/2 LFO
+/2 RFI>
+/4 LFO+">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <h2>Further Reading</h2>
+
+      <ul>
+       <li>To see all of the available moves and their possible parameters, consult the <a href="manual.html">Reference
+           Manual</a>.</li>
+        <li>Browse the <a href="manual.html#examples">list of examples</a> to see sample diagrams (and how they were
+          generated).</li>
+       </ul>
+    </div>
+
+    <footer>
+      <hr />
+      <div class="inner">
+        <a href="https://lurklurk.org">David Drysdale<a> -
+            <a href="https://github.com/daviddrysdale/skreate">GitHub</a>
+      </div>
+    </footer>
+  </body>
+  <script type="module">
+    import {setup_editor, load_skate} from './skreate.js';
+    $( ".skreate" ).each(function(index) {
+        let id = '#' + this.id;
+        let text = this.dataset.skreate;
+        $(document).ready(function() { setup_editor($(id), false, text); });
+    });
+  </script>
+</html>

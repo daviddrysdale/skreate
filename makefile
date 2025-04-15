@@ -1,4 +1,4 @@
-all: build manual
+all: build manual regenerate
 
 WASM_CRATE=skreate_wasm
 CLI=target/debug/skreate-cli
@@ -55,13 +55,15 @@ regenerate: regenerate_examples manual
 
 regenerate_examples: $(EXAMPLES_SVG)
 
-manual: web/manual.html
+manual: web/manual.html web/tutorial.html
 web/manual.html: doc/manual.hbs $(DOCGEN) $(EXAMPLE_GEN) $(LIBRARY_SRC)
 	rm -f web/doc/*
 	$(DOCGEN) --in-file $< --eg-dir web/examples/ --out-file $@
 	$(EXAMPLE_GEN) --out-dir web/doc/
+web/tutorial.html: doc/tutorial.hbs $(DOCGEN) $(LIBRARY_SRC)
+	$(DOCGEN) --in-file $< --out-file $@
 clean_manual:
-	rm -f web/doc/* web/manual.html
+	rm -f web/doc/* web/manual.html web/tutorial.html
 
 $(DOCGEN): doc/src/main.rs $(LIBRARY_SRC)
 	cargo build --manifest-path doc/Cargo.toml
