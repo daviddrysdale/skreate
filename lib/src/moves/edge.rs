@@ -19,9 +19,6 @@ use svg::node::element::TSpan as SvgTSpan;
 use svg::node::element::Text as SvgText;
 use svg::node::Text as NodeText;
 
-/// Sentinel value used to indicate that the global value of a parameter should be used.
-const GLOBAL_SENTINEL: Percentage = Percentage(-1);
-
 pub struct Curve {
     text_pos: TextPosition,
     pre_transition: PreTransition,
@@ -279,12 +276,7 @@ impl Move for Curve {
         } else {
             SvgText::new(text)
         };
-        let label_offset = if self.label_offset == GLOBAL_SENTINEL {
-            // -1 is an ugly sentinel value indicating that the global value should be used.
-            opts.label_offset.as_f64()
-        } else {
-            self.label_offset.as_f64()
-        };
+        let label_offset = self.label_offset.for_opts(opts);
 
         let mut labels = vec![Label {
             display,

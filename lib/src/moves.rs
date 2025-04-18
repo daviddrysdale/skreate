@@ -15,9 +15,10 @@ pub(crate) mod coe;
 pub(crate) mod compound;
 pub(crate) mod counter;
 pub(crate) mod edge;
+pub(crate) mod hop;
 pub(crate) mod info;
 pub(crate) mod label;
-pub(crate) mod loopfig; // Name avoid clash with keyword `loop`
+pub(crate) mod loopfig; // Name avoids clash with keyword `loop`
 pub(crate) mod mohawk;
 pub(crate) mod rink;
 pub(crate) mod rocker;
@@ -86,6 +87,7 @@ pub static INFO: &[Info] = &[
     coe::ChangeOfEdge::INFO,
     twizzle::Twizzle::INFO,
     loopfig::Loop::INFO,
+    hop::Hop::INFO,
     // Then pseudo-moves.
     warp::Warp::INFO,
     shift::Shift::INFO,
@@ -125,6 +127,8 @@ pub enum SkatingMoveId {
     Twizzle(u32),
     /// Loop.
     Loop,
+    /// Hop.
+    Hop,
 }
 
 impl SkatingMoveId {
@@ -144,6 +148,7 @@ impl SkatingMoveId {
             Self::ChangeOfEdge => &coe::ChangeOfEdge::INFO,
             Self::Twizzle(_count) => &twizzle::Twizzle::INFO,
             Self::Loop => &loopfig::Loop::INFO,
+            Self::Hop => &hop::Hop::INFO,
         }
     }
     /// Construct an instance of a skating move.
@@ -242,6 +247,13 @@ impl SkatingMoveId {
                 params,
             )?),
             Self::Loop => Box::new(loopfig::Loop::from_params(
+                input,
+                text_pos,
+                pre_transition,
+                entry_code,
+                params,
+            )?),
+            Self::Hop => Box::new(hop::Hop::from_params(
                 input,
                 text_pos,
                 pre_transition,

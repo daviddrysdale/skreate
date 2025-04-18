@@ -27,7 +27,7 @@
     - [x] Closed Choctaw
     - [x] Twizzle
     - [x] Loop
-    - [ ] Hop
+    - [x] Hop
     - [ ] Pivot
     - [ ] Schramm
     - [ ] Schafer push

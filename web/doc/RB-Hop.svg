@@ -1,0 +1,20 @@
+<svg height="100" viewBox="-50 -50 100 100" width="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; }
+</style>
+<g id="RB-Hop">
+<circle r="5" style="fill: black;"/>
+</g>
+</defs>
+<use id="r_0_c_0_6" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#RB-Hop"/>
+<text id="r_0_c_0_6_n2" style="stroke:black; fill:black; font-size:10pt;" x="30" y="0">
+Hop
+</text>
+</svg>

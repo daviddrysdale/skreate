@@ -96,8 +96,20 @@ impl Default for Percentage {
 }
 
 impl Percentage {
+    /// Sentinel value used to indicate that the global value of a parameter should be used.
+    const GLOBAL_SENTINEL: Percentage = Percentage(-1);
+
     fn as_f64(&self) -> f64 {
         (self.0 as f64) / 100.0
+    }
+
+    fn for_opts(&self, opts: &RenderOptions) -> f64 {
+        if *self == Self::GLOBAL_SENTINEL {
+            // -1 is an ugly sentinel value indicating that the global value should be used.
+            opts.label_offset.as_f64()
+        } else {
+            self.as_f64()
+        }
     }
 }
 

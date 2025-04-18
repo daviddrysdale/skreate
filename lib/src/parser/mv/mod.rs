@@ -33,41 +33,49 @@ fn parse_twizzle_id(input: &str) -> IResult<&str, SkatingMoveId> {
     .parse(input)
 }
 
-fn parse_skating_move_id(input: &str) -> IResult<&str, SkatingMoveId> {
-    alt((
-        value(SkatingMoveId::ThreeTurn, tag(moves::three::ThreeTurn::MOVE)),
-        value(
-            SkatingMoveId::OpenMohawk,
-            tag(moves::mohawk::OpenMohawk::MOVE),
-        ),
-        value(
-            SkatingMoveId::ClosedMohawk,
-            tag(moves::mohawk::ClosedMohawk::MOVE),
-        ),
-        value(SkatingMoveId::Bracket, tag(moves::bracket::Bracket::MOVE)),
-        value(SkatingMoveId::Rocker, tag(moves::rocker::Rocker::MOVE)),
-        value(SkatingMoveId::Counter, tag(moves::counter::Counter::MOVE)),
-        value(
-            SkatingMoveId::OpenChoctaw,
-            tag(moves::choctaw::OpenChoctaw::MOVE),
-        ),
-        value(
-            SkatingMoveId::ClosedChoctaw,
-            tag(moves::choctaw::ClosedChoctaw::MOVE),
-        ),
-        value(
-            SkatingMoveId::ChangeOfEdge,
-            tag(moves::coe::ChangeOfEdge::MOVE),
-        ),
-        value(
-            SkatingMoveId::ChangeOfEdge,
-            tag(moves::coe::ChangeOfEdge::MOVE_ALT),
-        ),
-        parse_twizzle_id,
-        value(SkatingMoveId::Loop, tag(moves::loopfig::Loop::MOVE)),
-        // Match an empty string last.
-        value(SkatingMoveId::Curve, tag("")),
-    ))(input)
+fn parse_skating_move_id(edge: crate::Edge, input: &str) -> IResult<&str, SkatingMoveId> {
+    if edge == crate::Edge::Flat {
+        alt((
+            value(SkatingMoveId::Hop, tag(moves::hop::Hop::MOVE)),
+            value(SkatingMoveId::StraightEdge, tag("")),
+        ))(input)
+    } else {
+        alt((
+            value(SkatingMoveId::ThreeTurn, tag(moves::three::ThreeTurn::MOVE)),
+            value(
+                SkatingMoveId::OpenMohawk,
+                tag(moves::mohawk::OpenMohawk::MOVE),
+            ),
+            value(
+                SkatingMoveId::ClosedMohawk,
+                tag(moves::mohawk::ClosedMohawk::MOVE),
+            ),
+            value(SkatingMoveId::Bracket, tag(moves::bracket::Bracket::MOVE)),
+            value(SkatingMoveId::Rocker, tag(moves::rocker::Rocker::MOVE)),
+            value(SkatingMoveId::Counter, tag(moves::counter::Counter::MOVE)),
+            value(
+                SkatingMoveId::OpenChoctaw,
+                tag(moves::choctaw::OpenChoctaw::MOVE),
+            ),
+            value(
+                SkatingMoveId::ClosedChoctaw,
+                tag(moves::choctaw::ClosedChoctaw::MOVE),
+            ),
+            value(
+                SkatingMoveId::ChangeOfEdge,
+                tag(moves::coe::ChangeOfEdge::MOVE),
+            ),
+            value(
+                SkatingMoveId::ChangeOfEdge,
+                tag(moves::coe::ChangeOfEdge::MOVE_ALT),
+            ),
+            parse_twizzle_id,
+            value(SkatingMoveId::Loop, tag(moves::loopfig::Loop::MOVE)),
+            value(SkatingMoveId::Hop, tag(moves::loopfig::Loop::MOVE)),
+            // Match an empty string last.
+            value(SkatingMoveId::Curve, tag("")),
+        ))(input)
+    }
 }
 
 /// Parse a skating move.
@@ -76,11 +84,7 @@ fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, Bo
     let cur = rest;
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
     let (rest, code) = parser::types::parse_code(rest)?;
-    let (rest, move_id) = if code.edge == crate::Edge::Flat {
-        (rest, SkatingMoveId::StraightEdge)
-    } else {
-        parse_skating_move_id(rest)?
-    };
+    let (rest, move_id) = parse_skating_move_id(code.edge, rest)?;
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
