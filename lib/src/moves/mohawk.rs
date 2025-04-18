@@ -119,8 +119,8 @@ impl ClosedMohawk {
     ) -> Result<Compound, parser::Error> {
         assert!(params::compatible(Self::INFO.params, &params));
         let sign = match entry_code {
-            code!(LBO) => "-",
-            code!(RBO) => "",
+            code!(LBO) | code!(RFO) => "-",
+            code!(RBO) | code!(LFO) => "",
             _ => return Err(parser::fail(input)),
         };
 
