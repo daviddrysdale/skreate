@@ -29,13 +29,17 @@
               <div class="editor">
               </div>
             </div>
-            <a href="#" class="save">Save</a>
+            <a href="#" class="save">Save File</a>
             |
-            <a href="#" class="download">Download as SVG</a>
+            <button onclick="document.getElementById('filepicker').click()">Load File</button>
+            <input type="file" class="fileInput" id="filepicker" style="display:none;"/>
+            |
+            <a href="#" class="download">Save SVG</a>
             |
             <a href="#" class="preview">Preview</a>
             |
             <button id="playthrough">Play</button>
+            <br/>
             </td>
             <td><div class="diagram" id="pic"></div></td>
           </tr>

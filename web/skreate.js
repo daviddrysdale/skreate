@@ -67,6 +67,7 @@ function setup_playthrough(editor, positions, timings) {
 
 export function setup_download(div, diagram_div, get_value) {
   var download_link = div.find('.download');
+  var input_link = div.find('.fileInput')[0];
   download_link.click(function(ev) {
     var svg = diagram_div.find('svg')[0];
     var width = parseInt(svg.width.baseVal.value);
@@ -74,20 +75,57 @@ export function setup_download(div, diagram_div, get_value) {
     var text = get_value();
     var xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" xmlns:xlink="http://www.w3.org/1999/xlink"><source><![CDATA[' + text + ']]></source>' + svg.innerHTML + '</svg>';
 
+    var filename;
+    if (input_link.files.length == 0) {
+      filename = "diagram.svg";
+    } else {
+      filename = input_link.files[0].name;
+      filename = filename.replace(/\.skate$/, "");
+      filename = filename + ".svg";
+    }
+
     var a = $(this);
-    a.attr("download", "diagram.svg");
+    a.attr("download", filename);
     a.attr("href", "data:image/svg+xml," + encodeURIComponent(xml));
   });
 }
 
 export function setup_save(div, diagram_div, get_value) {
   var save_link = div.find('.save');
+  var input_link = div.find('.fileInput')[0];
   save_link.click(function(ev) {
+    var filename;
+    if (input_link.files.length == 0) {
+      filename = "diagram.skate";
+    } else {
+      filename = input_link.files[0].name;
+    }
     var text = get_value();
     var blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
     var a = $(this);
-    a.attr("download", "diagram.skate");
+    a.attr("download", filename);
     a.attr("href", URL.createObjectURL(blob));
+  });
+}
+
+export function setup_load(div, diagram_div) {
+  var input_link = div.find('.fileInput')[0];
+  input_link.addEventListener('change', () => {
+    if (input_link.files.length == 0) {
+      alert("No file selected");
+    } else {
+      var fileobj = input_link.files[0];
+      const reader = new FileReader();
+      reader.onload = function fileReadDone() {
+        var text = reader.result;
+        console.log("Loading:\n" + text);
+        var editor_div = div.find(".editor");
+        var editor = ace.edit(editor_div.get(0));
+        editor.setValue(text);
+      }
+      console.log("Loading from " + fileobj.name);
+      reader.readAsText(fileobj);
+    }
   });
 }
 
@@ -220,6 +258,7 @@ export function setup_editor(div, autofocus, text) {
   var diagram_div = div.find(".diagram");
 
   setup_save(div, diagram_div, getValue);
+  setup_load(div, diagram_div);
   setup_download(div, diagram_div, getValue);
   setup_preview(div, getValue);
   setup_edit(div, getValue);
