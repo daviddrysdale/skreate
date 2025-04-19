@@ -83,6 +83,17 @@ export function setup_download(div, diagram_div, get_value) {
   });
 }
 
+export function setup_save(div, diagram_div, get_value) {
+  var save_link = div.find('.save');
+  save_link.click(function(ev) {
+    var text = get_value();
+    var blob = new Blob([text], {type: 'text/plain;charset=utf-8'});
+    var a = $(this);
+    a.attr("download", "diagram.skate");
+    a.attr("href", URL.createObjectURL(blob));
+  });
+}
+
 export function setup_preview(div, get_value) {
   var preview_link = div.find('.preview');
   preview_link.click(function(ev) {
@@ -205,6 +216,7 @@ export function setup_editor(div, autofocus, text) {
   }
   var diagram_div = div.find(".diagram");
 
+  setup_save(div, diagram_div, getValue);
   setup_download(div, diagram_div, getValue);
   setup_preview(div, getValue);
   setup_edit(div, getValue);
