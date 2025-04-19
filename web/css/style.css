@@ -1,5 +1,6 @@
 body {
   font-size: 15px;
+  padding: 5px;
   line-height: 1.5;
   background: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
@@ -16,7 +17,7 @@ header {
 }
 header h1 {
   letter-spacing: -1px;
-  font-size: 72px;
+  font-size: 48px;
   color: #fff;
   line-height: 1;
   margin-bottom: 0.2em;
@@ -30,7 +31,7 @@ header h2 {
   letter-spacing: 0;
 }
 #main {
-  padding: 10px;
+  padding: 5px;
 }
 #main h1 {
   font-family: 'Helvetica Neue', Helvetica, Arial, serif;
@@ -66,7 +67,7 @@ header h2 {
 }
 .inner {
   position: relative;
-  width: 940px;
+  width: 740px;
   margin: 0 auto;
 }
 .right {
