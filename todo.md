@@ -39,7 +39,7 @@
         - [ ] Toe Loop
         - [ ] Flip
         - [ ] Lutz
-        - [ ] Axel
+        - [x] Axel
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
 - [x] Adjust measurements of moves
