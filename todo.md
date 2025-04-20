@@ -37,7 +37,7 @@
         - [x] Salchow
         - [x] Loop
         - [x] Toe Loop
-        - [ ] Flip
+        - [x] Flip
         - [ ] Lutz
         - [x] Axel
         - [ ] Walley
