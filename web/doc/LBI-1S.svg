@@ -1,0 +1,46 @@
+<svg height="862" viewBox="-50 -50 925 862" width="925" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; }
+</style>
+<g id="LBI-1S_0::LBI-">
+<path d="M 0,0 a 859,859 0 0 0 51,293"/>
+</g>
+<g id="LBI-1S_1::LBI[angle=30,len=200,label=&quot; &quot;]">
+<path d="M 0,0 a 381,381 0 0 0 51,190"/>
+</g>
+<g id="LBI-1S_2::LBI---[angle=50,label=&quot; &quot;]">
+<path d="M 0,0 a 114,114 0 0 0 40,87"/>
+</g>
+<g id="LBI-1S_3::LBI[angle=70,len=50,label=&quot; &quot;]">
+<path d="M 0,0 a 40,40 0 0 0 26,38"/>
+</g>
+<g id="LBI-1S_4::LB-Hop[label=&quot;1S&quot;]">
+<circle r="5" style="fill: black;"/>
+</g>
+<g id="LBI-1S_6::RBO[angle=40,len=400]">
+<path d="M 0,0 a 572,572 0 0 0 134,368"/>
+</g>
+</defs>
+<use id="r_0_c_0_6" style="stroke:black; stroke-width:2;" transform="translate(0 0) rotate(0)" xlink:href="#LBI-1S_0::LBI-"/>
+<text id="r_0_c_0_6_n2" style="stroke:black; fill:black; font-size:18pt;" x="66" y="140">
+LBI
+</text>
+<use id="r_0_c_0_6_n3" style="stroke:black; stroke-width:2;" transform="translate(51 293) rotate(340)" xlink:href="#LBI-1S_1::LBI[angle=30,len=200,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n4" style="stroke:black; stroke-width:2;" transform="translate(163 454) rotate(310)" xlink:href="#LBI-1S_2::LBI---[angle=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n5" style="stroke:black; stroke-width:2;" transform="translate(255 479) rotate(260)" xlink:href="#LBI-1S_3::LBI[angle=70,len=50,label=&quot; &quot;]"/>
+<use id="r_0_c_0_6_n6" style="stroke:black; stroke-width:2;" transform="translate(287 446) rotate(190)" xlink:href="#LBI-1S_4::LB-Hop[label=&quot;1S&quot;]"/>
+<text id="r_0_c_0_6_n7" style="stroke:black; fill:black; font-size:18pt;" x="257" y="440">
+1S
+</text>
+<use id="r_0_c_0_6_n8" style="stroke:black; stroke-width:2;" transform="translate(457 628) rotate(310)" xlink:href="#LBI-1S_6::RBO[angle=40,len=400]"/>
+<text id="r_0_c_0_6_n9" style="stroke:black; fill:black; font-size:18pt;" x="646" y="677">
+RBO
+</text>
+</svg>

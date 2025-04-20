@@ -7,6 +7,7 @@ use crate::{
     MoveParam,
 };
 use log::trace;
+use serde::Serialize;
 use std::fmt::{self, Display, Formatter};
 use svg::node::element::Text as SvgText;
 
@@ -91,6 +92,41 @@ impl TextPosition {
     /// Convert the position into an ID string.
     pub fn unique_id(&self) -> String {
         format!("r_{}_c_{}_{}", self.row, self.col, self.col + self.count)
+    }
+}
+
+/// Number of rotations in a jump.
+#[allow(missing_docs)]
+#[repr(u32)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+pub enum JumpCount {
+    Single = 1,
+    Double = 2,
+    Triple = 3,
+    Quad = 4,
+}
+
+impl Display for JumpCount {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Single => write!(f, "1"),
+            Self::Double => write!(f, "2"),
+            Self::Triple => write!(f, "3"),
+            Self::Quad => write!(f, "4"),
+        }
+    }
+}
+
+impl TryFrom<u32> for JumpCount {
+    type Error = String;
+    fn try_from(value: u32) -> Result<Self, Self::Error> {
+        match value {
+            1 => Ok(Self::Single),
+            2 => Ok(Self::Double),
+            3 => Ok(Self::Triple),
+            4 => Ok(Self::Quad),
+            v => Err(format!("invalid jump count {v}")),
+        }
     }
 }
 

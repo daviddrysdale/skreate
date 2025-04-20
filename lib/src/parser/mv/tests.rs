@@ -33,6 +33,7 @@ fn test_valid_text() {
     let _ = env_logger::try_init();
     // All of the following should parse OK.
     let tests = [
+        "LBI-2S",
         "LFO",
         "LFO+",
         "LFO+>>",

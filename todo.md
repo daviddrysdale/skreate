@@ -34,7 +34,7 @@
     - [ ] Two-foot moves (e.g. for Skills 1-4)
     - [ ] Jumps
         - [ ] Waltz
-        - [ ] Salchow
+        - [x] Salchow
         - [ ] Loop
         - [ ] Toe Loop
         - [ ] Flip

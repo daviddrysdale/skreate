@@ -6,7 +6,7 @@ use crate::{
     moves::{self, PseudoMoveId, SkatingMoveId},
     parser::timing::{parse_count, parse_duration},
     parser::{self, InnErr},
-    Move, TextPosition, TimedMove,
+    JumpCount, Move, TextPosition, TimedMove,
 };
 use log::info;
 use nom::{
@@ -31,6 +31,23 @@ fn parse_twizzle_id(input: &str) -> IResult<&str, SkatingMoveId> {
         SkatingMoveId::Twizzle,
     )
     .parse(input)
+}
+
+fn parse_jump_id(input: &str) -> IResult<&str, SkatingMoveId> {
+    // '-' [1234] {S,T,Lo,F,Lz,A}
+    let (rest, _) = tag("-")(input)?;
+    let (rest, count) = alt((
+        value(JumpCount::Single, tag("1")),
+        value(JumpCount::Double, tag("2")),
+        value(JumpCount::Triple, tag("3")),
+        value(JumpCount::Quad, tag("4")),
+    ))(rest)?;
+    alt((
+        value(
+            SkatingMoveId::Salchow(count),
+            tag(moves::jump::Salchow::JUMP),
+        ),
+    ))(rest)
 }
 
 fn parse_skating_move_id(edge: crate::Edge, input: &str) -> IResult<&str, SkatingMoveId> {
@@ -70,6 +87,7 @@ fn parse_skating_move_id(edge: crate::Edge, input: &str) -> IResult<&str, Skatin
                 tag(moves::coe::ChangeOfEdge::MOVE_ALT),
             ),
             parse_twizzle_id,
+            parse_jump_id,
             value(SkatingMoveId::Loop, tag(moves::loopfig::Loop::MOVE)),
             value(SkatingMoveId::Hop, tag(moves::loopfig::Loop::MOVE)),
             // Match an empty string last.

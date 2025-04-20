@@ -3,7 +3,7 @@
 //! Skating move definitions.
 
 use crate::{
-    parser, pos, Code, Foot, Move, MoveParam, Position, PreTransition, Rotation,
+    parser, pos, Code, Foot, JumpCount, Move, MoveParam, Position, PreTransition, Rotation,
     SkatingDirection::*, SpatialTransition, TextPosition, Transition,
 };
 use log::warn;
@@ -17,6 +17,7 @@ pub(crate) mod counter;
 pub(crate) mod edge;
 pub(crate) mod hop;
 pub(crate) mod info;
+pub(crate) mod jump;
 pub(crate) mod label;
 pub(crate) mod loopfig; // Name avoids clash with keyword `loop`
 pub(crate) mod mohawk;
@@ -88,6 +89,7 @@ pub static INFO: &[Info] = &[
     twizzle::Twizzle::INFO,
     loopfig::Loop::INFO,
     hop::Hop::INFO,
+    jump::Salchow::INFO,
     // Then pseudo-moves.
     warp::Warp::INFO,
     shift::Shift::INFO,
@@ -99,36 +101,26 @@ pub static INFO: &[Info] = &[
 ];
 
 /// Identifier for skating moves.
+#[allow(missing_docs)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum SkatingMoveId {
-    /// Curved edge
     Curve,
-    /// Straight Edge
     StraightEdge,
-    /// Three Turn
     ThreeTurn,
-    /// Open Mohawk
     OpenMohawk,
-    /// Closed Mohawk
     ClosedMohawk,
-    /// Bracket
     Bracket,
-    /// Rocker
     Rocker,
-    /// Counter
     Counter,
-    /// Open Choctaw
     OpenChoctaw,
-    /// Closed Choctaw
     ClosedChoctaw,
-    /// Change Of Edge
     ChangeOfEdge,
     /// Twizzle with count of half-turns.
     Twizzle(u32),
-    /// Loop.
+    /// Loop figure.
     Loop,
-    /// Hop.
     Hop,
+    Salchow(JumpCount),
 }
 
 impl SkatingMoveId {
@@ -149,6 +141,7 @@ impl SkatingMoveId {
             Self::Twizzle(_count) => &twizzle::Twizzle::INFO,
             Self::Loop => &loopfig::Loop::INFO,
             Self::Hop => &hop::Hop::INFO,
+            Self::Salchow(_count) => &jump::Salchow::INFO,
         }
     }
     /// Construct an instance of a skating move.
@@ -258,6 +251,14 @@ impl SkatingMoveId {
                 text_pos,
                 pre_transition,
                 entry_code,
+                params,
+            )?),
+            Self::Salchow(count) => Box::new(jump::Salchow::from_params(
+                input,
+                text_pos,
+                pre_transition,
+                entry_code,
+                *count,
                 params,
             )?),
         })
