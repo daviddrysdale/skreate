@@ -392,15 +392,99 @@ impl Axel {
     }
 }
 
+/// ToeLoop jump.
+pub struct ToeLoop;
+
+impl ToeLoop {
+    /// Jump code.
+    pub const JUMP: &str = "T";
+    /// Static move information.
+    pub const INFO: moves::Info = moves::Info {
+        name: "Toe Loop",
+        id: MoveId::Skating(SkatingMoveId::ToeLoop(JumpCount::Single)),
+        summary: "Toe Loop jump",
+        example: "RBO-1T",
+        visible: true,
+        params: &JUMP_PARAMS,
+    };
+
+    pub fn from_params(
+        input: &str,
+        text_pos: TextPosition,
+        pre_transition: PreTransition,
+        entry_code: Code,
+        count: JumpCount,
+        params: Vec<MoveParam>,
+    ) -> Result<Compound, parser::Error> {
+        assert!(params::compatible(Self::INFO.params, &params));
+        let regular = match entry_code {
+            code!(RBO) => true,
+            code!(LBO) => false,
+            _ => return Err(parser::fail(input)),
+        };
+
+        let entry_angle = params[0].value.as_i32(input)?;
+        let entry_len = params[1].value.as_i32(input)?;
+        let exit_angle = params[2].value.as_i32(input)?;
+        let exit_len = params[3].value.as_i32(input)?;
+        let style = params[4].value.as_str(input)?;
+        let jump_label = params[5].value.as_str(input)?;
+        let label_offset = params[6].value.as_i32(input)?;
+
+        let prefix = pre_transition.prefix();
+        let out_code = if regular { code!(RBO) } else { code!(LBO) };
+        let hop_foot = if regular { "R" } else { "L" };
+
+        let entry = format!("{prefix}{entry_code}[angle={entry_angle},len={entry_len},style=\"{style}\",label-offset={label_offset}]");
+        let shift1 = if regular {
+            "Shift[side=100,fwd=50]"
+        } else {
+            "Shift[side=-100,fwd=50]"
+        }
+        .to_string();
+        let label = if jump_label.is_empty() {
+            format!("{count}{}", Self::JUMP)
+        } else {
+            jump_label.to_string()
+        };
+        let hop = format!("{hop_foot}B-Hop [label=\"{label}\"]");
+        let shift2 = if regular {
+            "Shift[side=-50,fwd=150]"
+        } else {
+            "Shift[side=50,fwd=150]"
+        }
+        .to_string();
+
+        let exit = format!(
+            "{out_code}[angle={exit_angle},len={exit_len},style=\"{style}\",label-offset={label_offset}]"
+        );
+
+        log::info!("input {input:?} results in {entry};{shift1};{hop};{shift2};{exit}");
+
+        let moves = vec![
+            Curve::construct(&entry, text_pos).unwrap(),
+            Shift::construct(&shift1, text_pos).unwrap(),
+            Hop::construct(&hop, text_pos).unwrap(),
+            Shift::construct(&shift2, text_pos).unwrap(),
+            Curve::construct(&exit, text_pos).unwrap(),
+        ];
+
+        let prefix = pre_transition.prefix();
+        let suffix = params::to_string(Self::INFO.params, &params);
+        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+
+        Ok(Compound::new(
+            input,
+            text_pos,
+            SkatingMoveId::ToeLoop(count),
+            moves,
+            params,
+            text,
+        ))
+    }
+}
+
 /*
-
-Toe Loop
-
-RBO [len=600,angle=40]
-Shift [fwd=50,side=100]
-LB-Hop [label="1T"]
-Shift [fwd=150,side=-50]
-RBO [len=400,angle=40]
 
 Flip
 

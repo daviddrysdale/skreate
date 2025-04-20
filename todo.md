@@ -36,7 +36,7 @@
         - [ ] Waltz
         - [x] Salchow
         - [x] Loop
-        - [ ] Toe Loop
+        - [x] Toe Loop
         - [ ] Flip
         - [ ] Lutz
         - [x] Axel

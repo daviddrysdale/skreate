@@ -1,0 +1,34 @@
+<svg height="1070" viewBox="-50 -50 695 1070" width="695" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<title>Skating Diagram</title>
+<desc>
+<text>
+Skating Diagram
+</text>
+</desc>
+<defs>
+<style>
+text { text-anchor: middle } path,rect,circle { fill:none; }
+</style>
+<g id="RBO-1T_0::RBO+[angle=30]">
+<path d="M 0,0 a 1145,1145 0 0 0 153,572"/>
+</g>
+<g id="RBO-1T_2::RB-Hop[label=&quot;1T&quot;]">
+<circle r="5" style="fill: black;"/>
+</g>
+<g id="RBO-1T_4::RBO[angle=40,len=400]">
+<path d="M 0,0 a 572,572 0 0 0 134,368"/>
+</g>
+</defs>
+<use id="r_0_c_0_6" style="stroke:black; stroke-width:2;" transform="translate(0 0) rotate(0)" xlink:href="#RBO-1T_0::RBO+[angle=30]"/>
+<text id="r_0_c_0_6_n2" style="stroke:black; fill:black; font-size:18pt;" x="91" y="283">
+RBO
+</text>
+<use id="r_0_c_0_6_n3" style="stroke:black; stroke-width:2;" transform="translate(264 565) rotate(330)" xlink:href="#RBO-1T_2::RB-Hop[label=&quot;1T&quot;]"/>
+<text id="r_0_c_0_6_n4" style="stroke:black; fill:black; font-size:18pt;" x="289" y="550">
+1T
+</text>
+<use id="r_0_c_0_6_n5" style="stroke:black; stroke-width:2;" transform="translate(295 719) rotate(330)" xlink:href="#RBO-1T_4::RBO[angle=40,len=400]"/>
+<text id="r_0_c_0_6_n6" style="stroke:black; fill:black; font-size:18pt;" x="456" y="830">
+RBO
+</text>
+</svg>
