@@ -90,6 +90,7 @@ pub static INFO: &[Info] = &[
     loopfig::Loop::INFO,
     hop::Hop::INFO,
     jump::Salchow::INFO,
+    jump::Loop::INFO,
     // Then pseudo-moves.
     warp::Warp::INFO,
     shift::Shift::INFO,
@@ -121,6 +122,8 @@ pub enum SkatingMoveId {
     Loop,
     Hop,
     Salchow(JumpCount),
+    /// Loop jump, with count of rotations
+    LoopJump(JumpCount),
 }
 
 impl SkatingMoveId {
@@ -142,6 +145,7 @@ impl SkatingMoveId {
             Self::Loop => &loopfig::Loop::INFO,
             Self::Hop => &hop::Hop::INFO,
             Self::Salchow(_count) => &jump::Salchow::INFO,
+            Self::LoopJump(_count) => &jump::Loop::INFO,
         }
     }
     /// Construct an instance of a skating move.
@@ -254,6 +258,14 @@ impl SkatingMoveId {
                 params,
             )?),
             Self::Salchow(count) => Box::new(jump::Salchow::from_params(
+                input,
+                text_pos,
+                pre_transition,
+                entry_code,
+                *count,
+                params,
+            )?),
+            Self::LoopJump(count) => Box::new(jump::Loop::from_params(
                 input,
                 text_pos,
                 pre_transition,

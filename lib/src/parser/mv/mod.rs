@@ -47,6 +47,7 @@ fn parse_jump_id(input: &str) -> IResult<&str, SkatingMoveId> {
             SkatingMoveId::Salchow(count),
             tag(moves::jump::Salchow::JUMP),
         ),
+        value(SkatingMoveId::LoopJump(count), tag(moves::jump::Loop::JUMP)),
     ))(rest)
 }
 

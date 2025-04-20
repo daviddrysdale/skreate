@@ -35,7 +35,7 @@
     - [ ] Jumps
         - [ ] Waltz
         - [x] Salchow
-        - [ ] Loop
+        - [x] Loop
         - [ ] Toe Loop
         - [ ] Flip
         - [ ] Lutz
