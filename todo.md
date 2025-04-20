@@ -38,7 +38,7 @@
         - [x] Loop
         - [x] Toe Loop
         - [x] Flip
-        - [ ] Lutz
+        - [x] Lutz
         - [x] Axel
         - [ ] Walley
 - [x] Text labels, floating & oriented correctly
