@@ -3,7 +3,7 @@
 <head>
   <head>
     <meta charset='utf-8'>
-    <link rel="stylesheet" type="text/css" href="../css/manual.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="css/manual.css" media="screen" />
 
     <title>Skating Diagram Creator</title>
     <link rel="canonical" href="https://lurklurk.org/skreate/doc/manual.html" />
@@ -15,24 +15,24 @@
 
 <h2>Overview</h2>
 
-<p><a href="../">This page</a> allows interactive creation of skating choreography diagrams.
+<p><a href="index.html">This page</a> allows interactive creation of skating choreography diagrams.
 
 <p>To build a skating diagram, enter <i>move codes</i> into the text entry box, one per line (or separated from the
   previous move by a semi-colon <b><code>;</code></b>).  A move code is typically a three letter code denoting the
   skating edge, optionally followed by an abbreviation for the move being performed. Blank lines are ignored, and
   anything after a hash (<b><code>#</code></b>) on a line is treated as a comment and ignored.
 
-<p>For example, the code <a href="..?text=LFO-Br"><b><code>LFO-Br</code></b></a> indicates a bracket turn being performed
+<p>For example, the code <a href="./?text=LFO-Br"><b><code>LFO-Br</code></b></a> indicates a bracket turn being performed
   from a left forward outside edge, thus ending on a left backward inside (<code>LBI</code>) edge.
 
 <p>As a shorthand, moves can be made longer or shorter by appending up to 3 plus (<b><code>+</code></b>) or minus
-  (<b><code>-</code></b>) signs, for example <a href="..?text=LFO-Rk%2B%2B"><b><code>LFO-Rk++</code></b></a>.  Moves can also be
+  (<b><code>-</code></b>) signs, for example <a href="./?text=LFO-Rk%2B%2B"><b><code>LFO-Rk++</code></b></a>.  Moves can also be
   made to turn more or less tightly by appending up to 3 greater-than (<b><code>&gt;</code></b>) or less-than
-  (<b><code>&lt;</code></b>) signs, for example <a href="..?text=RBI-Ctr%26lt%3B%26lt%3B"><b><code>RBI-Ctr&lt;&lt;</code></b></a>.
+  (<b><code>&lt;</code></b>) signs, for example <a href="./?text=RBI-Ctr%26lt%3B%26lt%3B"><b><code>RBI-Ctr&lt;&lt;</code></b></a>.
 
 <p>It's also possible to more precisely control exactly how big or tightly curved a particular move is. A move can be
   followed by a comma-separated list of <i>parameters</i> enclosed in square brackets, e.g.
-  <a href="..?text=LFO%20%5Blen%3D350%2Cangle%3D90%5D"><b><code>LFO [len=350,angle=90]</code></b></a>.  The allowed parameters for
+  <a href="./?text=LFO%20%5Blen%3D350%2Cangle%3D90%5D"><b><code>LFO [len=350,angle=90]</code></b></a>.  The allowed parameters for
   each move are described in the <a href="#reference">Move Reference</a> section below.
 
 <p>To sum up, skating move codes are typically made up of:
@@ -42,15 +42,15 @@
     <li>an <b><code>xf-</code></b> prefix indicates a cross in front</li>
     <li>an <b><code>xb-</code></b> prefix indicates a cross behind</li>
    </ul></li>
-  <li>An edge code, indicating the skating foot, direction, and edge.  For example, <a href="..?text="><b><code></code></b></a> indicates skating on
+  <li>An edge code, indicating the skating foot, direction, and edge.  For example, <a href="./?text="><b><code></code></b></a> indicates skating on
     the left foot, travelling backwards on an outside edge.</li>
-  <li>An optional suffix indicating a move, turn or foot change.  For example, <a href="..?text="><b><code></code></b></a> indicates a three-turn from
+  <li>An optional suffix indicating a move, turn or foot change.  For example, <a href="./?text="><b><code></code></b></a> indicates a three-turn from
     a left forward outside edge, transitioning to a left backward inside edge.</li>
   <li>Further optional suffices that adjust parameters for the move.  These can take two forms:<ul>
     <li>A collection of comma-separated <code>name=value</code> parameters enclosed in square brackets.  For example,
-      <a href="..?text=LFO%20%5Bangle%3D120%2Clen%3D900%5D"><b><code>LFO [angle=120,len=900]</code></b></a> indicates a left
+      <a href="./?text=LFO%20%5Bangle%3D120%2Clen%3D900%5D"><b><code>LFO [angle=120,len=900]</code></b></a> indicates a left
       forward outside edge that turns 120&deg; and travels 900 cm.</li>
-    <li>Short code markers that adjust the most common parameters.  For example, <a href="..?text=LFO%26gt%3B%26gt%3B%2B%2B"><b><code>LFO&gt;&gt;++</code></b></a> indicates a
+    <li>Short code markers that adjust the most common parameters.  For example, <a href="./?text=LFO%26gt%3B%26gt%3B%2B%2B"><b><code>LFO&gt;&gt;++</code></b></a> indicates a
       left forward edge that curves more and travels further than the default.</li>
   </ul></li>
 </ul>
@@ -86,7 +86,7 @@ step should take.  This is done by prefixing the move code with:
   <li>A <i>beat count</i> after a slash <b><code>/</code></b>.
 </ul>
 
-<p>For example, an input of <a href="..?text=3%29%20%2F2%20RFI"><b><code>3) /2 RFI</code></b></a> indicates that a right forward inside edge as the third step, which
+<p>For example, an input of <a href="./?text=3%29%20%2F2%20RFI"><b><code>3) /2 RFI</code></b></a> indicates that a right forward inside edge as the third step, which
 should hold for 2 beats.
 
 <p>The <a href="#ref-Info"><code>Info</code></a> command includes an <b><code>auto-count</code></b> parameter that turns
@@ -97,30 +97,30 @@ should hold for 2 beats.
 <p>Example diagrams that approximately match <a href="https://www.iceskating.org.uk/skills">British Ice Skating's Skills
 tests</a> and dance choreographies:
 <ul>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/golden-skaters-waltz.skate">golden-skaters-waltz.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/novice-foxtrot.skate">novice-foxtrot.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/rhythm-blues.skate">rhythm-blues.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/riverside-rhumba.skate">riverside-rhumba.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills1-1.skate">skills1-1.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills1-2.skate">skills1-2.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills1-3.skate">skills1-3.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills2-1.skate">skills2-1.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills2-2.skate">skills2-2.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills2-3.skate">skills2-3.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills2-4.skate">skills2-4.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills2-5.skate">skills2-5.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills3-1.skate">skills3-1.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills3-2.skate">skills3-2.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills3-3.skate">skills3-3.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills3-4.skate">skills3-4.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills3-5.skate">skills3-5.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills4-1.skate">skills4-1.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills4-2.skate">skills4-2.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills4-3.skate">skills4-3.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills4-4.skate">skills4-4.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills4-5.skate">skills4-5.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills5-3.skate">skills5-3.skate</a></li>
-<li><a href="../?w=800px&h=1200px&edh=1100px&load=examples/skills6-3.skate">skills6-3.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/golden-skaters-waltz.skate">golden-skaters-waltz.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/novice-foxtrot.skate">novice-foxtrot.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/rhythm-blues.skate">rhythm-blues.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/riverside-rhumba.skate">riverside-rhumba.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills1-1.skate">skills1-1.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills1-2.skate">skills1-2.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills1-3.skate">skills1-3.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills2-1.skate">skills2-1.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills2-2.skate">skills2-2.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills2-3.skate">skills2-3.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills2-4.skate">skills2-4.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills2-5.skate">skills2-5.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills3-1.skate">skills3-1.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills3-2.skate">skills3-2.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills3-3.skate">skills3-3.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills3-4.skate">skills3-4.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills3-5.skate">skills3-5.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills4-1.skate">skills4-1.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills4-2.skate">skills4-2.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills4-3.skate">skills4-3.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills4-4.skate">skills4-4.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills4-5.skate">skills4-5.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills5-3.skate">skills5-3.skate</a></li>
+<li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/skills6-3.skate">skills6-3.skate</a></li>
 </ul>
 
 <a id="reference"/><h2>Move Reference</h2>
@@ -141,7 +141,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Curving edge</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO"><img src="LFO.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO"><img src="doc/LFO.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -174,7 +174,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Straight edge</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LF"><img src="LF.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LF"><img src="doc/LF.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -197,7 +197,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Three turn</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO3"><img src="LFO3.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO3"><img src="doc/LFO3.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -233,7 +233,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Open mohawk</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFI-OpMo"><img src="LFI-OpMo.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFI-OpMo"><img src="doc/LFI-OpMo.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -269,7 +269,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Closed mohawk</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=RBO-ClMo"><img src="RBO-ClMo.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=RBO-ClMo"><img src="doc/RBO-ClMo.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -305,7 +305,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Bracket turn</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO-Br"><img src="LFO-Br.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO-Br"><img src="doc/LFO-Br.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -341,7 +341,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Rocker turn</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO-Rk"><img src="LFO-Rk.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO-Rk"><img src="doc/LFO-Rk.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -377,7 +377,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Counter turn</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO-Ctr"><img src="LFO-Ctr.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO-Ctr"><img src="doc/LFO-Ctr.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -413,7 +413,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Open choctaw</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFI-OpCho"><img src="LFI-OpCho.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFI-OpCho"><img src="doc/LFI-OpCho.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -449,7 +449,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Closed choctaw</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=RBO-ClCho"><img src="RBO-ClCho.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=RBO-ClCho"><img src="doc/RBO-ClCho.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -485,7 +485,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Change of edge</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO-CoE"><img src="LFO-CoE.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO-CoE"><img src="doc/LFO-CoE.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -524,7 +524,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Twizzle</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFI-Tw1.5"><img src="LFI-Tw1.5.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFI-Tw1.5"><img src="doc/LFI-Tw1.5.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -563,7 +563,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Loop figure</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=RBI-Loop"><img src="RBI-Loop.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=RBI-Loop"><img src="doc/RBI-Loop.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -599,7 +599,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Hop</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=RB-Hop"><img src="RB-Hop.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=RB-Hop"><img src="doc/RB-Hop.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -621,7 +621,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Salchow jump</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LBI-1S"><img src="LBI-1S.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LBI-1S"><img src="doc/LBI-1S.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -657,7 +657,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Toe Loop jump</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=RBO-1T"><img src="RBO-1T.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=RBO-1T"><img src="doc/RBO-1T.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -693,7 +693,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Loop jump</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=RBO-1Lo"><img src="RBO-1Lo.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=RBO-1Lo"><img src="doc/RBO-1Lo.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -729,7 +729,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Flip jump</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LBI-1F"><img src="LBI-1F.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LBI-1F"><img src="doc/LBI-1F.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -765,7 +765,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Lutz jump</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LBO-1Lz"><img src="LBO-1Lz.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LBO-1Lz"><img src="doc/LBO-1Lz.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -801,7 +801,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Axel jump</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=LFO-1A"><img src="LFO-1A.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=LFO-1A"><img src="doc/LFO-1A.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>
@@ -885,7 +885,7 @@ tests</a> and dance choreographies:
       </td>
       <td>Rink depiction</td>
       <td class="center">
-        <div class="example"><a href="../preview.html?text=Rink"><img src="Rink.svg" height="150"/></a></div>
+        <div class="example"><a href="./preview.html?text=Rink"><img src="doc/Rink.svg" height="150"/></a></div>
       </td>
       <td>
         <ul>

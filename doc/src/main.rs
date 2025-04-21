@@ -52,7 +52,7 @@ fn edit_helper(
 ) -> handlebars::HelperResult {
     let param = h.param(0).unwrap();
 
-    out.write("<a href=\"..?text=")?;
+    out.write("<a href=\"./?text=")?;
     out.write(urlencoding::encode(param.value().render().as_ref()).as_ref())?;
     out.write("\"><b><code>")?;
     out.write(param.value().render().as_ref())?;
