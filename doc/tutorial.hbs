@@ -245,14 +245,23 @@
 
         {{example 'Rink [length=5000]; Info [auto-count=true,stroke-width=10,font-size=60,label-offset=-150]; Text [text="Start",x=350,y=2000]; Warp [x=500,y=2000,dir=270]; /2 LFO; /2 RFI>; /4 LFO+'}}
 
-      <h2>Further Reading</h2>
+      <a name="examples"><h2>Examples</h2></a>
+
+      <p>Listed below are example diagrams that approximately match <a href="https://www.iceskating.org.uk/skills">British Ice Skating's Skills
+      tests</a> and dance choreographies.  These examples can be a useful source of inspiration and tips/tricks for how
+      to get your own diagrams set how you want them.
 
       <ul>
-       <li>To see all of the available moves and their possible parameters, consult the <a href="manual.html">Reference
-           Manual</a>.</li>
-        <li>Browse the <a href="manual.html#examples">list of examples</a> to see sample diagrams (and how they were
-          generated).</li>
-       </ul>
+      {{#each examples}}
+      <li><a href="./?w=800px&h=1200px&edh=1100px&load=examples/{{this}}">{{this}}</a></li>
+      {{/each}}
+      </ul>
+
+      <h2>Further Reading</h2>
+
+      <p>To see all of the available moves and their possible parameters, consult the <a href="manual.html">Reference
+           Manual</a>.
+
     </div>
 
     <footer>
