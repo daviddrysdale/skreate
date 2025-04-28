@@ -27,7 +27,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LFO--">
 <path d="M 0,0 a 687,687 0 0 0 41,235"/>
 </g>
-<g id="RFI--">
+<g id="RFI--[transition-label=&quot;Open Chasse&quot;]">
 <path d="M 0,0 a 687,687 0 0 0 41,235"/>
 </g>
 <g id="LFO[angle=140,len=900]">
@@ -36,7 +36,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="RFO--">
 <path d="M 0,0 a 687,687 0 0 1 -41,235"/>
 </g>
-<g id="LFI--">
+<g id="LFI--[transition-label=&quot;Open Chasse&quot;]">
 <path d="M 0,0 a 687,687 0 0 1 -41,235"/>
 </g>
 <g id="RFO[angle=140,len=900]">
@@ -70,9 +70,12 @@ SIDE 1
 <text id="r_7_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="593" y="595">
 LFO
 </text>
-<use id="r_8_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(454 527) rotate(70)" xlink:href="#RFI--"/>
-<text id="r_8_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="380" y="638">
+<use id="r_8_c_0_38" style="stroke:black; stroke-width:4;" transform="translate(454 527) rotate(70)" xlink:href="#RFI--[transition-label=&quot;Open Chasse&quot;]"/>
+<text id="r_8_c_0_38_n2" style="stroke:black; fill:black; font-size:24pt;" x="380" y="638">
 RFI
+</text>
+<text id="r_8_c_0_38_n3" style="stroke:black; fill:black; font-size:24pt;" x="427" y="485">
+Open Chasse
 </text>
 <use id="r_9_c_0_22" style="stroke:black; stroke-width:4;" transform="translate(266 667) rotate(50)" xlink:href="#LFO[angle=140,len=900]"/>
 <text id="r_9_c_0_22_n2" style="stroke:black; fill:black; font-size:24pt;" x="223" y="1050">
@@ -82,9 +85,12 @@ LFO
 <text id="r_10_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="610" y="1426">
 RFO
 </text>
-<use id="r_11_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(748 1358) rotate(290)" xlink:href="#LFI--"/>
-<text id="r_11_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="821" y="1469">
+<use id="r_11_c_0_38" style="stroke:black; stroke-width:4;" transform="translate(748 1358) rotate(290)" xlink:href="#LFI--[transition-label=&quot;Open Chasse&quot;]"/>
+<text id="r_11_c_0_38_n2" style="stroke:black; fill:black; font-size:24pt;" x="821" y="1469">
 LFI
+</text>
+<text id="r_11_c_0_38_n3" style="stroke:black; fill:black; font-size:24pt;" x="774" y="1316">
+Open Chasse
 </text>
 <use id="r_12_c_0_22" style="stroke:black; stroke-width:4;" transform="translate(934 1498) rotate(310)" xlink:href="#RFO[angle=140,len=900]"/>
 <text id="r_12_c_0_22_n2" style="stroke:black; fill:black; font-size:24pt;" x="976" y="1881">
@@ -94,9 +100,12 @@ RFO
 <text id="r_13_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="589" y="2257">
 LFO
 </text>
-<use id="r_14_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(450 2189) rotate(70)" xlink:href="#RFI--"/>
-<text id="r_14_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="376" y="2300">
+<use id="r_14_c_0_38" style="stroke:black; stroke-width:4;" transform="translate(450 2189) rotate(70)" xlink:href="#RFI--[transition-label=&quot;Open Chasse&quot;]"/>
+<text id="r_14_c_0_38_n2" style="stroke:black; fill:black; font-size:24pt;" x="376" y="2300">
 RFI
+</text>
+<text id="r_14_c_0_38_n3" style="stroke:black; fill:black; font-size:24pt;" x="423" y="2147">
+Open Chasse
 </text>
 <use id="r_15_c_0_22" style="stroke:black; stroke-width:4;" transform="translate(262 2329) rotate(50)" xlink:href="#LFO[angle=140,len=900]"/>
 <text id="r_15_c_0_22_n2" style="stroke:black; fill:black; font-size:24pt;" x="219" y="2712">
@@ -106,9 +115,12 @@ LFO
 <text id="r_16_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="606" y="3088">
 RFO
 </text>
-<use id="r_17_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(744 3020) rotate(290)" xlink:href="#LFI--"/>
-<text id="r_17_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="817" y="3131">
+<use id="r_17_c_0_38" style="stroke:black; stroke-width:4;" transform="translate(744 3020) rotate(290)" xlink:href="#LFI--[transition-label=&quot;Open Chasse&quot;]"/>
+<text id="r_17_c_0_38_n2" style="stroke:black; fill:black; font-size:24pt;" x="817" y="3131">
 LFI
+</text>
+<text id="r_17_c_0_38_n3" style="stroke:black; fill:black; font-size:24pt;" x="770" y="2978">
+Open Chasse
 </text>
 <use id="r_18_c_0_22" style="stroke:black; stroke-width:4;" transform="translate(930 3160) rotate(310)" xlink:href="#RFO[angle=140,len=900]"/>
 <text id="r_18_c_0_22_n2" style="stroke:black; fill:black; font-size:24pt;" x="972" y="3543">
