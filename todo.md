@@ -1,6 +1,7 @@
 # To Do
 
-- [ ] Allow save/load
+- [x] Allow save
+- [ ] Allow load from local disk
 - [x] Make manual more prominent
 - [x] Shortcut for including multiple live examples in manual
 - [x] Tutorial section
