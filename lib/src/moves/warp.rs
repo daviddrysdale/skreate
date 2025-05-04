@@ -132,4 +132,10 @@ impl Move for Warp {
             bottom_right: self.pos,
         })
     }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(Self {
+            code: self.code.map(|code| code.opposite()),
+            ..self.clone()
+        })
+    }
 }

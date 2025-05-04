@@ -19,6 +19,7 @@ use svg::node::element::TSpan as SvgTSpan;
 use svg::node::element::Text as SvgText;
 use svg::node::Text as NodeText;
 
+#[derive(Debug, Clone)]
 pub struct Curve {
     text_pos: TextPosition,
     pre_transition: PreTransition,
@@ -317,6 +318,12 @@ impl Move for Curve {
             });
         }
         labels
+    }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(Self {
+            code: self.code.opposite(),
+            ..self.clone()
+        })
     }
 }
 

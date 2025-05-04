@@ -15,6 +15,7 @@ use std::borrow::Cow;
 use svg::node::element::Group;
 use svg::node::element::Text as SvgText;
 
+#[derive(Debug, Clone)]
 pub struct StraightEdge {
     text_pos: TextPosition,
     pre_transition: PreTransition,
@@ -172,5 +173,11 @@ impl Move for StraightEdge {
                 pos: pos!(30, self.len as i64 / 2),
             }]
         }
+    }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(Self {
+            foot: self.foot.opposite(),
+            ..self.clone()
+        })
     }
 }

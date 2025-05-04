@@ -7,6 +7,7 @@ license = "Apache-2.0"
 [dependencies]
 log = "0.4.21"
 nom = "7.1"
+regex = "1.10.5"
 serde = { version = "1.0.0", features = ["derive"] }
 svg = "0.17"
 urlencoding = "2.1"

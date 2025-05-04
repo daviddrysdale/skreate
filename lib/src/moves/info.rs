@@ -11,6 +11,7 @@ use crate::{
 };
 use svg::node::element::Group;
 
+#[derive(Debug, Clone)]
 pub struct Info {
     text_pos: TextPosition,
     markers: bool,
@@ -212,5 +213,8 @@ impl Move for Info {
         };
 
         doc
+    }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
     }
 }

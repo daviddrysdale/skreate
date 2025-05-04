@@ -257,4 +257,7 @@ impl Move for Rink {
         // TODO: render `show_faceoffs`
         vec![(SvgId(self.text()), grp)]
     }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
+    }
 }

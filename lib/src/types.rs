@@ -489,6 +489,16 @@ impl Display for Code {
     }
 }
 
+impl Code {
+    /// Return the equivalent code for the other foot.
+    pub fn opposite(&self) -> Self {
+        Self {
+            foot: self.foot.opposite(),
+            ..*self
+        }
+    }
+}
+
 /// Transition to new skating foot.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PreTransition {

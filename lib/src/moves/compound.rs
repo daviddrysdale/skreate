@@ -48,6 +48,7 @@ impl Compound {
 
     /// Create a compound move, identifying which one gets count labels.
     ///
+    /// `move_for_count` is an index into the `moves` vector.
     /// Ignores any pre-transitions other than for first constituent move.
     ///
     /// # Panics
@@ -225,6 +226,23 @@ impl Move for Compound {
             skater = skater + mv.transition();
         }
         doc
+    }
+    fn opposite(&self) -> Box<dyn Move> {
+        let opp_re = regex::Regex::new(r"opposite\((.*)\)").unwrap();
+        let text = match opp_re.captures(&self.text) {
+            Some(caps) => caps[1].to_string(),
+            None => format!("opposite({})", self.text),
+        };
+        Box::new(Self {
+            moves: self.moves.iter().map(|mv| mv.opposite()).collect(),
+            start_code: self.start_code.opposite(),
+            id: self.id,
+            // This assumes that none of the parameters have a handedness.
+            params: self.params.clone(),
+            text,
+            text_pos: self.text_pos,
+            move_for_count: self.move_for_count,
+        })
     }
 }
 

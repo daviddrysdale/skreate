@@ -392,6 +392,9 @@ trait Move {
     fn text_pos(&self) -> Option<TextPosition> {
         None
     }
+
+    /// Return a move that is the opposite of this one (i.e. on the other leg).
+    fn opposite(&self) -> Box<dyn Move>;
 }
 
 /// Convert the input into a list of moves.

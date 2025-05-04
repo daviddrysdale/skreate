@@ -146,6 +146,17 @@ impl Move for Shift {
             bottom_right: after.pos,
         })
     }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(Self {
+            delta: Position {
+                x: -self.delta.x,
+                y: self.delta.y,
+            },
+            rotate: -self.rotate,
+            code: self.code.map(|code| code.opposite()),
+            ..self.clone()
+        })
+    }
 }
 
 #[cfg(test)]

@@ -16,6 +16,7 @@ use std::borrow::Cow;
 use svg::node::element::Text as SvgText;
 use svg::node::element::{Circle, Group};
 
+#[derive(Debug, Clone)]
 pub struct Hop {
     text_pos: TextPosition,
     pre_transition: PreTransition,
@@ -164,5 +165,11 @@ impl Move for Hop {
             text: SvgText::new(text),
             pos: pos!(dist, 0),
         }]
+    }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(Self {
+            foot: self.foot.opposite(),
+            ..self.clone()
+        })
     }
 }

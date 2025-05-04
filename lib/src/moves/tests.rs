@@ -12,8 +12,16 @@ fn check_consistent(mv: &dyn Move, input: &str) {
         "for '{}'",
         input
     );
-    assert_eq!(mv.transition().code, mv.end(), "for '{}'", input);
+    assert_eq!(mv.transition().code, mv.end(), "for '{input}'");
     assert_eq!(mv.text(), input);
+    let opposite = mv.opposite();
+    let recovered = opposite.opposite();
+    assert_eq!(
+        recovered.text(),
+        mv.text(),
+        "for '{input}' <-> '{}'",
+        opposite.text()
+    );
 }
 
 #[test]

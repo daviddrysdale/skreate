@@ -12,6 +12,7 @@ use crate::{
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
 
+#[derive(Debug, Clone)]
 pub struct Title {
     text_pos: TextPosition,
     text: String,
@@ -149,5 +150,8 @@ impl Move for Title {
             text = text.set("id", unique_id);
         }
         doc.add(text)
+    }
+    fn opposite(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
     }
 }

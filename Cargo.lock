@@ -470,6 +470,7 @@ dependencies = [
  "env_logger",
  "log",
  "nom",
+ "regex",
  "serde",
  "svg",
  "urlencoding",
