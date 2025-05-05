@@ -192,6 +192,21 @@
         {{example 'RBO-Loop; RBO-1Lo'}}
 
 
+      <h2>Repeats</h2>
+
+      <p>Some sequences involve repeating the same steps more than once.  You can encode this by just copy-pasting the
+        relevant moves, but it's also possible to explicitly encode a repeat:
+
+        {{example '|: ; RFO ; LFI; :|'}}
+
+      <p>The steps are repeated twice by default, but a different number of repeats can be explicitly marked:
+
+        {{example '|: ; RFO ; LFI; :|x3'}}
+
+      <p>It's also possible to indicate that a repeat should happen, but on the other foot, by ending with <b>!|</b>:
+
+      {{example '|: ; LFO [angle=60]; xf-RFI [angle=60]; wd-LFI [len=850]; !| x 3'}}
+
       <h2>Timings</h2>
 
       <p>Dance choreography often needs additional timing or sequencing information.  To support this, a number in

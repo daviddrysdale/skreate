@@ -568,13 +568,77 @@ RBO-1Lo">
 
 
 
+      <h2>Repeats</h2>
+
+      <p>Some sequences involve repeating the same steps more than once.  You can encode this by just copy-pasting the
+        relevant moves, but it's also possible to explicitly encode a repeat:
+
+        
+<section class="skreate" id="example_24" data-skreate="|:
+RFO
+LFI
+:|">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>The steps are repeated twice by default, but a different number of repeats can be explicitly marked:
+
+        
+<section class="skreate" id="example_25" data-skreate="|:
+RFO
+LFI
+:|x3">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
+      <p>It's also possible to indicate that a repeat should happen, but on the other foot, by ending with <b>!|</b>:
+
+      
+<section class="skreate" id="example_26" data-skreate="|:
+LFO [angle=60]
+xf-RFI [angle=60]
+wd-LFI [len=850]
+!| x 3">
+  <table class="inner">
+    <tr>
+      <td>
+        <div class="editor-wrapper"><div class="editor"></div></div>
+        <a href="#" class="edit">Edit</a> |
+        <a href="#" class="preview">Preview</a>
+      </td>
+      <td><div class="diagram"></div></td>
+    </tr>
+  </table>
+</section>
+
+
       <h2>Timings</h2>
 
       <p>Dance choreography often needs additional timing or sequencing information.  To support this, a number in
       brackets before a move means that it gets additionally labelled with that number:
 
         
-<section class="skreate" id="example_24" data-skreate="1) LFO
+<section class="skreate" id="example_27" data-skreate="1) LFO
 2) RFI>
 3) LFO+">
   <table class="inner">
@@ -594,7 +658,7 @@ RBO-1Lo">
         option set.  This assumes that each new step takes the next number, giving automatic numbering:
 
         
-<section class="skreate" id="example_25" data-skreate="Info [auto-count=true]
+<section class="skreate" id="example_28" data-skreate="Info [auto-count=true]
 LFO
 RFI>
 LFO+">
@@ -614,7 +678,7 @@ LFO+">
       <p>This can be combined with the explicit numbers, to reset the count so it starts at a particular value:
 
         
-<section class="skreate" id="example_26" data-skreate="Info [auto-count=true]
+<section class="skreate" id="example_29" data-skreate="Info [auto-count=true]
 3) LFO
 RFI>
 LFO+">
@@ -634,7 +698,7 @@ LFO+">
       <p>The <i>duration</i> of a move (in beats) can also be specified by putting a beat count after a slash <b>/</b>:
 
         
-<section class="skreate" id="example_27" data-skreate="Info [auto-count=true]
+<section class="skreate" id="example_30" data-skreate="Info [auto-count=true]
 /2 LFO
 /2 RFI>
 /4 LFO+">
@@ -654,7 +718,7 @@ LFO+">
       <p>However, any duration value has to come <i>after</i> a number:
 
         
-<section class="skreate" id="example_28" data-skreate="1) /2 LFO
+<section class="skreate" id="example_31" data-skreate="1) /2 LFO
 2) /2 RFI>
 3) /4 LFO+">
   <table class="inner">
@@ -677,7 +741,7 @@ LFO+">
       <p>Firstly, it often makes sense to put the figures inside a <b>Rink</b>
 
         
-<section class="skreate" id="example_29" data-skreate="Rink
+<section class="skreate" id="example_32" data-skreate="Rink
 1) /2 LFO
 2) /2 RFI>
 3) /4 LFO+">
@@ -698,7 +762,7 @@ LFO+">
         out where things should be:
 
         
-<section class="skreate" id="example_30" data-skreate="Rink
+<section class="skreate" id="example_33" data-skreate="Rink
 Info [markers=true,grid=100]
 1) /2 LFO
 2) /2 RFI>
@@ -720,7 +784,7 @@ Info [markers=true,grid=100]
         particular direction:
 
         
-<section class="skreate" id="example_31" data-skreate="Rink
+<section class="skreate" id="example_34" data-skreate="Rink
 Info [markers=true,grid=100]
 Warp [x=500,y=2000,dir=270]
 1) /2 LFO
@@ -749,7 +813,7 @@ Warp [x=500,y=2000,dir=270]
           and the minus sign flips the labels.</li>
 
         
-<section class="skreate" id="example_32" data-skreate="Rink [length=5000]
+<section class="skreate" id="example_35" data-skreate="Rink [length=5000]
 Info [auto-count=true,stroke-width=10,font-size=60,label-offset=-150]
 Text [text=&quot;Start&quot;,x=350,y=2000]
 Warp [x=500,y=2000,dir=270]
