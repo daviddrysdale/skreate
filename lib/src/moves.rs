@@ -21,6 +21,7 @@ pub(crate) mod jump;
 pub(crate) mod label;
 pub(crate) mod loopfig; // Name avoids clash with keyword `loop`
 pub(crate) mod mohawk;
+pub(crate) mod repeat;
 pub(crate) mod rink;
 pub(crate) mod rocker;
 pub(crate) mod shift;
@@ -338,6 +339,10 @@ pub enum PseudoMoveId {
     Text,
     /// Label
     Label,
+    /// Start repeating section.
+    RepeatStart,
+    /// End repeating section.
+    RepeatEnd,
 }
 
 impl PseudoMoveId {
@@ -351,6 +356,8 @@ impl PseudoMoveId {
             Self::Title => &title::Title::INFO,
             Self::Text => &text::Text::INFO,
             Self::Label => &label::Label::INFO,
+            Self::RepeatStart => &repeat::RepeatStart::INFO,
+            Self::RepeatEnd => &repeat::RepeatEnd::INFO,
         }
     }
 
@@ -369,6 +376,10 @@ impl PseudoMoveId {
             Self::Title => Box::new(title::Title::from_params(input, text_pos, params)?),
             Self::Text => Box::new(text::Text::from_params(input, text_pos, params)?),
             Self::Label => Box::new(label::Label::from_params(input, text_pos, params)?),
+            Self::RepeatStart => {
+                Box::new(repeat::RepeatStart::from_params(input, text_pos, params)?)
+            }
+            Self::RepeatEnd => Box::new(repeat::RepeatEnd::from_params(input, text_pos, params)?),
         })
     }
 }

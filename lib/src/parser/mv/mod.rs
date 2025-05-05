@@ -3,9 +3,9 @@
 //! Move parsing.
 
 use crate::{
-    moves::{self, PseudoMoveId, SkatingMoveId},
+    moves::{self, repeat::RepeatEnd, PseudoMoveId, SkatingMoveId},
     parser::timing::{parse_count, parse_duration},
-    parser::{self, InnErr},
+    parser::{self, parse_u32, InnErr},
     JumpCount, Move, TextPosition, TimedMove,
 };
 use log::info;
@@ -155,6 +155,14 @@ fn parse_pseudo_move_id(input: &str) -> IResult<&str, PseudoMoveId> {
         value(PseudoMoveId::Title, tag(moves::title::Title::MOVE)),
         value(PseudoMoveId::Text, tag(moves::text::Text::MOVE)),
         value(PseudoMoveId::Label, tag(moves::label::Label::MOVE)),
+        value(
+            PseudoMoveId::RepeatStart,
+            tag(moves::repeat::RepeatStart::MOVE),
+        ),
+        value(
+            PseudoMoveId::RepeatStart,
+            tag(moves::repeat::RepeatStart::ALT_MOVE),
+        ),
     ))(input)
 }
 
@@ -178,11 +186,32 @@ pub(crate) fn parse_pseudo_move<'a>(start: &'a str, input: &'a str) -> IResult<&
     ))
 }
 
+/// Parse an end-repeat marker.
+pub(crate) fn parse_repeat_end<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
+    let (rest, _) = space0(input)?;
+    let cur = rest;
+    let (rest, alternate) = alt((
+        value(true, tag(RepeatEnd::ALT_MOVE_OTHER)),
+        value(false, tag(RepeatEnd::ALT_MOVE_SAME)),
+    ))(rest)?;
+    let (rest, count) = opt(map_res(
+        tuple((space0, tag("x"), space0, parse_u32)),
+        |(_, _, _, count)| Ok::<_, InnErr>(count),
+    ))
+    .parse(rest)?;
+    let count = count.unwrap_or(2);
+    let text_pos = TextPosition::new(start, cur, rest);
+    info!("found RepeatEnd count={count} alternate={alternate} at {text_pos:?}");
+    let mv: Box<dyn Move> = Box::new(RepeatEnd::new(text_pos, count, alternate));
+    Ok((rest, mv.into()))
+}
+
 /// Parse a move.
 pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
     alt((
         |input| parse_timed_skating_move(start, input),
         |input| parse_pseudo_move(start, input),
+        |input| parse_repeat_end(start, input),
     ))(input)
 }
 
