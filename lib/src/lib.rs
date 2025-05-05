@@ -4,6 +4,7 @@
 #![warn(missing_docs)]
 
 pub use crate::error::ParseError;
+use crate::moves::{MoveId, PseudoMoveId};
 pub use crate::params::MoveParam;
 pub use crate::types::*;
 use log::{debug, error, info, trace};
@@ -275,6 +276,13 @@ impl TimedMove {
         };
         format!("{count}{duration}{}", self.mv.text())
     }
+    fn opposite(&self) -> Self {
+        Self {
+            count: self.count,
+            duration: self.duration,
+            mv: self.mv.opposite(),
+        }
+    }
 }
 
 impl From<Box<dyn Move>> for TimedMove {
@@ -290,7 +298,7 @@ impl From<Box<dyn Move>> for TimedMove {
 /// Trait describing the external behavior of a move.
 trait Move {
     /// Move identifier corresponding to the move.
-    fn id(&self) -> moves::MoveId;
+    fn id(&self) -> MoveId;
 
     /// Parameters for the move.
     fn params(&self) -> Vec<MoveParam>;
@@ -408,6 +416,11 @@ trait Move {
 
     /// Return a clone of this move.
     fn box_clone(&self) -> Box<dyn Move>;
+
+    /// If the move is an end-repeat, return the underlying concrete type.
+    fn as_repeat_end(&self) -> Option<&moves::repeat::RepeatEnd> {
+        None
+    }
 }
 
 /// Convert the input into a list of moves.
@@ -423,6 +436,70 @@ fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
     } else {
         Ok(moves)
     }
+}
+
+/// Expand any repeats.
+fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError> {
+    let mut start_positions: Vec<(usize, u32)> = Vec::new();
+    let mut idx = 0;
+    let mut flipped = false;
+    let mut expanded = Vec::new();
+    while idx < timed_mvs.len() {
+        let timed_mv = &timed_mvs[idx];
+        match timed_mv.mv.id() {
+            MoveId::Pseudo(PseudoMoveId::RepeatEnd) => {
+                let Some(start_pos) = start_positions.last_mut() else {
+                    return Err(ParseError {
+                        pos: timed_mv.mv.text_pos().unwrap_or_default(),
+                        msg: "found end of repeat when no repeat in progress!".to_string(),
+                    });
+                };
+                start_pos.1 += 1;
+                let repeat_end = timed_mv.mv.as_repeat_end().unwrap();
+                if start_pos.1 > repeat_end.count {
+                    info!("[{idx}] hit end-repeat but done");
+                    start_positions.pop();
+                    flipped = false;
+                    idx += 1;
+                } else {
+                    if repeat_end.alternate {
+                        flipped = !flipped;
+                    }
+                    info!(
+                        "[{idx}] hit end-repeat, go back to [{}]{}",
+                        start_pos.0 + 1,
+                        if flipped { " opposite" } else { "" }
+                    );
+                    idx = start_pos.0 + 1;
+                }
+            }
+            MoveId::Pseudo(PseudoMoveId::RepeatStart) => {
+                info!("[{idx}] hit start-repeat");
+                start_positions.push((idx, 1));
+                idx += 1;
+            }
+            _ => {
+                if flipped {
+                    info!(
+                        "[{idx}] transcribe flipped to output pos [{}]",
+                        expanded.len()
+                    );
+                    expanded.push(timed_mv.opposite());
+                } else {
+                    info!("[{idx}] transcribe to output pos [{}]", expanded.len());
+                    expanded.push(timed_mv.clone());
+                }
+                idx += 1;
+            }
+        }
+    }
+    if !start_positions.is_empty() {
+        return Err(ParseError {
+            pos: Default::default(),
+            msg: "found end of input with repeat still pending!".to_string(),
+        });
+    }
+    Ok(expanded)
 }
 
 /// Generate canonicalized / minimized input.
@@ -451,6 +528,8 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
     for (idx, mv) in moves.iter().enumerate() {
         debug!("  [{idx}] {}", mv.text());
     }
+
+    let moves = expand_repeats(&moves)?;
 
     let mut doc = Document::new().set("xmlns:xlink", "http://www.w3.org/1999/xlink");
     let mut opts = RenderOptions {

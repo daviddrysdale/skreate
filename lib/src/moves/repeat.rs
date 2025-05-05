@@ -75,8 +75,8 @@ impl Move for RepeatStart {
 #[derive(Debug, Clone)]
 pub struct RepeatEnd {
     text_pos: TextPosition,
-    count: u32,
-    alternate: bool,
+    pub count: u32,
+    pub alternate: bool,
 }
 
 impl RepeatEnd {
@@ -172,5 +172,8 @@ impl Move for RepeatEnd {
     }
     fn box_clone(&self) -> Box<dyn Move> {
         Box::new(self.clone())
+    }
+    fn as_repeat_end(&self) -> Option<&RepeatEnd> {
+        Some(self)
     }
 }
