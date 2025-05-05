@@ -157,6 +157,9 @@ impl Move for Shift {
             ..self.clone()
         })
     }
+    fn box_clone(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
+    }
 }
 
 #[cfg(test)]

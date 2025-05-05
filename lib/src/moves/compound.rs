@@ -244,6 +244,17 @@ impl Move for Compound {
             move_for_count: self.move_for_count,
         })
     }
+    fn box_clone(&self) -> Box<dyn Move> {
+        Box::new(Self {
+            moves: self.moves.iter().map(|mv| mv.box_clone()).collect(),
+            start_code: self.start_code,
+            id: self.id,
+            params: self.params.clone(),
+            text: self.text.clone(),
+            text_pos: self.text_pos,
+            move_for_count: self.move_for_count,
+        })
+    }
 }
 
 /// Generate move parameters for a two-part compound move.

@@ -65,6 +65,9 @@ impl Move for RepeatStart {
         doc
     }
     fn opposite(&self) -> Box<dyn Move> {
+        self.box_clone()
+    }
+    fn box_clone(&self) -> Box<dyn Move> {
         Box::new(self.clone())
     }
 }
@@ -165,6 +168,9 @@ impl Move for RepeatEnd {
         doc
     }
     fn opposite(&self) -> Box<dyn Move> {
+        self.box_clone()
+    }
+    fn box_clone(&self) -> Box<dyn Move> {
         Box::new(self.clone())
     }
 }

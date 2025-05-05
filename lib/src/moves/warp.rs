@@ -138,4 +138,7 @@ impl Move for Warp {
             ..self.clone()
         })
     }
+    fn box_clone(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
+    }
 }

@@ -150,6 +150,9 @@ impl Move for Text {
         doc.add(text)
     }
     fn opposite(&self) -> Box<dyn Move> {
+        self.box_clone()
+    }
+    fn box_clone(&self) -> Box<dyn Move> {
         Box::new(self.clone())
     }
 }

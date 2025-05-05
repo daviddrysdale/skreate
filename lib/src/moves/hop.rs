@@ -172,4 +172,7 @@ impl Move for Hop {
             ..self.clone()
         })
     }
+    fn box_clone(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
+    }
 }

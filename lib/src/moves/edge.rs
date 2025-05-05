@@ -325,6 +325,9 @@ impl Move for Curve {
             ..self.clone()
         })
     }
+    fn box_clone(&self) -> Box<dyn Move> {
+        Box::new(self.clone())
+    }
 }
 
 fn timing_text(val: i32) -> SvgText {

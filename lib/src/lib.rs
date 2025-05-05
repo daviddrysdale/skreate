@@ -253,6 +253,16 @@ struct TimedMove {
     mv: Box<dyn Move>,
 }
 
+impl Clone for TimedMove {
+    fn clone(&self) -> Self {
+        Self {
+            count: self.count,
+            duration: self.duration,
+            mv: self.mv.box_clone(),
+        }
+    }
+}
+
 impl TimedMove {
     fn text(&self) -> String {
         let count = match self.count {
@@ -395,6 +405,9 @@ trait Move {
 
     /// Return a move that is the opposite of this one (i.e. on the other leg).
     fn opposite(&self) -> Box<dyn Move>;
+
+    /// Return a clone of this move.
+    fn box_clone(&self) -> Box<dyn Move>;
 }
 
 /// Convert the input into a list of moves.
