@@ -438,6 +438,7 @@ fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
 
 /// Expand any repeats.
 fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError> {
+    let mut text_pos_counts: HashMap<TextPosition, usize> = HashMap::new();
     let mut start_positions: Vec<(usize, u32)> = Vec::new();
     let mut idx = 0;
     let mut flipped = false;
@@ -477,7 +478,18 @@ fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError>
                 idx += 1;
             }
             _ => {
-                let repeat = None; // TODO
+                let mut repeat = None;
+                if let Some(text_pos) = timed_mv.mv.text_pos() {
+                    assert!(text_pos.repeat.is_none());
+                    let count = 1 + *text_pos_counts.get(&text_pos).unwrap_or(&0);
+                    debug!("  text_pos_counts[{text_pos:?}] = {count}");
+                    text_pos_counts.insert(text_pos, count);
+                    if count <= 1 {
+                        repeat = None
+                    } else {
+                        repeat = Some(count)
+                    }
+                }
                 let repeat_mv = if flipped {
                     info!(
                         "[{idx}] transcribe flipped to output pos [{}] as repeat {repeat:?}",
