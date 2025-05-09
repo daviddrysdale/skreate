@@ -92,6 +92,10 @@ impl TextPosition {
             repeat: None,
         }
     }
+    /// Returns a copy but with the `repeat` field set.
+    pub fn at_repeat(&self, repeat: Option<usize>) -> Self {
+        Self { repeat, ..*self }
+    }
     /// Convert the position into an ID string.
     pub fn unique_id(&self) -> String {
         match self.repeat {

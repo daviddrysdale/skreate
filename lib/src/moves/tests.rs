@@ -14,8 +14,8 @@ fn check_consistent(mv: &dyn Move, input: &str) {
     );
     assert_eq!(mv.transition().code, mv.end(), "for '{input}'");
     assert_eq!(mv.text(), input);
-    let opposite = mv.opposite();
-    let recovered = opposite.opposite();
+    let opposite = mv.opposite(None);
+    let recovered = opposite.opposite(None);
     assert_eq!(
         recovered.text(),
         mv.text(),

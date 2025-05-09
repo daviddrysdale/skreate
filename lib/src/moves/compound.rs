@@ -227,31 +227,31 @@ impl Move for Compound {
         }
         doc
     }
-    fn opposite(&self) -> Box<dyn Move> {
+    fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move> {
         let opp_re = regex::Regex::new(r"opposite\((.*)\)").unwrap();
         let text = match opp_re.captures(&self.text) {
             Some(caps) => caps[1].to_string(),
             None => format!("opposite({})", self.text),
         };
         Box::new(Self {
-            moves: self.moves.iter().map(|mv| mv.opposite()).collect(),
+            moves: self.moves.iter().map(|mv| mv.opposite(repeat)).collect(),
             start_code: self.start_code.opposite(),
             id: self.id,
             // This assumes that none of the parameters have a handedness.
             params: self.params.clone(),
             text,
-            text_pos: self.text_pos,
+            text_pos: self.text_pos.at_repeat(repeat),
             move_for_count: self.move_for_count,
         })
     }
-    fn box_clone(&self) -> Box<dyn Move> {
+    fn box_clone(&self, repeat: Option<usize>) -> Box<dyn Move> {
         Box::new(Self {
-            moves: self.moves.iter().map(|mv| mv.box_clone()).collect(),
+            moves: self.moves.iter().map(|mv| mv.box_clone(repeat)).collect(),
             start_code: self.start_code,
             id: self.id,
             params: self.params.clone(),
             text: self.text.clone(),
-            text_pos: self.text_pos,
+            text_pos: self.text_pos.at_repeat(repeat),
             move_for_count: self.move_for_count,
         })
     }

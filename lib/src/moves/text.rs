@@ -149,10 +149,14 @@ impl Move for Text {
         }
         doc.add(text)
     }
-    fn opposite(&self) -> Box<dyn Move> {
-        self.box_clone()
+    fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move> {
+        let mut copy = self.clone();
+        copy.text_pos = self.text_pos.at_repeat(repeat);
+        Box::new(copy)
     }
-    fn box_clone(&self) -> Box<dyn Move> {
-        Box::new(self.clone())
+    fn box_clone(&self, repeat: Option<usize>) -> Box<dyn Move> {
+        let mut copy = self.clone();
+        copy.text_pos = self.text_pos.at_repeat(repeat);
+        Box::new(copy)
     }
 }

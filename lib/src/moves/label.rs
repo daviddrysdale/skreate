@@ -163,16 +163,19 @@ impl Move for Label {
         }
         doc.add(text)
     }
-    fn opposite(&self) -> Box<dyn Move> {
+    fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move> {
         Box::new(Self {
             delta: Position {
                 x: -self.delta.x,
                 y: self.delta.y,
             },
+            text_pos: self.text_pos.at_repeat(repeat),
             ..self.clone()
         })
     }
-    fn box_clone(&self) -> Box<dyn Move> {
-        Box::new(self.clone())
+    fn box_clone(&self, repeat: Option<usize>) -> Box<dyn Move> {
+        let mut copy = self.clone();
+        copy.text_pos = self.text_pos.at_repeat(repeat);
+        Box::new(copy)
     }
 }

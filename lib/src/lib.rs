@@ -254,16 +254,6 @@ struct TimedMove {
     mv: Box<dyn Move>,
 }
 
-impl Clone for TimedMove {
-    fn clone(&self) -> Self {
-        Self {
-            count: self.count,
-            duration: self.duration,
-            mv: self.mv.box_clone(),
-        }
-    }
-}
-
 impl TimedMove {
     fn text(&self) -> String {
         let count = match self.count {
@@ -276,11 +266,18 @@ impl TimedMove {
         };
         format!("{count}{duration}{}", self.mv.text())
     }
-    fn opposite(&self) -> Self {
+    fn opposite(&self, repeat: Option<usize>) -> Self {
         Self {
             count: self.count,
             duration: self.duration,
-            mv: self.mv.opposite(),
+            mv: self.mv.opposite(repeat),
+        }
+    }
+    fn clone_at_repeat(&self, repeat: Option<usize>) -> Self {
+        Self {
+            count: self.count,
+            duration: self.duration,
+            mv: self.mv.box_clone(repeat),
         }
     }
 }
@@ -411,11 +408,12 @@ trait Move {
         None
     }
 
-    /// Return a move that is the opposite of this one (i.e. on the other leg).
-    fn opposite(&self) -> Box<dyn Move>;
+    /// Return a move that is the opposite of this one (i.e. on the other leg), with a modified [`TextPosition`] that
+    /// indicates the repeat count.
+    fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move>;
 
-    /// Return a clone of this move.
-    fn box_clone(&self) -> Box<dyn Move>;
+    /// Return a clone of this move, with a modified [`TextPosition`] that indicates the repeat count.
+    fn box_clone(&self, repeat: Option<usize>) -> Box<dyn Move>;
 
     /// If the move is an end-repeat, return the underlying concrete type.
     fn as_repeat_end(&self) -> Option<&moves::repeat::RepeatEnd> {
@@ -479,16 +477,21 @@ fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError>
                 idx += 1;
             }
             _ => {
-                if flipped {
+                let repeat = None; // TODO
+                let repeat_mv = if flipped {
                     info!(
-                        "[{idx}] transcribe flipped to output pos [{}]",
+                        "[{idx}] transcribe flipped to output pos [{}] as repeat {repeat:?}",
                         expanded.len()
                     );
-                    expanded.push(timed_mv.opposite());
+                    timed_mv.opposite(repeat)
                 } else {
-                    info!("[{idx}] transcribe to output pos [{}]", expanded.len());
-                    expanded.push(timed_mv.clone());
-                }
+                    info!(
+                        "[{idx}] transcribe to output pos [{}] as repeat {repeat:?}",
+                        expanded.len()
+                    );
+                    timed_mv.clone_at_repeat(repeat)
+                };
+                expanded.push(repeat_mv);
                 idx += 1;
             }
         }

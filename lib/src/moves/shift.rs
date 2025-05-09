@@ -146,7 +146,7 @@ impl Move for Shift {
             bottom_right: after.pos,
         })
     }
-    fn opposite(&self) -> Box<dyn Move> {
+    fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move> {
         Box::new(Self {
             delta: Position {
                 x: -self.delta.x,
@@ -154,11 +154,13 @@ impl Move for Shift {
             },
             rotate: -self.rotate,
             code: self.code.map(|code| code.opposite()),
-            ..self.clone()
+            text_pos: self.text_pos.at_repeat(repeat),
         })
     }
-    fn box_clone(&self) -> Box<dyn Move> {
-        Box::new(self.clone())
+    fn box_clone(&self, repeat: Option<usize>) -> Box<dyn Move> {
+        let mut copy = self.clone();
+        copy.text_pos = self.text_pos.at_repeat(repeat);
+        Box::new(copy)
     }
 }
 
