@@ -21,9 +21,6 @@ async function run() {
 }
 await run();
 
-// Possible suffixes after a text position in a <use> id attribute.
-const use_id_suffixes = ["", "_n2", "_n3", "_n4", "_n5", "_n6", "_n7", "_n8", "_n9"];
-
 export function set_svg(text, div) {
   var result = generate_with_positions(text);
   var diagram_svg = result.svg;
@@ -38,30 +35,26 @@ function set_svg_with_events(editor, div) {
   var positions = set_svg(text, div);
 
   for (const text_pos of positions) {
-    for (const suffix of use_id_suffixes) {
-      let use_id = text_pos + suffix;
-      let use_elt = document.getElementById(use_id);
-      if (!use_elt) {
-        continue;
-      }
-      use_elt.addEventListener("mouseover", () => {
-        highlight_text(editor, use_id, true);
+    $( "[id^='"+text_pos+"']" ).each( function() {
+      this.addEventListener("mouseover", () => {
+        highlight_text(editor, this.id, true);
       });
-      use_elt.addEventListener("mouseout", () => {
-        highlight_text(editor, use_id, false);
+      this.addEventListener("mouseout", () => {
+        highlight_text(editor, this.id, false);
       });
-      use_elt.addEventListener("click", () => {
-        move_cursor(editor, use_id);
+      this.addEventListener("click", () => {
+        move_cursor(editor, this.id);
       });
-    }
-  }
+    });
+}
+
   setup_playthrough(editor, positions);
   return positions;
 }
 
 function setup_playthrough(editor, positions) {
   var playthrough_link = document.getElementById('playthrough');
-    if (playthrough_link) {
+  if (playthrough_link) {
     playthrough_link.onclick = function() {
       playthrough(editor, positions, 500)
     };
@@ -131,20 +124,14 @@ function move_cursor(editor, text_pos) {
 }
 
 function change_elt_colour(text_pos, colour) {
-  // Assume at most 10 <use> elements for a given text_pos.
-  for (const suffix of use_id_suffixes) {
-    var use_id = text_pos + suffix;
-    let elt = document.getElementById(use_id);
-    if (!elt) {
-        continue;
-    }
-    const cur_style = elt.getAttribute("style");
+  $( "[id^='"+text_pos+"']" ).each( function() {
+    const cur_style = this.getAttribute("style");
     let stroke_regexp = /stroke: *[^;]+;/;
     let red_stroke = cur_style.replace(stroke_regexp, "stroke:" + colour + ";");
     let fill_regexp = /fill: *[^;]+;/;
     let red_fill = red_stroke.replace(fill_regexp, "fill:" + colour + ";");
-    elt.setAttribute("style", red_fill);
-  }
+    this.setAttribute("style", red_fill);
+  })
 }
 
 var currently_highlighted;
