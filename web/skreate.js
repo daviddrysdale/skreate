@@ -123,8 +123,11 @@ function move_cursor(editor, text_pos) {
   }
 }
 
-function change_elt_colour(text_pos, colour) {
+function change_elt_colour(text_pos, colour, skip_reps=false) {
   $( "[id^='"+text_pos+"']" ).each( function() {
+    if (skip_reps && this.id.includes("_rep")) {
+      return;
+    }
     const cur_style = this.getAttribute("style");
     let stroke_regexp = /stroke: *[^;]+;/;
     let red_stroke = cur_style.replace(stroke_regexp, "stroke:" + colour + ";");
@@ -135,7 +138,7 @@ function change_elt_colour(text_pos, colour) {
 }
 
 var currently_highlighted;
-function highlight_elt(text_pos) {
+function highlight_elt(text_pos, skip_reps=false) {
   if (text_pos == currently_highlighted) {
     return;
   }
@@ -147,7 +150,7 @@ function highlight_elt(text_pos) {
   currently_highlighted = text_pos;
   if (text_pos) {
     console.log("highlight " + text_pos);
-    change_elt_colour(text_pos, "red");
+    change_elt_colour(text_pos, "red", skip_reps);
   }
 }
 
@@ -183,7 +186,11 @@ function playthrough(editor, positions, timeout) {
   }
   let text_pos = positions[0];
   let rest = positions.slice(1);
-  highlight_elt(text_pos);
+  if (text_pos.includes("_rep")) {
+    highlight_elt(text_pos);
+  } else {
+    highlight_elt(text_pos, /* skip_reps= */ true);
+  }
   highlight_text(editor, text_pos, true);
   setTimeout(() => {
     playthrough(editor, rest, timeout)
