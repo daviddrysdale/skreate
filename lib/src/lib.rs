@@ -533,11 +533,15 @@ pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
 
 /// Generate SVG for the given input.
 pub fn generate(input: &str) -> Result<String, ParseError> {
-    generate_with_positions(input).map(|(svg, _text_positions)| svg)
+    generate_with_positions(input).map(|(svg, _text_positions, _timings)| svg)
 }
 
-/// Generate SVG for the given input, also returning a comma-separated list of text positions that correspond to moves.
-pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), ParseError> {
+/// Generate SVG for the given input, also returning:
+/// - a list of text positions that correspond to moves
+/// - a list of timings for each move.
+pub fn generate_with_positions(
+    input: &str,
+) -> Result<(String, Vec<String>, Vec<usize>), ParseError> {
     let moves = moves(input)?;
     debug!("input parses as:");
     for (idx, mv) in moves.iter().enumerate() {
@@ -637,6 +641,7 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
     // Third pass: render all the moves.
     info!("========= render ===========");
     let mut text_positions = Vec::new();
+    let mut timings = Vec::new();
     let mut skater = Skater {
         pos: Position::default(),
         dir: Direction::new(0),
@@ -686,6 +691,17 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
         // Accumulate the collection of text positions for the move specifications along the way.
         if let Some(text_pos) = mv.text_pos() {
             text_positions.push(text_pos);
+            let timing = if !mv.id().info().visible {
+                // Non-visible moves take no time
+                0
+            } else if let Some(count) = timed_mv.duration {
+                count.0 as usize
+            } else if matches!(mv.id(), MoveId::Pseudo(_)) {
+                0
+            } else {
+                1
+            };
+            timings.push(timing);
         }
 
         if mv.id().info().visible {
@@ -782,7 +798,7 @@ pub fn generate_with_positions(input: &str) -> Result<(String, Vec<String>), Par
         .map(|pos| pos.unique_id())
         .collect::<Vec<_>>();
 
-    Ok((svg, text_positions))
+    Ok((svg, text_positions, timings))
 }
 
 #[cfg(test)]

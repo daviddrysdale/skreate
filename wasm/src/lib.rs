@@ -33,6 +33,8 @@ pub struct GeneratedSvgPositions {
     svg: String,
     /// List of move positions in the form "r_<row>_c_<col>_<count>".
     positions: Vec<String>,
+    /// List of associated timings.
+    timings: Vec<usize>,
 }
 
 #[wasm_bindgen]
@@ -47,14 +49,23 @@ impl GeneratedSvgPositions {
     pub fn positions(&self) -> Vec<String> {
         self.positions.clone()
     }
+    /// Retrieve the timings.
+    #[wasm_bindgen(getter)]
+    pub fn timings(&self) -> Vec<usize> {
+        self.timings.clone()
+    }
 }
 
 /// Generate output with positions.
 #[wasm_bindgen]
 pub fn generate_with_positions(input: &str) -> Result<GeneratedSvgPositions, ParseError> {
     trace!("In generate_with_positions('{input}')");
-    let (svg, positions) = skreate::generate_with_positions(input)?;
-    Ok(GeneratedSvgPositions { svg, positions })
+    let (svg, positions, timings) = skreate::generate_with_positions(input)?;
+    Ok(GeneratedSvgPositions {
+        svg,
+        positions,
+        timings,
+    })
 }
 
 /// Generate canonical input.

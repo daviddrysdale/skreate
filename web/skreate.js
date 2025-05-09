@@ -32,7 +32,11 @@ function set_svg_with_events(editor, div) {
   var text = editor.getValue();
   highlight_elt(null);
   highlight_text(editor, null, null);
-  var positions = set_svg(text, div);
+
+  var result = generate_with_positions(text);
+  div.html(result.svg);
+  var positions = result.positions;
+  var timings = result.timings;
 
   for (const text_pos of positions) {
     $( "[id^='"+text_pos+"']" ).each( function() {
@@ -48,15 +52,15 @@ function set_svg_with_events(editor, div) {
     });
 }
 
-  setup_playthrough(editor, positions);
+  setup_playthrough(editor, positions, timings);
   return positions;
 }
 
-function setup_playthrough(editor, positions) {
+function setup_playthrough(editor, positions, timings) {
   var playthrough_link = document.getElementById('playthrough');
   if (playthrough_link) {
     playthrough_link.onclick = function() {
-      playthrough(editor, positions, 500)
+      playthrough(editor, positions, timings, 500)
     };
   }
 }
@@ -178,14 +182,19 @@ function highlight_text(editor, text_pos, enabled) {
   }
 }
 
-function playthrough(editor, positions, timeout) {
+function playthrough(editor, positions, timings, timeout) {
   if (!positions || positions.length === 0) {
     highlight_elt(null);
     highlight_text(editor, null, false);
     return;
   }
   let text_pos = positions[0];
+  let time = timings[0];
   let rest = positions.slice(1);
+  let rest_timings = timings.slice(1);
+  if (time > 0) {
+    console.log("highlight " + text_pos + " for " + time);
+  }
   if (text_pos.includes("_rep")) {
     highlight_elt(text_pos);
   } else {
@@ -193,8 +202,8 @@ function playthrough(editor, positions, timeout) {
   }
   highlight_text(editor, text_pos, true);
   setTimeout(() => {
-    playthrough(editor, rest, timeout)
-  }, timeout);
+    playthrough(editor, rest, rest_timings, timeout)
+  }, time * timeout);
 }
 
 export function setup_editor(div, autofocus, text) {
