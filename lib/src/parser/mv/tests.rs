@@ -8,6 +8,7 @@ macro_rules! text_pos {
             row: $row,
             col: $col,
             count: $count,
+            repeat: None,
         }
     }
 }

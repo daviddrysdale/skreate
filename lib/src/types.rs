@@ -62,6 +62,8 @@ pub struct TextPosition {
     pub col: usize,
     /// Count of chars.
     pub count: usize,
+    /// Repeat count.
+    pub repeat: Option<usize>,
 }
 
 impl TextPosition {
@@ -87,11 +89,20 @@ impl TextPosition {
             row,
             col,
             count: chunk.trim_end().len(),
+            repeat: None,
         }
     }
     /// Convert the position into an ID string.
     pub fn unique_id(&self) -> String {
-        format!("r_{}_c_{}_{}", self.row, self.col, self.col + self.count)
+        match self.repeat {
+            None => format!("r_{}_c_{}_{}", self.row, self.col, self.col + self.count),
+            Some(r) => format!(
+                "r_{}_c_{}_{}_rep_{r}",
+                self.row,
+                self.col,
+                self.col + self.count
+            ),
+        }
     }
 }
 
@@ -645,6 +656,7 @@ mod tests {
                     row: 0,
                     col: 0,
                     count: 0,
+                    repeat: None,
                 },
             ),
             (
@@ -653,6 +665,7 @@ mod tests {
                     row: 0,
                     col: 1,
                     count: 0,
+                    repeat: None,
                 },
             ),
             (
@@ -661,6 +674,7 @@ mod tests {
                     row: 0,
                     col: 2,
                     count: 0,
+                    repeat: None,
                 },
             ),
             (
@@ -669,6 +683,7 @@ mod tests {
                     row: 1,
                     col: 0,
                     count: 0,
+                    repeat: None,
                 },
             ),
             (
@@ -677,6 +692,7 @@ mod tests {
                     row: 2,
                     col: 0,
                     count: 0,
+                    repeat: None,
                 },
             ),
             (
@@ -685,6 +701,7 @@ mod tests {
                     row: 2,
                     col: 2,
                     count: 0,
+                    repeat: None,
                 },
             ),
         ];
