@@ -1,5 +1,5 @@
 Rink
-Title [text="Skills 3 Exercise 2",y=200,font-size=90]
+Title [text="Skills 3 Exercise 3",y=200,font-size=90]
 Info [grid=0,markers=false]
 
 Text [x=1650,y=725,text="START",font-size=50]
@@ -9,27 +9,27 @@ LF [len=300,style="dashed",label=" "]
 LFO3 [len=300]
 RBO [angle=160]
 
-xb-LBO [angle=100,transition-label="CR"]
-xb-RBO [angle=100,transition-label="CR"]
-xb-LBO [angle=100,transition-label="CR"]
+|:
+  xb-LBO [angle=100,transition-label="CR"]
+!|x3
 
 RFO3 [len=300]
 LBO [len=600,angle=170]
 
-xb-RBO [len=550,angle=100,transition-label="CR"]
-xb-LBO [len=550,angle=100,transition-label="CR"]
-xb-RBO [len=550,angle=100,transition-label="CR"]
+|:
+  xb-RBO [len=550,angle=100,transition-label="CR"]
+!|x3
 
 LFO3 [len=300]
 RBO [len=600,angle=170]
 
-xb-LBO [len=550,angle=120,transition-label="CR"]
-xb-RBO [len=550,angle=120,transition-label="CR"]
-xb-LBO [len=550,angle=120,transition-label="CR"]
+|:
+  xb-LBO [len=550,angle=120,transition-label="CR"]
+!|x3
 
 RFO3 [len=300]
 LBO [angle=180]
 
-xb-RBO [len=550,angle=120,transition-label="CR"]
-xb-LBO [len=550,angle=120,transition-label="CR"]
-xb-RBO [len=550,angle=120,transition-label="CR"]
+|:
+  xb-RBO [len=550,angle=120,transition-label="CR"]
+!|x3

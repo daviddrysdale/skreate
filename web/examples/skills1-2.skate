@@ -5,21 +5,17 @@ Info [grid=0,markers=false]
 Text [x=1200,y=2800,text="START CIRCLE 1",font-size=50]
 Warp [x=1600,y=2780,dir=270,code="RBO"]
 
-RBO-
-xf-LBI-
-RBO-
-xf-LBI-
-RBO-
-xf-LBI-
+|:
+  RBO-
+  xf-LBI-
+:|x3
 RBO [angle=160,len=2400]
 
 Text [x=1200,y=3340,text="START CIRCLE 2",font-size=50]
 Warp [x=1600,y=3280,dir=270,code="RBO"]
 
-LBO-
-xf-RBI-
-LBO-
-xf-RBI-
-LBO-
-xf-RBI-
+|:
+  LBO-
+  xf-RBI-
+:|x3
 LBO [angle=160,len=2400]

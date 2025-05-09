@@ -23,19 +23,14 @@ xf-RFI [angle=45,len=200]
 LFO [angle=45,len=200]
 RFI [angle=45,len=200]
 
-LFO-CoE [angle=190,len=1100,flat-len=100,delta-angle=-10]
+|:
+  LFO-CoE [angle=190,len=1100,flat-len=100,delta-angle=-10]
 
-RFO [angle=45,len=200]
-xf-LFI [angle=45,len=200]
-RFO [angle=45,len=200]
-LFI [angle=45,len=200]
-
-RFO-CoE [angle=190,len=1100,flat-len=100,delta-angle=-10]
-
-LFO [angle=45,len=200]
-xf-RFI [angle=45,len=200]
-LFO [angle=45,len=200]
-RFI [angle=45,len=200]
+  RFO [angle=45,len=200]
+  xf-LFI [angle=45,len=200]
+  RFO [angle=45,len=200]
+  LFI [angle=45,len=200]
+!|
 
 LFO [angle=190,len=1100]
 
@@ -55,25 +50,13 @@ RFO [angle=45,len=200]
 LFI [angle=45,len=200]
 RFO [angle=45,len=200]
 
-xf-LFI-CoE [angle=180,len=1100,flat-len=100]
+|:
+  xf-LFI-CoE [angle=180,len=1100,flat-len=100]
 
-xf-RFI [angle=45,len=200]
-LFO [angle=45,len=200]
-RFI [angle=45,len=200]
-LFO [angle=45,len=200]
-
-xf-RFI-CoE [angle=180,len=1100,flat-len=100]
-
-xf-LFI [angle=45,len=200]
-RFO [angle=45,len=200]
-LFI [angle=45,len=200]
-RFO [angle=45,len=200]
-
-xf-LFI-CoE [angle=180,len=1100,flat-len=100]
-
-xf-RFI [angle=45,len=200]
-LFO [angle=45,len=200]
-RFI [angle=45,len=200]
-LFO [angle=45,len=200]
+  xf-RFI [angle=45,len=200]
+  LFO [angle=45,len=200]
+  RFI [angle=45,len=200]
+  LFO [angle=45,len=200]
+!|x3
 
 xf-RFI [angle=180,len=1100]

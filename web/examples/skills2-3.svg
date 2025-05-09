@@ -90,24 +90,6 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="xf-LFI[len=200]">
 <path d="M 0,0 a 572,572 0 0 1 -34,195"/>
 </g>
-<g id="xf-RFI[angle=30,len=250]">
-<path d="M 0,0 a 477,477 0 0 0 63,238"/>
-</g>
-<g id="RFO3&gt;-_0::RFO[angle=40,len=225,label=&quot;RFO3&quot;]">
-<path d="M 0,0 a 322,322 0 0 1 -75,207"/>
-</g>
-<g id="RFO3&gt;-_1::RFO&gt;[len=75,label=&quot; &quot;]">
-<path d="M 0,0 a 71,71 0 0 1 -35,62"/>
-</g>
-<g id="RFO3&gt;-_3::RBI&gt;[len=75,label=&quot; &quot;]">
-<path d="M 0,0 a 71,71 0 0 1 -35,62"/>
-</g>
-<g id="RFO3&gt;-_4::RBI[angle=40,len=225]">
-<path d="M 0,0 a 322,322 0 0 1 -75,207"/>
-</g>
-<g id="xf-LFI--">
-<path d="M 0,0 a 687,687 0 0 1 -41,235"/>
-</g>
 </defs>
 <use id="r_0_c_0_4" style="stroke:black; stroke-width:4;" transform="translate(0 0) rotate(0)" xlink:href="#Rink"/>
 <text id="r_1_c_0_53" style="stroke:black; fill:black; font-size: 90pt;" x="1500" y="200">
@@ -117,144 +99,144 @@ Skills 2 Exercise 3
 START
 </text>
 <use id="r_8_c_0_37" style="stroke:black; stroke-width:4;" transform="translate(1800 700) rotate(90)" xlink:href="#RF[len=500,label=&quot; &quot;,style=&quot;dashed&quot;]"/>
-<use id="r_10_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1300 700) rotate(90)" xlink:href="#RFI3&gt;&gt;[len=200]_0::RFI[angle=48,len=150,label=&quot;RFI3&quot;]"/>
-<text id="r_10_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1257" y="780">
+<use id="r_11_c_2_26" style="stroke:black; stroke-width:4;" transform="translate(1300 700) rotate(90)" xlink:href="#RFI3&gt;&gt;[len=200]_0::RFI[angle=48,len=150,label=&quot;RFI3&quot;]"/>
+<text id="r_11_c_2_26_n2" style="stroke:black; fill:black; font-size:24pt;" x="1257" y="780">
 RFI3
 </text>
-<use id="r_10_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(1167 759) rotate(42)" xlink:href="#RFI3&gt;&gt;[len=200]_1::RFI[angle=72,len=50,label=&quot; &quot;]"/>
-<use id="r_10_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(1162 804) rotate(105)" xlink:href="#RFI3&gt;&gt;[len=200]_3::RBO[angle=72,len=50,label=&quot; &quot;]"/>
-<use id="r_10_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(1119 820) rotate(33)" xlink:href="#RFI3&gt;&gt;[len=200]_4::RBO[angle=48,len=150]"/>
-<text id="r_10_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="1162" y="899">
+<use id="r_11_c_2_26_n3" style="stroke:black; stroke-width:4;" transform="translate(1167 759) rotate(42)" xlink:href="#RFI3&gt;&gt;[len=200]_1::RFI[angle=72,len=50,label=&quot; &quot;]"/>
+<use id="r_11_c_2_26_n4" style="stroke:black; stroke-width:4;" transform="translate(1162 804) rotate(105)" xlink:href="#RFI3&gt;&gt;[len=200]_3::RBO[angle=72,len=50,label=&quot; &quot;]"/>
+<use id="r_11_c_2_26_n5" style="stroke:black; stroke-width:4;" transform="translate(1119 820) rotate(33)" xlink:href="#RFI3&gt;&gt;[len=200]_4::RBO[angle=48,len=150]"/>
+<text id="r_11_c_2_26_n6" style="stroke:black; fill:black; font-size:24pt;" x="1162" y="899">
 RBO
 </text>
-<use id="r_11_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1088 981) rotate(75)" xlink:href="#LFO3&gt;&gt;-_0::LFO[angle=48,len=225,label=&quot;LFO3&quot;]"/>
-<text id="r_11_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1033" y="1086">
+<use id="r_12_c_2_26" style="stroke:black; stroke-width:4;" transform="translate(1088 981) rotate(75)" xlink:href="#LFO3&gt;&gt;-_0::LFO[angle=48,len=225,label=&quot;LFO3&quot;]"/>
+<text id="r_12_c_2_26_n2" style="stroke:black; fill:black; font-size:24pt;" x="1033" y="1086">
 LFO3
 </text>
-<use id="r_11_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(918 1117) rotate(27)" xlink:href="#LFO3&gt;&gt;-_1::LFO[angle=72,len=75,label=&quot; &quot;]"/>
-<use id="r_11_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(929 1185) rotate(90)" xlink:href="#LFO3&gt;&gt;-_3::LBI[angle=72,len=75,label=&quot; &quot;]"/>
-<use id="r_11_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(873 1226) rotate(18)" xlink:href="#LFO3&gt;&gt;-_4::LBI[angle=48,len=225]"/>
-<text id="r_11_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="931" y="1329">
+<use id="r_12_c_2_26_n3" style="stroke:black; stroke-width:4;" transform="translate(918 1117) rotate(27)" xlink:href="#LFO3&gt;&gt;-_1::LFO[angle=72,len=75,label=&quot; &quot;]"/>
+<use id="r_12_c_2_26_n4" style="stroke:black; stroke-width:4;" transform="translate(929 1185) rotate(90)" xlink:href="#LFO3&gt;&gt;-_3::LBI[angle=72,len=75,label=&quot; &quot;]"/>
+<use id="r_12_c_2_26_n5" style="stroke:black; stroke-width:4;" transform="translate(873 1226) rotate(18)" xlink:href="#LFO3&gt;&gt;-_4::LBI[angle=48,len=225]"/>
+<text id="r_12_c_2_26_n6" style="stroke:black; fill:black; font-size:24pt;" x="931" y="1329">
 LBI
 </text>
-<use id="r_12_c_0_4" style="stroke:black; stroke-width:4;" transform="translate(921 1427) rotate(330)" xlink:href="#RBO-"/>
-<text id="r_12_c_0_4_n2" style="stroke:black; fill:black; font-size:24pt;" x="1061" y="1504">
+<use id="r_13_c_2_6" style="stroke:black; stroke-width:4;" transform="translate(921 1427) rotate(330)" xlink:href="#RBO-"/>
+<text id="r_13_c_2_6_n2" style="stroke:black; fill:black; font-size:24pt;" x="1061" y="1504">
 RBO
 </text>
-<use id="r_14_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(1091 1677) rotate(310)" xlink:href="#LFO--"/>
-<text id="r_14_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="1224" y="1684">
+<use id="r_15_c_2_7" style="stroke:black; stroke-width:4;" transform="translate(1091 1677) rotate(310)" xlink:href="#LFO--"/>
+<text id="r_15_c_2_7_n2" style="stroke:black; fill:black; font-size:24pt;" x="1224" y="1684">
 LFO
 </text>
-<use id="r_15_c_0_8" style="stroke:black; stroke-width:4;" transform="translate(1316 1787) rotate(290)" xlink:href="#xf-RFI--"/>
-<text id="r_15_c_0_8_n2" style="stroke:black; fill:black; font-size:24pt;" x="1443" y="1748">
+<use id="r_16_c_2_10" style="stroke:black; stroke-width:4;" transform="translate(1316 1787) rotate(290)" xlink:href="#xf-RFI--"/>
+<text id="r_16_c_2_10_n2" style="stroke:black; fill:black; font-size:24pt;" x="1443" y="1748">
 RFI
 </text>
-<text id="r_15_c_0_8_n3" style="stroke:black; fill:black; font-size:24pt;" x="1309" y="1835">
+<text id="r_16_c_2_10_n3" style="stroke:black; fill:black; font-size:24pt;" x="1309" y="1835">
 XF
 </text>
-<use id="r_17_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1550 1798) rotate(270)" xlink:href="#LFI3&gt;-_0::LFI[angle=40,len=225,label=&quot;LFI3&quot;]"/>
-<text id="r_17_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1636" y="1884">
+<use id="r_18_c_2_26" style="stroke:black; stroke-width:4;" transform="translate(1550 1798) rotate(270)" xlink:href="#LFI3&gt;-_0::LFI[angle=40,len=225,label=&quot;LFI3&quot;]"/>
+<text id="r_18_c_2_26_n2" style="stroke:black; fill:black; font-size:24pt;" x="1636" y="1884">
 LFI3
 </text>
-<use id="r_17_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(1757 1873) rotate(310)" xlink:href="#LFI3&gt;-_1::LFI&gt;[len=75,label=&quot; &quot;]"/>
-<use id="r_17_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(1781 1939) rotate(235)" xlink:href="#LFI3&gt;-_3::LBO&gt;[len=75,label=&quot; &quot;]"/>
-<use id="r_17_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(1851 1932) rotate(295)" xlink:href="#LFI3&gt;-_4::LBO[angle=40,len=225]"/>
-<text id="r_17_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="1892" y="2046">
+<use id="r_18_c_2_26_n3" style="stroke:black; stroke-width:4;" transform="translate(1757 1873) rotate(310)" xlink:href="#LFI3&gt;-_1::LFI&gt;[len=75,label=&quot; &quot;]"/>
+<use id="r_18_c_2_26_n4" style="stroke:black; stroke-width:4;" transform="translate(1781 1939) rotate(235)" xlink:href="#LFI3&gt;-_3::LBO&gt;[len=75,label=&quot; &quot;]"/>
+<use id="r_18_c_2_26_n5" style="stroke:black; stroke-width:4;" transform="translate(1851 1932) rotate(295)" xlink:href="#LFI3&gt;-_4::LBO[angle=40,len=225]"/>
+<text id="r_18_c_2_26_n6" style="stroke:black; fill:black; font-size:24pt;" x="1892" y="2046">
 LBO
 </text>
-<use id="r_19_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(2033 2074) rotate(335)" xlink:href="#RFO3&gt;[len=350]_0::RFO[angle=40,len=262,label=&quot;RFO3&quot;]"/>
-<text id="r_19_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1996" y="2205">
+<use id="r_20_c_2_26" style="stroke:black; stroke-width:4;" transform="translate(2033 2074) rotate(335)" xlink:href="#RFO3&gt;[len=350]_0::RFO[angle=40,len=262,label=&quot;RFO3&quot;]"/>
+<text id="r_20_c_2_26_n2" style="stroke:black; fill:black; font-size:24pt;" x="1996" y="2205">
 RFO3
 </text>
-<use id="r_19_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(2056 2329) rotate(15)" xlink:href="#RFO3&gt;[len=350]_1::RFO&gt;[len=88,label=&quot; &quot;]"/>
-<use id="r_19_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(1996 2387) rotate(300)" xlink:href="#RFO3&gt;[len=350]_3::RBI&gt;[len=88,label=&quot; &quot;]"/>
-<use id="r_19_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(2037 2459) rotate(0)" xlink:href="#RFO3&gt;[len=350]_4::RBI[angle=40,len=262]"/>
-<text id="r_19_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="1948" y="2563">
+<use id="r_20_c_2_26_n3" style="stroke:black; stroke-width:4;" transform="translate(2056 2329) rotate(15)" xlink:href="#RFO3&gt;[len=350]_1::RFO&gt;[len=88,label=&quot; &quot;]"/>
+<use id="r_20_c_2_26_n4" style="stroke:black; stroke-width:4;" transform="translate(1996 2387) rotate(300)" xlink:href="#RFO3&gt;[len=350]_3::RBI&gt;[len=88,label=&quot; &quot;]"/>
+<use id="r_20_c_2_26_n5" style="stroke:black; stroke-width:4;" transform="translate(2037 2459) rotate(0)" xlink:href="#RFO3&gt;[len=350]_4::RBI[angle=40,len=262]"/>
+<text id="r_20_c_2_26_n6" style="stroke:black; fill:black; font-size:24pt;" x="1948" y="2563">
 RBI
 </text>
-<use id="r_20_c_0_4" style="stroke:black; stroke-width:4;" transform="translate(1928 2679) rotate(40)" xlink:href="#LBO-"/>
-<text id="r_20_c_0_4_n2" style="stroke:black; fill:black; font-size:24pt;" x="1776" y="2730">
+<use id="r_21_c_2_6" style="stroke:black; stroke-width:4;" transform="translate(1928 2679) rotate(40)" xlink:href="#LBO-"/>
+<text id="r_21_c_2_6_n2" style="stroke:black; fill:black; font-size:24pt;" x="1776" y="2730">
 LBO
 </text>
-<use id="r_22_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(1715 2895) rotate(60)" xlink:href="#RFO--"/>
-<text id="r_22_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="1582" y="2879">
+<use id="r_23_c_2_7" style="stroke:black; stroke-width:4;" transform="translate(1715 2895) rotate(60)" xlink:href="#RFO--"/>
+<text id="r_23_c_2_7_n2" style="stroke:black; fill:black; font-size:24pt;" x="1582" y="2879">
 RFO
 </text>
-<use id="r_23_c_0_16" style="stroke:black; stroke-width:4;" transform="translate(1472 2963) rotate(80)" xlink:href="#xf-LFI[len=200]"/>
-<text id="r_23_c_0_16_n2" style="stroke:black; fill:black; font-size:24pt;" x="1372" y="2901">
+<use id="r_24_c_2_18" style="stroke:black; stroke-width:4;" transform="translate(1472 2963) rotate(80)" xlink:href="#xf-LFI[len=200]"/>
+<text id="r_24_c_2_18_n2" style="stroke:black; fill:black; font-size:24pt;" x="1372" y="2901">
 LFI
 </text>
-<text id="r_23_c_0_16_n3" style="stroke:black; fill:black; font-size:24pt;" x="1471" y="3011">
+<text id="r_24_c_2_18_n3" style="stroke:black; fill:black; font-size:24pt;" x="1471" y="3011">
 XF
 </text>
-<use id="r_25_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1279 2933) rotate(100)" xlink:href="#RFI3&gt;&gt;[len=200]_0::RFI[angle=48,len=150,label=&quot;RFI3&quot;]"/>
-<text id="r_25_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1222" y="3004">
+<use id="r_11_c_2_26_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1279 2933) rotate(100)" xlink:href="#RFI3&gt;&gt;[len=200]_0::RFI[angle=48,len=150,label=&quot;RFI3&quot;]"/>
+<text id="r_11_c_2_26_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1222" y="3004">
 RFI3
 </text>
-<use id="r_25_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(1137 2968) rotate(52)" xlink:href="#RFI3&gt;&gt;[len=200]_1::RFI[angle=72,len=50,label=&quot; &quot;]"/>
-<use id="r_25_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(1124 3012) rotate(115)" xlink:href="#RFI3&gt;&gt;[len=200]_3::RBO[angle=72,len=50,label=&quot; &quot;]"/>
-<use id="r_25_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(1079 3020) rotate(43)" xlink:href="#RFI3&gt;&gt;[len=200]_4::RBO[angle=48,len=150]"/>
-<text id="r_25_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="1108" y="3106">
+<use id="r_11_c_2_26_rep_2_n3" style="stroke:black; stroke-width:4;" transform="translate(1137 2968) rotate(52)" xlink:href="#RFI3&gt;&gt;[len=200]_1::RFI[angle=72,len=50,label=&quot; &quot;]"/>
+<use id="r_11_c_2_26_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(1124 3012) rotate(115)" xlink:href="#RFI3&gt;&gt;[len=200]_3::RBO[angle=72,len=50,label=&quot; &quot;]"/>
+<use id="r_11_c_2_26_rep_2_n5" style="stroke:black; stroke-width:4;" transform="translate(1079 3020) rotate(43)" xlink:href="#RFI3&gt;&gt;[len=200]_4::RBO[angle=48,len=150]"/>
+<text id="r_11_c_2_26_rep_2_n6" style="stroke:black; fill:black; font-size:24pt;" x="1108" y="3106">
 RBO
 </text>
-<use id="r_26_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1021 3173) rotate(85)" xlink:href="#LFO3&gt;&gt;-_0::LFO[angle=48,len=225,label=&quot;LFO3&quot;]"/>
-<text id="r_26_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="948" y="3267">
+<use id="r_12_c_2_26_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1021 3173) rotate(85)" xlink:href="#LFO3&gt;&gt;-_0::LFO[angle=48,len=225,label=&quot;LFO3&quot;]"/>
+<text id="r_12_c_2_26_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="948" y="3267">
 LFO3
 </text>
-<use id="r_26_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(830 3278) rotate(37)" xlink:href="#LFO3&gt;&gt;-_1::LFO[angle=72,len=75,label=&quot; &quot;]"/>
-<use id="r_26_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(829 3347) rotate(100)" xlink:href="#LFO3&gt;&gt;-_3::LBI[angle=72,len=75,label=&quot; &quot;]"/>
-<use id="r_26_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(766 3377) rotate(28)" xlink:href="#LFO3&gt;&gt;-_4::LBI[angle=48,len=225]"/>
-<text id="r_26_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="806" y="3488">
+<use id="r_12_c_2_26_rep_2_n3" style="stroke:black; stroke-width:4;" transform="translate(830 3278) rotate(37)" xlink:href="#LFO3&gt;&gt;-_1::LFO[angle=72,len=75,label=&quot; &quot;]"/>
+<use id="r_12_c_2_26_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(829 3347) rotate(100)" xlink:href="#LFO3&gt;&gt;-_3::LBI[angle=72,len=75,label=&quot; &quot;]"/>
+<use id="r_12_c_2_26_rep_2_n5" style="stroke:black; stroke-width:4;" transform="translate(766 3377) rotate(28)" xlink:href="#LFO3&gt;&gt;-_4::LBI[angle=48,len=225]"/>
+<text id="r_12_c_2_26_rep_2_n6" style="stroke:black; fill:black; font-size:24pt;" x="806" y="3488">
 LBI
 </text>
-<use id="r_27_c_0_4" style="stroke:black; stroke-width:4;" transform="translate(780 3582) rotate(340)" xlink:href="#RBO-"/>
-<text id="r_27_c_0_4_n2" style="stroke:black; fill:black; font-size:24pt;" x="904" y="3682">
+<use id="r_13_c_2_6_rep_2" style="stroke:black; stroke-width:4;" transform="translate(780 3582) rotate(340)" xlink:href="#RBO-"/>
+<text id="r_13_c_2_6_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="904" y="3682">
 RBO
 </text>
-<use id="r_29_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(905 3858) rotate(320)" xlink:href="#LFO--"/>
-<text id="r_29_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="1035" y="3888">
+<use id="r_15_c_2_7_rep_2" style="stroke:black; stroke-width:4;" transform="translate(905 3858) rotate(320)" xlink:href="#LFO--"/>
+<text id="r_15_c_2_7_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1035" y="3888">
 LFO
 </text>
-<use id="r_30_c_0_25" style="stroke:black; stroke-width:4;" transform="translate(1107 4005) rotate(300)" xlink:href="#xf-RFI[angle=30,len=250]"/>
-<text id="r_30_c_0_25_n2" style="stroke:black; fill:black; font-size:24pt;" x="1240" y="3983">
+<use id="r_16_c_2_10_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1107 4005) rotate(300)" xlink:href="#xf-RFI--"/>
+<text id="r_16_c_2_10_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1239" y="3989">
 RFI
 </text>
-<text id="r_30_c_0_25_n3" style="stroke:black; fill:black; font-size:24pt;" x="1093" y="4052">
+<text id="r_16_c_2_10_rep_2_n3" style="stroke:black; fill:black; font-size:24pt;" x="1092" y="4052">
 XF
 </text>
-<use id="r_32_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1344 4039) rotate(270)" xlink:href="#LFI3&gt;-_0::LFI[angle=40,len=225,label=&quot;LFI3&quot;]"/>
-<text id="r_32_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1430" y="4125">
+<use id="r_18_c_2_26_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1336 4056) rotate(280)" xlink:href="#LFI3&gt;-_0::LFI[angle=40,len=225,label=&quot;LFI3&quot;]"/>
+<text id="r_18_c_2_26_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1405" y="4155">
 LFI3
 </text>
-<use id="r_32_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(1551 4114) rotate(310)" xlink:href="#LFI3&gt;-_1::LFI&gt;[len=75,label=&quot; &quot;]"/>
-<use id="r_32_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(1575 4180) rotate(235)" xlink:href="#LFI3&gt;-_3::LBO&gt;[len=75,label=&quot; &quot;]"/>
-<use id="r_32_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(1645 4173) rotate(295)" xlink:href="#LFI3&gt;-_4::LBO[angle=40,len=225]"/>
-<text id="r_32_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="1686" y="4287">
+<use id="r_18_c_2_26_rep_2_n3" style="stroke:black; stroke-width:4;" transform="translate(1526 4165) rotate(320)" xlink:href="#LFI3&gt;-_1::LFI&gt;[len=75,label=&quot; &quot;]"/>
+<use id="r_18_c_2_26_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(1539 4234) rotate(245)" xlink:href="#LFI3&gt;-_3::LBO&gt;[len=75,label=&quot; &quot;]"/>
+<use id="r_18_c_2_26_rep_2_n5" style="stroke:black; stroke-width:4;" transform="translate(1609 4239) rotate(305)" xlink:href="#LFI3&gt;-_4::LBO[angle=40,len=225]"/>
+<text id="r_18_c_2_26_rep_2_n6" style="stroke:black; fill:black; font-size:24pt;" x="1630" y="4358">
 LBO
 </text>
-<use id="r_34_c_0_24" style="stroke:black; stroke-width:4;" transform="translate(1826 4337) rotate(335)" xlink:href="#RFO3&gt;-_0::RFO[angle=40,len=225,label=&quot;RFO3&quot;]"/>
-<text id="r_34_c_0_24_n2" style="stroke:black; fill:black; font-size:24pt;" x="1784" y="4451">
+<use id="r_20_c_2_26_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1762 4411) rotate(345)" xlink:href="#RFO3&gt;[len=350]_0::RFO[angle=40,len=262,label=&quot;RFO3&quot;]"/>
+<text id="r_20_c_2_26_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1702" y="4534">
 RFO3
 </text>
-<use id="r_34_c_0_24_n3" style="stroke:black; stroke-width:4;" transform="translate(1845 4556) rotate(15)" xlink:href="#RFO3&gt;-_1::RFO&gt;[len=75,label=&quot; &quot;]"/>
-<use id="r_34_c_0_24_n4" style="stroke:black; stroke-width:4;" transform="translate(1795 4606) rotate(300)" xlink:href="#RFO3&gt;-_3::RBI&gt;[len=75,label=&quot; &quot;]"/>
-<use id="r_34_c_0_24_n5" style="stroke:black; stroke-width:4;" transform="translate(1831 4667) rotate(0)" xlink:href="#RFO3&gt;-_4::RBI[angle=40,len=225]"/>
-<text id="r_34_c_0_24_n6" style="stroke:black; fill:black; font-size:24pt;" x="1745" y="4753">
+<use id="r_20_c_2_26_rep_2_n3" style="stroke:black; stroke-width:4;" transform="translate(1740 4666) rotate(25)" xlink:href="#RFO3&gt;[len=350]_1::RFO&gt;[len=88,label=&quot; &quot;]"/>
+<use id="r_20_c_2_26_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(1671 4713) rotate(310)" xlink:href="#RFO3&gt;[len=350]_3::RBI&gt;[len=88,label=&quot; &quot;]"/>
+<use id="r_20_c_2_26_rep_2_n5" style="stroke:black; stroke-width:4;" transform="translate(1699 4791) rotate(10)" xlink:href="#RFO3&gt;[len=350]_4::RBI[angle=40,len=262]"/>
+<text id="r_20_c_2_26_rep_2_n6" style="stroke:black; fill:black; font-size:24pt;" x="1593" y="4877">
 RBI
 </text>
-<use id="r_35_c_0_4" style="stroke:black; stroke-width:4;" transform="translate(1733 4852) rotate(40)" xlink:href="#LBO-"/>
-<text id="r_35_c_0_4_n2" style="stroke:black; fill:black; font-size:24pt;" x="1581" y="4903">
+<use id="r_21_c_2_6_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1553 4990) rotate(50)" xlink:href="#LBO-"/>
+<text id="r_21_c_2_6_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1394" y="5014">
 LBO
 </text>
-<use id="r_37_c_0_5" style="stroke:black; stroke-width:4;" transform="translate(1520 5068) rotate(60)" xlink:href="#RFO--"/>
-<text id="r_37_c_0_5_n2" style="stroke:black; fill:black; font-size:24pt;" x="1387" y="5052">
+<use id="r_23_c_2_7_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1305 5167) rotate(70)" xlink:href="#RFO--"/>
+<text id="r_23_c_2_7_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1177" y="5128">
 RFO
 </text>
-<use id="r_38_c_0_8" style="stroke:black; stroke-width:4;" transform="translate(1277 5136) rotate(80)" xlink:href="#xf-LFI--"/>
-<text id="r_38_c_0_8_n2" style="stroke:black; fill:black; font-size:24pt;" x="1157" y="5075">
+<use id="r_24_c_2_18_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1055 5193) rotate(90)" xlink:href="#xf-LFI[len=200]"/>
+<text id="r_24_c_2_18_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="968" y="5115">
 LFI
 </text>
-<text id="r_38_c_0_8_n3" style="stroke:black; fill:black; font-size:24pt;" x="1274" y="5185">
+<text id="r_24_c_2_18_rep_2_n3" style="stroke:black; fill:black; font-size:24pt;" x="1046" y="5241">
 XF
 </text>
 </svg>

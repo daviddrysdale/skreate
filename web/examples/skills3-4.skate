@@ -5,22 +5,9 @@ Info [grid=0,markers=false]
 Text [x=1450,y=1200,text="START",font-size=50]
 Warp [x=1450,y=1400,dir=45,code="RFI"]
 
-RFI [angle=90,len=300]
-LFI [angle=90,len=300]
+|:
+  RFI [angle=90,len=300]
+  LFI [angle=90,len=300]
 
-RFI-Tw1 [len=40,angle=110]
-
-LFI [angle=90,len=300]
-RFI [angle=90,len=300]
-
-LFI-Tw1 [len=40,angle=110]
-
-RFI [angle=90,len=300]
-LFI [angle=90,len=300]
-
-RFI-Tw1 [len=40,angle=110]
-
-LFI [angle=90,len=300]
-RFI [angle=90,len=300]
-
-LFI-Tw1 [len=40,angle=110]
+  RFI-Tw1 [len=40,angle=110]
+!|x4

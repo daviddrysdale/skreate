@@ -7,12 +7,10 @@ Warp [x=1200,y=600,dir=90,code="RFI"]
 RF [len=400,label=" ",style="dashed"]
 
 RFI [len=100, label=" "]
-RFI-Rk [angle=90,len=500,delta-angle=20]
-LBI-Rk [angle=90,len=500,delta-angle=20]
-RFI-Rk [angle=90,len=500,delta-angle=20]
-LBI-Rk [angle=90,len=500,delta-angle=20]
-RFI-Rk [angle=90,len=500,delta-angle=20]
-LBI-Rk [angle=80,len=500,delta-angle=20]
+|:
+  RFI-Rk [angle=90,len=500,delta-angle=20]
+  LBI-Rk [angle=90,len=500,delta-angle=20]
+:|x3
 
 #-------------------------
 Text [x=1750,y=5890,text="SIDE 2",font-size=50]
@@ -21,9 +19,7 @@ LF [len=600,label=" ",style="dashed"]
 LFO [angle=180,label=" ",style="dashed"]
 
 LFI [len=100, label=" "]
-LFI-Rk [angle=90,len=500,delta-angle=20]
-RBI-Rk [angle=90,len=500,delta-angle=20]
-LFI-Rk [angle=90,len=500,delta-angle=20]
-RBI-Rk [angle=90,len=500,delta-angle=20]
-LFI-Rk [angle=90,len=500,delta-angle=20]
-RBI-Rk [angle=80,len=500,delta-angle=20]
+|:
+  LFI-Rk [angle=90,len=500,delta-angle=20]
+  RBI-Rk [angle=90,len=500,delta-angle=20]
+:|x3

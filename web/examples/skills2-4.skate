@@ -7,22 +7,16 @@ Warp [x=1800,y=500,dir=90,code="LFO"]
 
 LF [len=500,label=" ",style="dashed"]
 LFO [angle=140,len=600]
+
 xf-RFO>>+
-xf-LFO [angle=140,len=600]
-xf-RFI->
-wd-LFI+>>
-RFO>>+
-xf-LFO [angle=140,len=600]
-xf-RFO [angle=140,len=600]
-xf-LFI>-
-wd-RFI+>>
-LFO>>+
-xf-RFO [angle=140,len=600]
-xf-LFO [angle=140,len=600]
-xf-RFI->
-wd-LFI+>>
-RFO>>+
-xf-LFO [angle=140,len=600]
+|:
+  xf-LFO [angle=140,len=600]
+  xf-RFI->
+  wd-LFI+>>
+  RFO>>+
+  xf-LFO [angle=140,len=600]
+!|x3
+
 xf-RFO [angle=140,len=600]
 xf-LFI>-
 wd-RFI+>>

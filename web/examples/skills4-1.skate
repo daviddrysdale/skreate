@@ -16,26 +16,14 @@ xf-RBI [angle=45,len=200]
 LBO [angle=45,len=200]
 xf-RBI [angle=45,len=200]
 
-LBO-CoE [angle=180,len=1200,flat-len=100]
+|:
+  LBO-CoE [angle=180,len=1200,flat-len=100]
 
-RBO [angle=45,len=200]
-xf-LBI [angle=45,len=200]
-RBO [angle=45,len=200]
-xf-LBI [angle=45,len=200]
-
-RBO-CoE [angle=180,len=1200,flat-len=100]
-
-LBO [angle=45,len=200]
-xf-RBI [angle=45,len=200]
-LBO [angle=45,len=200]
-xf-RBI [angle=45,len=200]
-
-LBO-CoE [angle=180,len=1200,flat-len=100]
-
-RBO [angle=45,len=200]
-xf-LBI [angle=45,len=200]
-RBO [angle=45,len=200]
-xf-LBI [angle=45,len=200]
+  RBO [angle=45,len=200]
+  xf-LBI [angle=45,len=200]
+  RBO [angle=45,len=200]
+  xf-LBI [angle=45,len=200]
+!|x3
 
 RBO [angle=180,len=1200]
 
@@ -57,28 +45,14 @@ LBO>--
 xf-RBI-
 LBO>-
 
-xf-RBI-CoE [angle=160,len=1200,delta-angle=20]
+|:
+  xf-RBI-CoE [angle=160,len=1200,delta-angle=20]
 
-Shift [rotate=-40]
-LFO3 [angle=120,len=300]
-RBO>--
-xf-LBI-
-RBO>-
-
-xf-LBI-CoE [angle=160,len=1200,delta-angle=20]
-
-Shift [rotate=40]
-RFO3 [angle=120,len=300]
-LBO>--
-xf-RBI-
-LBO>-
-
-xf-RBI-CoE [angle=160,len=1200,delta-angle=20]
-
-Shift [rotate=-40]
-LFO3 [angle=120,len=300]
-RBO>--
-xf-LBI-
-RBO>-
+  Shift [rotate=-40]
+  LFO3 [angle=120,len=300]
+  RBO>--
+  xf-LBI-
+  RBO>-
+!|x3
 
 xf-LBI [angle=180,len=1200]

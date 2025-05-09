@@ -5,31 +5,20 @@ Info [grid=0,markers=false]
 Text [x=1400,y=540,text="SIDE 1",font-size=50]
 Warp [x=1200,y=500,dir=90]
 LF [len=500,label=" ",style="dashed"]
-LFO--
-RFI-- [transition-label="Open Chasse"]
-LFO[angle=140,len=900]
-RFO--
-LFI-- [transition-label="Open Chasse"]
-RFO[angle=140,len=900]
-LFO--
-RFI-- [transition-label="Open Chasse"]
-LFO[angle=140,len=900]
-RFO--
-LFI-- [transition-label="Open Chasse"]
-RFO[angle=140,len=900]
+
+|:
+  LFO--
+  RFI-- [transition-label="Open Chasse"]
+  LFO[angle=140,len=900]
+!|x4
 
 Text [x=1500,y=5500,text="SIDE 2",font-size=50]
 Warp [x=1700,y=5500,dir=270]
 LF [len=500,label=" ",style="dashed"]
-LFO->
-xf-RFI++>>
-wd-LFI--
-RFO--
-xf-LFI++>>
-wd-RFI--
-LFO--
-xf-RFI++>>
-wd-LFI--
-RFO--
-xf-LFI++>>
-wd-RFI--
+LFO [angle=40,len=60, label=" "]
+
+|:
+  LFO--
+  xf-RFI++>>
+  wd-LFI--
+!|x4

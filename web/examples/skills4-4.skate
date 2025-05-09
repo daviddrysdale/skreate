@@ -42,18 +42,9 @@ Warp [x=1800,y=5000,dir=270,code="RBO"]
 RB [len=600,style="dashed",label=" "]
 Shift [rotate=-45]
 RBO [len=300,angle=85]
-xb-LBO [len=300,angle=80,transition-label="CR"]
-xb-RBO [len=300,angle=80,transition-label="CR"]
-xb-LBO-Tw1 [len=40,angle=120,pre-angle=40,post-angle=40,transition-label="CR"]
 
-xb-RBO [len=300,angle=80,transition-label="CR"]
-xb-LBO [len=300,angle=80,transition-label="CR"]
-xb-RBO-Tw1 [len=40,angle=120,pre-angle=40,post-angle=40,transition-label="CR"]
-
-xb-LBO [len=300,angle=80,transition-label="CR"]
-xb-RBO [len=300,angle=80,transition-label="CR"]
-xb-LBO-Tw1 [len=40,angle=120,pre-angle=40,post-angle=40,transition-label="CR"]
-
-xb-RBO [len=300,angle=80,transition-label="CR"]
-xb-LBO [len=300,angle=80,transition-label="CR"]
-xb-RBO-Tw1 [len=40,angle=120,pre-angle=40,post-angle=40,transition-label="CR"]
+|:
+  xb-LBO [len=300,angle=80,transition-label="CR"]
+  xb-RBO [len=300,angle=80,transition-label="CR"]
+  xb-LBO-Tw1 [len=40,angle=120,pre-angle=40,post-angle=40,transition-label="CR"]
+!|x4
