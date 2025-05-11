@@ -7,7 +7,7 @@
 // will "boot" the module and make it ready to use. Currently browsers
 // don't support natively imported WebAssembly as an ES module, but
 // eventually the manual initialization won't be required!
-import init, { initialize, generate_with_positions, canonicalize, canonicalize_vert, ParseError } from './pkg/skreate_wasm.js';
+import init, { initialize, generate, generate_with_positions, canonicalize, canonicalize_vert, ParseError } from './pkg/skreate_wasm.js';
 
 async function run() {
   // First up we need to actually load the wasm file, so we use the
@@ -69,11 +69,8 @@ export function setup_download(div, diagram_div, get_value) {
   var download_link = div.find('.download');
   var input_link = div.find('.fileInput')[0];
   download_link.click(function(ev) {
-    var svg = diagram_div.find('svg')[0];
-    var width = parseInt(svg.width.baseVal.value);
-    var height = parseInt(svg.height.baseVal.value);
     var text = get_value();
-    var xml = '<?xml version="1.0" encoding="utf-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN" "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd"><svg xmlns="http://www.w3.org/2000/svg" width="' + width + '" height="' + height + '" xmlns:xlink="http://www.w3.org/1999/xlink"><source><![CDATA[' + text + ']]></source>' + svg.innerHTML + '</svg>';
+    var xml = generate(text);
 
     var filename;
     if (input_link.files.length == 0) {
