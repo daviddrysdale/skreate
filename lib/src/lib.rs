@@ -12,6 +12,7 @@ use std::collections::{HashMap, HashSet};
 use std::fmt::{self, Display, Formatter};
 use svg::{
     node::element::{Definitions, Description, Group, Path, Rectangle, Style, Text, Title, Use},
+    node::Comment,
     Document,
 };
 
@@ -551,6 +552,8 @@ pub fn generate_with_positions(
     let moves = expand_repeats(&moves)?;
 
     let mut doc = Document::new().set("xmlns:xlink", "http://www.w3.org/1999/xlink");
+    doc = doc.add(Comment::new(replace_double_minus(input)));
+
     let mut opts = RenderOptions {
         title: "Skating Diagram".to_string(),
         ..Default::default()
@@ -799,6 +802,12 @@ pub fn generate_with_positions(
         .collect::<Vec<_>>();
 
     Ok((svg, text_positions, timings))
+}
+
+/// Replace all "--" instances in a string with the equivalent HTML entity.
+fn replace_double_minus(text: &str) -> String {
+    let minus_re = regex::Regex::new("--").unwrap();
+    minus_re.replace_all(text, "&#45;&#45;").to_string()
 }
 
 #[cfg(test)]
