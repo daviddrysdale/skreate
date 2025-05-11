@@ -1,4 +1,33 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 4 Exercise 5",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=30]
+
+Text [x=2000,y=630,text="START",font-size=70]
+Warp [x=1800,y=600,dir=90,code="RBO"]
+
+RB [len=700,style="dashed",label=" "]
+RBO [angle=90,len=500,style="dashed",label=" "]
+
+RBO-ClCho [len=600,delta-angle=-70,delta-len=-500]
+LFI-OpMo [angle=70,len=200,delta-len=150,delta-angle=-10]
+LBO [len=180,angle=20]
+xf-RBI [len=180,angle=20]
+
+LBO-ClCho [angle=80,len=600,delta-angle=-50,delta-len=-500]
+RFI-OpMo [angle=50,len=200,delta-len=100]
+RBO [len=150,angle=30]
+xf-LBI [len=180,angle=30]
+
+RBO-ClCho [len=800,angle=90,delta-angle=-80,delta-len=-750]
+LFI-OpMo [angle=70,len=200,delta-len=150,delta-angle=-10]
+LBO [len=150,angle=20]
+xf-RBI [len=150,angle=20]
+
+LBO-ClCho [angle=90,len=800,delta-angle=-60,delta-len=-700]
+RFI-OpMo [angle=50,len=200,delta-len=100]
+RBO [len=150,angle=20]
+xf-LBI [len=150,angle=20] -->
 <title>Skills 4 Exercise 5</title>
 <desc>
 <text>

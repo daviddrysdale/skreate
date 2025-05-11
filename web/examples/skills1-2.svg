@@ -1,4 +1,25 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 1 Exercise 2",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1200,y=2800,text="START CIRCLE 1",font-size=50]
+Warp [x=1600,y=2780,dir=270,code="RBO"]
+
+|:
+  RBO-
+  xf-LBI-
+:|x3
+RBO [angle=160,len=2400]
+
+Text [x=1200,y=3340,text="START CIRCLE 2",font-size=50]
+Warp [x=1600,y=3280,dir=270,code="RBO"]
+
+|:
+  LBO-
+  xf-RBI-
+:|x3
+LBO [angle=160,len=2400] -->
 <title>Skills 1 Exercise 2</title>
 <desc>
 <text>

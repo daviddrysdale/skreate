@@ -1,4 +1,39 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 3 Exercise 5",y=200,font-size=90]
+Info [grid=0,markers=false,label-offset=-70,font-size=45]
+
+Text [x=1750,y=725,text="START",font-size=50]
+Warp [x=1600,y=700,dir=90,code="LFI"]
+LF [len=300,style="dashed",label=" "]
+
+LFO-ClMo [len=200,angle=10]
+xf-LBI [len=240,angle=15]
+Shift [rotate=90]
+RFI [len=220,angle=15]
+LFO-ClMo [len=240,angle=20]
+xf-LBI [len=200,angle=15]
+Shift [rotate=100]
+Shift [fwd=0,side=50]
+RF-Hop [size=10,label-offset=400]
+Shift [rotate=20]
+Shift [fwd=60,side=-30]
+LFO [len=1600,angle=105,label="LFO SPIRAL",label-offset=-150]
+
+LFO [len=240,angle=15,label=" "]
+
+RFO-ClMo [len=240,angle=15]
+xf-RBI [len=260,angle=15]
+Shift [rotate=-90]
+LFI [len=220,angle=15]
+RFO-ClMo [len=240,angle=25]
+xf-RBI [len=220,angle=15]
+Shift [rotate=-20]
+Shift [fwd=60,side=-30]
+RF-Hop [size=10,label-offset=400]
+Shift [rotate=180]
+Shift [fwd=60,side=-30]
+RFO [len=1750,angle=105,label="RFO SPIRAL",label-offset=-150] -->
 <title>Skills 3 Exercise 5</title>
 <desc>
 <text>

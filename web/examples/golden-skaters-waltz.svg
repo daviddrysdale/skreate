@@ -1,4 +1,32 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Title [text="Golden Skaters Waltz",font-size=80,y=200]
+Rink [centre-circle=0,mid-lines=0,centre-line=false]
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=-100]
+
+Warp [x=2100,y=5700,dir=270]
+/2 LFO [angle=110,len=800]
+Shift [rotate=60]
+/1 RFI [angle=110,len=240, label="RFI Pr"]
+Shift [rotate=80]
+/3 LFO  [angle=110,len=600]
+/3 xf-RFO>
+/3 xb-LFI>
+Shift [rotate=-40]
+/6 RFO  [angle=110,len=900,label="RFO Sr"]
+/3 LFO [angle=90,len=850]
+/3 RFI> [label="RFI Sl Ch"]
+/6 wd-LFI>>+++ [label="LFI Sr"]
+Shift [rotate=30]
+/6 RFI>>++ [label="RFI Sr"]
+/2 LFO>-
+Shift [rotate=40]
+/1 RFI>&#45;&#45;- [label="RFI Ch"]
+Shift [rotate=30]
+/3 LFO [angle=70,len=700]
+/6 xf-RFO>> [angle=120,len=800,transition-label="CR",label="RFO Sw"]
+Shift [rotate=30]
+/3 LFO [angle=80,len=400]
+/3 RFI>- [label="RFI Sl Ch"] -->
 <title>Golden Skaters Waltz</title>
 <desc>
 <text>

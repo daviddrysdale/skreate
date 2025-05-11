@@ -1,4 +1,67 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 3 Exercise 1",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1450,y=525,text="SIDE 1",font-size=50]
+Warp [x=1300,y=500,dir=90,code="LFO"]
+
+LF [len=500,label=" ",style="dashed"]
+LFO [angle=45,len=300]
+RFI [angle=45,len=300]
+
+LFO-CoE [angle=90,len=600,flat-len=100,delta-angle=90,delta-len=500]
+
+RFO [angle=45,len=200]
+xf-LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+LFI [angle=45,len=200]
+
+RFO-CoE [angle=180,len=1200,flat-len=100]
+
+LFO [angle=45,len=200]
+xf-RFI [angle=45,len=200]
+LFO [angle=45,len=200]
+RFI [angle=45,len=200]
+
+|:
+  LFO-CoE [angle=190,len=1100,flat-len=100,delta-angle=-10]
+
+  RFO [angle=45,len=200]
+  xf-LFI [angle=45,len=200]
+  RFO [angle=45,len=200]
+  LFI [angle=45,len=200]
+!|
+
+LFO [angle=190,len=1100]
+
+#&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-
+Text [x=1550,y=5825,text="SIDE 2",font-size=50]
+Warp [x=1700,y=5800,dir=270,code="LFO"]
+
+LF [len=500,label=" ",style="dashed"]
+LFO [angle=30,len=300]
+RFI [angle=30,len=300]
+LFO [angle=30,len=300]
+
+xf-RFI-CoE [angle=90,len=600,flat-len=100,delta-angle=90,delta-len=500]
+
+xf-LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+LFI [angle=45,len=200]
+RFO [angle=45,len=200]
+
+|:
+  xf-LFI-CoE [angle=180,len=1100,flat-len=100]
+
+  xf-RFI [angle=45,len=200]
+  LFO [angle=45,len=200]
+  RFI [angle=45,len=200]
+  LFO [angle=45,len=200]
+!|x3
+
+xf-RFI [angle=180,len=1100]
+ -->
 <title>Skills 3 Exercise 1</title>
 <desc>
 <text>

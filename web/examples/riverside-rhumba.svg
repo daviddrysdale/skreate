@@ -1,4 +1,39 @@
 <svg height="4900" viewBox="-50 -50 3100 4900" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Title [text="Riverside Rhumba",font-size=80,y=200]
+Rink [centre-circle=0,mid-lines=0,centre-line=true,length=4800]
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=-100]
+
+Warp [x=2150,y=4300,dir=290]
+/2 LFO [angle=50,len=300]
+/2 RFI [angle=50,len=300,label="RFI Pr"]
+/2 LFO [angle=50,len=300]
+/2 xf-RFI [angle=60,len=400,transition-label=" ",label="RFI PR"]
+
+/2 LFI [angle=60,len=400,label="LFI Sl Ch",label-offset=100]
+/4 RFO [angle=120,len=800,label="RFO (Ronde)",label-offset=200]
+/1 xf-LFI [angle=60,len=200,label-offset=100]
+/1 wd-RFI [angle=60,len=200]
+/4 LFO [angle=130,len=700,label="LFO (Ronde)",label-offset=-200]
+/1 xf-RFI [angle=60,len=200,transition-label=" ",label="XF RFI"]
+/1 wd-LFI [angle=60,len=200,label-offset=100]
+/2 RFO [angle=50,len=300,label-offset=100]
+/1 xf-LFO [angle=70,len=200,transition-label=" ",label="CR LFO"]
+/1 xf-RFO [angle=60,len=200,transition-label=" ",label="CR RFO",label-offset=150]
+/2 LFI [angle=40,len=300,label="LFI Sl Ch",label-offset=150]
+
+/4 RFO [angle=50,len=500,label="RFO-I",label-offset=100]
+0) /2 RFI [angle=60,len=400,label=" "]
+
+17) /1 LFO [angle=50,len=200]
+/1 RFI [angle=45,len=200,label="RFI Ch"]
+/4 LFO [angle=70,len=700,label="LFO Sr"]
+
+Info [auto-count=true,font-size=36,stroke-width=12,label-offset=100]
+20) /1 xf-RFO [angle=30,len=200,transition-label=" ", label="XF RFO"]
+/1 xb-LFI [angle=30,len=200,transition-label=" ", label="XB LFI"]
+/4 RFO [angle=40,len=600,label="RFO Sr"]
+/1 LFI [angle=50,len=200]
+/1 RFI [angle=70,len=200,label-offset=-100] -->
 <title>Riverside Rhumba</title>
 <desc>
 <text>

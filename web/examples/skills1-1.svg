@@ -1,4 +1,29 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 1 Exercise 1",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1400,y=540,text="SIDE 1",font-size=50]
+Warp [x=1200,y=500,dir=90]
+LF [len=500,label=" ",style="dashed"]
+
+|:
+  LFO&#45;&#45;
+  RFI&#45;&#45; [transition-label="Open Chasse"]
+  LFO[angle=140,len=900]
+!|x4
+
+Text [x=1500,y=5500,text="SIDE 2",font-size=50]
+Warp [x=1700,y=5500,dir=270]
+LF [len=500,label=" ",style="dashed"]
+LFO [angle=40,len=60, label=" "]
+
+|:
+  LFO&#45;&#45;
+  xf-RFI++>>
+  wd-LFI&#45;&#45;
+!|x4
+ -->
 <title>Skills 1 Exercise 1</title>
 <desc>
 <text>

@@ -1,4 +1,24 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 6 Exercise 3",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1850,y=1825,text="START",font-size=50]
+Warp [x=1700,y=1800,dir=90,code="LFO"]
+LF [len=300,label=" ",style="dashed"]
+
+|:
+  |:
+  LFO3 [len=200,angle=100]
+  LBI-Loop [angle=50,len=200,delta-angle=55,delta-len=100]
+
+  wd-RBI [len=150]
+  LBO [len=180,angle=40]
+
+  Shift [rotate=35]
+  !|
+:|
+ -->
 <title>Skills 6 Exercise 3</title>
 <desc>
 <text>

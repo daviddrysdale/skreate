@@ -1,4 +1,63 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 4 Exercise 1",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1350,y=525,text="SIDE 1",font-size=50]
+Warp [x=1200,y=500,dir=90,code="RBO"]
+
+RB [len=500,label=" ",style="dashed"]
+RBO [angle=45,len=300]
+xf-LBI [angle=45,len=300]
+
+RBO-CoE [angle=90,len=600,flat-len=100,delta-angle=90,delta-len=500]
+
+LBO [angle=45,len=200]
+xf-RBI [angle=45,len=200]
+LBO [angle=45,len=200]
+xf-RBI [angle=45,len=200]
+
+|:
+  LBO-CoE [angle=180,len=1200,flat-len=100]
+
+  RBO [angle=45,len=200]
+  xf-LBI [angle=45,len=200]
+  RBO [angle=45,len=200]
+  xf-LBI [angle=45,len=200]
+!|x3
+
+RBO [angle=180,len=1200]
+
+#&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-
+Text [x=1750,y=5825,text="SIDE 2",font-size=50]
+Warp [x=1900,y=5800,dir=270,code="LFO"]
+
+LF [label=" ",style="dashed"]
+LFO3 [angle=100,len=200]
+RBO<<&#45;&#45;-
+xf-LBI&#45;&#45;
+RBO&#45;&#45;
+
+xf-LBI-CoE [angle=60,len=600,flat-len=50,delta-angle=120,delta-len=600]
+
+Shift [rotate=40]
+RFO3 [angle=120,len=300]
+LBO>&#45;&#45;
+xf-RBI-
+LBO>-
+
+|:
+  xf-RBI-CoE [angle=160,len=1200,delta-angle=20]
+
+  Shift [rotate=-40]
+  LFO3 [angle=120,len=300]
+  RBO>&#45;&#45;
+  xf-LBI-
+  RBO>-
+!|x3
+
+xf-LBI [angle=180,len=1200]
+ -->
 <title>Skills 4 Exercise 1</title>
 <desc>
 <text>

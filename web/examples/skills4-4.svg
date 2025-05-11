@@ -1,4 +1,55 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 4 Exercise 4",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=30]
+
+Text [x=1350,y=1630,text="SIDE 1",font-size=50]
+Warp [x=1200,y=1600,dir=90,code="LFO"]
+
+LF [len=400,style="dashed",label=" "]
+
+LFO3>-
+Shift [rotate=90,side=40]
+RFI [angle=70,len=300]
+Shift [rotate=-75,side=40,fwd=30]
+LFI-Tw1.5 [len=40,angle=80,pre-angle=20,post-len=250,post-angle=20]
+Shift [rotate=80]
+
+RFO3->
+Shift [rotate=-90,side=-40]
+LFI [angle=70,len=300]
+Shift [rotate=65,side=-40,fwd=30]
+RFI-Tw1.5 [len=40,angle=80,pre-angle=20,post-len=250,post-angle=20]
+Shift [rotate=-80]
+
+LFO3>-
+Shift [rotate=90,side=40]
+RFI [angle=70,len=300]
+Shift [rotate=-65,side=40,fwd=30]
+LFI-Tw1.5 [len=40,angle=80,pre-angle=20,post-angle=45,post-len=250]
+Shift [rotate=80]
+
+RFO3->
+Shift [rotate=-90,side=-40]
+LFI [angle=70,len=300]
+Shift [rotate=45,side=-40,fwd=30]
+RFI-Tw1.5 [len=40,angle=80,pre-angle=20,post-len=250,post-angle=60]
+
+# &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;
+
+Text [x=1650,y=5020,text="SIDE 2",font-size=50]
+Warp [x=1800,y=5000,dir=270,code="RBO"]
+
+RB [len=600,style="dashed",label=" "]
+Shift [rotate=-45]
+RBO [len=300,angle=85]
+
+|:
+  xb-LBO [len=300,angle=80,transition-label="CR"]
+  xb-RBO [len=300,angle=80,transition-label="CR"]
+  xb-LBO-Tw1 [len=40,angle=120,pre-angle=40,post-angle=40,transition-label="CR"]
+!|x4
+ -->
 <title>Skills 4 Exercise 4</title>
 <desc>
 <text>

@@ -1,4 +1,30 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 4 Exercise 3",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1350,y=625,text="SIDE 1",font-size=50]
+Warp [x=1200,y=600,dir=90,code="RFI"]
+RF [len=400,label=" ",style="dashed"]
+
+RFI [len=100, label=" "]
+|:
+  RFI-Rk [angle=90,len=500,delta-angle=20]
+  LBI-Rk [angle=90,len=500,delta-angle=20]
+:|x3
+
+#&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-
+Text [x=1750,y=5890,text="SIDE 2",font-size=50]
+Warp [x=1900,y=5900,dir=270,code="RFI"]
+LF [len=600,label=" ",style="dashed"]
+LFO [angle=180,label=" ",style="dashed"]
+
+LFI [len=100, label=" "]
+|:
+  LFI-Rk [angle=90,len=500,delta-angle=20]
+  RBI-Rk [angle=90,len=500,delta-angle=20]
+:|x3
+ -->
 <title>Skills 4 Exercise 3</title>
 <desc>
 <text>

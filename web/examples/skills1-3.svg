@@ -1,4 +1,42 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 1 Exercise 3",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1880,y=625,text="START",font-size=50]
+Warp [x=1700,y=600,dir=90,code="LFO"]
+LF [len=500,label=" ",style="dashed"]
+
+|:
+  LFO [angle=30,len=280]
+  xf-RFI [angle=30,len=280]
+:|x3
+
+Text [x=1400,y=1740,text="OPTIONAL",font-size=40,rotate=-90]
+Text [x=1470,y=1740,text="TURN",font-size=40,rotate=-90]
+Warp [x=1600,y=1750,dir=270,code="LBO"]
+
+|:
+  LBO [angle=30,len=280]
+  xf-RBI [angle=30,len=290]
+:|x3
+
+wd-LBI [angle=30,len=280]
+
+|:
+  RBO [angle=30,len=280]
+  xf-LBI [angle=30,len=290]
+:|x3
+
+Text [x=2050,y=3850,text="OPTIONAL",font-size=40,rotate=-90]
+Text [x=2120,y=3850,text="TURN",font-size=40,rotate=-90]
+Warp [x=2200,y=3850,dir=290,code="RFO"]
+
+|:
+  RFO [angle=30,len=280]
+  xf-LFI [angle=30,len=280]
+:|x3
+ -->
 <title>Skills 1 Exercise 3</title>
 <desc>
 <text>

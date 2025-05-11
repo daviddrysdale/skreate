@@ -1,4 +1,44 @@
 <svg height="6789" viewBox="-1395 -110 2532 6789" width="2532" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Title [text="Rhythm Blues",font-size=120,x=0,y=60]
+
+Warp [x=900,y=6100,dir=220,code="LFO"]
+Info [auto-count=true,font-size=60,stroke-width=12,label-offset=-100]
+
+/1 LFO [angle=30]
+/1 xf-RFI [transition-label=" ", label="RFI Pr",angle=30]
+/2 LFO [angle=50,len=600]
+/4 RFO [label="RFO Sr",angle=130, len=1200]
+/2 LFO
+/1 RFI&#45;&#45; [label="RFI Pr"]
+/1 LFO&#45;&#45;>
+/2 RFI [label="RFI Pr"]
+/4 LFI [label="LFI Sr",angle=120,len=1200]
+/4 RFI [label="RFI Sr",angle=100,len=1200]
+/1 LFO&#45;&#45;<
+/1 RFI&#45;&#45;< [label="RFI Pr"]
+/2 LFO-
+/2 xb-RFI<- [transition-label=" ",label="XB RFI"]
+/2 xb-LFO< [transition-label=" ",label="XB LFO"]
+/2 xb-RFI-< [transition-label=" ",label="XB RFI"]
+
+Info [auto-count=true,font-size=0,stroke-width=12,label-offset=-100]
+
+/1 LFO [angle=30]
+/1 xf-RFI [transition-label=" ", label="RFI Pr",angle=30]
+/2 LFO [angle=50,len=600]
+/4 RFO [label="RFO Sr",angle=130, len=1200]
+/2 LFO
+/1 RFI&#45;&#45; [label="RFI Pr"]
+/1 LFO&#45;&#45;>
+/2 RFI [label="RFI Pr"]
+/4 LFI [label="LFI Sr",angle=120,len=1200]
+/4 RFI [label="RFI Sr",angle=100,len=1200]
+/1 LFO&#45;&#45;<
+/1 RFI-< [label="RFI Pr"]
+/2 LFO
+/2 xb-RFI<-
+/2 xb-LFO<
+/2 xb-RFI<+ -->
 <title>Rhythm Blues</title>
 <desc>
 <text>

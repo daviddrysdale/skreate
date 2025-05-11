@@ -1,4 +1,18 @@
 <svg height="6200" viewBox="-50 -50 3100 6200" width="3100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- Rink
+Title [text="Skills 3 Exercise 4",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1450,y=1200,text="START",font-size=50]
+Warp [x=1450,y=1400,dir=45,code="RFI"]
+
+|:
+  RFI [angle=90,len=300]
+  LFI [angle=90,len=300]
+
+  RFI-Tw1 [len=40,angle=110]
+!|x4
+ -->
 <title>Skills 3 Exercise 4</title>
 <desc>
 <text>
