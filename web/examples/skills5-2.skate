@@ -1,0 +1,29 @@
+Rink
+Title [text="Skills 5 Exercise 2",y=200,font-size=0]
+Info [grid=0,markers=false]
+
+Text [x=1450,y=725,text="START",font-size=50]
+Warp [x=1300,y=700,dir=90,code="LFO"]
+
+LF [len=300,label=" ",style="dashed"]
+Info[auto-count=true,font-size=36,label-offset=-90]
+
+LFO [angle=20,len=200,label="LFO"]
+xf-RFI [angle=20,len=200,label="RFI"]
+LFO-Rk [angle=110,len=900,delta-len=-600,delta-angle=-50]
+
+xf-RBI [len=200]
+Shift[rotate=-80]
+LFO [angle=30,len=400]
+
+xf-RFI-Rk [angle=50,delta-angle=20]
+LBO [len=200]
+Shift[rotate=65]
+RFO [len=200]
+xf-LFI [len =200]
+RFO-Rk [angle=60,len=500]
+xf-LBI [len=200]
+Shift [rotate=60]
+RFO [angle=35,len=200]
+xf-LFI-Rk [angle=60]
+RBO [angle=120,len=700]
