@@ -42,20 +42,36 @@ impl Loop {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let label1 = params[6].value.as_str(input)?;
+        let label2 = params[7].value.as_str(input)?;
+        let label_offset = params[8].value.as_i32(input)?;
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
 
         let prefix = pre_transition.prefix();
 
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
+        let entry_label = if label1.is_empty() {
+            "".to_string()
+        } else {
+            format!(",label=\"{label1}\"")
+        };
+        let exit_label = if label2.is_empty() {
+            // Default to no exit label
+            " ".to_string()
+        } else {
+            label2.to_string()
+        };
+
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}{entry_label}]");
 
         // The loop itself is a fixed size and net rotates 330 degrees.
         let start = format!("{entry_code}[angle=100,len=80,style=\"{style}\",label=\" \"]");
         let corner = format!("{entry_code}[angle=130,len=80,style=\"{style}\",label=\" \"]");
         let end = format!("{entry_code}[angle=100,len=80,style=\"{style}\",label=\" \"]");
 
-        let exit = format!("{entry_code}[angle={angle2},len={len2},style=\"{style}\",label=\" \"]");
+        let exit = format!(
+            "{entry_code}[angle={angle2},len={len2},style=\"{style}\",label=\"{exit_label}\"]"
+        );
 
         log::info!("input {input:?} results in {entry};{start};{corner};{end};{exit}");
         let moves = vec![

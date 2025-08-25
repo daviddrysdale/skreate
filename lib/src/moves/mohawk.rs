@@ -49,7 +49,9 @@ impl OpenMohawk {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let label1 = params[6].value.as_str(input)?;
+        let label2 = params[7].value.as_str(input)?;
+        let label_offset = params[8].value.as_i32(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -62,11 +64,22 @@ impl OpenMohawk {
             edge: entry_code.edge,
         };
 
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
+        let entry_label = if label1.is_empty() {
+            "".to_string()
+        } else {
+            format!(",label=\"{label1}\"")
+        };
+        let exit_label = if label2.is_empty() {
+            "".to_string()
+        } else {
+            format!(",label=\"{label2}\"")
+        };
+
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}{entry_label}]");
         let label = format!("Label[fwd=30,side={sign}70,text=\"OpMo\"]");
         let shift = format!("Shift[side={sign}80,fwd=-65,rotate={sign}90,code=\"{out_code}\"]");
         let exit = format!(
-            "{out_code}[angle={angle2},len={len2},style=\"{style}\",label-offset={label_offset}]"
+            "{out_code}[angle={angle2},len={len2},style=\"{style}\",label-offset={label_offset}{exit_label}]"
         );
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
@@ -130,7 +143,9 @@ impl ClosedMohawk {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let label1 = params[6].value.as_str(input)?;
+        let label2 = params[7].value.as_str(input)?;
+        let label_offset = params[8].value.as_i32(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -143,11 +158,22 @@ impl ClosedMohawk {
             edge: entry_code.edge,
         };
 
-        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}]");
+        let entry_label = if label1.is_empty() {
+            "".to_string()
+        } else {
+            format!(",label=\"{label1}\"")
+        };
+        let exit_label = if label2.is_empty() {
+            "".to_string()
+        } else {
+            format!(",label=\"{label2}\"")
+        };
+
+        let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}{entry_label}]");
         let label = format!("Label[side={sign}60,text=\"ClMo\"]");
         let shift = format!("Shift[side={sign}30,fwd=-30,code=\"{out_code}\"]");
         let exit = format!(
-            "{out_code}[angle={angle2},len={len2},style=\"{style}\",label-offset={label_offset}]"
+            "{out_code}[angle={angle2},len={len2},style=\"{style}\",label-offset={label_offset}{exit_label}]"
         );
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");

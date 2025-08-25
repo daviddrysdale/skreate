@@ -10,7 +10,7 @@ Skating Diagram
 <style>
 text { text-anchor: middle } path,rect,circle { fill:none; }
 </style>
-<g id="LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO&quot;]">
+<g id="LFO-Ctr_0::LFO[angle=90,len=337]">
 <path d="M 0,0 a 214,214 0 0 0 214,214"/>
 </g>
 <g id="LFO-Ctr_1::LF[len=20,label=&quot; &quot;]">
@@ -26,7 +26,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <path d="M 0,0 a 243,243 0 0 1 -243,243"/>
 </g>
 </defs>
-<use id="r_0_c_0_7" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337,label=&quot;LFO&quot;]"/>
+<use id="r_0_c_0_7" style="stroke:black; stroke-width:1;" transform="translate(0 0) rotate(0)" xlink:href="#LFO-Ctr_0::LFO[angle=90,len=337]"/>
 <text id="r_0_c_0_7_n2" style="stroke:black; fill:black; font-size:12pt;" x="87" y="126">
 LFO
 </text>

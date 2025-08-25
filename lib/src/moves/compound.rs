@@ -292,7 +292,7 @@ pub const fn params(
     ladd1: i32,
     ladd2: i32,
     ladd3: i32,
-) -> [params::Info; 7] {
+) -> [params::Info; 9] {
     [
         params::Info {
             name: "angle",
@@ -346,6 +346,20 @@ pub const fn params(
         params::Info {
             name: "transition-label",
             doc: "Replacement transition label, used if non-empty",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "label1",
+            doc: "Replacement entry label, used if non-empty",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "label2",
+            doc: "Replacement exit label, used if non-empty",
             default: Value::Text(Cow::Borrowed("")),
             range: params::Range::Text,
             short: None,
@@ -377,7 +391,7 @@ pub const fn params_flat(
     ladd1: i32,
     ladd2: i32,
     ladd3: i32,
-) -> [params::Info; 8] {
+) -> [params::Info; 10] {
     [
         params::Info {
             name: "angle",
@@ -431,6 +445,20 @@ pub const fn params_flat(
         params::Info {
             name: "transition-label",
             doc: "Replacement transition label, used if non-empty",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "label1",
+            doc: "Replacement entry label, used if non-empty",
+            default: Value::Text(Cow::Borrowed("")),
+            range: params::Range::Text,
+            short: None,
+        },
+        params::Info {
+            name: "label2",
+            doc: "Replacement exit label, used if non-empty",
             default: Value::Text(Cow::Borrowed("")),
             range: params::Range::Text,
             short: None,

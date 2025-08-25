@@ -50,7 +50,9 @@ impl ThreeTurn {
         let delta_len = params[3].value.as_i32(input)?;
         let style = params[4].value.as_str(input)?;
         let transition_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let label1 = params[6].value.as_str(input)?;
+        let label2 = params[7].value.as_str(input)?;
+        let label_offset = params[8].value.as_i32(input)?;
 
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
@@ -73,14 +75,26 @@ impl ThreeTurn {
         let angle2b = angle2 * 60 / 100;
         let angle2a = angle2 - angle2b;
 
-        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",label=\"{entry_code}{}\",transition-label=\"{transition_label}\",label-offset={label_offset}]", Self::MOVE);
+        let entry_label = if label1.is_empty() {
+            // TODO: this label does not get mirrored by Compound::opposite()
+            format!(",label=\"{entry_code}{}\"", Self::MOVE)
+        } else {
+            format!(",label=\"{label1}\"")
+        };
+        let exit_label = if label2.is_empty() {
+            "".to_string()
+        } else {
+            format!(",label=\"{label2}\"")
+        };
+
+        let entry1 = format!("{prefix}{entry_code}[angle={angle1a},len={len1a},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}{entry_label}]");
         let entry2 =
             format!("{entry_code}[angle={angle1b},len={len1b},style=\"{style}\",label=\" \"]");
         let shift = format!("Shift[rotate={sign}135,code=\"{out_code}\"]");
         let exit2 =
             format!("{out_code}[angle={angle2b},len={len2b},style=\"{style}\",label=\" \"]");
         let exit1 = format!(
-            "{out_code}[angle={angle2a},len={len2a},style=\"{style}\",label-offset={label_offset}]"
+            "{out_code}[angle={angle2a},len={len2a},style=\"{style}\",label-offset={label_offset}{exit_label}]"
         );
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
