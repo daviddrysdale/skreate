@@ -1,0 +1,16 @@
+Rink
+Title [text="Skills 5 Exercise 5",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=36]
+
+Text [x=1900,y=825,text="START",font-size=50]
+Warp [x=1700,y=815,dir=90,code="RBO"]
+RB [len=500,label=" ",style="dashed"]
+RBO [len=300,angle=30,label=" "]
+|:
+  RBO [angle=30,len=200]
+  LBI3 [angle=100,len=500]
+  xf-RFI [angle=30,len=330]
+  LFO [angle=30,len=300]
+  xf-RFI [angle=40,len=300]
+  LFI-OpMo [len=400,angle=85]
+!|x4
