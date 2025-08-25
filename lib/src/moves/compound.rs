@@ -9,6 +9,7 @@ use crate::{
     SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
+use std::fmt;
 use svg::node::element::Group;
 use svg::Document;
 
@@ -23,6 +24,23 @@ pub struct Compound {
     text: String,
     text_pos: TextPosition,
     move_for_count: Option<usize>,
+}
+
+impl fmt::Debug for Compound {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "Compound {{ ")?;
+        write!(f, "moves: ")?;
+        for mv in &self.moves {
+            write!(f, "{}; ", mv.text())?;
+        }
+        write!(f, ", start_code: {:?}", self.start_code)?;
+        write!(f, ", id: {:?}", self.id)?;
+        write!(f, ", params: {:?}", self.params)?;
+        write!(f, ", text: {:?}", self.text)?;
+        write!(f, ", text_pos: {:?}", self.text_pos)?;
+        write!(f, ", move_for_count: {:?}", self.move_for_count)?;
+        write!(f, " }}")
+    }
 }
 
 impl Compound {
