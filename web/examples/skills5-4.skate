@@ -1,0 +1,38 @@
+Rink
+Title [text="Skills 5 Exercise 4",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=36]
+
+Text [x=600,y=2525,text="SIDE 1",font-size=50]
+Warp [x=750,y=2520,dir=270,code="LFO"]
+LF [len=500,label=" ",style="dashed"]
+
+LFO [len=250,angle=10]
+|:
+  xf-RFI [len=250,angle=10]
+  LFO [len=250,angle=10]
+  xf-RFI-Br [angle=35,len=300]
+  LBI [len=200,angle=10]
+
+  RBO [len=200,angle=10]
+  xf-LBI [len=250,angle=10]
+  RBO [len=250,angle=10]
+  xf-LBI-Br [angle=35,len=300]
+:|
+
+#-------------------------
+Text [x=600,y=3625,text="SIDE 2",font-size=50]
+Warp [x=750,y=3600,dir=270,code="RFO"]
+RF [label=" ",style="dashed"]
+
+RFO [len=250,angle=10]
+|:
+  xf-LFI [len=250,angle=10]
+  RFO [len=250,angle=10]
+  xf-LFI-Br [angle=35,len=300]
+  RBI [len=200,angle=10]
+
+  LBO [len=200,angle=10]
+  xf-RBI [len=250,angle=10]
+  LBO [len=250,angle=10]
+  xf-RBI-Br [angle=35,len=300]
+:|
