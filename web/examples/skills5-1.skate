@@ -1,0 +1,53 @@
+Rink
+Title [text="Skills 5 Exercise 1",y=200,font-size=0]
+Info [grid=0,markers=false,font-size=36,label-offset=-100]
+
+Text [x=1050,y=525,text="SIDE 1",font-size=50]
+Warp [x=900,y=500,dir=90,code="LFO"]
+LF [len=300,label=" ",style="dashed"]
+|:
+  LFO3 [angle=100,len=300,delta-len=-150,label1="LFO Triple 3",label2=" "]
+  LBI3 [angle=80,len=130,label1="LBI",label2=" "]
+  LFO3 [angle=95,len=180,label1="LFO"]
+
+  RBO [len=150]
+  xf-LBI [len=150]
+
+  Shift[rotate=80]
+
+  RFO3 [angle=100,len=300,delta-len=-150,label1="RFO Triple 3",label2=" "]
+  RBI3 [angle=80,len=130,label1="RBI",label2=" "]
+  RFO3 [angle=95,len=180,label1="RFO"]
+
+  LBO [len=150]
+  xf-RBI [len=150]
+
+  Shift[rotate=-80]
+
+:|x2
+
+#-------------------------
+Text [x=1450,y=5650,text="SIDE 2",font-size=50]
+Warp [x=1600,y=5600,dir=270,code="RFI"]
+RF [label=" ",style="dashed"]
+|:
+  Label[text="RFI Double 3",fwd=100,side=-60]
+  RFI3 [angle=90,len=300,delta-len=-150,label1=" ",label2=" "]
+  RBO3 [angle=80,len=230,delta-len=-150,label1="RBO",label2=" "]
+  RFI-OpMo [angle=80,len=300,label2="LBI"]
+
+  RBO [len=150]
+  xf-LBI [len=150]
+  Shift[rotate=80]
+  RFO [len=150]
+
+  Label[text="LFI Double 3",fwd=100,side=-60]
+  LFI3 [angle=90,len=300,delta-len=-150,label1=" ",label2=" "]
+  LBO3 [angle=80,len=230,delta-len=-150,label1="LBO",label2=" "]
+  LFI-OpMo [angle=80,len=300]
+
+  LBO [len=150]
+  xf-RBI [len=150]
+  Shift[rotate=-80]
+  LFO [len=150]
+:|x2
