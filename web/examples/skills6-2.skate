@@ -1,0 +1,17 @@
+Rink
+Title [text="Skills 6 Exercise 2",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=36,stroke-width=7,label-offset=-100]
+
+Text [x=2350,y=525,text="START",font-size=50]
+Warp [x=2200,y=500,dir=90,code="RFI"]
+RF [len=800,label=" ",style="dashed"]
+
+RFI [len=100,label=" "]
+|:
+  RFI-OpMo [len=300,angle=80,delta-angle=-10]
+  RBO [len=120,angle=10]
+  xf-LBI-Ctr [len=500,angle=90,delta-angle=-75,delta-len=-150,label2=" "]
+!|x4
+
+RFI-OpMo [len=350,angle=90,delta-angle=-10]
+RBO [len=120,angle=10]
