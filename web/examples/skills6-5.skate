@@ -1,0 +1,23 @@
+Rink
+Title [text="Skills 6 Exercise 5",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=36,stroke-width=7,label-offset=-100]
+
+Text [x=1350,y=525,text="START",font-size=50]
+Warp [x=1200,y=500,dir=90,code="RFI"]
+RF [len=600,label=" ",style="dashed"]
+
+RFI [angle=180,len=900,style="dashed",label=" "]
+RF [len=200,style="dashed",label=" "]
+
+RFO3 [angle=110,len=300]
+RBI-CoE [angle=60,len=400,delta-len=100,label1=" "]
+RBO-ClCho [angle=80,len=380,delta-len=100,label1=" "]
+RFI3 [angle=120,len=250]
+xf-LBO [angle=70,len=200,transition-label="CR"]
+xf-RBI [angle=60,len=350]
+Shift [rotate=-65]
+LFO3 [angle=120,len=400]
+LBI-CoE [angle=40,len=250,delta-len=100,delta-angle=50,label1=" "]
+LBO-ClCho [len=300,delta-len=400,delta-angle=50]
+
+LFI3 [angle=140,delta-angle=20,len=300,delta-len=400]
