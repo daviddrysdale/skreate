@@ -1,0 +1,32 @@
+Rink
+Title [text="Skills 6 Exercise 1",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=36,stroke-width=7]
+
+Text [x=1350,y=625,text="SIDE 1",font-size=50]
+Warp [x=1200,y=600,dir=90,code="RFI"]
+RF [len=600,label=" ",style="dashed"]
+
+|:
+  RFI-OpMo [len=400,angle=90]
+  RBO [len=150]
+  xf-LBI-Rk [angle=60,delta-angle=-45,delta-len=-100,label2=" "]
+!|x4
+
+RFI-OpMo [len=400,angle=100]
+RBO [len=150]
+
+#=====================
+
+Info [font-size=36,stroke-width=7,label-offset=-80]
+Text [x=1450,y=5625,text="SIDE 2",font-size=50]
+Warp [x=1600,y=5600,dir=270,code="LFO"]
+LF [len=700,label=" ",style="dashed"]
+LFO [len=200]
+|:
+  LFO-ClMo [angle=45,len=300,label1=" "]
+  xf-LBI [len=300]
+  RBO-Rk [angle=45,len=550,delta-len=-100]
+!|x4
+
+LFO-ClMo [angle=45,len=250]
+xf-LBI [len=300]
