@@ -134,6 +134,8 @@ impl ClosedChoctaw {
         let sign = match entry_code {
             code!(LBO) => "-",
             code!(RBO) => "",
+            code!(LFI) => "",
+            code!(RFI) => "-",
             _ => return Err(parser::fail(input)),
         };
 
