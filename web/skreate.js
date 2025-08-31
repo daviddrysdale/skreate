@@ -73,7 +73,7 @@ export function setup_download(div, diagram_div, get_value) {
     var xml = generate(text);
 
     var filename;
-    if (input_link.files.length == 0) {
+    if (!input_link || input_link.files.length == 0) {
       filename = "diagram.svg";
     } else {
       filename = input_link.files[0].name;
