@@ -1,0 +1,23 @@
+Rink
+Title [text="Skills 6 Exercise 4",y=200,font-size=90]
+Info [grid=0,markers=false,font-size=36,stroke-width=7,label-offset=-100]
+
+Text [x=1950,y=525,text="START",font-size=50]
+Warp [x=1800,y=500,dir=90,code="RBO"]
+RB [len=600,label=" ",style="dashed"]
+
+RBO [len=200,angle=10]
+
+|:
+  |:
+    xf-LBI-Rk [len=180,angle=40,delta-len=-60,delta-angle=-25,label2=" "]
+    LFI-ClCho [len=150,angle=30]
+  :|x3
+  xf-LBI-CoE  [len=200,angle=30]
+
+  |:
+    xf-RBI-Rk [len=180,angle=40,delta-len=-60,delta-angle=-25,label2=" "]
+    RFI-ClCho [len=150,angle=30]
+  :|x3
+  xf-RBI-CoE  [len=200,angle=30]
+:|
