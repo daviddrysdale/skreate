@@ -81,7 +81,7 @@ pub struct Salchow;
 
 impl Salchow {
     /// Jump code.
-    pub const JUMP: &str = "S";
+    pub const JUMP: &'static str = "S";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Salchow",
@@ -189,7 +189,7 @@ pub struct Loop;
 
 impl Loop {
     /// Jump code.
-    pub const JUMP: &str = "Lo";
+    pub const JUMP: &'static str = "Lo";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Loop",
@@ -297,7 +297,7 @@ pub struct Axel;
 
 impl Axel {
     /// Jump code.
-    pub const JUMP: &str = "A";
+    pub const JUMP: &'static str = "A";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Axel",
@@ -397,7 +397,7 @@ pub struct ToeLoop;
 
 impl ToeLoop {
     /// Jump code.
-    pub const JUMP: &str = "T";
+    pub const JUMP: &'static str = "T";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Toe Loop",
@@ -489,7 +489,7 @@ pub struct Flip;
 
 impl Flip {
     /// Jump code.
-    pub const JUMP: &str = "F";
+    pub const JUMP: &'static str = "F";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Flip",
@@ -581,7 +581,7 @@ pub struct Lutz;
 
 impl Lutz {
     /// Jump code.
-    pub const JUMP: &str = "Lz";
+    pub const JUMP: &'static str = "Lz";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
         name: "Lutz",
