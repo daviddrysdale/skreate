@@ -12,6 +12,7 @@ use crate::{
     path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Percentage, Position, PreTransition,
     RenderOptions, Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
 };
+use log::error;
 use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
@@ -124,6 +125,22 @@ impl Curve {
         entry_code: Code,
         params: Vec<MoveParam>,
     ) -> Result<Self, parser::Error> {
+        // Reject invalid entry codes.
+        if !matches!(
+            entry_code,
+            code!(LFO)
+                | code!(RFI)
+                | code!(LBI)
+                | code!(RBO)
+                | code!(RFO)
+                | code!(LFI)
+                | code!(RBI)
+                | code!(LBO)
+        ) {
+            error!("{entry_code} not supported");
+            return Err(parser::fail(input));
+        }
+
         assert!(params::compatible(Self::INFO.params, &params));
         let label = params[2].value.as_str(input)?;
         let transition_label = params[4].value.as_str(input)?;
@@ -154,7 +171,7 @@ impl Curve {
         match &self.code {
             code!(LFO) | code!(RFI) | code!(LBI) | code!(RBO) => -1,
             code!(RFO) | code!(LFI) | code!(RBI) | code!(LBO) => 1,
-            _ => panic!("sign for {:?} ?", self.code),
+            _ => unreachable!("sign for {:?} hit despite constructor check", self.code),
         }
     }
 
