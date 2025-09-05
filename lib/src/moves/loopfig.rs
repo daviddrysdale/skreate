@@ -3,7 +3,7 @@
 //! Loop
 
 use super::{
-    compound::{self, Compound},
+    compound::{self, map_errs, Compound},
     edge::Curve,
     MoveId, SkatingMoveId,
 };
@@ -75,11 +75,11 @@ impl Loop {
 
         log::info!("input {input:?} results in {entry};{start};{corner};{end};{exit}");
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Curve::construct(&start, text_pos).unwrap(),
-            Curve::construct(&corner, text_pos).unwrap(),
-            Curve::construct(&end, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Curve::construct(&start, text_pos),
+            Curve::construct(&corner, text_pos),
+            Curve::construct(&end, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let suffix = params::to_string(Self::INFO.params, &params);
@@ -89,7 +89,7 @@ impl Loop {
             input,
             text_pos,
             SkatingMoveId::Loop,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))

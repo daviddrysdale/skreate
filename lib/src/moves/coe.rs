@@ -3,7 +3,7 @@
 //! Change of Edge
 
 use super::{
-    compound::{self, Compound},
+    compound::{self, map_errs, Compound},
     edge::Curve,
     straight::StraightEdge,
     MoveId, SkatingMoveId,
@@ -84,9 +84,9 @@ impl ChangeOfEdge {
         log::debug!("input {input:?} results in {entry};{flat};{exit}");
 
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            StraightEdge::construct(&flat, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            StraightEdge::construct(&flat, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -97,7 +97,7 @@ impl ChangeOfEdge {
             input,
             text_pos,
             SkatingMoveId::ChangeOfEdge,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))

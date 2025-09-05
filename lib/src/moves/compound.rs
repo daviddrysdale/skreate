@@ -5,8 +5,8 @@ use crate::{
     moves::{MoveId, SkatingMoveId},
     params,
     params::Value,
-    Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater, SpatialTransition,
-    SvgId, TextPosition, Transition,
+    parser, Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater,
+    SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use std::fmt;
@@ -478,4 +478,15 @@ pub const fn params_flat(
             short: None,
         },
     ]
+}
+
+/// Map any errors in sub-move creation to be against `input`.
+pub fn map_errs<'a>(
+    moves: Vec<Result<Box<dyn Move>, parser::Error>>,
+    input: &'a str,
+) -> Result<Vec<Box<dyn Move>>, parser::Error<'a>> {
+    moves
+        .into_iter()
+        .map(|mv| mv.map_err(|_e| parser::fail(input)))
+        .collect()
 }

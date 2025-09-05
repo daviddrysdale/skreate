@@ -3,7 +3,7 @@
 //! Choctaw.
 
 use super::{
-    compound::{self, Compound},
+    compound::{self, map_errs, Compound},
     edge::Curve,
     label::Label,
     shift::Shift,
@@ -84,10 +84,10 @@ impl OpenChoctaw {
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Label::construct(&label, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Label::construct(&label, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -98,7 +98,7 @@ impl OpenChoctaw {
             input,
             text_pos,
             SkatingMoveId::OpenChoctaw,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -180,10 +180,10 @@ impl ClosedChoctaw {
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Label::construct(&label, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Label::construct(&label, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -194,7 +194,7 @@ impl ClosedChoctaw {
             input,
             text_pos,
             SkatingMoveId::ClosedChoctaw,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))

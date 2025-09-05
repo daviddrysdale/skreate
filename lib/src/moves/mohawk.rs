@@ -3,7 +3,7 @@
 //! Mohawk.
 
 use super::{
-    compound::{self, Compound},
+    compound::{self, map_errs, Compound},
     edge::Curve,
     label::Label,
     shift::Shift,
@@ -84,10 +84,10 @@ impl OpenMohawk {
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Label::construct(&label, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Label::construct(&label, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -98,7 +98,7 @@ impl OpenMohawk {
             input,
             text_pos,
             SkatingMoveId::OpenMohawk,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -178,10 +178,10 @@ impl ClosedMohawk {
 
         log::info!("input {input:?} results in {entry};{label};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Label::construct(&label, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Label::construct(&label, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -192,7 +192,7 @@ impl ClosedMohawk {
             input,
             text_pos,
             SkatingMoveId::ClosedMohawk,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))

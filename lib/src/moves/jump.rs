@@ -2,7 +2,13 @@
 
 //! Jumps
 
-use super::{compound::Compound, edge::Curve, hop::Hop, shift::Shift, MoveId, SkatingMoveId};
+use super::{
+    compound::{map_errs, Compound},
+    edge::Curve,
+    hop::Hop,
+    shift::Shift,
+    MoveId, SkatingMoveId,
+};
 use crate::{
     code, moves, params, params::Value, parser, Code, JumpCount, MoveParam, PreTransition,
     TextPosition,
@@ -160,13 +166,13 @@ impl Salchow {
             "input {input:?} results in {entry1};{entry2};{entry3};{entry4};{hop};{shift};{exit}"
         );
         let moves = vec![
-            Curve::construct(&entry1, text_pos).unwrap(),
-            Curve::construct(&entry2, text_pos).unwrap(),
-            Curve::construct(&entry3, text_pos).unwrap(),
-            Curve::construct(&entry4, text_pos).unwrap(),
-            Hop::construct(&hop, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry1, text_pos),
+            Curve::construct(&entry2, text_pos),
+            Curve::construct(&entry3, text_pos),
+            Curve::construct(&entry4, text_pos),
+            Hop::construct(&hop, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -177,7 +183,7 @@ impl Salchow {
             input,
             text_pos,
             SkatingMoveId::Salchow(count),
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -268,13 +274,13 @@ impl Loop {
             "input {input:?} results in {entry1};{entry2};{entry3};{entry4};{hop};{shift};{exit}"
         );
         let moves = vec![
-            Curve::construct(&entry1, text_pos).unwrap(),
-            Curve::construct(&entry2, text_pos).unwrap(),
-            Curve::construct(&entry3, text_pos).unwrap(),
-            Curve::construct(&entry4, text_pos).unwrap(),
-            Hop::construct(&hop, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry1, text_pos),
+            Curve::construct(&entry2, text_pos),
+            Curve::construct(&entry3, text_pos),
+            Curve::construct(&entry4, text_pos),
+            Hop::construct(&hop, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -285,7 +291,7 @@ impl Loop {
             input,
             text_pos,
             SkatingMoveId::LoopJump(count),
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -369,12 +375,12 @@ impl Axel {
 
         log::info!("input {input:?} results in {entry1};{entry2};{entry3};{hop};{shift};{exit}");
         let moves = vec![
-            Curve::construct(&entry1, text_pos).unwrap(),
-            Curve::construct(&entry2, text_pos).unwrap(),
-            Curve::construct(&entry3, text_pos).unwrap(),
-            Hop::construct(&hop, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry1, text_pos),
+            Curve::construct(&entry2, text_pos),
+            Curve::construct(&entry3, text_pos),
+            Hop::construct(&hop, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -385,7 +391,7 @@ impl Axel {
             input,
             text_pos,
             SkatingMoveId::Axel(count),
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -462,11 +468,11 @@ impl ToeLoop {
         log::info!("input {input:?} results in {entry};{shift1};{hop};{shift2};{exit}");
 
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Shift::construct(&shift1, text_pos).unwrap(),
-            Hop::construct(&hop, text_pos).unwrap(),
-            Shift::construct(&shift2, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Shift::construct(&shift1, text_pos),
+            Hop::construct(&hop, text_pos),
+            Shift::construct(&shift2, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -477,7 +483,7 @@ impl ToeLoop {
             input,
             text_pos,
             SkatingMoveId::ToeLoop(count),
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -554,11 +560,11 @@ impl Flip {
         log::info!("input {input:?} results in {entry};{shift1};{hop};{shift2};{exit}");
 
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Shift::construct(&shift1, text_pos).unwrap(),
-            Hop::construct(&hop, text_pos).unwrap(),
-            Shift::construct(&shift2, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Shift::construct(&shift1, text_pos),
+            Hop::construct(&hop, text_pos),
+            Shift::construct(&shift2, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -569,7 +575,7 @@ impl Flip {
             input,
             text_pos,
             SkatingMoveId::Flip(count),
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
@@ -646,11 +652,11 @@ impl Lutz {
         log::info!("input {input:?} results in {entry};{shift1};{hop};{shift2};{exit}");
 
         let moves = vec![
-            Curve::construct(&entry, text_pos).unwrap(),
-            Shift::construct(&shift1, text_pos).unwrap(),
-            Hop::construct(&hop, text_pos).unwrap(),
-            Shift::construct(&shift2, text_pos).unwrap(),
-            Curve::construct(&exit, text_pos).unwrap(),
+            Curve::construct(&entry, text_pos),
+            Shift::construct(&shift1, text_pos),
+            Hop::construct(&hop, text_pos),
+            Shift::construct(&shift2, text_pos),
+            Curve::construct(&exit, text_pos),
         ];
 
         let prefix = pre_transition.prefix();
@@ -661,7 +667,7 @@ impl Lutz {
             input,
             text_pos,
             SkatingMoveId::Lutz(count),
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))

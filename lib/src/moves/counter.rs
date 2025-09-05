@@ -3,7 +3,7 @@
 //! Counter
 
 use super::{
-    compound::{self, Compound},
+    compound::{self, map_errs, Compound},
     edge::Curve,
     label::Label,
     shift::Shift,
@@ -112,13 +112,13 @@ impl Counter {
 
         log::info!("input {input:?} results in {entry1};{entry2};{shift};{exit2};{exit1}");
         let moves = vec![
-            Curve::construct(&entry1, text_pos).unwrap(),
-            StraightEdge::construct(&entry2, text_pos).unwrap(),
-            Curve::construct(&entry3, text_pos).unwrap(),
-            Label::construct(&label, text_pos).unwrap(),
-            Shift::construct(&shift, text_pos).unwrap(),
-            Curve::construct(&exit2, text_pos).unwrap(),
-            Curve::construct(&exit1, text_pos).unwrap(),
+            Curve::construct(&entry1, text_pos),
+            StraightEdge::construct(&entry2, text_pos),
+            Curve::construct(&entry3, text_pos),
+            Label::construct(&label, text_pos),
+            Shift::construct(&shift, text_pos),
+            Curve::construct(&exit2, text_pos),
+            Curve::construct(&exit1, text_pos),
         ];
 
         let suffix = params::to_string(Self::INFO.params, &params);
@@ -128,7 +128,7 @@ impl Counter {
             input,
             text_pos,
             SkatingMoveId::Counter,
-            moves,
+            map_errs(moves, input)?,
             params,
             text,
         ))
