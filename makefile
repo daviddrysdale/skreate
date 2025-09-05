@@ -50,6 +50,9 @@ test:
 clippy:
 	cargo clippy --all-targets
 
+fuzz:
+	cd lib && cargo +nightly fuzz run moves -- --only_ascii
+
 regenerate: regenerate_examples manual
 	SKREATE_REGENERATE=1 cargo test -- test_compare
 
