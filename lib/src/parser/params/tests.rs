@@ -145,12 +145,12 @@ fn test_parse_name_value_err() {
 #[test]
 fn test_parse_plus_minus() {
     let tests = [
-        ("+", 1, ""),
-        ("+A", 1, "A"),
-        ("++A", 2, "A"),
-        ("+++A", 3, "A"),
-        ("---A", -3, "A"),
-        ("abcxy", 0, "abcxy"),
+        ("+", Some(DetentLevel::Raise1), ""),
+        ("+A", Some(DetentLevel::Raise1), "A"),
+        ("++A", Some(DetentLevel::Raise2), "A"),
+        ("+++A", Some(DetentLevel::Raise3), "A"),
+        ("---A", Some(DetentLevel::Lower3), "A"),
+        ("abcxy", None, "abcxy"),
     ];
     for (input, want, want_rest) in tests {
         let (got_rest, got) = parse_plus_minus(input)
@@ -163,16 +163,32 @@ fn test_parse_plus_minus() {
 #[test]
 fn test_parse_short_codes() {
     let tests = [
-        ("abcxy", (0, 0), "abcxy"),
-        ("+A", (1, 0), "A"),
-        ("++A", (2, 0), "A"),
-        ("+++A", (3, 0), "A"),
-        ("---A", (-3, 0), "A"),
-        ("++>>A", (2, 2), "A"),
-        ("++<<A", (2, -2), "A"),
-        (">>A", (0, 2), "A"),
-        (">>++A", (2, 2), "A"),
-        ("<<++A", (2, -2), "A"),
+        ("abcxy", (None, None), "abcxy"),
+        ("+A", (Some(DetentLevel::Raise1), None), "A"),
+        ("++A", (Some(DetentLevel::Raise2), None), "A"),
+        ("+++A", (Some(DetentLevel::Raise3), None), "A"),
+        ("---A", (Some(DetentLevel::Lower3), None), "A"),
+        (
+            "++>>A",
+            (Some(DetentLevel::Raise2), Some(DetentLevel::Raise2)),
+            "A",
+        ),
+        (
+            "++<<A",
+            (Some(DetentLevel::Raise2), Some(DetentLevel::Lower2)),
+            "A",
+        ),
+        (">>A", (None, Some(DetentLevel::Raise2)), "A"),
+        (
+            ">>++A",
+            (Some(DetentLevel::Raise2), Some(DetentLevel::Raise2)),
+            "A",
+        ),
+        (
+            "<<++A",
+            (Some(DetentLevel::Raise2), Some(DetentLevel::Lower2)),
+            "A",
+        ),
     ];
     for (input, want, want_rest) in tests {
         let (got_rest, got) = parse_short_codes(input)
@@ -185,12 +201,20 @@ fn test_parse_short_codes() {
 #[test]
 fn test_parse() {
     let tests = [
-        ("abcxy", (0, 0, vec![]), "abcxy"),
-        ("+A", (1, 0, vec![]), "A"),
-        ("<<++A", (2, -2, vec![]), "A"),
+        ("abcxy", (None, None, vec![]), "abcxy"),
+        ("+A", (Some(DetentLevel::Raise1), None, vec![]), "A"),
+        (
+            "<<++A",
+            (Some(DetentLevel::Raise2), Some(DetentLevel::Lower2), vec![]),
+            "A",
+        ),
         (
             "<<++ [c=2,y=false] A",
-            (2, -2, vec![param!(c = 2), param!(y = false)]),
+            (
+                Some(DetentLevel::Raise2),
+                Some(DetentLevel::Lower2),
+                vec![param!(c = 2), param!(y = false)],
+            ),
             " A",
         ),
     ];

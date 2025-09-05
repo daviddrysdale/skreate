@@ -134,6 +134,37 @@ impl Display for Value {
     }
 }
 
+/// Indication of predefined value level.
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
+pub enum DetentLevel {
+    /// Raised by one.
+    Raise1,
+    /// Raised by two.
+    Raise2,
+    /// Raised by three.
+    Raise3,
+    /// Lowered by one.
+    Lower1,
+    /// Lowered by two.
+    Lower2,
+    /// Lowered by three.
+    Lower3,
+}
+
+impl DetentLevel {
+    /// Return magnitude of the level.
+    pub fn abs(&self) -> u32 {
+        match self {
+            DetentLevel::Raise1 => 1,
+            DetentLevel::Raise2 => 2,
+            DetentLevel::Raise3 => 3,
+            DetentLevel::Lower1 => 1,
+            DetentLevel::Lower2 => 2,
+            DetentLevel::Lower3 => 3,
+        }
+    }
+}
+
 /// Set of predefined values for numeric short codes.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize)]
 pub struct Detents {
@@ -152,16 +183,14 @@ pub struct Detents {
 }
 
 impl Detents {
-    /// Panics if count is not 1,2,3,-1,-2,-3.
-    fn value(&self, count: i32) -> Value {
+    fn value(&self, count: DetentLevel) -> Value {
         match count {
-            1 => self.add1.into(),
-            2 => self.add2.into(),
-            3 => self.add3.into(),
-            -1 => self.less1.into(),
-            -2 => self.less2.into(),
-            -3 => self.less3.into(),
-            _ => unreachable!(),
+            DetentLevel::Raise1 => self.add1.into(),
+            DetentLevel::Raise2 => self.add2.into(),
+            DetentLevel::Raise3 => self.add3.into(),
+            DetentLevel::Lower1 => self.less1.into(),
+            DetentLevel::Lower2 => self.less2.into(),
+            DetentLevel::Lower3 => self.less3.into(),
         }
     }
 }
@@ -362,8 +391,8 @@ pub fn populate<'a>(
 pub fn populate_from<'a>(
     params_info: &'_ [Info],
     input: &'a str,
-    plus_minus: i32,
-    more_less: i32,
+    plus_minus: Option<DetentLevel>,
+    more_less: Option<DetentLevel>,
     vals: Vec<MoveParamRef>,
 ) -> Result<Vec<MoveParam>, parser::Error<'a>> {
     // Begin with default values.
@@ -377,7 +406,7 @@ pub fn populate_from<'a>(
         .collect();
     trace!("  start with defaults {params:?}");
 
-    if plus_minus != 0 {
+    if let Some(plus_minus) = plus_minus {
         let (idx, detents) = params_info
             .iter()
             .enumerate()
@@ -391,7 +420,7 @@ pub fn populate_from<'a>(
             .ok_or_else(|| parser::fail(input))?;
         params[idx].value = detents.value(plus_minus);
     }
-    if more_less != 0 {
+    if let Some(more_less) = more_less {
         let (idx, detents) = params_info
             .iter()
             .enumerate()

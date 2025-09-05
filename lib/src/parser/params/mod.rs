@@ -2,7 +2,7 @@
 
 //! Parameter parsing.
 
-use crate::params::{MoveParamRef, Value};
+use crate::params::{DetentLevel, MoveParamRef, Value};
 use crate::parser::{self, parse_i32};
 use nom::{
     branch::alt,
@@ -79,42 +79,34 @@ fn parse_name_values(input: &str) -> IResult<&str, Vec<MoveParamRef>> {
     )(input)
 }
 
-fn parse_plus_minus(input: &str) -> IResult<&str, i32> {
-    map(
-        // Larger strings first to prevent early exit.
-        opt(alt((
-            value(3, tag("+++")),
-            value(2, tag("++")),
-            value(1, tag("+")),
-            value(-3, tag("---")),
-            value(-2, tag("--")),
-            value(-1, tag("-")),
-        ))),
-        // Treat absence as zero.
-        |v| v.unwrap_or(0),
-    )
+fn parse_plus_minus(input: &str) -> IResult<&str, Option<DetentLevel>> {
+    // Larger strings first to prevent early exit.
+    opt(alt((
+        value(DetentLevel::Raise3, tag("+++")),
+        value(DetentLevel::Raise2, tag("++")),
+        value(DetentLevel::Raise1, tag("+")),
+        value(DetentLevel::Lower3, tag("---")),
+        value(DetentLevel::Lower2, tag("--")),
+        value(DetentLevel::Lower1, tag("-")),
+    )))
     .parse(input)
 }
 
-fn parse_more_less(input: &str) -> IResult<&str, i32> {
-    map(
-        // Larger strings first to prevent early exit.
-        opt(alt((
-            value(3, tag(">>>")),
-            value(2, tag(">>")),
-            value(1, tag(">")),
-            value(-3, tag("<<<")),
-            value(-2, tag("<<")),
-            value(-1, tag("<")),
-        ))),
-        // Treat absence as zero.
-        |v| v.unwrap_or(0),
-    )
+fn parse_more_less(input: &str) -> IResult<&str, Option<DetentLevel>> {
+    // Larger strings first to prevent early exit.
+    opt(alt((
+        value(DetentLevel::Raise3, tag(">>>")),
+        value(DetentLevel::Raise2, tag(">>")),
+        value(DetentLevel::Raise1, tag(">")),
+        value(DetentLevel::Lower3, tag("<<<")),
+        value(DetentLevel::Lower2, tag("<<")),
+        value(DetentLevel::Lower1, tag("<")),
+    )))
     .parse(input)
 }
 
 /// Parse short codes.  Return code is (plus_minus, more_less).
-fn parse_short_codes(input: &str) -> IResult<&str, (i32, i32)> {
+fn parse_short_codes(input: &str) -> IResult<&str, (Option<DetentLevel>, Option<DetentLevel>)> {
     // Can't use `permutation` because the parsers will match the empty string and are applied greedily, so try both
     // combinations manually.
     let (rest1, (_, plus1, more1, _)) =
@@ -122,15 +114,26 @@ fn parse_short_codes(input: &str) -> IResult<&str, (i32, i32)> {
     let (rest2, (_, more2, plus2, _)) =
         tuple((space0, parse_more_less, parse_plus_minus, space0)).parse(input)?;
 
-    Ok(if more2.abs() < more1.abs() {
-        (rest1, (plus1, more1))
-    } else {
-        (rest2, (plus2, more2))
-    })
+    let result = match (&more1, &more2) {
+        (None, None) => (rest2, (plus2, more2)),
+        (Some(_m1), None) => (rest1, (plus1, more1)),
+        (None, Some(_m2)) => (rest2, (plus2, more2)),
+        (Some(m1), Some(m2)) => {
+            if m2.abs() < m1.abs() {
+                (rest1, (plus1, more1))
+            } else {
+                (rest2, (plus2, more2))
+            }
+        }
+    };
+    Ok(result)
 }
 
 /// Parse a parameter specification.  Returns (plus_minus, more_less, params).
-pub fn parse(input: &str) -> IResult<&str, (i32, i32, Vec<MoveParamRef>)> {
+#[allow(clippy::type_complexity)]
+pub fn parse(
+    input: &str,
+) -> IResult<&str, (Option<DetentLevel>, Option<DetentLevel>, Vec<MoveParamRef>)> {
     map(
         tuple((parse_short_codes, space0, opt(parse_name_values))),
         |((plus_minus, more_less), _, params)| (plus_minus, more_less, params.unwrap_or_default()),
