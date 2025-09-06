@@ -4,12 +4,12 @@
 
 use super::{MoveId, SkatingMoveId, HW};
 use crate::{
-    apply_style, moves, param, params,
+    apply_style,
+    moves::{self, parse_code, parse_pre_transition},
+    param, params,
     params::Value,
-    parser,
-    parser::types::{parse_code, parse_pre_transition},
-    path, pos, Code, Edge, Foot, Label, Move, MoveParam, Position, PreTransition, RenderOptions,
-    Rotation, SkatingDirection, SpatialTransition, SvgId, TextPosition, Transition,
+    path, pos, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Position, PreTransition,
+    RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
@@ -65,16 +65,11 @@ impl StraightEdge {
         ],
     };
 
-    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
-        let (rest, pre_transition) = parse_pre_transition(input)?;
-        let (rest, entry_code) = parse_code(rest)?;
-        if entry_code.edge != Edge::Flat {
-            return Err(parser::fail(input));
-        }
-
-        let params = params::populate(Self::INFO.params, rest)?;
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, ParseError> {
+        let (rest, pre_transition) = parse_pre_transition(input, text_pos)?;
+        let (rest, entry_code) = parse_code(rest, text_pos)?;
+        let params = params::populate(Self::INFO.params, rest, text_pos)?;
         Ok(Box::new(Self::from_params(
-            input,
             text_pos,
             pre_transition,
             entry_code,
@@ -83,27 +78,32 @@ impl StraightEdge {
     }
 
     pub fn from_params(
-        input: &str,
         text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    ) -> Result<Self, ParseError> {
+        if entry_code.edge != Edge::Flat {
+            return Err(ParseError {
+                pos: text_pos,
+                msg: format!("Entry edge {entry_code} not supported"),
+            });
+        }
         assert!(params::compatible(Self::INFO.params, &params));
-        let label = params[1].value.as_str(input)?;
+        let label = params[1].value.as_str(text_pos)?;
 
         Ok(Self {
             text_pos,
             pre_transition,
             foot: entry_code.foot,
             dir: entry_code.dir,
-            len: params[0].value.as_i32(input)?,
+            len: params[0].value.as_i32(text_pos)?,
             label: if label.is_empty() {
                 None
             } else {
                 Some(label.to_string())
             },
-            style: params[2].value.as_str(input)?.to_string(),
+            style: params[2].value.as_str(text_pos)?.to_string(),
         })
     }
     fn code(&self) -> Code {

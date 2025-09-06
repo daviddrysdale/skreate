@@ -3,7 +3,7 @@
 //! Unit tests.
 
 use super::*;
-use crate::{code, params::Value};
+use crate::{code, params::Value, parser};
 
 fn check_consistent(mv: &dyn Move, input: &str) {
     assert_eq!(
@@ -57,21 +57,26 @@ fn test_examples_all_params() {
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
 
         // Should be able to create a move from these parameter values...
-        let mv = info
-            .id
-            .construct(
-                "test",
-                Default::default(),
-                PreTransition::Normal,
-                eg.mv.start().unwrap_or(code!(LFO)),
-                params.clone(),
+        let move_info = match info.id {
+            MoveId::Pseudo(move_id) => parser::mv::Info::Pseudo { move_id },
+            MoveId::Skating(move_id) => parser::mv::Info::Skating {
+                move_id,
+                pre_transition: PreTransition::Normal,
+                code: eg.mv.start().unwrap_or(code!(LFO)),
+            },
+        };
+        let inputs = parser::mv::Inputs {
+            input: "test",
+            text_pos: Default::default(),
+            info: move_info,
+            params: params.clone(),
+        };
+        let mv = inputs.construct().unwrap_or_else(|e| {
+            panic!(
+                "constructing move {:?} with {params:?} failed: {e:?}",
+                info.name
             )
-            .unwrap_or_else(|e| {
-                panic!(
-                    "constructing move {:?} with {params:?} failed: {e:?}",
-                    info.name
-                )
-            });
+        });
         // ... and the move's `text()` should parse...
         let text = mv.text();
         let (_rest, regen_mv) = crate::parser::mv::parse_move(&text, &text)

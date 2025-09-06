@@ -5,12 +5,13 @@
 use super::{
     compound::{map_errs, Compound},
     edge::Curve,
+    edge_err,
     hop::Hop,
     shift::Shift,
     MoveId, SkatingMoveId,
 };
 use crate::{
-    code, moves, params, params::Value, parser, Code, JumpCount, MoveParam, PreTransition,
+    code, moves, params, params::Value, Code, JumpCount, MoveParam, ParseError, PreTransition,
     TextPosition,
 };
 use std::borrow::Cow;
@@ -105,21 +106,21 @@ impl Salchow {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
             code!(LBI) => true,
             code!(RBI) => false,
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let entry_angle = params[0].value.as_i32(input)?;
-        let entry_len = params[1].value.as_i32(input)?;
-        let exit_angle = params[2].value.as_i32(input)?;
-        let exit_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let jump_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let entry_angle = params[0].value.as_i32(text_pos)?;
+        let entry_len = params[1].value.as_i32(text_pos)?;
+        let exit_angle = params[2].value.as_i32(text_pos)?;
+        let exit_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let jump_label = params[5].value.as_str(text_pos)?;
+        let label_offset = params[6].value.as_i32(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -180,10 +181,9 @@ impl Salchow {
         let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::Salchow(count),
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))
@@ -213,21 +213,21 @@ impl Loop {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
             code!(RBO) => true,
             code!(LBO) => false,
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let entry_angle = params[0].value.as_i32(input)?;
-        let entry_len = params[1].value.as_i32(input)?;
-        let exit_angle = params[2].value.as_i32(input)?;
-        let exit_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let jump_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let entry_angle = params[0].value.as_i32(text_pos)?;
+        let entry_len = params[1].value.as_i32(text_pos)?;
+        let exit_angle = params[2].value.as_i32(text_pos)?;
+        let exit_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let jump_label = params[5].value.as_str(text_pos)?;
+        let label_offset = params[6].value.as_i32(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -288,10 +288,9 @@ impl Loop {
         let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::LoopJump(count),
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))
@@ -321,21 +320,21 @@ impl Axel {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
             code!(LFO) => true,
             code!(RFO) => false,
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let entry_angle = params[0].value.as_i32(input)?;
-        let entry_len = params[1].value.as_i32(input)?;
-        let exit_angle = params[2].value.as_i32(input)?;
-        let exit_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let jump_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let entry_angle = params[0].value.as_i32(text_pos)?;
+        let entry_len = params[1].value.as_i32(text_pos)?;
+        let exit_angle = params[2].value.as_i32(text_pos)?;
+        let exit_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let jump_label = params[5].value.as_str(text_pos)?;
+        let label_offset = params[6].value.as_i32(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -388,10 +387,9 @@ impl Axel {
         let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::Axel(count),
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))
@@ -421,21 +419,21 @@ impl ToeLoop {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
             code!(RBO) => true,
             code!(LBO) => false,
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let entry_angle = params[0].value.as_i32(input)?;
-        let entry_len = params[1].value.as_i32(input)?;
-        let exit_angle = params[2].value.as_i32(input)?;
-        let exit_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let jump_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let entry_angle = params[0].value.as_i32(text_pos)?;
+        let entry_len = params[1].value.as_i32(text_pos)?;
+        let exit_angle = params[2].value.as_i32(text_pos)?;
+        let exit_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let jump_label = params[5].value.as_str(text_pos)?;
+        let label_offset = params[6].value.as_i32(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -480,10 +478,9 @@ impl ToeLoop {
         let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::ToeLoop(count),
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))
@@ -513,21 +510,21 @@ impl Flip {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
             code!(LBI) => true,
             code!(RBI) => false,
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let entry_angle = params[0].value.as_i32(input)?;
-        let entry_len = params[1].value.as_i32(input)?;
-        let exit_angle = params[2].value.as_i32(input)?;
-        let exit_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let jump_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let entry_angle = params[0].value.as_i32(text_pos)?;
+        let entry_len = params[1].value.as_i32(text_pos)?;
+        let exit_angle = params[2].value.as_i32(text_pos)?;
+        let exit_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let jump_label = params[5].value.as_str(text_pos)?;
+        let label_offset = params[6].value.as_i32(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -572,10 +569,9 @@ impl Flip {
         let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::Flip(count),
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))
@@ -605,21 +601,21 @@ impl Lutz {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
             code!(LBO) => true,
             code!(RBO) => false,
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let entry_angle = params[0].value.as_i32(input)?;
-        let entry_len = params[1].value.as_i32(input)?;
-        let exit_angle = params[2].value.as_i32(input)?;
-        let exit_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let jump_label = params[5].value.as_str(input)?;
-        let label_offset = params[6].value.as_i32(input)?;
+        let entry_angle = params[0].value.as_i32(text_pos)?;
+        let entry_len = params[1].value.as_i32(text_pos)?;
+        let exit_angle = params[2].value.as_i32(text_pos)?;
+        let exit_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let jump_label = params[5].value.as_str(text_pos)?;
+        let label_offset = params[6].value.as_i32(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -664,10 +660,9 @@ impl Lutz {
         let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::Lutz(count),
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))

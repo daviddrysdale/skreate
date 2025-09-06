@@ -2,7 +2,7 @@
 
 //! Functionality for parsing and formatting parameters.
 
-use crate::parser;
+use crate::{ParseError, TextPosition};
 use log::{error, trace};
 use serde::Serialize;
 use std::borrow::Cow;
@@ -56,45 +56,45 @@ pub enum Value {
 
 impl Value {
     /// Extract the numeric value.
-    pub fn as_i32<'a>(&'_ self, input: &'a str) -> Result<i32, parser::Error<'a>> {
+    pub fn as_i32(&self, pos: TextPosition) -> Result<i32, ParseError> {
         match self {
             Value::Number(v) => Ok(*v),
-            Value::Boolean(v) => {
-                error!("Trying to extract number from boolean parameter '{v}'");
-                Err(parser::fail(input))
-            }
-            Value::Text(v) => {
-                error!("Trying to extract number from text parameter '{v}'");
-                Err(parser::fail(input))
-            }
+            Value::Boolean(v) => Err(ParseError {
+                pos,
+                msg: format!("Found boolean value '{v}', expected number"),
+            }),
+            Value::Text(v) => Err(ParseError {
+                pos,
+                msg: format!("Found text value '{v}', expected number"),
+            }),
         }
     }
     /// Extract the text value.
-    pub fn as_str<'a, 'b>(&'b self, input: &'a str) -> Result<&'b str, parser::Error<'a>> {
+    pub fn as_str(&self, pos: TextPosition) -> Result<&str, ParseError> {
         match self {
-            Value::Number(v) => {
-                error!("Trying to extract number from text parameter '{v}'!");
-                Err(parser::fail(input))
-            }
-            Value::Boolean(v) => {
-                error!("Trying to extract number from boolean parameter '{v}'!");
-                Err(parser::fail(input))
-            }
+            Value::Number(v) => Err(ParseError {
+                pos,
+                msg: format!("Found number value '{v}', expected text"),
+            }),
+            Value::Boolean(v) => Err(ParseError {
+                pos,
+                msg: format!("Found boolean value '{v}', expected text"),
+            }),
             Value::Text(v) => Ok(v),
         }
     }
     /// Extract the boolean value.
-    pub fn as_bool<'a>(&'_ self, input: &'a str) -> Result<bool, parser::Error<'a>> {
+    pub fn as_bool(&self, pos: TextPosition) -> Result<bool, ParseError> {
         match self {
-            Value::Number(v) => {
-                error!("Trying to extract bool from text parameter '{v}'!");
-                Err(parser::fail(input))
-            }
+            Value::Number(v) => Err(ParseError {
+                pos,
+                msg: format!("Found number value '{v}', expected boolean"),
+            }),
             Value::Boolean(v) => Ok(*v),
-            Value::Text(v) => {
-                error!("Trying to extract number from text parameter '{v}'!");
-                Err(parser::fail(input))
-            }
+            Value::Text(v) => Err(ParseError {
+                pos,
+                msg: format!("Found text value '{v}', expected boolean"),
+            }),
         }
     }
 }
@@ -238,7 +238,7 @@ pub enum Range {
 
 impl Range {
     /// Indicate whether the given value is valid for this range.
-    pub fn valid<'a>(&'_ self, input: &'a str, val: &'_ Value) -> Result<(), parser::Error<'a>> {
+    pub fn valid(&self, pos: TextPosition, val: &Value) -> Result<(), ParseError> {
         match (val, self) {
             (Value::Number(_v), Range::Any) => Ok(()),
             (Value::Number(v), Range::Text) => Err(format!("{v} unexpected, want \"string\"")),
@@ -256,10 +256,7 @@ impl Range {
             (Value::Boolean(_v), Range::Boolean) => Ok(()),
             (Value::Boolean(v), range) => Err(format!("'{v}' unexpected, want {range:?}")),
         }
-        .map_err(|e| {
-            error!("{e}");
-            parser::fail(input)
-        })
+        .map_err(|e| ParseError { pos, msg: e })
     }
 }
 
@@ -328,7 +325,7 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
         } else if let Some(abbrev) = info.short {
             let detents = abbrev.detents();
             let (u, d) = abbrev.chars();
-            let value = param.value.as_i32("<internal>").unwrap();
+            let value = param.value.as_i32(Default::default()).unwrap();
             let short = if value == detents.add1 {
                 format!("{u}")
             } else if value == detents.add2 {
@@ -376,25 +373,33 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
 
 /// Populate a collection of [`MoveParam`]s from the given `input`.  Any values that are not mentioned in the input will
 /// get default values.
-pub fn populate<'a>(
-    params_info: &'_ [Info],
-    input: &'a str,
-) -> Result<Vec<MoveParam>, parser::Error<'a>> {
-    let (rest, (plus_minus, more_less, vals)) = crate::parser::params::parse(input)?;
+pub fn populate(
+    params_info: &[Info],
+    input: &str,
+    pos: TextPosition,
+) -> Result<Vec<MoveParam>, ParseError> {
+    let (rest, (plus_minus, more_less, vals)) =
+        crate::parser::params::parse(input).map_err(|_e| ParseError {
+            pos,
+            msg: format!("Failed to parse parameters in '{input}'"),
+        })?;
     if !rest.is_empty() {
-        return Err(parser::fail(input));
+        return Err(ParseError {
+            pos,
+            msg: format!("Excess text '{rest}' left after parsing parameters"),
+        });
     }
-    populate_from(params_info, input, plus_minus, more_less, vals)
+    populate_from(params_info, pos, plus_minus, more_less, vals)
 }
 
 /// Populate a collection of [`MoveParam`]s that match `params_info` from the given parsed values.
-pub fn populate_from<'a>(
-    params_info: &'_ [Info],
-    input: &'a str,
+pub fn populate_from(
+    params_info: &[Info],
+    pos: TextPosition,
     plus_minus: Option<DetentLevel>,
     more_less: Option<DetentLevel>,
     vals: Vec<MoveParamRef>,
-) -> Result<Vec<MoveParam>, parser::Error<'a>> {
+) -> Result<Vec<MoveParam>, ParseError> {
     // Begin with default values.
     // Invariant: entries in `params_info` and `params` are in sync.
     let mut params: Vec<MoveParam> = params_info
@@ -417,7 +422,10 @@ pub fn populate_from<'a>(
                     None
                 }
             })
-            .ok_or_else(|| parser::fail(input))?;
+            .ok_or_else(|| ParseError {
+                pos,
+                msg: "Found + or - but short code not supported".to_string(),
+            })?;
         params[idx].value = detents.value(plus_minus);
     }
     if let Some(more_less) = more_less {
@@ -431,7 +439,10 @@ pub fn populate_from<'a>(
                     None
                 }
             })
-            .ok_or_else(|| parser::fail(input))?;
+            .ok_or_else(|| ParseError {
+                pos,
+                msg: "Found < or > but short code not supported".to_string(),
+            })?;
         params[idx].value = detents.value(more_less);
     }
 
@@ -445,10 +456,13 @@ pub fn populate_from<'a>(
                 None
             }
         }) {
-            params_info[idx].range.valid(input, &val.value)?;
+            params_info[idx].range.valid(pos, &val.value)?;
             params[idx].value = val.value;
         } else {
-            return Err(parser::fail(input));
+            return Err(ParseError {
+                pos,
+                msg: format!("Parameter {val:?} not supported for this move"),
+            });
         }
     }
 
@@ -575,7 +589,7 @@ mod tests {
             let got = to_string(TEST_PARAMS_INFO, &input);
             assert_eq!(got, want, "for input {input:?}");
 
-            let recovered = populate(TEST_PARAMS_INFO, &got).unwrap();
+            let recovered = populate(TEST_PARAMS_INFO, &got, Default::default()).unwrap();
             assert_eq!(
                 recovered, input,
                 "for input {input:?} round-trip via '{got}'"
@@ -585,7 +599,7 @@ mod tests {
 
     #[test]
     fn test_populate() {
-        let got = populate(TEST_PARAMS_INFO, " [len1=42]").unwrap();
+        let got = populate(TEST_PARAMS_INFO, " [len1=42]", Default::default()).unwrap();
         assert_eq!(
             got,
             vec![
@@ -596,7 +610,7 @@ mod tests {
             ]
         );
 
-        let got = populate(TEST_PARAMS_INFO, " [len2=42]").unwrap();
+        let got = populate(TEST_PARAMS_INFO, " [len2=42]", Default::default()).unwrap();
         assert_eq!(
             got,
             vec![
@@ -610,10 +624,10 @@ mod tests {
 
     #[test]
     fn test_populate_err() {
-        assert!(populate(TEST_PARAMS_INFO, " [len2=42,other=99]").is_err());
-        assert!(populate(TEST_PARAMS_INFO, " [len2=-1]").is_err());
-        assert!(populate(TEST_PARAMS_INFO, " [len1=-1]").is_err());
-        assert!(populate(TEST_PARAMS_INFO, " [len1=0]").is_err());
-        assert!(populate(TEST_PARAMS_INFO, " ++>>--").is_err());
+        assert!(populate(TEST_PARAMS_INFO, " [len2=42,other=99]", Default::default()).is_err());
+        assert!(populate(TEST_PARAMS_INFO, " [len2=-1]", Default::default()).is_err());
+        assert!(populate(TEST_PARAMS_INFO, " [len1=-1]", Default::default()).is_err());
+        assert!(populate(TEST_PARAMS_INFO, " [len1=0]", Default::default()).is_err());
+        assert!(populate(TEST_PARAMS_INFO, " ++>>--", Default::default()).is_err());
     }
 }

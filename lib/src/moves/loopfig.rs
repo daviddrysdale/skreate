@@ -7,7 +7,7 @@ use super::{
     edge::Curve,
     MoveId, SkatingMoveId,
 };
-use crate::{moves, params, parser, Code, MoveParam, PreTransition, TextPosition};
+use crate::{moves, params, Code, MoveParam, ParseError, PreTransition, TextPosition};
 
 pub struct Loop;
 
@@ -33,18 +33,18 @@ impl Loop {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
 
-        let angle1 = params[0].value.as_i32(input)?;
-        let len1 = params[1].value.as_i32(input)?;
-        let delta_angle = params[2].value.as_i32(input)?;
-        let delta_len = params[3].value.as_i32(input)?;
-        let style = params[4].value.as_str(input)?;
-        let transition_label = params[5].value.as_str(input)?;
-        let label1 = params[6].value.as_str(input)?;
-        let label2 = params[7].value.as_str(input)?;
-        let label_offset = params[8].value.as_i32(input)?;
+        let angle1 = params[0].value.as_i32(text_pos)?;
+        let len1 = params[1].value.as_i32(text_pos)?;
+        let delta_angle = params[2].value.as_i32(text_pos)?;
+        let delta_len = params[3].value.as_i32(text_pos)?;
+        let style = params[4].value.as_str(text_pos)?;
+        let transition_label = params[5].value.as_str(text_pos)?;
+        let label1 = params[6].value.as_str(text_pos)?;
+        let label2 = params[7].value.as_str(text_pos)?;
+        let label_offset = params[8].value.as_i32(text_pos)?;
         let angle2 = angle1 + delta_angle;
         let len2 = len1 + delta_len;
 
@@ -86,10 +86,9 @@ impl Loop {
         let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
 
         Ok(Compound::new(
-            input,
             text_pos,
             SkatingMoveId::Loop,
-            map_errs(moves, input)?,
+            map_errs(moves)?,
             params,
             text,
         ))

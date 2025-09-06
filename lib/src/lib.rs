@@ -436,7 +436,7 @@ fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
         // Convert the parsed move inputs into moves.
         let moves: Result<Vec<TimedMove>, ParseError> = move_inputs
             .into_iter()
-            .map(|inputs| inputs.construct().map_err(|e| parser::err(e, input)))
+            .map(|inputs| inputs.construct())
             .collect();
         Ok(moves?)
     }

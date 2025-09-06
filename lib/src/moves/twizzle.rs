@@ -2,9 +2,11 @@
 
 //! Twizzle.
 
-use super::{compound::Compound, edge::Curve, label::Label, shift::Shift, MoveId, SkatingMoveId};
+use super::{
+    compound::Compound, edge::Curve, edge_err, label::Label, shift::Shift, MoveId, SkatingMoveId,
+};
 use crate::{
-    code, moves, params, params::Value, parser, Code, MoveParam, PreTransition, TextPosition,
+    code, moves, params, params::Value, Code, MoveParam, ParseError, PreTransition, TextPosition,
 };
 use std::borrow::Cow;
 
@@ -101,24 +103,24 @@ impl Twizzle {
         entry_code: Code,
         count: u32,
         params: Vec<MoveParam>,
-    ) -> Result<Compound, parser::Error> {
+    ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let sign = match entry_code {
             // Clockwise
             code!(LFI) | code!(RFO) | code!(RBI) | code!(LBO) => "-",
             // Widdershins
             code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
-            _ => return Err(parser::fail(input)),
+            _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let angle = params[0].value.as_i32(input)?;
-        let len = params[1].value.as_i32(input)?;
-        let pre_len = params[2].value.as_i32(input)?;
-        let pre_angle = params[3].value.as_i32(input)?;
-        let post_len = params[4].value.as_i32(input)?;
-        let post_angle = params[5].value.as_i32(input)?;
-        let style = params[6].value.as_str(input)?;
-        let transition_label = params[7].value.as_str(input)?;
+        let angle = params[0].value.as_i32(text_pos)?;
+        let len = params[1].value.as_i32(text_pos)?;
+        let pre_len = params[2].value.as_i32(text_pos)?;
+        let pre_angle = params[3].value.as_i32(text_pos)?;
+        let post_len = params[4].value.as_i32(text_pos)?;
+        let post_angle = params[5].value.as_i32(text_pos)?;
+        let style = params[6].value.as_str(text_pos)?;
+        let transition_label = params[7].value.as_str(text_pos)?;
 
         let len_a = len * 75 / 100;
         let len_b = len - len_a;
@@ -142,7 +144,7 @@ impl Twizzle {
         let pre = format!(
             "{prefix}{code} [len={pre_len},angle={pre_angle},style=\"{style}\",label=\" \",transition-label=\"{transition_label}\"]"
         );
-        moves.push(Curve::construct(&pre, text_pos).map_err(|_e| parser::fail(input))?);
+        moves.push(Curve::construct(&pre, text_pos)?);
         let mut debug = format!("{pre};");
 
         for n in 0..count {
@@ -162,20 +164,20 @@ impl Twizzle {
             let exit1 =
                 format!("{out_code}[angle={angle_a},len={len_a},style=\"{style}\",label=\" \"]");
 
-            moves.push(Curve::construct(&entry1, text_pos).map_err(|_e| parser::fail(input))?);
-            moves.push(Curve::construct(&entry2, text_pos).map_err(|_e| parser::fail(input))?);
+            moves.push(Curve::construct(&entry1, text_pos)?);
+            moves.push(Curve::construct(&entry2, text_pos)?);
             if count % 2 == 1 && n == count / 2 {
                 let label = format!("Label [fwd=100,side=30,text=\"{label_text}\"]");
-                moves.push(Label::construct(&label, text_pos).map_err(|_e| parser::fail(input))?);
+                moves.push(Label::construct(&label, text_pos)?);
             }
 
-            moves.push(Shift::construct(&shift, text_pos).map_err(|_e| parser::fail(input))?);
-            moves.push(Curve::construct(&exit2, text_pos).map_err(|_e| parser::fail(input))?);
-            moves.push(Curve::construct(&exit1, text_pos).map_err(|_e| parser::fail(input))?);
+            moves.push(Shift::construct(&shift, text_pos)?);
+            moves.push(Curve::construct(&exit2, text_pos)?);
+            moves.push(Curve::construct(&exit1, text_pos)?);
 
             if count % 2 == 0 && n == (count - 1) / 2 {
                 let label = format!("Label [side=100,text=\"{label_text}\"]");
-                moves.push(Label::construct(&label, text_pos).map_err(|_e| parser::fail(input))?);
+                moves.push(Label::construct(&label, text_pos)?);
             }
 
             code = out_code;
@@ -183,12 +185,11 @@ impl Twizzle {
         }
         let post =
             format!("{code} [len={post_len},angle={post_angle},style=\"{style}\",label=\" \"]");
-        moves.push(Curve::construct(&post, text_pos).map_err(|_e| parser::fail(input))?);
+        moves.push(Curve::construct(&post, text_pos)?);
         debug = format!("{debug}{post}");
 
         log::info!("input {input:?} results in {debug}");
         Ok(Compound::new_with_count_idx(
-            input,
             text_pos,
             SkatingMoveId::Twizzle(count),
             moves,

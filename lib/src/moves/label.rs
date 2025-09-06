@@ -6,8 +6,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, Bounds, Move, MoveParam, Position, RenderOptions, Rotation, Skater, SpatialTransition,
-    SvgId, TextPosition, Transition,
+    Bounds, Move, MoveParam, ParseError, Position, RenderOptions, Rotation, Skater,
+    SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -69,32 +69,31 @@ impl Label {
         ],
     };
 
-    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, ParseError> {
         let Some(rest) = input.strip_prefix(Self::INFO.name) else {
-            return Err(parser::fail(input));
+            return Err(ParseError {
+                pos: text_pos,
+                msg: format!("Missing expected prefix {}", Self::INFO.name),
+            });
         };
-        let params = params::populate(Self::INFO.params, rest)?;
-        Ok(Box::new(Self::from_params(input, text_pos, params)?))
+        let params = params::populate(Self::INFO.params, rest, text_pos)?;
+        Ok(Box::new(Self::from_params(text_pos, params)?))
     }
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32(input)?;
+        let font_size = params[3].value.as_i32(text_pos)?;
 
         Ok(Self {
             text_pos,
-            text: params[0].value.as_str(input)?.to_string(),
-            delta: Position::from_params(&params[2], &params[1]),
+            text: params[0].value.as_str(text_pos)?.to_string(),
+            delta: Position::from_params(&params[2], &params[1], text_pos)?,
             font_size: if font_size > 0 {
                 Some(font_size as u32)
             } else {
                 None
             },
-            rotate: params[4].value.as_i32(input)?,
+            rotate: params[4].value.as_i32(text_pos)?,
         })
     }
 

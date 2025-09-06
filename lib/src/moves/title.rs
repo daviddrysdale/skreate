@@ -6,7 +6,7 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, Bounds, Direction, Group, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
+    Bounds, Direction, Group, Move, MoveParam, ParseError, Position, RenderOptions, Skater, SvgId,
     TextPosition,
 };
 use std::borrow::Cow;
@@ -60,18 +60,14 @@ impl Title {
         ],
     };
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32(input)?;
+        let font_size = params[3].value.as_i32(text_pos)?;
 
         Ok(Self {
             text_pos,
-            text: params[0].value.as_str(input)?.to_string(),
-            pos: Position::from_params(&params[1], &params[2]),
+            text: params[0].value.as_str(text_pos)?.to_string(),
+            pos: Position::from_params(&params[1], &params[2], text_pos)?,
             font_size: if font_size > 0 {
                 Some(font_size as u32)
             } else {

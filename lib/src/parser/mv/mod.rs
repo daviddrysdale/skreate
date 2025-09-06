@@ -6,7 +6,8 @@ use crate::{
     moves::{self, repeat::RepeatEnd, PseudoMoveId, SkatingMoveId},
     parser::timing::{parse_count, parse_duration},
     parser::{self, parse_i32, InnErr},
-    Code, Count, Duration, JumpCount, Move, MoveParam, PreTransition, TextPosition, TimedMove,
+    Code, Count, Duration, JumpCount, Move, MoveParam, ParseError, PreTransition, TextPosition,
+    TimedMove,
 };
 use log::info;
 use nom::{
@@ -42,20 +43,16 @@ pub(crate) struct Inputs<'a> {
     pub params: Vec<MoveParam>,
 }
 
-impl<'a> Inputs<'a> {
+impl Inputs<'_> {
     /// Create the [`Move`] described by the inputs.
-    pub fn construct(self) -> Result<Box<dyn Move>, parser::Error<'a>> {
+    pub fn construct(self) -> Result<Box<dyn Move>, ParseError> {
         match self.info {
             Info::Skating {
                 move_id,
                 pre_transition,
                 code,
-            } => move_id
-                .construct(self.input, self.text_pos, pre_transition, code, self.params)
-                .map_err(|_e| parser::fail(self.input)),
-            Info::Pseudo { move_id } => move_id
-                .construct(self.input, self.text_pos, self.params)
-                .map_err(|_e| parser::fail(self.input)),
+            } => move_id.construct(self.input, self.text_pos, pre_transition, code, self.params),
+            Info::Pseudo { move_id } => move_id.construct(self.text_pos, self.params),
         }
     }
 }
@@ -67,9 +64,9 @@ pub(crate) struct TimedInputs<'a> {
     pub mv_inputs: Inputs<'a>,
 }
 
-impl<'a> TimedInputs<'a> {
+impl TimedInputs<'_> {
     /// Create the [`TimedMove`] described by the inputs.
-    pub fn construct(self) -> Result<TimedMove, parser::Error<'a>> {
+    pub fn construct(self) -> Result<TimedMove, ParseError> {
         Ok(TimedMove {
             count: self.count,
             duration: self.duration,
@@ -178,9 +175,9 @@ fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, In
     let (rest, move_id) = parse_skating_move_id(code.edge, rest)?;
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
-    let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
-        .map_err(|_e| fail(input))?;
     let text_pos = TextPosition::new(start, cur, rest);
+    let params = crate::params::populate_from(info.params, text_pos, plus_minus, more_less, vals)
+        .map_err(|_e| fail(input))?;
     info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
@@ -251,9 +248,9 @@ pub(crate) fn parse_pseudo_move<'a>(
     let (rest, move_id) = parse_pseudo_move_id(rest)?;
     let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
-    let params = crate::params::populate_from(info.params, input, plus_minus, more_less, vals)
-        .map_err(|_e| fail(input))?;
     let text_pos = TextPosition::new(start, cur, rest);
+    let params = crate::params::populate_from(info.params, text_pos, plus_minus, more_less, vals)
+        .map_err(|_e| fail(input))?;
     info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,

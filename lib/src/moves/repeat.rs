@@ -6,7 +6,7 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, Bounds, Document, Move, MoveParam, RenderOptions, Skater, SvgId, TextPosition,
+    Bounds, Document, Move, MoveParam, ParseError, RenderOptions, Skater, SvgId, TextPosition,
 };
 
 #[derive(Debug, Clone)]
@@ -28,11 +28,7 @@ impl RepeatStart {
         params: &[],
     };
 
-    pub fn from_params(
-        _input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         Ok(Self { text_pos })
     }
@@ -111,14 +107,10 @@ impl RepeatEnd {
         ],
     };
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let count = params[0].value.as_i32(input)? as u32;
-        let alternate = params[1].value.as_bool(input)?;
+        let count = params[0].value.as_i32(text_pos)? as u32;
+        let alternate = params[1].value.as_bool(text_pos)?;
         Ok(Self::new(text_pos, count, alternate))
     }
 

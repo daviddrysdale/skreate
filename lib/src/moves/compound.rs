@@ -5,7 +5,7 @@ use crate::{
     moves::{MoveId, SkatingMoveId},
     params,
     params::Value,
-    parser, Bounds, Code, Label, Move, MoveParam, RenderOptions, Rotation, Skater,
+    Bounds, Code, Label, Move, MoveParam, ParseError, RenderOptions, Rotation, Skater,
     SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
@@ -54,14 +54,13 @@ impl Compound {
     /// - `moves` has fewer than 2 entries
     /// - any move has an absolute transition
     pub fn new(
-        input: &str,
         text_pos: TextPosition,
         id: SkatingMoveId,
         moves: Vec<Box<dyn Move>>,
         params: Vec<MoveParam>,
         text: String,
     ) -> Self {
-        Compound::new_with_count_idx(input, text_pos, id, moves, params, text, Some(0))
+        Compound::new_with_count_idx(text_pos, id, moves, params, text, Some(0))
     }
 
     /// Create a compound move, identifying which one gets count labels.
@@ -75,7 +74,6 @@ impl Compound {
     /// - `moves` has fewer than 2 entries
     /// - any move has an absolute transition
     pub fn new_with_count_idx(
-        _input: &str,
         text_pos: TextPosition,
         id: SkatingMoveId,
         moves: Vec<Box<dyn Move>>,
@@ -480,13 +478,9 @@ pub const fn params_flat(
     ]
 }
 
-/// Map any errors in sub-move creation to be against `input`.
-pub fn map_errs<'a>(
-    moves: Vec<Result<Box<dyn Move>, parser::Error>>,
-    input: &'a str,
-) -> Result<Vec<Box<dyn Move>>, parser::Error<'a>> {
-    moves
-        .into_iter()
-        .map(|mv| mv.map_err(|_e| parser::fail(input)))
-        .collect()
+/// Convert `Vec<Result<..>>` into `Result<Vec<..>>`.
+pub fn map_errs(
+    moves: Vec<Result<Box<dyn Move>, ParseError>>,
+) -> Result<Vec<Box<dyn Move>>, ParseError> {
+    moves.into_iter().collect()
 }

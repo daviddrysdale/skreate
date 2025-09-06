@@ -3,7 +3,7 @@
 //! Skating move definitions.
 
 use crate::{
-    parser, pos, Code, Foot, JumpCount, Move, MoveParam, Position, PreTransition, Rotation,
+    pos, Code, Foot, JumpCount, Move, MoveParam, ParseError, Position, PreTransition, Rotation,
     SkatingDirection::*, SpatialTransition, TextPosition, Transition,
 };
 use log::warn;
@@ -34,6 +34,33 @@ pub(crate) mod warp;
 
 #[cfg(test)]
 mod tests;
+
+/// Parse input as [`Code`].
+pub fn parse_code(input: &str, pos: TextPosition) -> Result<(&str, Code), ParseError> {
+    crate::parser::types::parse_code(input).map_err(|_e| ParseError {
+        pos,
+        msg: "Unrecognized edge code".to_string(),
+    })
+}
+
+/// Parse a possible transition prefix.
+pub fn parse_pre_transition(
+    input: &str,
+    pos: TextPosition,
+) -> Result<(&str, PreTransition), ParseError> {
+    crate::parser::types::parse_pre_transition(input).map_err(|_e| ParseError {
+        pos,
+        msg: "Unrecognized prefix for move".to_string(),
+    })
+}
+
+/// Generate an error for an invalid entry edge.
+pub fn edge_err(pos: TextPosition, code: Code, info: Info) -> ParseError {
+    ParseError {
+        pos,
+        msg: format!("Unsupported entry edge {code} for {}", info.name),
+    }
+}
 
 /// Information about a class of moves.
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -162,24 +189,22 @@ impl SkatingMoveId {
         }
     }
     /// Construct an instance of a skating move.
-    pub(crate) fn construct<'a>(
-        &'_ self,
-        input: &'a str,
+    pub(crate) fn construct(
+        &self,
+        input: &str,
         text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Box<dyn Move>, parser::Error<'a>> {
+    ) -> Result<Box<dyn Move>, ParseError> {
         Ok(match self {
             Self::Curve => Box::new(edge::Curve::from_params(
-                input,
                 text_pos,
                 pre_transition,
                 entry_code,
                 params,
             )?),
             Self::StraightEdge => Box::new(straight::StraightEdge::from_params(
-                input,
                 text_pos,
                 pre_transition,
                 entry_code,
@@ -264,7 +289,6 @@ impl SkatingMoveId {
                 params,
             )?),
             Self::Hop => Box::new(hop::Hop::from_params(
-                input,
                 text_pos,
                 pre_transition,
                 entry_code,
@@ -362,24 +386,21 @@ impl PseudoMoveId {
     }
 
     /// Construct an instance of a pseudo-move.
-    pub(crate) fn construct<'a>(
-        &'_ self,
-        input: &'a str,
+    pub(crate) fn construct(
+        &self,
         text_pos: TextPosition,
         params: Vec<MoveParam>,
-    ) -> Result<Box<dyn Move>, parser::Error<'a>> {
+    ) -> Result<Box<dyn Move>, ParseError> {
         Ok(match self {
-            Self::Warp => Box::new(warp::Warp::from_params(input, text_pos, params)?),
-            Self::Shift => Box::new(shift::Shift::from_params(input, text_pos, params)?),
-            Self::Rink => Box::new(rink::Rink::from_params(input, text_pos, params)?),
-            Self::Info => Box::new(info::Info::from_params(input, text_pos, params)?),
-            Self::Title => Box::new(title::Title::from_params(input, text_pos, params)?),
-            Self::Text => Box::new(text::Text::from_params(input, text_pos, params)?),
-            Self::Label => Box::new(label::Label::from_params(input, text_pos, params)?),
-            Self::RepeatStart => {
-                Box::new(repeat::RepeatStart::from_params(input, text_pos, params)?)
-            }
-            Self::RepeatEnd => Box::new(repeat::RepeatEnd::from_params(input, text_pos, params)?),
+            Self::Warp => Box::new(warp::Warp::from_params(text_pos, params)?),
+            Self::Shift => Box::new(shift::Shift::from_params(text_pos, params)?),
+            Self::Rink => Box::new(rink::Rink::from_params(text_pos, params)?),
+            Self::Info => Box::new(info::Info::from_params(text_pos, params)?),
+            Self::Title => Box::new(title::Title::from_params(text_pos, params)?),
+            Self::Text => Box::new(text::Text::from_params(text_pos, params)?),
+            Self::Label => Box::new(label::Label::from_params(text_pos, params)?),
+            Self::RepeatStart => Box::new(repeat::RepeatStart::from_params(text_pos, params)?),
+            Self::RepeatEnd => Box::new(repeat::RepeatEnd::from_params(text_pos, params)?),
         })
     }
 }
@@ -399,20 +420,6 @@ impl MoveId {
         match self {
             Self::Skating(id) => id.info(),
             Self::Pseudo(id) => id.info(),
-        }
-    }
-    #[cfg(test)]
-    pub(crate) fn construct<'a>(
-        &'_ self,
-        input: &'a str,
-        text_pos: TextPosition,
-        pre_transition: PreTransition,
-        entry_code: Code,
-        params: Vec<MoveParam>,
-    ) -> Result<Box<dyn Move>, parser::Error<'a>> {
-        match self {
-            Self::Skating(id) => id.construct(input, text_pos, pre_transition, entry_code, params),
-            Self::Pseudo(id) => id.construct(input, text_pos, params),
         }
     }
 }

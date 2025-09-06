@@ -3,13 +3,11 @@
 //! Pseudo-move definition for moving skater to new position.
 
 use crate::{
-    moves::{self, MoveId, PseudoMoveId},
+    moves::{self, parse_code, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser,
-    parser::types::parse_code,
-    Bounds, Code, Direction, Document, Move, MoveParam, Position, RenderOptions, Skater,
-    SpatialTransition, SvgId, TextPosition, Transition,
+    Bounds, Code, Direction, Document, Move, MoveParam, ParseError, Position, RenderOptions,
+    Skater, SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
 
@@ -61,24 +59,20 @@ impl Warp {
         ],
     };
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let code_str = params[3].value.as_str(input)?;
+        let code_str = params[3].value.as_str(text_pos)?;
         let code = if code_str.is_empty() {
             None
         } else {
-            let (_rest, code) = parse_code(code_str).map_err(|_e| parser::fail(input))?;
+            let (_rest, code) = parse_code(code_str, text_pos)?;
             Some(code)
         };
 
         Ok(Self {
             text_pos,
-            pos: Position::from_params(&params[0], &params[1]),
-            dir: Direction(params[2].value.as_i32(input)? as u32),
+            pos: Position::from_params(&params[0], &params[1], text_pos)?,
+            dir: Direction(params[2].value.as_i32(text_pos)? as u32),
             code,
         })
     }

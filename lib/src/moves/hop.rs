@@ -4,12 +4,12 @@
 
 use super::{MoveId, SkatingMoveId};
 use crate::{
-    moves, param, params,
-    params::Value,
-    parser,
-    parser::types::{parse_code, parse_pre_transition},
-    pos, Code, Edge, Foot, Label, Move, MoveParam, Percentage, Position, PreTransition,
-    RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId, TextPosition, Transition,
+    moves::{self, parse_code, parse_pre_transition},
+    param,
+    params::{self, Value},
+    parser, pos, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Percentage, Position,
+    PreTransition, RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId,
+    TextPosition, Transition,
 };
 use nom::bytes::complete::tag;
 use std::borrow::Cow;
@@ -61,17 +61,22 @@ impl Hop {
         ],
     };
 
-    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
-        let (rest, pre_transition) = parse_pre_transition(input)?;
-        let (rest, entry_code) = parse_code(rest)?;
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, ParseError> {
+        let (rest, pre_transition) = parse_pre_transition(input, text_pos)?;
+        let (rest, entry_code) = parse_code(rest, text_pos)?;
         if entry_code.edge != Edge::Flat {
-            return Err(parser::fail(input));
+            return Err(ParseError {
+                pos: text_pos,
+                msg: format!("Entry edge {entry_code} not supported"),
+            });
         }
-        let (rest, _move) = tag(Self::MOVE)(rest)?;
+        let (rest, _move) = tag(Self::MOVE)(rest).map_err(|_e: parser::Error| ParseError {
+            pos: text_pos,
+            msg: format!("Missing expected '{}'", Self::MOVE),
+        })?;
 
-        let params = params::populate(Self::INFO.params, rest)?;
+        let params = params::populate(Self::INFO.params, rest, text_pos)?;
         Ok(Box::new(Self::from_params(
-            input,
             text_pos,
             pre_transition,
             entry_code,
@@ -80,27 +85,26 @@ impl Hop {
     }
 
     pub fn from_params(
-        input: &str,
         text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    ) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let label = params[1].value.as_str(input)?;
+        let label = params[1].value.as_str(text_pos)?;
 
         Ok(Self {
             text_pos,
             pre_transition,
             foot: entry_code.foot,
             dir: entry_code.dir,
-            size: params[0].value.as_i32(input)?,
+            size: params[0].value.as_i32(text_pos)?,
             label: if label.is_empty() {
                 None
             } else {
                 Some(label.to_string())
             },
-            label_offset: Percentage(params[2].value.as_i32(input)?),
+            label_offset: Percentage(params[2].value.as_i32(text_pos)?),
         })
     }
     fn code(&self) -> Code {

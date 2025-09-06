@@ -6,8 +6,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, path, Bounds, Count, Document, Move, MoveParam, Percentage, Position, RenderOptions,
-    Skater, SvgId, TextPosition,
+    path, Bounds, Count, Document, Move, MoveParam, ParseError, Percentage, Position,
+    RenderOptions, Skater, SvgId, TextPosition,
 };
 use svg::node::element::Group;
 
@@ -108,23 +108,19 @@ impl Info {
         ],
     };
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let grid = params[2].value.as_i32(input)?;
-        let font_size = params[6].value.as_i32(input)?;
-        let stroke_width = params[7].value.as_i32(input)?;
+        let grid = params[2].value.as_i32(text_pos)?;
+        let font_size = params[6].value.as_i32(text_pos)?;
+        let stroke_width = params[7].value.as_i32(text_pos)?;
 
         Ok(Self {
             text_pos,
-            markers: params[0].value.as_bool(input)?,
-            bounds: params[1].value.as_bool(input)?,
+            markers: params[0].value.as_bool(text_pos)?,
+            bounds: params[1].value.as_bool(text_pos)?,
             grid: if grid > 0 { Some(grid) } else { None },
-            margin: Position::from_params(&params[3], &params[4]),
-            move_bounds: params[5].value.as_bool(input)?,
+            margin: Position::from_params(&params[3], &params[4], text_pos)?,
+            move_bounds: params[5].value.as_bool(text_pos)?,
             font_size: if font_size >= 0 {
                 Some(font_size as u32)
             } else {
@@ -135,8 +131,8 @@ impl Info {
             } else {
                 None
             },
-            label_offset: Percentage(params[8].value.as_i32(input)?),
-            auto_count: params[9].value.as_bool(input)?,
+            label_offset: Percentage(params[8].value.as_i32(text_pos)?),
+            auto_count: params[9].value.as_bool(text_pos)?,
         })
     }
 }

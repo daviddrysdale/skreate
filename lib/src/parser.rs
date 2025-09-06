@@ -26,10 +26,6 @@ pub(crate) type InnErr<'a> = nom::error::Error<&'a str>;
 /// Parsing error.
 pub(crate) type Error<'a> = nom::Err<InnErr<'a>>;
 
-pub(crate) fn fail(input: &str) -> Error {
-    Error::Failure(InnErr::new(input, nom::error::ErrorKind::Fail))
-}
-
 fn parse_i32(input: &str) -> IResult<&str, i32> {
     map_res(
         recognize(tuple((

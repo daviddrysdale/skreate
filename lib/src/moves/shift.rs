@@ -3,12 +3,10 @@
 //! Pseudo-move definition for moving skater relative to current location.
 
 use crate::{
-    moves::{self, MoveId, PseudoMoveId},
+    moves::{self, parse_code, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser,
-    parser::types::parse_code,
-    Bounds, Code, Document, Move, MoveParam, Position, RenderOptions, Rotation, Skater,
+    Bounds, Code, Document, Move, MoveParam, ParseError, Position, RenderOptions, Rotation, Skater,
     SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
@@ -61,37 +59,36 @@ impl Shift {
         ],
     };
 
-    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, ParseError> {
         Ok(Box::new(Self::new(input, text_pos)?))
     }
 
-    pub fn new(input: &str, text_pos: TextPosition) -> Result<Self, parser::Error> {
+    pub fn new(input: &str, text_pos: TextPosition) -> Result<Self, ParseError> {
         let Some(rest) = input.strip_prefix(Self::INFO.name) else {
-            return Err(parser::fail(input));
+            return Err(ParseError {
+                pos: text_pos,
+                msg: format!("Missing expected prefix {}", Self::INFO.name),
+            });
         };
-        let params = params::populate(Self::INFO.params, rest)?;
-        Self::from_params(input, text_pos, params)
+        let params = params::populate(Self::INFO.params, rest, text_pos)?;
+        Self::from_params(text_pos, params)
     }
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let code_str = params[3].value.as_str(input)?;
+        let code_str = params[3].value.as_str(text_pos)?;
         let code = if code_str.is_empty() {
             None
         } else {
-            let (_rest, code) = parse_code(code_str).map_err(|_e| parser::fail(input))?;
+            let (_rest, code) = parse_code(code_str, text_pos)?;
             Some(code)
         };
 
         Ok(Self {
             text_pos,
             // Note that `fwd` is first, and is in (relative) y-direction.
-            delta: Position::from_params(&params[1], &params[0]),
-            rotate: params[2].value.as_i32(input)?,
+            delta: Position::from_params(&params[1], &params[0], text_pos)?,
+            rotate: params[2].value.as_i32(text_pos)?,
             code,
         })
     }

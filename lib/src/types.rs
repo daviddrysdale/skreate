@@ -4,7 +4,7 @@
 
 use crate::{
     moves::{cross_transition, pre_transition, wide_transition},
-    MoveParam,
+    MoveParam, ParseError,
 };
 use log::trace;
 use serde::Serialize;
@@ -170,11 +170,15 @@ impl Display for Position {
 
 impl Position {
     /// Create a `Position` from (x, y) move parameters.
-    pub fn from_params(x: &MoveParam, y: &MoveParam) -> Self {
-        Self {
-            x: x.value.as_i32("<internal>").unwrap() as i64,
-            y: y.value.as_i32("<internal>").unwrap() as i64,
-        }
+    pub fn from_params(
+        x: &MoveParam,
+        y: &MoveParam,
+        pos: TextPosition,
+    ) -> Result<Self, ParseError> {
+        Ok(Self {
+            x: x.value.as_i32(pos)? as i64,
+            y: y.value.as_i32(pos)? as i64,
+        })
     }
 
     /// Add the `delta` to a `Position`, but rotated by `dir`.

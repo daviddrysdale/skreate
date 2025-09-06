@@ -4,15 +4,13 @@
 
 use crate::{
     apply_style, bounds, code,
-    moves::{self, MoveId, SkatingMoveId},
+    moves::{self, parse_code, parse_pre_transition, MoveId, SkatingMoveId},
     param, params,
     params::Value,
-    parser,
-    parser::types::{parse_code, parse_pre_transition},
-    path, pos, Bounds, Code, Edge, Label, Move, MoveParam, Percentage, Position, PreTransition,
-    RenderOptions, Rotation, Skater, SpatialTransition, SvgId, TextPosition, Transition,
+    path, pos, Bounds, Code, Label, Move, MoveParam, ParseError, Percentage, Position,
+    PreTransition, RenderOptions, Rotation, Skater, SpatialTransition, SvgId, TextPosition,
+    Transition,
 };
-use log::error;
 use std::borrow::Cow;
 use std::f64::consts::PI;
 use svg::node::element::Group;
@@ -101,16 +99,11 @@ impl Curve {
         ],
     };
 
-    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, parser::Error> {
-        let (rest, pre_transition) = parse_pre_transition(input)?;
-        let (rest, entry_code) = parse_code(rest)?;
-        if entry_code.edge == Edge::Flat {
-            return Err(parser::fail(input));
-        }
-
-        let params = params::populate(Self::INFO.params, rest)?;
+    pub fn construct(input: &str, text_pos: TextPosition) -> Result<Box<dyn Move>, ParseError> {
+        let (rest, pre_transition) = parse_pre_transition(input, text_pos)?;
+        let (rest, entry_code) = parse_code(rest, text_pos)?;
+        let params = params::populate(Self::INFO.params, rest, text_pos)?;
         Ok(Box::new(Self::from_params(
-            input,
             text_pos,
             pre_transition,
             entry_code,
@@ -119,12 +112,11 @@ impl Curve {
     }
 
     pub fn from_params(
-        input: &str,
         text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    ) -> Result<Self, ParseError> {
         // Reject invalid entry codes.
         if !matches!(
             entry_code,
@@ -137,20 +129,22 @@ impl Curve {
                 | code!(RBI)
                 | code!(LBO)
         ) {
-            error!("{entry_code} not supported");
-            return Err(parser::fail(input));
+            return Err(ParseError {
+                pos: text_pos,
+                msg: format!("{entry_code} not supported"),
+            });
         }
 
         assert!(params::compatible(Self::INFO.params, &params));
-        let label = params[2].value.as_str(input)?;
-        let transition_label = params[4].value.as_str(input)?;
+        let label = params[2].value.as_str(text_pos)?;
+        let transition_label = params[4].value.as_str(text_pos)?;
 
         Ok(Self {
             text_pos,
             pre_transition,
             code: entry_code,
-            angle: params[0].value.as_i32(input)?,
-            len: params[1].value.as_i32(input)?,
+            angle: params[0].value.as_i32(text_pos)?,
+            len: params[1].value.as_i32(text_pos)?,
             label: if label.is_empty() {
                 None
             } else {
@@ -161,8 +155,8 @@ impl Curve {
             } else {
                 Some(transition_label.to_string())
             },
-            style: params[3].value.as_str(input)?.to_string(),
-            label_offset: Percentage(params[5].value.as_i32(input)?),
+            style: params[3].value.as_str(text_pos)?.to_string(),
+            label_offset: Percentage(params[5].value.as_i32(text_pos)?),
         })
     }
 

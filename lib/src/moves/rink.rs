@@ -6,7 +6,7 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    parser, path, pos, Bounds, Move, MoveParam, Position, RenderOptions, Skater, SvgId,
+    path, pos, Bounds, Move, MoveParam, ParseError, Position, RenderOptions, Skater, SvgId,
     TextPosition,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
@@ -100,14 +100,10 @@ impl Rink {
         ],
     };
 
-    pub fn from_params(
-        input: &str,
-        text_pos: TextPosition,
-        params: Vec<MoveParam>,
-    ) -> Result<Self, parser::Error> {
+    pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let to_opt_i32 = |param: &MoveParam| {
-            let val = param.value.as_i32(input).unwrap();
+            let val = param.value.as_i32(text_pos).unwrap();
             if val > 0 {
                 Some(val)
             } else {
@@ -116,15 +112,15 @@ impl Rink {
         };
         Ok(Self {
             text_pos,
-            width: params[0].value.as_i32(input)?,
-            length: params[1].value.as_i32(input)?,
-            centre_line: params[2].value.as_bool(input)?,
+            width: params[0].value.as_i32(text_pos)?,
+            length: params[1].value.as_i32(text_pos)?,
+            centre_line: params[2].value.as_bool(text_pos)?,
             centre_circle: to_opt_i32(&params[3]),
-            centre_faceoff: params[4].value.as_bool(input)?,
+            centre_faceoff: params[4].value.as_bool(text_pos)?,
             mid_lines: to_opt_i32(&params[5]),
             goal_lines: to_opt_i32(&params[6]),
-            show_goals: params[7].value.as_bool(input)?,
-            show_faceoffs: params[8].value.as_bool(input)?,
+            show_goals: params[7].value.as_bool(text_pos)?,
+            show_faceoffs: params[8].value.as_bool(text_pos)?,
         })
     }
 
