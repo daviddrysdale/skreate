@@ -236,6 +236,18 @@ pub enum Range {
     Boolean,
 }
 
+impl Display for Range {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self {
+            Range::Text => write!(f, "text"),
+            Range::Any => write!(f, "number"),
+            Range::Positive => write!(f, "positive number"),
+            Range::StrictlyPositive => write!(f, "non-zero positive number"),
+            Range::Boolean => write!(f, "boolean"),
+        }
+    }
+}
+
 impl Range {
     /// Indicate whether the given value is valid for this range.
     pub fn valid(&self, pos: TextPosition, val: &Value) -> Result<(), ParseError> {
@@ -251,10 +263,10 @@ impl Range {
             (Value::Number(v), Range::Boolean) => Err(format!("{v} out of range, expect boolean")),
 
             (Value::Text(_v), Range::Text) => Ok(()),
-            (Value::Text(v), range) => Err(format!("'{v}' unexpected, want {range:?}")),
+            (Value::Text(v), range) => Err(format!("'{v}' unexpected, want {range}")),
 
             (Value::Boolean(_v), Range::Boolean) => Ok(()),
-            (Value::Boolean(v), range) => Err(format!("'{v}' unexpected, want {range:?}")),
+            (Value::Boolean(v), range) => Err(format!("'{v}' unexpected, want {range}")),
         }
         .map_err(|e| ParseError { pos, msg: e })
     }
