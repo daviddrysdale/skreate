@@ -111,7 +111,7 @@ fn test_parse_failures() {
         ),
         (
             "LFO-Br [angle=60,delta-angle=-62]",
-            "out of range, must be > 0",
+            "must be smaller than angle",
         ),
     ];
     for (input, wanterr) in tests {

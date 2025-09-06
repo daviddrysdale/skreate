@@ -3,7 +3,7 @@
 //! Loop
 
 use super::{
-    compound::{self, map_errs, Compound},
+    compound::{self, add_angle, add_len, map_errs, Compound},
     edge::Curve,
     MoveId, SkatingMoveId,
 };
@@ -45,8 +45,8 @@ impl Loop {
         let label1 = params[6].value.as_str(text_pos)?;
         let label2 = params[7].value.as_str(text_pos)?;
         let label_offset = params[8].value.as_i32(text_pos)?;
-        let angle2 = angle1 + delta_angle;
-        let len2 = len1 + delta_len;
+        let angle2 = add_angle(angle1, delta_angle, text_pos)?;
+        let len2 = add_len(len1, delta_len, text_pos)?;
 
         let prefix = pre_transition.prefix();
 

@@ -484,3 +484,29 @@ pub fn map_errs(
 ) -> Result<Vec<Box<dyn Move>>, ParseError> {
     moves.into_iter().collect()
 }
+
+/// Helper for adding delta-angle
+pub fn add_angle(angle1: i32, delta_angle: i32, pos: TextPosition) -> Result<i32, ParseError> {
+    let angle2 = angle1 + delta_angle;
+    if angle2 < 0 {
+        Err(ParseError {
+            pos,
+            msg: format!("Delta-angle value {delta_angle} must be smaller than angle {angle1}"),
+        })
+    } else {
+        Ok(angle2)
+    }
+}
+
+/// Helper for adding delta-len
+pub fn add_len(len1: i32, delta_len: i32, pos: TextPosition) -> Result<i32, ParseError> {
+    let len2 = len1 + delta_len;
+    if len2 < 0 {
+        Err(ParseError {
+            pos,
+            msg: format!("Delta-len value {delta_len} must be smaller than len {len1}"),
+        })
+    } else {
+        Ok(len2)
+    }
+}
