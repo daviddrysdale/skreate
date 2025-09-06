@@ -461,7 +461,7 @@ pub fn populate_from(
         } else {
             return Err(ParseError {
                 pos,
-                msg: format!("Parameter {val:?} not supported for this move"),
+                msg: format!("Parameter {} not supported for this move", val.name),
             });
         }
     }

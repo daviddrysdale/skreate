@@ -98,3 +98,31 @@ fn make_non_default(value: &Value) -> Value {
         Value::Text(t) => Value::Text(format!("{t}LFO").into()),
     }
 }
+
+#[test]
+fn test_parse_failures() {
+    let tests = [
+        ("LFO [len=true]", "'true' unexpected"),
+        ("LFO [len=\"text\"]", "'text' unexpected"),
+        ("LFO [len=unquoted]", "failed to parse"),
+        (
+            "LFO [unknown=2]",
+            "Parameter unknown not supported for this move",
+        ),
+        (
+            "LFO-Br [angle=60,delta-angle=-62]",
+            "out of range, must be > 0",
+        ),
+    ];
+    for (input, wanterr) in tests {
+        let result = crate::moves(input);
+        match result {
+            Ok(_) => panic!("Unexpected success parsing '{input}'"),
+            Err(e) => assert!(
+                e.msg.contains(wanterr),
+                "Expect error '{}' for '{input}' to contain '{wanterr}'",
+                e.msg
+            ),
+        }
+    }
+}
