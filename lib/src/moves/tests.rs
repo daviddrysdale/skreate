@@ -69,7 +69,9 @@ fn test_examples_all_params() {
             input: "test",
             text_pos: Default::default(),
             info: move_info,
-            params: params.clone(),
+            plus_minus: None,
+            more_less: None,
+            vals: params.clone(),
         };
         let mv = inputs.construct().unwrap_or_else(|e| {
             panic!(

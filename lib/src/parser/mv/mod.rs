@@ -4,6 +4,7 @@
 
 use crate::{
     moves::{self, repeat::RepeatEnd, PseudoMoveId, SkatingMoveId},
+    params::{self, DetentLevel, MoveParamRef},
     parser::timing::{parse_count, parse_duration},
     parser::{self, parse_i32, InnErr},
     Code, Count, Duration, JumpCount, Move, MoveParam, ParseError, PreTransition, TextPosition,
@@ -15,7 +16,6 @@ use nom::{
     bytes::complete::tag,
     character::complete::space0,
     combinator::{map, map_res, opt, value},
-    error,
     sequence::{preceded, tuple},
     IResult, Parser,
 };
@@ -40,7 +40,9 @@ pub(crate) struct Inputs<'a> {
     pub input: &'a str,
     pub text_pos: TextPosition,
     pub info: Info,
-    pub params: Vec<MoveParam>,
+    pub plus_minus: Option<DetentLevel>,
+    pub more_less: Option<DetentLevel>,
+    pub vals: Vec<MoveParamRef<'a>>,
 }
 
 impl Inputs<'_> {
@@ -51,8 +53,26 @@ impl Inputs<'_> {
                 move_id,
                 pre_transition,
                 code,
-            } => move_id.construct(self.input, self.text_pos, pre_transition, code, self.params),
-            Info::Pseudo { move_id } => move_id.construct(self.text_pos, self.params),
+            } => {
+                let params = params::populate_from(
+                    move_id.info().params,
+                    self.text_pos,
+                    self.plus_minus,
+                    self.more_less,
+                    self.vals,
+                )?;
+                move_id.construct(self.input, self.text_pos, pre_transition, code, params)
+            }
+            Info::Pseudo { move_id } => {
+                let params = params::populate_from(
+                    move_id.info().params,
+                    self.text_pos,
+                    self.plus_minus,
+                    self.more_less,
+                    self.vals,
+                )?;
+                move_id.construct(self.text_pos, params)
+            }
         }
     }
 }
@@ -173,11 +193,8 @@ fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, In
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
     let (rest, code) = parser::types::parse_code(rest)?;
     let (rest, move_id) = parse_skating_move_id(code.edge, rest)?;
-    let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let text_pos = TextPosition::new(start, cur, rest);
-    let params = crate::params::populate_from(info.params, text_pos, plus_minus, more_less, vals)
-        .map_err(|_e| fail(input))?;
     info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
@@ -189,7 +206,9 @@ fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, In
                 pre_transition,
                 code,
             },
-            params,
+            plus_minus,
+            more_less,
+            vals,
         },
     ))
 }
@@ -246,11 +265,8 @@ pub(crate) fn parse_pseudo_move<'a>(
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, move_id) = parse_pseudo_move_id(rest)?;
-    let info = move_id.info();
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let text_pos = TextPosition::new(start, cur, rest);
-    let params = crate::params::populate_from(info.params, text_pos, plus_minus, more_less, vals)
-        .map_err(|_e| fail(input))?;
     info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
@@ -258,7 +274,9 @@ pub(crate) fn parse_pseudo_move<'a>(
             input,
             text_pos,
             info: Info::Pseudo { move_id },
-            params,
+            plus_minus,
+            more_less,
+            vals,
         }
         .into(),
     ))
@@ -285,7 +303,7 @@ pub(crate) fn parse_repeat_end<'a>(
     info!("found RepeatEnd count={count} alternate={alternate} at {text_pos:?}");
 
     let move_id = PseudoMoveId::RepeatEnd;
-    let params = vec![
+    let vals = vec![
         MoveParam {
             name: "count",
             value: count.into(),
@@ -301,7 +319,9 @@ pub(crate) fn parse_repeat_end<'a>(
             input,
             text_pos,
             info: Info::Pseudo { move_id },
-            params,
+            plus_minus: None,
+            more_less: None,
+            vals,
         }
         .into(),
     ))
@@ -314,8 +334,4 @@ pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str,
         |input| parse_pseudo_move(start, input),
         |input| parse_repeat_end(start, input),
     ))(input)
-}
-
-fn fail(input: &str) -> nom::Err<error::Error<&str>> {
-    nom::Err::Failure(error::Error::new(input, error::ErrorKind::Fail))
 }
