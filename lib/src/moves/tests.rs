@@ -28,6 +28,9 @@ fn check_consistent(mv: &dyn Move, input: &str) {
 fn test_examples() {
     for info in INFO {
         let (_rest, mv) = crate::parser::mv::parse_move(info.example, info.example)
+            .unwrap_or_else(|e| panic!("example for {} doesn't parse!: {e:?}", info.name));
+        let mv = mv
+            .construct()
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
         check_consistent(&*mv.mv, info.example);
     }
@@ -48,6 +51,9 @@ fn test_examples_all_params() {
 
         // Use the example to get a valid entry code.
         let (_rest, eg) = crate::parser::mv::parse_move(info.example, info.example)
+            .unwrap_or_else(|e| panic!("example for {} doesn't parse!: {e:?}", info.name));
+        let eg = eg
+            .construct()
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
 
         // Should be able to create a move from these parameter values...
@@ -69,6 +75,9 @@ fn test_examples_all_params() {
         // ... and the move's `text()` should parse...
         let text = mv.text();
         let (_rest, regen_mv) = crate::parser::mv::parse_move(&text, &text)
+            .unwrap_or_else(|e| panic!("generated text '{text}' doesn't parse!: {e:?}",));
+        let regen_mv = regen_mv
+            .construct()
             .unwrap_or_else(|e| panic!("generated text '{text}' doesn't construct!: {e:?}",));
         // ... into something that re-emits the same `text()`.
         assert_eq!(text, regen_mv.mv.text());

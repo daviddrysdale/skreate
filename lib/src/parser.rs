@@ -2,7 +2,7 @@
 
 //! Parser.
 
-use crate::{ParseError, TextPosition, TimedMove};
+use crate::{ParseError, TextPosition};
 use nom::{
     branch::alt,
     bytes::complete::tag,
@@ -59,7 +59,7 @@ fn parse_separator(input: &str) -> IResult<&str, Vec<&str>> {
     )))(input)
 }
 
-pub(crate) fn parse(start: &str) -> IResult<&str, Vec<TimedMove>> {
+pub(crate) fn parse(start: &str) -> IResult<&str, Vec<mv::TimedInputs>> {
     // Allow separators before the move text
     let (rest, (_, moves)) = tuple((
         opt(parse_separator),

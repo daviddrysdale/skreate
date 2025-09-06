@@ -6,7 +6,7 @@ use crate::{
     moves::{self, repeat::RepeatEnd, PseudoMoveId, SkatingMoveId},
     parser::timing::{parse_count, parse_duration},
     parser::{self, parse_i32, InnErr},
-    JumpCount, Move, MoveParam, TextPosition, TimedMove,
+    Code, Count, Duration, JumpCount, Move, MoveParam, PreTransition, TextPosition, TimedMove,
 };
 use log::info;
 use nom::{
@@ -21,6 +21,71 @@ use nom::{
 
 #[cfg(test)]
 mod tests;
+
+/// Information about a move to be constructed.
+pub(crate) enum Info {
+    Skating {
+        move_id: SkatingMoveId,
+        pre_transition: PreTransition,
+        code: Code,
+    },
+    Pseudo {
+        move_id: PseudoMoveId,
+    },
+}
+
+/// Parsed inputs that are needed to construct a `Move`.
+pub(crate) struct Inputs<'a> {
+    pub input: &'a str,
+    pub text_pos: TextPosition,
+    pub info: Info,
+    pub params: Vec<MoveParam>,
+}
+
+impl<'a> Inputs<'a> {
+    /// Create the [`Move`] described by the inputs.
+    pub fn construct(self) -> Result<Box<dyn Move>, parser::Error<'a>> {
+        match self.info {
+            Info::Skating {
+                move_id,
+                pre_transition,
+                code,
+            } => move_id
+                .construct(self.input, self.text_pos, pre_transition, code, self.params)
+                .map_err(|_e| parser::fail(self.input)),
+            Info::Pseudo { move_id } => move_id
+                .construct(self.input, self.text_pos, self.params)
+                .map_err(|_e| parser::fail(self.input)),
+        }
+    }
+}
+
+/// A set of move inputs with associated timing information.
+pub(crate) struct TimedInputs<'a> {
+    pub count: Option<Count>,
+    pub duration: Option<Duration>,
+    pub mv_inputs: Inputs<'a>,
+}
+
+impl<'a> TimedInputs<'a> {
+    /// Create the [`TimedMove`] described by the inputs.
+    pub fn construct(self) -> Result<TimedMove, parser::Error<'a>> {
+        Ok(TimedMove {
+            count: self.count,
+            duration: self.duration,
+            mv: self.mv_inputs.construct()?,
+        })
+    }
+}
+impl<'a> From<Inputs<'a>> for TimedInputs<'a> {
+    fn from(mv_inputs: Inputs<'a>) -> Self {
+        TimedInputs {
+            count: None,
+            duration: None,
+            mv_inputs,
+        }
+    }
+}
 
 fn parse_twizzle_id(input: &str) -> IResult<&str, SkatingMoveId> {
     map(
@@ -105,7 +170,7 @@ fn parse_skating_move_id(edge: crate::Edge, input: &str) -> IResult<&str, Skatin
 }
 
 /// Parse a skating move.
-fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, Box<dyn Move>> {
+fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, Inputs<'a>> {
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
@@ -119,14 +184,24 @@ fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, Bo
     info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
-        move_id
-            .construct(input, text_pos, pre_transition, code, params)
-            .map_err(|_e| fail(input))?,
+        Inputs {
+            input,
+            text_pos,
+            info: Info::Skating {
+                move_id,
+                pre_transition,
+                code,
+            },
+            params,
+        },
     ))
 }
 
 /// Parse a skating move with optional timing info beforehand.
-fn parse_timed_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
+fn parse_timed_skating_move<'a>(
+    start: &'a str,
+    input: &'a str,
+) -> IResult<&'a str, TimedInputs<'a>> {
     map_res(
         tuple((
             space0,
@@ -135,11 +210,11 @@ fn parse_timed_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a s
             opt(parse_duration),
             |input| parse_skating_move(start, input),
         )),
-        |(_, count, _, duration, mv)| {
-            Ok::<_, InnErr>(TimedMove {
+        |(_, count, _, duration, mv_inputs)| {
+            Ok::<_, InnErr>(TimedInputs {
                 count,
                 duration,
-                mv,
+                mv_inputs,
             })
         },
     )
@@ -167,7 +242,10 @@ fn parse_pseudo_move_id(input: &str) -> IResult<&str, PseudoMoveId> {
 }
 
 /// Parse a pseudo-move.
-pub(crate) fn parse_pseudo_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
+pub(crate) fn parse_pseudo_move<'a>(
+    start: &'a str,
+    input: &'a str,
+) -> IResult<&'a str, TimedInputs<'a>> {
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, move_id) = parse_pseudo_move_id(rest)?;
@@ -179,15 +257,21 @@ pub(crate) fn parse_pseudo_move<'a>(start: &'a str, input: &'a str) -> IResult<&
     info!("found {move_id:?} at {text_pos:?}");
     Ok((
         rest,
-        move_id
-            .construct(input, text_pos, params)
-            .map_err(|_e| fail(input))?
-            .into(),
+        Inputs {
+            input,
+            text_pos,
+            info: Info::Pseudo { move_id },
+            params,
+        }
+        .into(),
     ))
 }
 
 /// Parse an end-repeat marker.
-pub(crate) fn parse_repeat_end<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
+pub(crate) fn parse_repeat_end<'a>(
+    start: &'a str,
+    input: &'a str,
+) -> IResult<&'a str, TimedInputs<'a>> {
     let (rest, _) = space0(input)?;
     let cur = rest;
     let (rest, alternate) = alt((
@@ -214,14 +298,20 @@ pub(crate) fn parse_repeat_end<'a>(start: &'a str, input: &'a str) -> IResult<&'
             value: alternate.into(),
         },
     ];
-    let mv = move_id
-        .construct(input, text_pos, params)
-        .map_err(|_e| fail(input))?;
-    Ok((rest, mv.into()))
+    Ok((
+        rest,
+        Inputs {
+            input,
+            text_pos,
+            info: Info::Pseudo { move_id },
+            params,
+        }
+        .into(),
+    ))
 }
 
 /// Parse a move.
-pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedMove> {
+pub(crate) fn parse_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, TimedInputs<'a>> {
     alt((
         |input| parse_timed_skating_move(start, input),
         |input| parse_pseudo_move(start, input),

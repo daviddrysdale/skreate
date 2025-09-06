@@ -424,7 +424,7 @@ trait Move {
 
 /// Convert the input into a list of moves.
 fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
-    let (rest, moves) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
+    let (rest, move_inputs) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
     if !rest.is_empty() {
         let pos = TextPosition::new(input, rest, rest);
         error!("failed to parse remainder at {pos:?}: '{}'", rest);
@@ -433,7 +433,12 @@ fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
             msg: "failed to parse".to_string(),
         })
     } else {
-        Ok(moves)
+        // Convert the parsed move inputs into moves.
+        let moves: Result<Vec<TimedMove>, ParseError> = move_inputs
+            .into_iter()
+            .map(|inputs| inputs.construct().map_err(|e| parser::err(e, input)))
+            .collect();
+        Ok(moves?)
     }
 }
 
