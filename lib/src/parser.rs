@@ -44,15 +44,6 @@ fn parse_i32(input: &str) -> IResult<&str, i32> {
     .parse(input)
 }
 
-fn parse_u32(input: &str) -> IResult<&str, u32> {
-    map_res(
-        recognize(tuple((many1(one_of("0123456789")),))),
-        // Convert `&str` to `u32` on the way out.
-        |out: &str| out.parse::<u32>(),
-    )
-    .parse(input)
-}
-
 fn parse_separator(input: &str) -> IResult<&str, Vec<&str>> {
     // Separate moves by...
     many1(alt((

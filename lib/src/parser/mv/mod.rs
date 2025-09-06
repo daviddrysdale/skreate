@@ -5,8 +5,8 @@
 use crate::{
     moves::{self, repeat::RepeatEnd, PseudoMoveId, SkatingMoveId},
     parser::timing::{parse_count, parse_duration},
-    parser::{self, parse_u32, InnErr},
-    JumpCount, Move, TextPosition, TimedMove,
+    parser::{self, parse_i32, InnErr},
+    JumpCount, Move, MoveParam, TextPosition, TimedMove,
 };
 use log::info;
 use nom::{
@@ -195,14 +195,28 @@ pub(crate) fn parse_repeat_end<'a>(start: &'a str, input: &'a str) -> IResult<&'
         value(false, tag(RepeatEnd::ALT_MOVE_SAME)),
     ))(rest)?;
     let (rest, count) = opt(map_res(
-        tuple((space0, tag("x"), space0, parse_u32)),
+        tuple((space0, tag("x"), space0, parse_i32)),
         |(_, _, _, count)| Ok::<_, InnErr>(count),
     ))
     .parse(rest)?;
     let count = count.unwrap_or(2);
     let text_pos = TextPosition::new(start, cur, rest);
     info!("found RepeatEnd count={count} alternate={alternate} at {text_pos:?}");
-    let mv: Box<dyn Move> = Box::new(RepeatEnd::new(text_pos, count, alternate));
+
+    let move_id = PseudoMoveId::RepeatEnd;
+    let params = vec![
+        MoveParam {
+            name: "count",
+            value: count.into(),
+        },
+        MoveParam {
+            name: "alternate",
+            value: alternate.into(),
+        },
+    ];
+    let mv = move_id
+        .construct(input, text_pos, params)
+        .map_err(|_e| fail(input))?;
     Ok((rest, mv.into()))
 }
 
