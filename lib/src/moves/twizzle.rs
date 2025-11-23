@@ -134,7 +134,7 @@ impl Twizzle {
             "{entry_code}{}{}{}",
             Self::MOVE,
             count / 2,
-            if count % 2 == 0 { "" } else { ".5" }
+            if count.is_multiple_of(2) { "" } else { ".5" }
         );
         let text = format!("{prefix}{label_text}{suffix}");
 
@@ -175,7 +175,7 @@ impl Twizzle {
             moves.push(Curve::construct(&exit2, text_pos)?);
             moves.push(Curve::construct(&exit1, text_pos)?);
 
-            if count % 2 == 0 && n == (count - 1) / 2 {
+            if count.is_multiple_of(2) && n == (count - 1) / 2 {
                 let label = format!("Label [side=100,text=\"{label_text}\"]");
                 moves.push(Label::construct(&label, text_pos)?);
             }

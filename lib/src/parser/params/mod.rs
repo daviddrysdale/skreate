@@ -50,7 +50,7 @@ fn parse_name(input: &str) -> IResult<&str, &str> {
 }
 
 /// Parse a "name=value" parameter.
-fn parse_name_value(input: &str) -> IResult<&str, MoveParamRef> {
+fn parse_name_value(input: &str) -> IResult<&str, MoveParamRef<'_>> {
     map(
         tuple((
             parse_name,
@@ -66,7 +66,7 @@ fn parse_name_value(input: &str) -> IResult<&str, MoveParamRef> {
 }
 
 /// Parse explicit "[name1=val1, name2=val2]" parameters.
-fn parse_name_values(input: &str) -> IResult<&str, Vec<MoveParamRef>> {
+fn parse_name_values(input: &str) -> IResult<&str, Vec<MoveParamRef<'_>>> {
     delimited(
         value((), terminated(tag("["), space0)),
         separated_list0(
@@ -133,7 +133,14 @@ fn parse_short_codes(input: &str) -> IResult<&str, (Option<DetentLevel>, Option<
 #[allow(clippy::type_complexity)]
 pub fn parse(
     input: &str,
-) -> IResult<&str, (Option<DetentLevel>, Option<DetentLevel>, Vec<MoveParamRef>)> {
+) -> IResult<
+    &str,
+    (
+        Option<DetentLevel>,
+        Option<DetentLevel>,
+        Vec<MoveParamRef<'_>>,
+    ),
+> {
     map(
         tuple((parse_short_codes, space0, opt(parse_name_values))),
         |((plus_minus, more_less), _, params)| (plus_minus, more_less, params.unwrap_or_default()),

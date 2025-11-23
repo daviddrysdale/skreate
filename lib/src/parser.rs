@@ -55,7 +55,7 @@ fn parse_separator(input: &str) -> IResult<&str, Vec<&str>> {
     )))(input)
 }
 
-pub(crate) fn parse(start: &str) -> IResult<&str, Vec<mv::TimedInputs>> {
+pub(crate) fn parse(start: &str) -> IResult<&str, Vec<mv::TimedInputs<'_>>> {
     // Allow separators before the move text
     let (rest, (_, moves)) = tuple((
         opt(parse_separator),
