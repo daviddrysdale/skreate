@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-GB">
 <head>
-  <meta charset='utf-8'>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" type="text/css" href="css/manual.css" media="screen" />
 
   <title>Skating Diagram Creator</title>
@@ -92,7 +93,7 @@ should hold for 2 beats.
 
 <a id="reference"/><h2>Move Reference</h2>
 
-<table>
+<table summary="Move reference">
   <thead>
     <tr>
       <th>Example</th>
@@ -103,7 +104,7 @@ should hold for 2 beats.
   </thead>
   <tbody>
     {{#each infos}}
-    <a id="ref-{{this.name}}"/><tr>
+    <a id="ref-{{this.escapedName}}"/><tr>
       <td class="center">
         <b><code>{{this.example}}</code></b>
       </td>

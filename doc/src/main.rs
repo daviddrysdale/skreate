@@ -143,6 +143,12 @@ fn main() {
     let jinfos: &mut JsonValue = json.as_object_mut().unwrap().get_mut("infos").unwrap();
     for jinfo in jinfos.as_array_mut().unwrap() {
         let jinfo = jinfo.as_object_mut().unwrap();
+        if let Some(JsonValue::String(name)) = jinfo.get("name") {
+            jinfo.insert(
+                "escapedName".to_string(),
+                JsonValue::String(id_escape(name)),
+            );
+        }
         let jparams: &mut JsonValue = jinfo.get_mut("params").unwrap();
         for jparam in jparams.as_array_mut().unwrap() {
             let jparam = jparam.as_object_mut().unwrap();
@@ -167,4 +173,8 @@ fn main() {
                 .as_bytes(),
         )
         .expect("failed to write rendered manual");
+}
+
+fn id_escape(id: &str) -> String {
+    str::replace(id, " ", "_")
 }
