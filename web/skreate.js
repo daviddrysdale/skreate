@@ -242,6 +242,12 @@ function playthrough(editor, positions, timings, timeout) {
 }
 
 export function setup_editor(div, autofocus, text) {
+  return setup_editor_internal(div, autofocus, text, true)
+}
+export function setup_mini_editor(div, autofocus, text) {
+  return setup_editor_internal(div, autofocus, text, false)
+}
+function setup_editor_internal(div, autofocus, text, include_io) {
   var editor_div = div.find(".editor");
   editor_div.html(text);
   var editor = ace.edit(editor_div.get(0));
@@ -254,9 +260,11 @@ export function setup_editor(div, autofocus, text) {
   }
   var diagram_div = div.find(".diagram");
 
-  setup_save(div, diagram_div, getValue);
-  setup_load(div, diagram_div);
-  setup_download(div, diagram_div, getValue);
+  if (include_io) {
+    setup_save(div, diagram_div, getValue);
+    setup_load(div, diagram_div);
+    setup_download(div, diagram_div, getValue);
+  }
   setup_preview(div, getValue);
   setup_edit(div, getValue);
 

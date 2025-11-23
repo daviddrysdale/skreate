@@ -288,11 +288,11 @@
     </footer>
   </body>
   <script type="module">
-    import {setup_editor, load_skate} from './skreate.js';
+    import {setup_mini_editor, load_skate} from './skreate.js';
     $( ".skreate" ).each(function(index) {
         let id = '#' + this.id;
         let text = this.dataset.skreate;
-        $(document).ready(function() { setup_editor($(id), false, text); });
+        $(document).ready(function() { setup_mini_editor($(id), false, text); });
     });
   </script>
 </html>
