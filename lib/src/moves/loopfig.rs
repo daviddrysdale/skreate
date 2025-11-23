@@ -16,7 +16,7 @@ impl Loop {
     pub const MOVE: &'static str = "-Loop";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        name: "Loop",
+        name: "Loop figure",
         id: MoveId::Skating(SkatingMoveId::Loop),
         summary: "Loop figure",
         example: "RBI-Loop",

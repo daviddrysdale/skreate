@@ -198,7 +198,7 @@ impl Loop {
     pub const JUMP: &'static str = "Lo";
     /// Static move information.
     pub const INFO: moves::Info = moves::Info {
-        name: "Loop",
+        name: "Loop jump",
         id: MoveId::Skating(SkatingMoveId::LoopJump(JumpCount::Single)),
         summary: "Loop jump",
         example: "RBO-1Lo",
