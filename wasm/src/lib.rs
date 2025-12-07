@@ -68,18 +68,18 @@ pub fn generate_with_positions(input: &str) -> Result<GeneratedSvgPositions, Par
     })
 }
 
-/// Generate canonical input.
+/// Generate canonical input, URL-encoded.
 #[wasm_bindgen]
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     trace!("In canonicalize('{input}')");
-    Ok(skreate::canonicalize(input)?)
+    Ok(skreate::canonicalize_url(input)?)
 }
 
-/// Generate canonical input displayed vertically.
+/// Generate canonical input displayed vertically, URL-encoded.
 #[wasm_bindgen]
 pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
     trace!("In canonicalize('{input}')");
-    Ok(skreate::canonicalize_vert(input)?)
+    Ok(skreate::canonicalize_vert_url(input)?)
 }
 
 /// Error in parsing input.  Direct equivalent of [`skreate::ParseError`], mirrored here to allow conversion to

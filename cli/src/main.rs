@@ -2,7 +2,7 @@
 
 //! Command line driver for diagram generation.
 use anyhow::Result;
-use clap::Parser;
+use clap::{Parser, ValueEnum};
 use log::debug;
 use std::io::Write;
 
@@ -15,6 +15,21 @@ struct Opts {
     /// Where to emit output; stdout if not specified.
     #[arg(short, long = "out")]
     outfile: Option<String>,
+
+    /// Action to perform; default is to generate SVG.
+    #[arg(short, long, value_enum)]
+    action: Option<Action>,
+}
+
+#[derive(Clone, Copy, Default, Debug, ValueEnum)]
+enum Action {
+    /// Generate SVG file.
+    #[default]
+    Generate,
+    /// Expand all parameters fully.
+    Expand,
+    /// Convert parameters to canonical form.
+    Canonicalize,
 }
 
 fn main() -> Result<()> {
@@ -27,10 +42,15 @@ fn main() -> Result<()> {
         "-" => Box::new(std::io::stdin()),
         f => Box::new(std::fs::File::open(f)?),
     };
-
     let mut input = String::new();
     reader.read_to_string(&mut input)?;
-    let output = skreate::generate(&input)?;
+
+    let action = opts.action.unwrap_or_default();
+    let output = match action {
+        Action::Generate => skreate::generate(&input)?,
+        Action::Expand => skreate::expand(&input)?,
+        Action::Canonicalize => skreate::canonicalize(&input)?,
+    };
 
     let mut writer: Box<dyn std::io::Write> = match opts.outfile {
         None => Box::new(std::io::stdout()),

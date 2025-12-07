@@ -256,7 +256,7 @@ struct TimedMove {
 }
 
 impl TimedMove {
-    fn text(&self) -> String {
+    fn prefix(&self) -> String {
         let count = match self.count {
             Some(Count(n)) => format!("{n}) "),
             None => String::new(),
@@ -265,7 +265,14 @@ impl TimedMove {
             Some(Duration(n)) => format!("/{n} "),
             None => String::new(),
         };
-        format!("{count}{duration}{}", self.mv.text())
+        format!("{count}{duration}")
+    }
+    fn text(&self) -> String {
+        format!("{}{}", self.prefix(), self.mv.text())
+    }
+    fn expanded_text(&self) -> String {
+        // TODO: expand text here
+        format!("{}{}", self.prefix(), self.mv.text())
     }
     fn opposite(&self, repeat: Option<usize>) -> Self {
         Self {
@@ -527,14 +534,34 @@ fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError>
 pub fn canonicalize(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
-    Ok(urlencoding::encode(&min_inputs.join(";")).to_string())
+    Ok(min_inputs.join(";"))
+}
+
+/// Generate canonicalized / minimized input, URL-encoded.
+pub fn canonicalize_url(input: &str) -> Result<String, ParseError> {
+    Ok(urlencoding::encode(&canonicalize(input)?).to_string())
 }
 
 /// Generate canonicalized / minimized input for vertical display
 pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
-    Ok(urlencoding::encode(&min_inputs.join("\n")).to_string())
+    Ok(min_inputs.join("\n"))
+}
+
+/// Generate canonicalized / minimized input for vertical display, URL-encoded.
+pub fn canonicalize_vert_url(input: &str) -> Result<String, ParseError> {
+    Ok(urlencoding::encode(&canonicalize_vert(input)?).to_string())
+}
+
+/// Generate fully-expanded input.
+pub fn expand(input: &str) -> Result<String, ParseError> {
+    let moves = moves(input)?;
+    let min_inputs = moves
+        .into_iter()
+        .map(|m| m.expanded_text())
+        .collect::<Vec<_>>();
+    Ok(min_inputs.join("\n") + "\n")
 }
 
 /// Generate SVG for the given input.
