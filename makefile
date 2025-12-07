@@ -38,11 +38,11 @@ $(CLI): cli/src/main.rs $(LIBRARY_SRC)
 
 # Run the `skreate-cli` command line tool.
 run-cli: $(CLI)
-	$<
+	$< -
 
 # Convert a .skate file to SVG with the `skreate-cli` command line tool.
 web/examples/%.svg: web/examples/%.skate $(CLI)
-	$(CLI) $< > $@
+	$(CLI) -o $@ $<
 
 test:
 	cargo test
