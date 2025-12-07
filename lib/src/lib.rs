@@ -9,7 +9,7 @@ pub use crate::params::MoveParam;
 pub use crate::types::*;
 use log::{debug, error, info, trace};
 use std::collections::{HashMap, HashSet};
-use std::fmt::{self, Display, Formatter};
+use std::fmt::{self, Debug, Display, Formatter};
 use svg::{
     node::element::{Definitions, Description, Group, Path, Rectangle, Style, Text, Title, Use},
     node::Comment,
@@ -249,6 +249,7 @@ pub const COUNT_ZERO: Count = Count(0);
 pub struct Duration(pub i32);
 
 /// A move with associated timing information.
+#[derive(Debug)]
 struct TimedMove {
     count: Option<Count>,
     duration: Option<Duration>,
@@ -432,6 +433,15 @@ trait Move {
     }
 }
 
+impl Debug for dyn Move {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        match self.text_pos() {
+            Some(pos) => write!(f, "[{pos:?}] {}", self.text()),
+            None => write!(f, "{}", self.text()),
+        }
+    }
+}
+
 /// Convert the input into a list of moves.
 fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
     let (rest, move_inputs) = crate::parser::parse(input).map_err(|e| parser::err(e, input))?;
@@ -557,14 +567,58 @@ pub fn minimize_vert_url(input: &str) -> Result<String, ParseError> {
     Ok(urlencoding::encode(&minimize_vert(input)?).to_string())
 }
 
-/// Generate fully-expanded input.
+/// Generate canonicalized input, using smallest parameter expressions but preserving whitespace and comments.
+pub fn canonicalize(input: &str) -> Result<String, ParseError> {
+    transform_input(input, |mv| mv.text())
+}
+
+/// Generate fully-expanded input, preserving whitespace and comments.
 pub fn expand(input: &str) -> Result<String, ParseError> {
+    transform_input(input, |mv| mv.expanded_text())
+}
+
+fn transform_input<F>(input: &str, f: F) -> Result<String, ParseError>
+where
+    F: Fn(&TimedMove) -> String,
+{
+    enum InMove<'a> {
+        First(&'a TimedMove),
+        Rest,
+    }
     let moves = moves(input)?;
-    let min_inputs = moves
-        .into_iter()
-        .map(|m| m.expanded_text())
-        .collect::<Vec<_>>();
-    Ok(min_inputs.join("\n") + "\n")
+    let mut result = String::new();
+    for (text_pos, rest) in pos_iter(input) {
+        // Determine if `text_pos` is inside a move definition.
+        // This is inefficient; it iterates over all moves for every character.
+        let in_move = moves.iter().find_map(|mv| {
+            let Some(mv_tpos) = mv.mv.text_pos() else {
+                return None;
+            };
+            if text_pos.row != mv_tpos.row {
+                // Moves cannot span rows.
+                return None;
+            }
+            if text_pos.col == mv_tpos.col {
+                Some(InMove::First(mv))
+            } else if text_pos.col > mv_tpos.col && text_pos.col < (mv_tpos.col + mv_tpos.count) {
+                Some(InMove::Rest)
+            } else {
+                None
+            }
+        });
+        match in_move {
+            // On first character of a move definition, emit the transformed move text.
+            Some(InMove::First(mv)) => result += &f(mv),
+            // Skip the rest of the original move definition.
+            Some(InMove::Rest) => {}
+            // Pass through any non-move text (e.g. whitespace, comments).
+            None => {
+                let ch = rest.chars().next().unwrap();
+                result.push(ch)
+            }
+        }
+    }
+    Ok(result)
 }
 
 /// Generate SVG for the given input.

@@ -52,7 +52,7 @@ fn main() -> Result<()> {
         Action::Generate => skreate::generate(&input)?,
         Action::Minimize => skreate::minimize(&input)?,
         Action::Expand => skreate::expand(&input)?,
-        Action::Canonicalize => todo!("skreate::canonicalize(&input)?"),
+        Action::Canonicalize => skreate::canonicalize(&input)?,
     };
 
     let mut writer: Box<dyn std::io::Write> = match opts.outfile {

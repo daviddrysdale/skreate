@@ -66,22 +66,69 @@ pub struct TextPosition {
     pub repeat: Option<usize>,
 }
 
+/// Helper macro to create [`TextPosition`] instance for a single character.
+#[macro_export]
+macro_rules! text_pos {
+    { $row:expr, $col:expr } => {
+        TextPosition { row: $row, col: $col, count:1, repeat:None }
+    }
+}
+
+/// Iterator over characters and their positions in a string.
+pub struct PosIterator<'a> {
+    pos: &'a str,
+    row: usize,
+    col: usize,
+    count: usize,
+}
+
+impl<'a> Iterator for PosIterator<'a> {
+    type Item = (TextPosition, &'a str);
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.pos.is_empty() {
+            return None;
+        }
+        let result = (
+            TextPosition {
+                row: self.row,
+                col: self.col,
+                count: 1,
+                repeat: None,
+            },
+            self.pos,
+        );
+
+        if self.pos.as_bytes().first() == Some(&b'\n') {
+            self.row += 1;
+            self.col = 0;
+        } else {
+            self.col += 1;
+        }
+        self.count += 1;
+        self.pos = &self.pos[1..];
+        Some(result)
+    }
+}
+
+/// Iterator through the characters in a string and their locations.
+pub fn pos_iter<'a>(input: &'a str) -> PosIterator<'a> {
+    PosIterator {
+        pos: input,
+        row: 0,
+        col: 0,
+        count: 0,
+    }
+}
+
 impl TextPosition {
     /// Determine position from current location in input stream, subtracting any trailing whitespace.
     pub fn new(start: &str, cur: &str, end: &str) -> Self {
-        let mut row = 0;
-        let mut col = 0;
-        let mut pos = start;
-        // Calculate the (row, col) of `cur` relative to `start`.
-        while pos.as_ptr() < cur.as_ptr() {
-            if pos.as_bytes().first() == Some(&b'\n') {
-                row += 1;
-                col = 0;
-            } else {
-                col += 1;
-            }
-            pos = &pos[1..]
-        }
+        let (text_pos, _rest) = pos_iter(start)
+            .find(|(_text_pos, s)| s.as_ptr() >= cur.as_ptr())
+            .unwrap();
+        let row = text_pos.row;
+        let col = text_pos.col;
+
         // To calculate the length of the matched chunk of input we want to subtract off any trailing whitespace.
         let count = end.as_ptr() as usize - cur.as_ptr() as usize;
         let chunk = &cur[..std::cmp::min(count, cur.len())];
@@ -718,6 +765,45 @@ mod tests {
             let end = &text[cur..];
             let got = TextPosition::new(text, end, end);
             assert_eq!(got, want, "for position of '{needle}' in '{text}'");
+        }
+    }
+
+    #[test]
+    fn test_text_pos_iterator() {
+        let tests = [
+            ("", vec![]),
+            (
+                "abc",
+                vec![
+                    (text_pos!(0, 0), "abc"),
+                    (text_pos!(0, 1), "bc"),
+                    (text_pos!(0, 2), "c"),
+                ],
+            ),
+            (
+                "a\n c",
+                vec![
+                    (text_pos!(0, 0), "a\n c"),
+                    (text_pos!(0, 1), "\n c"),
+                    (text_pos!(1, 0), " c"),
+                    (text_pos!(1, 1), "c"),
+                ],
+            ),
+            (
+                "a\nb\nc\n",
+                vec![
+                    (text_pos!(0, 0), "a\nb\nc\n"),
+                    (text_pos!(0, 1), "\nb\nc\n"),
+                    (text_pos!(1, 0), "b\nc\n"),
+                    (text_pos!(1, 1), "\nc\n"),
+                    (text_pos!(2, 0), "c\n"),
+                    (text_pos!(2, 1), "\n"),
+                ],
+            ),
+        ];
+        for (input, want) in tests {
+            let got = pos_iter(input).collect::<Vec<_>>();
+            assert_eq!(got, want, "for {input:?}");
         }
     }
 }
