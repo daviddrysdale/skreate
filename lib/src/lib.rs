@@ -533,28 +533,28 @@ fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError>
     Ok(expanded)
 }
 
-/// Generate canonicalized / minimized input.
-pub fn canonicalize(input: &str) -> Result<String, ParseError> {
+/// Generate minimized input.
+pub fn minimize(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
     Ok(min_inputs.join(";"))
 }
 
-/// Generate canonicalized / minimized input, URL-encoded.
-pub fn canonicalize_url(input: &str) -> Result<String, ParseError> {
-    Ok(urlencoding::encode(&canonicalize(input)?).to_string())
+/// Generate minimized input, URL-encoded.
+pub fn minimize_url(input: &str) -> Result<String, ParseError> {
+    Ok(urlencoding::encode(&minimize(input)?).to_string())
 }
 
-/// Generate canonicalized / minimized input for vertical display
-pub fn canonicalize_vert(input: &str) -> Result<String, ParseError> {
+/// Generate minimized input for vertical display
+pub fn minimize_vert(input: &str) -> Result<String, ParseError> {
     let moves = moves(input)?;
     let min_inputs = moves.into_iter().map(|m| m.text()).collect::<Vec<_>>();
     Ok(min_inputs.join("\n"))
 }
 
-/// Generate canonicalized / minimized input for vertical display, URL-encoded.
-pub fn canonicalize_vert_url(input: &str) -> Result<String, ParseError> {
-    Ok(urlencoding::encode(&canonicalize_vert(input)?).to_string())
+/// Generate minimized input for vertical display, URL-encoded.
+pub fn minimize_vert_url(input: &str) -> Result<String, ParseError> {
+    Ok(urlencoding::encode(&minimize_vert(input)?).to_string())
 }
 
 /// Generate fully-expanded input.

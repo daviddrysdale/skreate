@@ -26,6 +26,8 @@ enum Action {
     /// Generate SVG file.
     #[default]
     Generate,
+    /// Convert to minimal form.
+    Minimize,
     /// Expand all parameters fully.
     Expand,
     /// Convert parameters to canonical form.
@@ -48,8 +50,9 @@ fn main() -> Result<()> {
     let action = opts.action.unwrap_or_default();
     let output = match action {
         Action::Generate => skreate::generate(&input)?,
+        Action::Minimize => skreate::minimize(&input)?,
         Action::Expand => skreate::expand(&input)?,
-        Action::Canonicalize => skreate::canonicalize(&input)?,
+        Action::Canonicalize => todo!("skreate::canonicalize(&input)?"),
     };
 
     let mut writer: Box<dyn std::io::Write> = match opts.outfile {

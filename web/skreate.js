@@ -7,7 +7,7 @@
 // will "boot" the module and make it ready to use. Currently browsers
 // don't support natively imported WebAssembly as an ES module, but
 // eventually the manual initialization won't be required!
-import init, { initialize, generate, generate_with_positions, canonicalize, canonicalize_vert, ParseError } from './pkg/skreate_wasm.js';
+import init, { initialize, generate, generate_with_positions, minimize, minimize_vert, ParseError } from './pkg/skreate_wasm.js';
 
 async function run() {
   // First up we need to actually load the wasm file, so we use the
@@ -130,7 +130,7 @@ export function setup_preview(div, get_value) {
   var preview_link = div.find('.preview');
   preview_link.click(function(ev) {
     var text = get_value();
-    $(this).attr("href", "preview.html?text=" + canonicalize(text));
+    $(this).attr("href", "preview.html?text=" + minimize(text));
   });
 }
 
@@ -138,7 +138,7 @@ export function setup_edit(div, get_value) {
   var edit_link = div.find('.edit');
   edit_link.click(function(ev) {
     var text = get_value();
-    $(this).attr("href", "index.html?text=" + canonicalize_vert(text));
+    $(this).attr("href", "index.html?text=" + minimize_vert(text));
   });
 }
 
