@@ -45,6 +45,9 @@ impl Move for RepeatStart {
         // Always output the short form.
         Self::ALT_MOVE.to_string()
     }
+    fn expanded_text(&self) -> String {
+        self.text()
+    }
     fn text_pos(&self) -> Option<TextPosition> {
         Some(self.text_pos)
     }
@@ -145,6 +148,9 @@ impl Move for RepeatEnd {
             format!("x{}", self.count)
         };
         format!("{prefix}{suffix}")
+    }
+    fn expanded_text(&self) -> String {
+        self.text()
     }
     fn text_pos(&self) -> Option<TextPosition> {
         Some(self.text_pos)

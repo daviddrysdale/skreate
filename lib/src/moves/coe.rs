@@ -90,15 +90,15 @@ impl ChangeOfEdge {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
+        let text_prefix = format!("{prefix}{entry_code}{}", Self::MOVE);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::ChangeOfEdge,
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }

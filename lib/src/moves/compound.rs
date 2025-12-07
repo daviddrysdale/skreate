@@ -20,8 +20,9 @@ pub struct Compound {
     start_code: Code,
 
     id: MoveId,
+    info: &'static [params::Info],
     params: Vec<MoveParam>,
-    text: String,
+    text_prefix: String,
     text_pos: TextPosition,
     move_for_count: Option<usize>,
 }
@@ -36,7 +37,7 @@ impl fmt::Debug for Compound {
         write!(f, ", start_code: {:?}", self.start_code)?;
         write!(f, ", id: {:?}", self.id)?;
         write!(f, ", params: {:?}", self.params)?;
-        write!(f, ", text: {:?}", self.text)?;
+        write!(f, ", text_prefix: {:?}", self.text_prefix)?;
         write!(f, ", text_pos: {:?}", self.text_pos)?;
         write!(f, ", move_for_count: {:?}", self.move_for_count)?;
         write!(f, " }}")
@@ -57,10 +58,11 @@ impl Compound {
         text_pos: TextPosition,
         id: SkatingMoveId,
         moves: Vec<Box<dyn Move>>,
+        info: &'static [params::Info],
         params: Vec<MoveParam>,
-        text: String,
+        text_prefix: String,
     ) -> Self {
-        Compound::new_with_count_idx(text_pos, id, moves, params, text, Some(0))
+        Compound::new_with_count_idx(text_pos, id, moves, info, params, text_prefix, Some(0))
     }
 
     /// Create a compound move, identifying which one gets count labels.
@@ -77,8 +79,9 @@ impl Compound {
         text_pos: TextPosition,
         id: SkatingMoveId,
         moves: Vec<Box<dyn Move>>,
+        info: &'static [params::Info],
         params: Vec<MoveParam>,
-        text: String,
+        text_prefix: String,
         move_for_count: Option<usize>,
     ) -> Self {
         assert!(moves.len() >= 2);
@@ -103,8 +106,9 @@ impl Compound {
             moves,
             start_code: start_code.expect("first move must have code"),
             id: MoveId::Skating(id),
+            info,
             params,
-            text,
+            text_prefix,
             move_for_count,
         }
     }
@@ -142,7 +146,12 @@ impl Move for Compound {
         self.moves[self.moves.len() - 1].end()
     }
     fn text(&self) -> String {
-        self.text.clone()
+        let suffix = params::to_string(self.info, &self.params);
+        format!("{}{}", self.text_prefix, suffix)
+    }
+    fn expanded_text(&self) -> String {
+        let suffix = params::to_expanded(self.info, &self.params);
+        format!("{}{}", self.text_prefix, suffix)
     }
     fn text_pos(&self) -> Option<TextPosition> {
         Some(self.text_pos)
@@ -245,17 +254,18 @@ impl Move for Compound {
     }
     fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move> {
         let opp_re = regex::Regex::new(r"opposite\((.*)\)").unwrap();
-        let text = match opp_re.captures(&self.text) {
+        let text_prefix = match opp_re.captures(&self.text_prefix) {
             Some(caps) => caps[1].to_string(),
-            None => format!("opposite({})", self.text),
+            None => format!("opposite({})", self.text_prefix),
         };
         Box::new(Self {
             moves: self.moves.iter().map(|mv| mv.opposite(repeat)).collect(),
             start_code: self.start_code.opposite(),
             id: self.id,
+            info: self.info,
             // This assumes that none of the parameters have a handedness.
             params: self.params.clone(),
-            text,
+            text_prefix,
             text_pos: self.text_pos.at_repeat(repeat),
             move_for_count: self.move_for_count,
         })
@@ -265,8 +275,9 @@ impl Move for Compound {
             moves: self.moves.iter().map(|mv| mv.box_clone(repeat)).collect(),
             start_code: self.start_code,
             id: self.id,
+            info: self.info,
             params: self.params.clone(),
-            text: self.text.clone(),
+            text_prefix: self.text_prefix.clone(),
             text_pos: self.text_pos.at_repeat(repeat),
             move_for_count: self.move_for_count,
         })

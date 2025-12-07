@@ -159,6 +159,10 @@ impl Move for Rink {
         let params = params::to_string(Self::INFO.params, &self.params());
         format!("{}{params}", Self::INFO.name)
     }
+    fn expanded_text(&self) -> String {
+        let params = params::to_expanded(Self::INFO.params, &self.params());
+        format!("{}{params}", Self::INFO.name)
+    }
     fn text_pos(&self) -> Option<TextPosition> {
         Some(self.text_pos)
     }

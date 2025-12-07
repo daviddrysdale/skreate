@@ -177,15 +177,15 @@ impl Salchow {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+        let text_prefix = format!("{prefix}{entry_code}-{}{}", count, Self::JUMP);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::Salchow(count),
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }
@@ -284,15 +284,15 @@ impl Loop {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+        let text_prefix = format!("{prefix}{entry_code}-{}{}", count, Self::JUMP);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::LoopJump(count),
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }
@@ -383,15 +383,15 @@ impl Axel {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+        let text_prefix = format!("{prefix}{entry_code}-{}{}", count, Self::JUMP);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::Axel(count),
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }
@@ -474,15 +474,15 @@ impl ToeLoop {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+        let text_prefix = format!("{prefix}{entry_code}-{}{}", count, Self::JUMP);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::ToeLoop(count),
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }
@@ -565,15 +565,15 @@ impl Flip {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+        let text_prefix = format!("{prefix}{entry_code}-{}{}", count, Self::JUMP);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::Flip(count),
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }
@@ -656,15 +656,15 @@ impl Lutz {
         ];
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}-{}{}{suffix}", count, Self::JUMP);
+        let text_prefix = format!("{prefix}{entry_code}-{}{}", count, Self::JUMP);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::Lutz(count),
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }

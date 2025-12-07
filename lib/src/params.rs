@@ -383,6 +383,28 @@ pub fn to_string(params_info: &[Info], params: &[MoveParam]) -> String {
     s
 }
 
+/// Generate a fully-expanded string describing a set of [`MoveParam`]s.
+/// Assumes that the length of the two inputs is the same.
+pub fn to_expanded(params_info: &[Info], params: &[MoveParam]) -> String {
+    // Invariant: `params_info` and `params` are in sync.
+    assert_eq!(params_info.len(), params.len());
+
+    let mut s = String::new();
+    s += "[";
+    let mut first = true;
+    for param in params.iter() {
+        if !first {
+            s += ",";
+        }
+        s += param.name;
+        s += "=";
+        s += &param.value.to_string();
+        first = false;
+    }
+    s += "]";
+    s
+}
+
 /// Populate a collection of [`MoveParam`]s from the given `input`.  Any values that are not mentioned in the input will
 /// get default values.
 pub fn populate(

@@ -225,6 +225,11 @@ impl Move for Curve {
         let suffix = params::to_string(Self::INFO.params, &self.params());
         format!("{prefix}{}{suffix}", self.code)
     }
+    fn expanded_text(&self) -> String {
+        let prefix = self.pre_transition.prefix();
+        let suffix = params::to_expanded(Self::INFO.params, &self.params());
+        format!("{prefix}{}{suffix}", self.code)
+    }
     fn text_pos(&self) -> Option<TextPosition> {
         Some(self.text_pos)
     }

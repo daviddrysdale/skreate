@@ -129,14 +129,13 @@ impl Twizzle {
         let mid_angle = 2 * angle;
 
         let prefix = pre_transition.prefix();
-        let suffix = params::to_string(Self::INFO.params, &params);
         let label_text = format!(
             "{entry_code}{}{}{}",
             Self::MOVE,
             count / 2,
             if count.is_multiple_of(2) { "" } else { ".5" }
         );
-        let text = format!("{prefix}{label_text}{suffix}");
+        let text_prefix = format!("{prefix}{label_text}");
 
         let mut code = entry_code;
         let mut moves = Vec::new();
@@ -193,8 +192,9 @@ impl Twizzle {
             text_pos,
             SkatingMoveId::Twizzle(count),
             moves,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
             None,
         ))
     }

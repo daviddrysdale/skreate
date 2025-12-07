@@ -271,8 +271,7 @@ impl TimedMove {
         format!("{}{}", self.prefix(), self.mv.text())
     }
     fn expanded_text(&self) -> String {
-        // TODO: expand text here
-        format!("{}{}", self.prefix(), self.mv.text())
+        format!("{}{}", self.prefix(), self.mv.expanded_text())
     }
     fn opposite(&self, repeat: Option<usize>) -> Self {
         Self {
@@ -410,6 +409,10 @@ trait Move {
     /// Emit text that describes the move.  Feeding this text into `moves::factory` should result in the
     /// same `Move` (although it may have different `input_text`).
     fn text(&self) -> String;
+
+    /// Emit fully-expanded text that describes the move.  Feeding this text into `moves::factory` should result in the
+    /// same `Move` (although it may have different `input_text`).
+    fn expanded_text(&self) -> String;
 
     /// Return the position in the text that held the move, if available.
     fn text_pos(&self) -> Option<TextPosition> {

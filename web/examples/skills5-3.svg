@@ -186,19 +186,19 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LBO-ClMo[angle=20,len=250]_3::RFO[len=250]">
 <path d="M 0,0 a 716,716 0 0 1 -43,244"/>
 </g>
-<g id="opposite(RFI-OpCho[delta-angle=-50,delta-len=-200])_0::LFI[angle=90]">
+<g id="opposite(RFI-OpCho)[delta-angle=-50,delta-len=-200]_0::LFI[angle=90]">
 <path d="M 0,0 a 286,286 0 0 1 -286,286"/>
 </g>
-<g id="opposite(RFI-OpCho[delta-angle=-50,delta-len=-200])_3::RBO[angle=40,len=250]">
+<g id="opposite(RFI-OpCho)[delta-angle=-50,delta-len=-200]_3::RBO[angle=40,len=250]">
 <path d="M 0,0 a 358,358 0 0 0 83,230"/>
 </g>
 <g id="xf-LBI[len=200]">
 <path d="M 0,0 a 572,572 0 0 0 34,195"/>
 </g>
-<g id="opposite(LBO-ClMo[angle=20,len=250])_0::RBO[len=250]">
+<g id="opposite(LBO-ClMo)[angle=20,len=250]_0::RBO[len=250]">
 <path d="M 0,0 a 716,716 0 0 0 43,244"/>
 </g>
-<g id="opposite(LBO-ClMo[angle=20,len=250])_3::LFO[len=250]">
+<g id="opposite(LBO-ClMo)[angle=20,len=250]_3::LFO[len=250]">
 <path d="M 0,0 a 716,716 0 0 0 43,244"/>
 </g>
 </defs>
@@ -372,14 +372,14 @@ ClMo
 <text id="r_48_c_2_29_n5" style="stroke:black; fill:black; font-size:24pt;" x="1935" y="4541">
 RFO
 </text>
-<use id="r_45_c_2_53_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1835 4422) rotate(185)" xlink:href="#opposite(RFI-OpCho[delta-angle=-50,delta-len=-200])_0::LFI[angle=90]"/>
+<use id="r_45_c_2_53_rep_2" style="stroke:black; stroke-width:4;" transform="translate(1835 4422) rotate(185)" xlink:href="#opposite(RFI-OpCho)[delta-angle=-50,delta-len=-200]_0::LFI[angle=90]"/>
 <text id="r_45_c_2_53_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="1980" y="4282">
 LFI
 </text>
 <text id="r_45_c_2_53_rep_2_n3" style="stroke:black; fill:black; font-size:24pt;" x="2146" y="4242">
 OpCho
 </text>
-<use id="r_45_c_2_53_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(2140 4201) rotate(275)" xlink:href="#opposite(RFI-OpCho[delta-angle=-50,delta-len=-200])_3::RBO[angle=40,len=250]"/>
+<use id="r_45_c_2_53_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(2140 4201) rotate(275)" xlink:href="#opposite(RFI-OpCho)[delta-angle=-50,delta-len=-200]_3::RBO[angle=40,len=250]"/>
 <text id="r_45_c_2_53_rep_2_n5" style="stroke:black; fill:black; font-size:24pt;" x="2245" y="4121">
 RBO
 </text>
@@ -390,14 +390,14 @@ LBI
 <text id="r_47_c_2_27_rep_2_n3" style="stroke:black; fill:black; font-size:24pt;" x="2414" y="4152">
 XF
 </text>
-<use id="r_48_c_2_29_rep_2" style="stroke:black; stroke-width:4;" transform="translate(2495 3960) rotate(215)" xlink:href="#opposite(LBO-ClMo[angle=20,len=250])_0::RBO[len=250]"/>
+<use id="r_48_c_2_29_rep_2" style="stroke:black; stroke-width:4;" transform="translate(2495 3960) rotate(215)" xlink:href="#opposite(LBO-ClMo)[angle=20,len=250]_0::RBO[len=250]"/>
 <text id="r_48_c_2_29_rep_2_n2" style="stroke:black; fill:black; font-size:24pt;" x="2493" y="3822">
 RBO
 </text>
 <text id="r_48_c_2_29_rep_2_n3" style="stroke:black; fill:black; font-size:24pt;" x="2541" y="3719">
 ClMo
 </text>
-<use id="r_48_c_2_29_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(2562 3756) rotate(195)" xlink:href="#opposite(LBO-ClMo[angle=20,len=250])_3::LFO[len=250]"/>
+<use id="r_48_c_2_29_rep_2_n4" style="stroke:black; stroke-width:4;" transform="translate(2562 3756) rotate(195)" xlink:href="#opposite(LBO-ClMo)[angle=20,len=250]_3::LFO[len=250]"/>
 <text id="r_48_c_2_29_rep_2_n5" style="stroke:black; fill:black; font-size:24pt;" x="2513" y="3627">
 LFO
 </text>
@@ -430,14 +430,14 @@ ClMo
 <text id="r_48_c_2_29_rep_3_n5" style="stroke:black; fill:black; font-size:24pt;" x="1929" y="2714">
 RFO
 </text>
-<use id="r_45_c_2_53_rep_4" style="stroke:black; stroke-width:4;" transform="translate(1829 2595) rotate(185)" xlink:href="#opposite(RFI-OpCho[delta-angle=-50,delta-len=-200])_0::LFI[angle=90]"/>
+<use id="r_45_c_2_53_rep_4" style="stroke:black; stroke-width:4;" transform="translate(1829 2595) rotate(185)" xlink:href="#opposite(RFI-OpCho)[delta-angle=-50,delta-len=-200]_0::LFI[angle=90]"/>
 <text id="r_45_c_2_53_rep_4_n2" style="stroke:black; fill:black; font-size:24pt;" x="1974" y="2455">
 LFI
 </text>
 <text id="r_45_c_2_53_rep_4_n3" style="stroke:black; fill:black; font-size:24pt;" x="2140" y="2415">
 OpCho
 </text>
-<use id="r_45_c_2_53_rep_4_n4" style="stroke:black; stroke-width:4;" transform="translate(2134 2374) rotate(275)" xlink:href="#opposite(RFI-OpCho[delta-angle=-50,delta-len=-200])_3::RBO[angle=40,len=250]"/>
+<use id="r_45_c_2_53_rep_4_n4" style="stroke:black; stroke-width:4;" transform="translate(2134 2374) rotate(275)" xlink:href="#opposite(RFI-OpCho)[delta-angle=-50,delta-len=-200]_3::RBO[angle=40,len=250]"/>
 <text id="r_45_c_2_53_rep_4_n5" style="stroke:black; fill:black; font-size:24pt;" x="2239" y="2294">
 RBO
 </text>
@@ -448,14 +448,14 @@ LBI
 <text id="r_47_c_2_27_rep_4_n3" style="stroke:black; fill:black; font-size:24pt;" x="2408" y="2325">
 XF
 </text>
-<use id="r_48_c_2_29_rep_4" style="stroke:black; stroke-width:4;" transform="translate(2489 2133) rotate(215)" xlink:href="#opposite(LBO-ClMo[angle=20,len=250])_0::RBO[len=250]"/>
+<use id="r_48_c_2_29_rep_4" style="stroke:black; stroke-width:4;" transform="translate(2489 2133) rotate(215)" xlink:href="#opposite(LBO-ClMo)[angle=20,len=250]_0::RBO[len=250]"/>
 <text id="r_48_c_2_29_rep_4_n2" style="stroke:black; fill:black; font-size:24pt;" x="2487" y="1995">
 RBO
 </text>
 <text id="r_48_c_2_29_rep_4_n3" style="stroke:black; fill:black; font-size:24pt;" x="2535" y="1892">
 ClMo
 </text>
-<use id="r_48_c_2_29_rep_4_n4" style="stroke:black; stroke-width:4;" transform="translate(2556 1929) rotate(195)" xlink:href="#opposite(LBO-ClMo[angle=20,len=250])_3::LFO[len=250]"/>
+<use id="r_48_c_2_29_rep_4_n4" style="stroke:black; stroke-width:4;" transform="translate(2556 1929) rotate(195)" xlink:href="#opposite(LBO-ClMo)[angle=20,len=250]_3::LFO[len=250]"/>
 <text id="r_48_c_2_29_rep_4_n5" style="stroke:black; fill:black; font-size:24pt;" x="2507" y="1800">
 LFO
 </text>

@@ -107,15 +107,15 @@ impl ThreeTurn {
             Curve::construct(&exit1, text_pos),
         ];
 
-        let suffix = params::to_string(Self::INFO.params, &params);
-        let text = format!("{prefix}{entry_code}{}{suffix}", Self::MOVE);
+        let text_prefix = format!("{prefix}{entry_code}{}", Self::MOVE);
 
         Ok(Compound::new(
             text_pos,
             SkatingMoveId::ThreeTurn,
             map_errs(moves)?,
+            Self::INFO.params,
             params,
-            text,
+            text_prefix,
         ))
     }
 }
