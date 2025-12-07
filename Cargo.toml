@@ -7,7 +7,6 @@ members = [
   "wasm",
 ]
 resolver = "2"
-rust-version = "1.87"
 
 [patch.crates-io]
 skreate = { path = "lib" }

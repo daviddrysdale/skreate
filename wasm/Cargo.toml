@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["David Drysdale <dmd@lurklurk.org>"]
 edition = "2021"
 license = "Apache-2.0"
+rust-version = "1.87"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
