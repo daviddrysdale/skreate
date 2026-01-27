@@ -25,6 +25,9 @@ mod types;
 /// Extra margin to put around calculated bounding box.
 const MARGIN: i64 = 50;
 
+/// Maximum number of repeats to display.
+const MAX_REPEATS: u32 = 100;
+
 /// Common style definitions.
 pub const STYLE_DEF: &str = "text { text-anchor: middle } path,rect,circle { fill:none; }";
 
@@ -481,7 +484,7 @@ fn expand_repeats(timed_mvs: &[TimedMove]) -> Result<Vec<TimedMove>, ParseError>
                 };
                 start_pos.1 += 1;
                 let repeat_end = timed_mv.mv.as_repeat_end().unwrap();
-                if start_pos.1 > repeat_end.count {
+                if start_pos.1 > std::cmp::min(repeat_end.count, MAX_REPEATS) {
                     info!("[{idx}] hit end-repeat but done");
                     start_positions.pop();
                     flipped = false;
