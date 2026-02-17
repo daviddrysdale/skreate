@@ -15,7 +15,7 @@ fn test_compare() {
     for info in skreate::moves::INFO {
         let name = info.name;
         let input = info.example;
-        let path = doc_dir.join(format!("{input}.svg"));
+        let path = doc_dir.join(format!("{}.svg", sanitise_file_name::sanitise(input)));
         info!("process '{input}' for {path:?}");
         let got = skreate::generate(input).expect("failed to generate SVG");
         if regenerate() {
