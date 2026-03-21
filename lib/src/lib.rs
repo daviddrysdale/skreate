@@ -594,9 +594,7 @@ where
         // Determine if `text_pos` is inside a move definition.
         // This is inefficient; it iterates over all moves for every character.
         let in_move = moves.iter().find_map(|mv| {
-            let Some(mv_tpos) = mv.mv.text_pos() else {
-                return None;
-            };
+            let mv_tpos = mv.mv.text_pos()?;
             if text_pos.row != mv_tpos.row {
                 // Moves cannot span rows.
                 return None;
