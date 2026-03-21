@@ -70,6 +70,7 @@ impl StraightEdge {
         let (rest, entry_code) = parse_code(rest, text_pos)?;
         let params = params::populate(Self::INFO.params, rest, text_pos)?;
         Ok(Box::new(Self::from_params(
+            input,
             text_pos,
             pre_transition,
             entry_code,
@@ -78,6 +79,7 @@ impl StraightEdge {
     }
 
     pub fn from_params(
+        _input: &str,
         text_pos: TextPosition,
         pre_transition: PreTransition,
         entry_code: Code,
