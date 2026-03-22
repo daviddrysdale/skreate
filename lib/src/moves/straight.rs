@@ -75,6 +75,7 @@ impl StraightEdge {
             pre_transition,
             entry_code,
             params,
+            &mut moves::Context::default(),
         )?))
     }
 
@@ -84,6 +85,7 @@ impl StraightEdge {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Self, ParseError> {
         if entry_code.edge != Edge::Flat {
             return Err(ParseError {
@@ -101,8 +103,10 @@ impl StraightEdge {
             dir: entry_code.dir,
             len: params[0].value.as_i32(text_pos)?,
             label: if label.is_empty() {
+                ctx.prev_label = None;
                 None
             } else {
+                ctx.prev_label = Some(label.to_string());
                 Some(label.to_string())
             },
             style: params[2].value.as_str(text_pos)?.to_string(),

@@ -457,9 +457,10 @@ fn moves(input: &str) -> Result<Vec<TimedMove>, ParseError> {
         })
     } else {
         // Convert the parsed move inputs into moves.
+        let mut ctx = moves::Context::default();
         let moves: Result<Vec<TimedMove>, ParseError> = move_inputs
             .into_iter()
-            .map(|inputs| inputs.construct())
+            .map(|inputs| inputs.construct(&mut ctx))
             .collect();
         Ok(moves?)
     }

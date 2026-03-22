@@ -47,7 +47,7 @@ pub(crate) struct Inputs<'a> {
 
 impl Inputs<'_> {
     /// Create the [`Move`] described by the inputs.
-    pub fn construct(self) -> Result<Box<dyn Move>, ParseError> {
+    pub fn construct(self, ctx: &mut moves::Context) -> Result<Box<dyn Move>, ParseError> {
         match self.info {
             Info::Skating {
                 move_id,
@@ -61,7 +61,7 @@ impl Inputs<'_> {
                     self.more_less,
                     self.vals,
                 )?;
-                move_id.construct(self.input, self.text_pos, pre_transition, code, params)
+                move_id.construct(self.input, self.text_pos, pre_transition, code, params, ctx)
             }
             Info::Pseudo { move_id } => {
                 let params = params::populate_from(
@@ -71,7 +71,7 @@ impl Inputs<'_> {
                     self.more_less,
                     self.vals,
                 )?;
-                move_id.construct(self.text_pos, params)
+                move_id.construct(self.text_pos, params, ctx)
             }
         }
     }
@@ -86,11 +86,11 @@ pub(crate) struct TimedInputs<'a> {
 
 impl TimedInputs<'_> {
     /// Create the [`TimedMove`] described by the inputs.
-    pub fn construct(self) -> Result<TimedMove, ParseError> {
+    pub fn construct(self, ctx: &mut moves::Context) -> Result<TimedMove, ParseError> {
         Ok(TimedMove {
             count: self.count,
             duration: self.duration,
-            mv: self.mv_inputs.construct()?,
+            mv: self.mv_inputs.construct(ctx)?,
         })
     }
 }

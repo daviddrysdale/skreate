@@ -106,6 +106,7 @@ impl Salchow {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
@@ -113,6 +114,7 @@ impl Salchow {
             code!(RBI) => false,
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let entry_angle = params[0].value.as_i32(text_pos)?;
         let entry_len = params[1].value.as_i32(text_pos)?;
@@ -213,6 +215,7 @@ impl Loop {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
@@ -220,6 +223,7 @@ impl Loop {
             code!(LBO) => false,
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let entry_angle = params[0].value.as_i32(text_pos)?;
         let entry_len = params[1].value.as_i32(text_pos)?;
@@ -320,6 +324,7 @@ impl Axel {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
@@ -327,6 +332,7 @@ impl Axel {
             code!(RFO) => false,
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let entry_angle = params[0].value.as_i32(text_pos)?;
         let entry_len = params[1].value.as_i32(text_pos)?;
@@ -419,6 +425,7 @@ impl ToeLoop {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
@@ -426,6 +433,7 @@ impl ToeLoop {
             code!(LBO) => false,
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let entry_angle = params[0].value.as_i32(text_pos)?;
         let entry_len = params[1].value.as_i32(text_pos)?;
@@ -510,6 +518,7 @@ impl Flip {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
@@ -517,6 +526,7 @@ impl Flip {
             code!(RBI) => false,
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let entry_angle = params[0].value.as_i32(text_pos)?;
         let entry_len = params[1].value.as_i32(text_pos)?;
@@ -601,6 +611,7 @@ impl Lutz {
         entry_code: Code,
         count: JumpCount,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let regular = match entry_code {
@@ -608,6 +619,7 @@ impl Lutz {
             code!(RBO) => false,
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let entry_angle = params[0].value.as_i32(text_pos)?;
         let entry_len = params[1].value.as_i32(text_pos)?;

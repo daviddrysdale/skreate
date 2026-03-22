@@ -103,6 +103,7 @@ impl Twizzle {
         entry_code: Code,
         count: u32,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let sign = match entry_code {
@@ -112,6 +113,7 @@ impl Twizzle {
             code!(RFI) | code!(LFO) | code!(LBI) | code!(RBO) => "",
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
+        ctx.prev_label = None;
 
         let angle = params[0].value.as_i32(text_pos)?;
         let len = params[1].value.as_i32(text_pos)?;

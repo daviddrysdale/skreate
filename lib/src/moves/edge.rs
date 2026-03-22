@@ -109,6 +109,7 @@ impl Curve {
             pre_transition,
             entry_code,
             params,
+            &mut moves::Context::default(),
         )?))
     }
 
@@ -118,6 +119,7 @@ impl Curve {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Self, ParseError> {
         // Reject invalid entry codes.
         if !matches!(
@@ -148,8 +150,10 @@ impl Curve {
             angle: params[0].value.as_i32(text_pos)?,
             len: params[1].value.as_i32(text_pos)?,
             label: if label.is_empty() {
+                ctx.prev_label = Some(format!("{entry_code}"));
                 None
             } else {
+                ctx.prev_label = Some(label.to_string());
                 Some(label.to_string())
             },
             transition_label: if transition_label.is_empty() {

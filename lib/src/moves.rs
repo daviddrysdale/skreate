@@ -196,6 +196,7 @@ impl SkatingMoveId {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut Context,
     ) -> Result<Box<dyn Move>, ParseError> {
         macro_rules! make_move {
             { $module:ident :: $variant:ident } => {
@@ -205,6 +206,7 @@ impl SkatingMoveId {
                     pre_transition,
                     entry_code,
                     params,
+                    ctx,
                 )?)
             };
             { $module:ident :: $variant:ident, $count:expr } => {
@@ -215,6 +217,7 @@ impl SkatingMoveId {
                     entry_code,
                     $count,
                     params,
+                    ctx,
                 )?)
             };
         }
@@ -287,7 +290,9 @@ impl PseudoMoveId {
         &self,
         text_pos: TextPosition,
         params: Vec<MoveParam>,
+        ctx: &mut Context,
     ) -> Result<Box<dyn Move>, ParseError> {
+        ctx.prev_label = None;
         Ok(match self {
             Self::Warp => Box::new(warp::Warp::from_params(text_pos, params)?),
             Self::Shift => Box::new(shift::Shift::from_params(text_pos, params)?),
@@ -317,6 +322,39 @@ impl MoveId {
         match self {
             Self::Skating(id) => id.info(),
             Self::Pseudo(id) => id.info(),
+        }
+    }
+}
+
+/// Information about the context in which a move is being constructed.
+#[derive(Debug, Default)]
+pub(crate) struct Context {
+    /// Final label of the previous move.
+    pub prev_label: Option<String>,
+}
+
+impl Context {
+    fn entry_label_param(&self, entry_code: Code, label: &str) -> String {
+        if label.is_empty() {
+            let implicit_label = Some(format!("{entry_code}"));
+            if implicit_label == self.prev_label {
+                // The label that will get attached to the entry edge is the same as the label on the previous exit
+                // edge, so skip displaying it.
+                ",label=\" \"".to_string()
+            } else {
+                "".to_string()
+            }
+        } else {
+            format!(",label=\"{label}\"")
+        }
+    }
+    fn exit_label_param(&mut self, exit_code: Code, label: &str) -> String {
+        if label.is_empty() {
+            self.prev_label = Some(format!("{exit_code}"));
+            "".to_string()
+        } else {
+            self.prev_label = Some(label.to_string());
+            format!(",label=\"{label}\"")
         }
     }
 }

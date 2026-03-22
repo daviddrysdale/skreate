@@ -30,7 +30,7 @@ fn test_examples() {
         let (_rest, mv) = crate::parser::mv::parse_move(info.example, info.example)
             .unwrap_or_else(|e| panic!("example for {} doesn't parse!: {e:?}", info.name));
         let mv = mv
-            .construct()
+            .construct(&mut Context::default())
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
         check_consistent(&*mv.mv, info.example);
     }
@@ -53,7 +53,7 @@ fn test_examples_all_params() {
         let (_rest, eg) = crate::parser::mv::parse_move(info.example, info.example)
             .unwrap_or_else(|e| panic!("example for {} doesn't parse!: {e:?}", info.name));
         let eg = eg
-            .construct()
+            .construct(&mut Context::default())
             .unwrap_or_else(|e| panic!("example for {} doesn't construct!: {e:?}", info.name));
 
         // Should be able to create a move from these parameter values...
@@ -73,18 +73,20 @@ fn test_examples_all_params() {
             more_less: None,
             vals: params.clone(),
         };
-        let mv = inputs.construct().unwrap_or_else(|e| {
-            panic!(
-                "constructing move {:?} with {params:?} failed: {e:?}",
-                info.name
-            )
-        });
+        let mv = inputs
+            .construct(&mut Context::default())
+            .unwrap_or_else(|e| {
+                panic!(
+                    "constructing move {:?} with {params:?} failed: {e:?}",
+                    info.name
+                )
+            });
         // ... and the move's `text()` should parse...
         let text = mv.text();
         let (_rest, regen_mv) = crate::parser::mv::parse_move(&text, &text)
             .unwrap_or_else(|e| panic!("generated text '{text}' doesn't parse!: {e:?}",));
         let regen_mv = regen_mv
-            .construct()
+            .construct(&mut Context::default())
             .unwrap_or_else(|e| panic!("generated text '{text}' doesn't construct!: {e:?}",));
         // ... into something that re-emits the same `text()`.
         assert_eq!(text, regen_mv.mv.text());

@@ -37,6 +37,7 @@ impl ChangeOfEdge {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let angle1 = params[0].value.as_i32(text_pos)?;
@@ -65,16 +66,8 @@ impl ChangeOfEdge {
             edge: entry_code.edge.opposite(),
         };
 
-        let entry_label = if label1.is_empty() {
-            "".to_string()
-        } else {
-            format!(",label=\"{label1}\"")
-        };
-        let exit_label = if label2.is_empty() {
-            "".to_string()
-        } else {
-            format!(",label=\"{label2}\"")
-        };
+        let entry_label = ctx.entry_label_param(entry_code, label1);
+        let exit_label = ctx.exit_label_param(out_code, label2);
 
         let entry = format!("{prefix}{entry_code}[angle={angle1},len={len1},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}{entry_label}]");
         let flat = format!("{flat_code}[len={flat_len},label=\"COE\",style=\"{style}\"]");

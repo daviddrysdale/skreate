@@ -37,6 +37,7 @@ impl Bracket {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let sign = match entry_code {
@@ -98,16 +99,8 @@ impl Bracket {
         let len2c = len2 - len2a - len2b;
         let angle2c = angle1c;
 
-        let entry_label = if label1.is_empty() {
-            "".to_string()
-        } else {
-            format!(",label=\"{label1}\"")
-        };
-        let exit_label = if label2.is_empty() {
-            "".to_string()
-        } else {
-            format!(",label=\"{label2}\"")
-        };
+        let entry_label = ctx.entry_label_param(entry_code, label1);
+        let exit_label = ctx.exit_label_param(out_code, label2);
 
         let entry1 = format!("{prefix}{entry_code}[angle={angle1},len={len1a},style=\"{style}\",transition-label=\"{transition_label}\",label-offset={label_offset}{entry_label}]");
         let entry2 = format!("{entry_flat}[len={len1b},style=\"{style}\",label=\" \"]");

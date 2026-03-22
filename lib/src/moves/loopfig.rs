@@ -33,6 +33,7 @@ impl Loop {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Compound, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
 
@@ -57,8 +58,10 @@ impl Loop {
         };
         let exit_label = if label2.is_empty() {
             // Default to no exit label
+            ctx.prev_label = None;
             " ".to_string()
         } else {
+            ctx.prev_label = Some(label2.to_string());
             label2.to_string()
         };
 

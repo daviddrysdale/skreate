@@ -82,6 +82,7 @@ impl Hop {
             pre_transition,
             entry_code,
             params,
+            &mut moves::Context::default(),
         )?))
     }
 
@@ -91,9 +92,11 @@ impl Hop {
         pre_transition: PreTransition,
         entry_code: Code,
         params: Vec<MoveParam>,
+        ctx: &mut moves::Context,
     ) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
         let label = params[1].value.as_str(text_pos)?;
+        ctx.prev_label = None;
 
         Ok(Self {
             text_pos,
