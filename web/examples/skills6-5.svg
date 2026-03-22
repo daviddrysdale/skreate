@@ -119,7 +119,7 @@ text { text-anchor: middle } path,rect,circle { fill:none; }
 <g id="LBI-CoE[angle=40,len=250,delta-angle=50,delta-len=100,label1=&quot; &quot;]_2::LBO[angle=90,len=350]">
 <path d="M 0,0 a 222,222 0 0 1 -222,222"/>
 </g>
-<g id="LBO-ClCho-[delta-angle=50,delta-len=400]_0::LBO-[angle=90]">
+<g id="LBO-ClCho-[delta-angle=50,delta-len=400]_0::LBO-[angle=90,label=&quot; &quot;]">
 <path d="M 0,0 a 190,190 0 0 1 -190,190"/>
 </g>
 <g id="LBO-ClCho-[delta-angle=50,delta-len=400]_3::RFI[angle=140,len=700]">
@@ -218,15 +218,12 @@ COE
 <text id="r_19_c_0_66_n5" style="stroke:black; fill:black; font-size:36pt;" x="2475" y="4023">
 LBO
 </text>
-<use id="r_20_c_0_48" style="stroke:black; stroke-width:7;" transform="translate(2504 4255) rotate(350)" xlink:href="#LBO-ClCho-[delta-angle=50,delta-len=400]_0::LBO-[angle=90]"/>
-<text id="r_20_c_0_48_n2" style="stroke:black; fill:black; font-size:36pt;" x="2561" y="4459">
-LBO
-</text>
-<text id="r_20_c_0_48_n3" style="stroke:black; fill:black; font-size:36pt;" x="2338" y="4415">
+<use id="r_20_c_0_48" style="stroke:black; stroke-width:7;" transform="translate(2504 4255) rotate(350)" xlink:href="#LBO-ClCho-[delta-angle=50,delta-len=400]_0::LBO-[angle=90,label=&quot; &quot;]"/>
+<text id="r_20_c_0_48_n2" style="stroke:black; fill:black; font-size:36pt;" x="2338" y="4415">
 ClCho
 </text>
-<use id="r_20_c_0_48_n4" style="stroke:black; stroke-width:7;" transform="translate(2373 4440) rotate(80)" xlink:href="#LBO-ClCho-[delta-angle=50,delta-len=400]_3::RFI[angle=140,len=700]"/>
-<text id="r_20_c_0_48_n5" style="stroke:black; fill:black; font-size:36pt;" x="2035" y="4653">
+<use id="r_20_c_0_48_n3" style="stroke:black; stroke-width:7;" transform="translate(2373 4440) rotate(80)" xlink:href="#LBO-ClCho-[delta-angle=50,delta-len=400]_3::RFI[angle=140,len=700]"/>
+<text id="r_20_c_0_48_n4" style="stroke:black; fill:black; font-size:36pt;" x="2035" y="4653">
 RFI
 </text>
 <use id="r_22_c_0_53" style="stroke:black; stroke-width:7;" transform="translate(2295 4943) rotate(300)" xlink:href="#LFI3&gt;&gt;&gt;-[delta-angle=20,delta-len=400]_0::LFI[angle=56,len=225,label=&quot;LFI3&quot;]"/>
