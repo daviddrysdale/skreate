@@ -101,5 +101,5 @@ clean:
 	rm -f web/doc/*          # regenerate with `make manual`
 	rm -f web/examples/*.svg # regenerate with `make regenerate`
 
-distclean:
+distclean: clean
 	rm -rf web/pkg target
