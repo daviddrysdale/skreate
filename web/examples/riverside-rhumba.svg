@@ -42,13 +42,13 @@ Riverside Rhumba
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; }
+text { text-anchor: middle } path { fill:none; } rect { fill:none; } circle { fill:none; }
 </style>
 <g id="Rink[length=4800,centre-circle=0,mid-lines=0]">
 <clipPath id="clip-rink">
 <rect height="4800" rx="750" ry="750" width="3000" x="0" y="0"/>
 </clipPath>
-<rect height="4800" rx="750" ry="750" style="text { text-anchor: middle } path,rect,circle { fill:none; } clip-path:url(#clip-rink)" width="3000" x="0" y="0"/>
+<rect height="4800" rx="750" ry="750" style="text { text-anchor: middle } path { fill:none; } rect { fill:none; } circle { fill:none; } clip-path:url(#clip-rink)" width="3000" x="0" y="0"/>
 <path d="M 0,2400 l 3000,0" style="stroke:red;"/>
 <circle cx="1500" cy="2400" r="2" style="fill: black;"/>
 </g>

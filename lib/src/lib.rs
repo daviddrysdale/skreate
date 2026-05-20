@@ -29,7 +29,8 @@ const MARGIN: i64 = 50;
 const MAX_REPEATS: u32 = 100;
 
 /// Common style definitions.
-pub const STYLE_DEF: &str = "text { text-anchor: middle } path,rect,circle { fill:none; }";
+pub const STYLE_DEF: &str =
+    "text { text-anchor: middle } path { fill:none; } rect { fill:none; } circle { fill:none; }";
 
 /// Description of current skater state.
 #[derive(Debug, Clone, Copy)]

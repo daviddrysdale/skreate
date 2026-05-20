@@ -47,7 +47,7 @@ Rhythm Blues
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; }
+text { text-anchor: middle } path { fill:none; } rect { fill:none; } circle { fill:none; }
 </style>
 <g id="Info[font-size=60,stroke-width=12,label-offset=-100,auto-count=true]"/>
 <g id="LFO[angle=30]">

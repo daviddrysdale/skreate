@@ -8,7 +8,7 @@ Waltz
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; }
+text { text-anchor: middle } path { fill:none; } rect { fill:none; } circle { fill:none; }
 </style>
 </defs>
 <text id="r_0_c_0_19" style="stroke:black; fill:black; font-size: 20pt;" x="0" y="100">

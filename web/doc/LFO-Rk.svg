@@ -8,7 +8,7 @@ Skating Diagram
 </desc>
 <defs>
 <style>
-text { text-anchor: middle } path,rect,circle { fill:none; }
+text { text-anchor: middle } path { fill:none; } rect { fill:none; } circle { fill:none; }
 </style>
 <g id="LFO-Rk_0::LFO[angle=90,len=382]">
 <path d="M 0,0 a 243,243 0 0 0 243,243"/>
