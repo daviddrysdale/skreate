@@ -25,7 +25,7 @@ pub fn parse_direction(input: &str) -> IResult<&str, SkatingDirection> {
     ))(input)
 }
 
-/// Parse input as [`Edge`].
+/// Parse input for single-foot move as [`Edge`].
 pub fn parse_edge(input: &str) -> IResult<&str, Edge> {
     alt((
         value(Edge::Outside, tag("O")),
@@ -34,11 +34,36 @@ pub fn parse_edge(input: &str) -> IResult<&str, Edge> {
     ))(input)
 }
 
+/// Parse input for double-foot forward edge as [`Edge`]. By convention, the edge of the right foot is returned.
+pub fn parse_bf_edge(input: &str) -> IResult<&str, Edge> {
+    alt((
+        value(Edge::Outside, tag("R")),
+        value(Edge::Inside, tag("L")),
+        // no parse for Self::Flat
+    ))(input)
+}
+
+/// Parse input for double-foot backward edge as [`Edge`]. By convention, the edge of the right foot is returned.
+pub fn parse_bb_edge(input: &str) -> IResult<&str, Edge> {
+    alt((
+        value(Edge::Outside, tag("L")),
+        value(Edge::Inside, tag("R")),
+        // no parse for Self::Flat
+    ))(input)
+}
+
 /// Parse input as [`Code`].
 pub fn parse_code(input: &str) -> IResult<&str, Code> {
     let (mut rest, (foot, dir)) = nom::sequence::pair(parse_foot, parse_direction)(input)?;
 
-    let edge = if let Ok((more, edge)) = parse_edge(rest) {
+    // The edge codes for double-footed edges ("L", "R") are different from those for single-footed edges ("I", "O").
+    let edge_parser = match (foot, dir) {
+        (Foot::Both, SkatingDirection::Forward) => parse_bf_edge,
+        (Foot::Both, SkatingDirection::Backward) => parse_bb_edge,
+        _ => parse_edge,
+    };
+
+    let edge = if let Ok((more, edge)) = edge_parser(rest) {
         rest = more;
         edge
     } else {

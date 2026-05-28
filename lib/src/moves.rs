@@ -9,6 +9,7 @@ use crate::{
 use log::warn;
 use serde::Serialize;
 
+pub(crate) mod both;
 pub(crate) mod bracket;
 pub(crate) mod choctaw;
 pub(crate) mod coe;
@@ -138,6 +139,7 @@ pub static INFO: &[Info] = &[
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 pub enum SkatingMoveId {
     Curve,
+    CurveBoth,
     StraightEdge,
     ThreeTurn,
     OpenMohawk,
@@ -167,6 +169,7 @@ impl SkatingMoveId {
     pub fn info(&self) -> &'static Info {
         match self {
             Self::Curve => &edge::Curve::INFO,
+            Self::CurveBoth => &both::CurveBoth::INFO,
             Self::StraightEdge => &straight::StraightEdge::INFO,
             Self::ThreeTurn => &three::ThreeTurn::INFO,
             Self::OpenMohawk => &mohawk::OpenMohawk::INFO,
@@ -223,6 +226,7 @@ impl SkatingMoveId {
         }
         Ok(match self {
             Self::Curve => make_move!(edge::Curve),
+            Self::CurveBoth => make_move!(both::CurveBoth),
             Self::StraightEdge => make_move!(straight::StraightEdge),
             Self::ThreeTurn => make_move!(three::ThreeTurn),
             Self::OpenMohawk => make_move!(mohawk::OpenMohawk),

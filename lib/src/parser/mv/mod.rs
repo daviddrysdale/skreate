@@ -140,13 +140,18 @@ fn parse_jump_id(input: &str) -> IResult<&str, SkatingMoveId> {
     ))(rest)
 }
 
-fn parse_skating_move_id(edge: crate::Edge, input: &str) -> IResult<&str, SkatingMoveId> {
-    if edge == crate::Edge::Flat {
+fn parse_skating_move_id(code: crate::Code, input: &str) -> IResult<&str, SkatingMoveId> {
+    if code.edge == crate::Edge::Flat {
         alt((
             value(SkatingMoveId::Hop, tag(moves::hop::Hop::MOVE)),
             value(SkatingMoveId::StraightEdge, tag("")),
         ))(input)
     } else {
+        let edge_matcher = if code.foot == crate::Foot::Both {
+            value(SkatingMoveId::CurveBoth, tag(""))
+        } else {
+            value(SkatingMoveId::Curve, tag(""))
+        };
         alt((
             value(SkatingMoveId::ThreeTurn, tag(moves::three::ThreeTurn::MOVE)),
             value(
@@ -180,8 +185,8 @@ fn parse_skating_move_id(edge: crate::Edge, input: &str) -> IResult<&str, Skatin
             parse_jump_id,
             value(SkatingMoveId::Loop, tag(moves::loopfig::Loop::MOVE)),
             value(SkatingMoveId::Hop, tag(moves::loopfig::Loop::MOVE)),
-            // Match an empty string last.
-            value(SkatingMoveId::Curve, tag("")),
+            // Match an empty string for a plain edge last.
+            edge_matcher,
         ))(input)
     }
 }
@@ -192,7 +197,7 @@ fn parse_skating_move<'a>(start: &'a str, input: &'a str) -> IResult<&'a str, In
     let cur = rest;
     let (rest, pre_transition) = parser::types::parse_pre_transition(rest)?;
     let (rest, code) = parser::types::parse_code(rest)?;
-    let (rest, move_id) = parse_skating_move_id(code.edge, rest)?;
+    let (rest, move_id) = parse_skating_move_id(code, rest)?;
     let (rest, (plus_minus, more_less, vals)) = parser::params::parse(rest)?;
     let text_pos = TextPosition::new(start, cur, rest);
     info!("found {move_id:?} at {text_pos:?}");

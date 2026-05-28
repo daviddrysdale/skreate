@@ -3,6 +3,7 @@
 //! Common basic types.
 
 use crate::{
+    code,
     moves::{cross_transition, pre_transition, wide_transition},
     MoveParam, ParseError,
 };
@@ -671,7 +672,7 @@ impl Display for SkatingDirection {
     }
 }
 
-/// Blade edge in use.
+/// Blade edge in use.  By convention, for two-footed curves the edge of the right foot is used.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Edge {
     /// Outside of the blade.
@@ -716,16 +717,30 @@ pub struct Code {
 
 impl Display for Code {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{}{}{}", self.foot, self.dir, self.edge)
+        // Internal Code records RF edge for 2-footed curves, so convert back to L/R
+        match &self {
+            code!(BFL) => write!(f, "BFL"),
+            code!(BFR) => write!(f, "BFR"),
+            code!(BBL) => write!(f, "BBL"),
+            code!(BBR) => write!(f, "BBR"),
+            _ => write!(f, "{}{}{}", self.foot, self.dir, self.edge),
+        }
     }
 }
 
 impl Code {
     /// Return the equivalent code for the other foot.
     pub fn opposite(&self) -> Self {
-        Self {
-            foot: self.foot.opposite(),
-            ..*self
+        if self.foot == Foot::Both {
+            Self {
+                edge: self.edge.opposite(),
+                ..*self
+            }
+        } else {
+            Self {
+                foot: self.foot.opposite(),
+                ..*self
+            }
         }
     }
 }
@@ -779,6 +794,10 @@ impl PreTransition {
 macro_rules! code {
     { BF } =>  { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Flat } };
     { BB } =>  { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Flat } };
+    { BFL } => { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Inside } };
+    { BFR } => { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Outside } };
+    { BBL } => { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Outside } };
+    { BBR } => { $crate::Code { foot: $crate::Foot::Both,  dir: $crate::SkatingDirection::Backward, edge: $crate::Edge::Inside } };
     { LF } =>  { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Flat } };
     { LFO } => { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Outside } };
     { LFI } => { $crate::Code { foot: $crate::Foot::Left,  dir: $crate::SkatingDirection::Forward,  edge: $crate::Edge::Inside } };
