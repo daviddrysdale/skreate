@@ -163,7 +163,7 @@ impl Move for StraightEdge {
     fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let len = self.len;
         let mut path = if self.foot == Foot::Both {
-            path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} l 0,{len}")
+            path!("M 0,0 m {HW},0 l 0,{len} m -{HW},-{len} m -{HW},0 l 0,{len}")
         } else {
             path!("M 0,0 l 0,{len}")
         };
