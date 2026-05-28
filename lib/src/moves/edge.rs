@@ -177,35 +177,17 @@ impl Curve {
 
     /// Radius of the circle for which this is an arc.
     fn radius(&self) -> f64 {
-        // If `angle` were 360, arc `len` would be 2πr.
-        // For general angle, arc `len` == (angle/360)*2πr.
-        // Therefore r == len * 360  / (angle * 2π).
-        self.len as f64 * 180.0 / (self.angle as f64 * PI)
+        radius(self.len, self.angle)
     }
 
     /// Point of the arc some percentage along the way, starting at 0,0 facing 0.
     fn percent_point(&self, percent: i32) -> Position {
-        let r = self.radius();
-        let theta = self.angle as f64 * PI / 180.0; // radians
-        let theta = (percent as f64 / 100.0) * theta;
-        let (x, y) = if self.sign() == 1 {
-            (r * theta.cos() - r, r * theta.sin())
-        } else {
-            (r - r * theta.cos(), r * theta.sin())
-        };
-        pos!(x as i64, y as i64)
+        percent_point(self.len, self.angle, self.sign(), percent)
     }
 
     /// End point of the arc, starting at 0,0 facing 0.
     fn endpoint(&self) -> Position {
-        let r = self.radius();
-        let theta = self.angle as f64 * PI / 180.0; // radians
-        let (x, y) = if self.sign() == 1 {
-            (r * theta.cos() - r, r * theta.sin())
-        } else {
-            (r - r * theta.cos(), r * theta.sin())
-        };
-        pos!(x as i64, y as i64)
+        endpoint(self.len, self.angle, self.sign())
     }
 }
 
@@ -355,7 +337,39 @@ impl Move for Curve {
     }
 }
 
-fn timing_text(val: i32) -> SvgText {
+/// Radius of the circle for which this is an arc.
+pub(crate) fn radius(len: i32, angle: i32) -> f64 {
+    // If `angle` were 360, arc `len` would be 2πr.
+    // For general angle, arc `len` == (angle/360)*2πr.
+    // Therefore r == len * 360  / (angle * 2π).
+    len as f64 * 180.0 / (angle as f64 * PI)
+}
+
+/// Point of the arc some percentage along the way, starting at 0,0 facing 0.
+pub(crate) fn percent_point(len: i32, angle: i32, sign: i32, percent: i32) -> Position {
+    let r = radius(len, angle);
+    let theta = angle as f64 * PI / 180.0; // radians
+    let theta = (percent as f64 / 100.0) * theta;
+    let (x, y) = if sign == 1 {
+        (r * theta.cos() - r, r * theta.sin())
+    } else {
+        (r - r * theta.cos(), r * theta.sin())
+    };
+    pos!(x as i64, y as i64)
+}
+
+/// End point of the arc, starting at 0,0 facing 0.
+pub(crate) fn endpoint(len: i32, angle: i32, sign: i32) -> Position {
+    let r = radius(len, angle);
+    let theta = angle as f64 * PI / 180.0; // radians
+    let (x, y) = if sign == 1 {
+        (r * theta.cos() - r, r * theta.sin())
+    } else {
+        (r - r * theta.cos(), r * theta.sin())
+    };
+    pos!(x as i64, y as i64)
+}
+pub(crate) fn timing_text(val: i32) -> SvgText {
     SvgText::new("").add(
         SvgTSpan::new(format!("{val}"))
             .set("font-weight", "bolder")
