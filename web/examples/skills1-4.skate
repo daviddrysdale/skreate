@@ -1,0 +1,24 @@
+Rink
+Title [text="Skills 1 Exercise 1",y=200,font-size=90]
+Info [grid=0,markers=false]
+
+Text [x=1400,y=540,text="SIDE 1",font-size=50]
+Warp [x=1200,y=500,dir=90]
+LF [len=500,label=" ",style="dashed"]
+
+|:
+  BFL [angle=180,len=420]
+  BFR [angle=180,len=420]
+  RFI [angle=180,len=420]
+  RFO [angle=180,len=420]
+  RFI [angle=180,len=420]
+!|x4
+
+Text [x=1500,y=5500,text="SIDE 2",font-size=50]
+Warp [x=1700,y=5500,dir=90]
+LB [len=500,label=" ",style="dashed"]
+
+|:
+  BBL [angle=180,len=500]
+  BBR [angle=180,len=500]
+:| x7
