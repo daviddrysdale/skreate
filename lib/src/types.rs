@@ -189,6 +189,10 @@ impl Display for Centimetres {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
 pub struct FontSize(pub u32);
 
+/// Stroke width.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
+pub struct StrokeWidth(pub i32);
+
 /// Position in input text.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
 pub struct TextPosition {

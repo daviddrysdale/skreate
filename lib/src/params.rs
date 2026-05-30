@@ -2,7 +2,7 @@
 
 //! Functionality for parsing and formatting parameters.
 
-use crate::{Centimetres, FontSize, ParseError, Percentage, Rotation, TextPosition};
+use crate::{Centimetres, FontSize, ParseError, Percentage, Rotation, StrokeWidth, TextPosition};
 use log::{error, trace};
 use serde::Serialize;
 use std::borrow::Cow;
@@ -66,6 +66,10 @@ impl Value {
     /// Extract the numeric value as a percentage.
     pub fn as_percent(&self, pos: TextPosition) -> Result<Percentage, ParseError> {
         self.as_i32(pos).map(Percentage)
+    }
+    /// Extract the numeric value as a stroke width.
+    pub fn as_stroke_width(&self, pos: TextPosition) -> Result<StrokeWidth, ParseError> {
+        self.as_i32(pos).map(StrokeWidth)
     }
     /// Extract the numeric value as a font size.  Must be >= 0.
     pub fn as_font_size(&self, pos: TextPosition) -> Result<FontSize, ParseError> {

@@ -167,7 +167,7 @@ struct RenderOptions {
     /// Font size.
     font_size: MainFontSize,
     /// Stroke width; auto-scale with bounds if [`None`].
-    stroke_width: Option<u32>,
+    stroke_width: Option<StrokeWidth>,
     /// Next unique ID associated with a particular [`TextPosition`].
     next_for_pos: HashMap<TextPosition, usize>,
     /// Label offset scaling percentage.
@@ -230,21 +230,21 @@ impl RenderOptions {
         }
     }
     /// Return the effective stroke-width.
-    pub fn stroke_width(&self) -> u32 {
+    pub fn stroke_width(&self) -> StrokeWidth {
         if let Some(stroke_width) = &self.stroke_width {
             *stroke_width
         } else {
             let diagonal = self.bounds_diag();
             let width = if diagonal < 1000.0 {
-                1
+                StrokeWidth(1)
             } else if diagonal < 1600.0 {
-                2
+                StrokeWidth(2)
             } else if diagonal < 2400.0 {
-                3
+                StrokeWidth(3)
             } else {
-                4
+                StrokeWidth(4)
             };
-            debug!("diagonal dimension {diagonal} => stroke-width: {width}");
+            debug!("diagonal dimension {diagonal} => stroke-width: {width:?}");
             width
         }
     }
@@ -262,7 +262,7 @@ fn use_at(skater: &Skater, def_id: &SvgId, opts: &RenderOptions) -> Use {
         )
         .set(
             "style",
-            format!("stroke:black; stroke-width:{};", opts.stroke_width()),
+            format!("stroke:black; stroke-width:{};", opts.stroke_width().0),
         )
 }
 
@@ -743,7 +743,7 @@ pub fn generate_with_positions(
                         .set("stroke-dasharray", "2,2")
                         .set(
                             "style",
-                            format!("stroke:blue; stroke-width:{};", 2 * opts.stroke_width()),
+                            format!("stroke:blue; stroke-width:{};", 2 * opts.stroke_width().0),
                         ),
                 );
             }
@@ -891,7 +891,7 @@ pub fn generate_with_positions(
                 .set("stroke-dasharray", "5,5")
                 .set(
                     "style",
-                    format!("stroke:red; stroke-width:{};", 3 * opts.stroke_width()),
+                    format!("stroke:red; stroke-width:{};", 3 * opts.stroke_width().0),
                 ),
         );
         doc = doc.add(
@@ -903,7 +903,7 @@ pub fn generate_with_positions(
                 .set("stroke-dasharray", "5,5")
                 .set(
                     "style",
-                    format!("stroke:green; stroke-width:{};", 3 * opts.stroke_width()),
+                    format!("stroke:green; stroke-width:{};", 3 * opts.stroke_width().0),
                 ),
         );
     }
