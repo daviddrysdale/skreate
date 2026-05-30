@@ -5,7 +5,7 @@ use crate::{
     moves::{MoveId, SkatingMoveId},
     params,
     params::Value,
-    Bounds, Code, Label, Move, MoveParam, ParseError, RenderOptions, Rotation, Skater,
+    Bounds, Centimetres, Code, Label, Move, MoveParam, ParseError, RenderOptions, Rotation, Skater,
     SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
@@ -497,9 +497,13 @@ pub fn map_errs(
 }
 
 /// Helper for adding delta-angle
-pub fn add_angle(angle1: i32, delta_angle: i32, pos: TextPosition) -> Result<i32, ParseError> {
+pub fn add_angle(
+    angle1: Rotation,
+    delta_angle: Rotation,
+    pos: TextPosition,
+) -> Result<Rotation, ParseError> {
     let angle2 = angle1 + delta_angle;
-    if angle2 < 0 {
+    if angle2 < Rotation(0) {
         Err(ParseError {
             pos,
             msg: format!("Delta-angle value {delta_angle} must be smaller than angle {angle1}"),
@@ -509,10 +513,14 @@ pub fn add_angle(angle1: i32, delta_angle: i32, pos: TextPosition) -> Result<i32
     }
 }
 
-/// Helper for adding delta-len
-pub fn add_len(len1: i32, delta_len: i32, pos: TextPosition) -> Result<i32, ParseError> {
+/// Helper for adding `delta-len` catching out-of-bounds.
+pub fn add_len(
+    len1: Centimetres,
+    delta_len: Centimetres,
+    pos: TextPosition,
+) -> Result<Centimetres, ParseError> {
     let len2 = len1 + delta_len;
-    if len2 < 0 {
+    if len2 < Centimetres(0) {
         Err(ParseError {
             pos,
             msg: format!("Delta-len value {delta_len} must be smaller than len {len1}"),

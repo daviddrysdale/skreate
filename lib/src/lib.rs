@@ -23,7 +23,9 @@ pub mod parser;
 mod types;
 
 /// Extra margin to put around calculated bounding box.
-const MARGIN: i64 = 50;
+const MARGIN: Centimetres = cm!(50);
+
+const ZERO_CM: Centimetres = cm!(0);
 
 /// Maximum number of repeats to display.
 const MAX_REPEATS: u32 = 100;
@@ -101,6 +103,12 @@ impl Default for Percentage {
     }
 }
 
+impl Display for Percentage {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
 impl Percentage {
     /// Sentinel value used to indicate that the global value of a parameter should be used.
     const GLOBAL_SENTINEL: Percentage = Percentage(-1);
@@ -165,8 +173,8 @@ impl RenderOptions {
     }
 
     fn bounds_diag(&self) -> f64 {
-        let diag_squared =
-            self.bounds.width() * self.bounds.width() + self.bounds.height() * self.bounds.height();
+        let diag_squared = self.bounds.width().0 * self.bounds.width().0
+            + self.bounds.height().0 * self.bounds.height().0;
         (diag_squared as f64).sqrt()
     }
 
@@ -336,7 +344,10 @@ trait Move {
     /// Return a bounding box that encompasses the move, starting from `before`.
     fn bounds(&self, before: &Skater) -> Option<Bounds> {
         // The default implementation just encompasses the before and after positions.
-        let mut bounds = bounds!(before.pos.x, before.pos.y => before.pos.x,before.pos.y);
+        let mut bounds = Bounds {
+            top_left: before.pos,
+            bottom_right: before.pos,
+        };
         let after = *before + self.transition();
         bounds.encompass(&after.pos);
 
@@ -393,8 +404,8 @@ trait Move {
             let mut text = label
                 .text
                 .clone()
-                .set("x", loc.pos.x)
-                .set("y", loc.pos.y)
+                .set("x", loc.pos.x.0)
+                .set("y", loc.pos.y.0)
                 .set(
                     "style",
                     format!(
@@ -701,10 +712,10 @@ pub fn generate_with_positions(
             if opts.show_move_bounds {
                 doc = doc.add(
                     Rectangle::new()
-                        .set("width", move_bounds.width())
-                        .set("height", move_bounds.height())
-                        .set("x", move_bounds.top_left.x)
-                        .set("y", move_bounds.top_left.y)
+                        .set("width", move_bounds.width().0)
+                        .set("height", move_bounds.height().0)
+                        .set("x", move_bounds.top_left.x.0)
+                        .set("y", move_bounds.top_left.y.0)
                         .set("stroke-dasharray", "2,2")
                         .set(
                             "style",
@@ -729,8 +740,8 @@ pub fn generate_with_positions(
     let mut outer_bounds = bounds;
     outer_bounds.add_margin(MARGIN, MARGIN);
     doc = doc
-        .set("width", outer_bounds.width())
-        .set("height", outer_bounds.height());
+        .set("width", outer_bounds.width().0)
+        .set("height", outer_bounds.height().0);
     info!("add {MARGIN} to get {outer_bounds}");
 
     // Third pass: render all the moves.
@@ -817,40 +828,42 @@ pub fn generate_with_positions(
 
     if let Some(grid) = opts.grid {
         let grid = grid as i64;
-        let n = (bounds.top_left.x + grid - 1) / grid;
-        let mut x = grid * n;
+        let n = (bounds.top_left.x.0 + grid - 1) / grid;
+        let mut x = cm!(grid * n);
         while x < bounds.bottom_right.x {
             let y1 = bounds.top_left.y;
             let y2 = bounds.bottom_right.y;
-            let stroke = if x == 0 {
+            let stroke = if x == ZERO_CM {
+                // Use a different style for y axis
                 "stroke:gray; stroke-width:2;"
             } else {
                 "stroke:lightgray"
             };
             doc = doc.add(path!("M {x},{y1} L {x},{y2}").set("style", stroke));
-            x += grid;
+            x += cm!(grid);
         }
-        let n = (bounds.top_left.y + grid - 1) / grid;
-        let mut y = grid * n;
+        let n = (bounds.top_left.y.0 + grid - 1) / grid;
+        let mut y = cm!(grid * n);
         while y < bounds.bottom_right.y {
             let x1 = bounds.top_left.x;
             let x2 = bounds.bottom_right.x;
-            let stroke = if y == 0 {
+            let stroke = if y == ZERO_CM {
+                // Use a different style for x axis
                 "stroke:gray; stroke-width:2;"
             } else {
                 "stroke:lightgray"
             };
             doc = doc.add(path!("M {x1},{y} L {x2},{y}").set("style", stroke));
-            y += grid;
+            y += cm!(grid);
         }
     }
     if opts.show_bounds {
         doc = doc.add(
             Rectangle::new()
-                .set("width", outer_bounds.width())
-                .set("height", outer_bounds.height())
-                .set("x", outer_bounds.top_left.x)
-                .set("y", outer_bounds.top_left.y)
+                .set("width", outer_bounds.width().0)
+                .set("height", outer_bounds.height().0)
+                .set("x", outer_bounds.top_left.x.0)
+                .set("y", outer_bounds.top_left.y.0)
                 .set("stroke-dasharray", "5,5")
                 .set(
                     "style",
@@ -859,10 +872,10 @@ pub fn generate_with_positions(
         );
         doc = doc.add(
             Rectangle::new()
-                .set("width", bounds.width())
-                .set("height", bounds.height())
-                .set("x", bounds.top_left.x)
-                .set("y", bounds.top_left.y)
+                .set("width", bounds.width().0)
+                .set("height", bounds.height().0)
+                .set("x", bounds.top_left.x.0)
+                .set("y", bounds.top_left.y.0)
                 .set("stroke-dasharray", "5,5")
                 .set(
                     "style",

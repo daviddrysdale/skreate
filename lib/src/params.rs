@@ -2,7 +2,7 @@
 
 //! Functionality for parsing and formatting parameters.
 
-use crate::{ParseError, TextPosition};
+use crate::{Centimetres, ParseError, Percentage, Rotation, TextPosition};
 use log::{error, trace};
 use serde::Serialize;
 use std::borrow::Cow;
@@ -55,6 +55,18 @@ pub enum Value {
 }
 
 impl Value {
+    /// Extract the numeric value as a length in centimetres.
+    pub fn as_cm(&self, pos: TextPosition) -> Result<Centimetres, ParseError> {
+        self.as_i32(pos).map(|v| Centimetres(v as i64))
+    }
+    /// Extract the numeric value as a rotation in degrees.
+    pub fn as_rotation(&self, pos: TextPosition) -> Result<Rotation, ParseError> {
+        self.as_i32(pos).map(Rotation)
+    }
+    /// Extract the numeric value as a percentage.
+    pub fn as_percent(&self, pos: TextPosition) -> Result<Percentage, ParseError> {
+        self.as_i32(pos).map(Percentage)
+    }
     /// Extract the numeric value.
     pub fn as_i32(&self, pos: TextPosition) -> Result<i32, ParseError> {
         match self {

@@ -6,8 +6,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    Bounds, Direction, Move, MoveParam, ParseError, Position, RenderOptions, Skater, SvgId,
-    TextPosition,
+    Bounds, Direction, Move, MoveParam, ParseError, Position, RenderOptions, Rotation, Skater,
+    SvgId, TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text as SvgText, Document};
@@ -18,7 +18,7 @@ pub struct Text {
     text: String,
     pos: Position,
     font_size: Option<u32>,
-    rotate: i32,
+    rotate: Rotation,
 }
 
 impl Text {
@@ -81,7 +81,7 @@ impl Text {
             } else {
                 None
             },
-            rotate: params[4].value.as_i32(text_pos)?,
+            rotate: params[4].value.as_rotation(text_pos)?,
         })
     }
 
@@ -97,10 +97,10 @@ impl Move for Text {
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),
-            param!("x" = (self.pos.x as i32)),
-            param!("y" = (self.pos.y as i32)),
+            param!("x" = (self.pos.x.0 as i32)),
+            param!("y" = (self.pos.y.0 as i32)),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
-            param!(self.rotate),
+            param!("rotate" = self.rotate.0),
         ]
     }
     fn text(&self) -> String {
@@ -117,7 +117,7 @@ impl Move for Text {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 10).
         let font_size = self.font_size.unwrap_or(10) as i64;
-        let dir = Direction::new(self.rotate);
+        let dir = Direction::new(0) + self.rotate;
         Some(Bounds::for_text_at(&self.text, self.pos, font_size, dir))
     }
     fn render(
@@ -128,8 +128,8 @@ impl Move for Text {
         _ns: Option<&SvgId>,
     ) -> Document {
         let mut text = SvgText::new(self.text.clone())
-            .set("x", self.pos.x)
-            .set("y", self.pos.y)
+            .set("x", self.pos.x.0)
+            .set("y", self.pos.y.0)
             .set(
                 "style",
                 format!(
@@ -137,10 +137,10 @@ impl Move for Text {
                     self.font_size(opts)
                 ),
             );
-        if self.rotate != 0 {
+        if self.rotate != Rotation(0) {
             text = text.set(
                 "transform",
-                format!("rotate({},{},{})", self.rotate, self.pos.x, self.pos.y),
+                format!("rotate({},{},{})", self.rotate, self.pos.x.0, self.pos.y.0),
             )
         }
         if let Some(pos) = self.text_pos() {

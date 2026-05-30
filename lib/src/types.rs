@@ -13,11 +13,68 @@ use svg::node::element::Text as SvgText;
 
 const DEGREES: i32 = 360;
 
+/// Direction of rotation.
+#[derive(Default, Debug, Clone, Copy, PartialEq, Eq)]
+pub enum RotationDirection {
+    /// Clockwise.
+    #[default]
+    Clockwise,
+    /// Anti-clockwise.
+    AntiClockwise,
+}
+
 /// Rotation, in degrees.
 #[derive(Default, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Rotation(pub i32);
 
-/// Direction, in degrees.
+impl Rotation {
+    /// Generate a rotation that is a fraction of the given rotation.
+    pub fn fraction_of(&self, num: i32, denom: i32) -> Self {
+        Self(self.0 * num / denom)
+    }
+}
+
+impl std::ops::Add<Rotation> for Rotation {
+    type Output = Self;
+    fn add(self, other: Rotation) -> Self::Output {
+        Self(self.0 + other.0)
+    }
+}
+impl std::ops::AddAssign<Rotation> for Rotation {
+    fn add_assign(&mut self, other: Rotation) {
+        self.0 += other.0;
+    }
+}
+impl std::ops::Sub<Rotation> for Rotation {
+    type Output = Rotation;
+    fn sub(self, other: Rotation) -> Rotation {
+        Rotation(self.0 - other.0)
+    }
+}
+impl std::ops::Neg for Rotation {
+    type Output = Self;
+    fn neg(self) -> Self::Output {
+        Self(-self.0)
+    }
+}
+impl std::ops::Mul<RotationDirection> for Rotation {
+    type Output = Self;
+    fn mul(self, other: RotationDirection) -> Self::Output {
+        match other {
+            RotationDirection::Clockwise => self,
+            RotationDirection::AntiClockwise => Self(-self.0),
+        }
+    }
+}
+
+impl Display for Rotation {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
+    }
+}
+
+/// Direction, in degrees.  0 is vertically pointing down the page,
+/// increasing clockwise (so 90 is pointing to left).
 ///
 /// Invariant: value in [0, DEGREES).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
@@ -31,25 +88,100 @@ impl Direction {
         }
         Self((dir % DEGREES) as u32)
     }
-}
 
-impl std::ops::Add<Rotation> for Direction {
-    type Output = Self;
-    fn add(self, other: Rotation) -> Self {
-        Self::new(self.0 as i32 + other.0)
+    /// Return the direction in radians.
+    pub fn radians(&self) -> f64 {
+        self.0 as f64 * std::f64::consts::PI / 180.0
+    }
+
+    /// Sine of the direction.
+    pub fn sin(&self) -> f64 {
+        self.radians().sin()
+    }
+
+    /// Cosine of the direction.
+    pub fn cos(&self) -> f64 {
+        self.radians().cos()
     }
 }
 
+impl std::ops::Mul<RotationDirection> for Direction {
+    type Output = Self;
+    fn mul(self, other: RotationDirection) -> Self::Output {
+        match other {
+            RotationDirection::Clockwise => self,
+            RotationDirection::AntiClockwise => Self::new(-(self.0 as i32)),
+        }
+    }
+}
+impl std::ops::Add<Rotation> for Direction {
+    type Output = Self;
+    fn add(self, other: Rotation) -> Self::Output {
+        Self::new(self.0 as i32 + other.0)
+    }
+}
 impl std::ops::AddAssign<Rotation> for Direction {
     fn add_assign(&mut self, other: Rotation) {
         self.0 = Direction::new(self.0 as i32 + other.0).0;
     }
 }
-
 impl std::ops::Sub<Direction> for Direction {
     type Output = Rotation;
     fn sub(self, other: Direction) -> Rotation {
         Rotation(self.0 as i32 - other.0 as i32)
+    }
+}
+
+/// Distance in centimetres.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
+pub struct Centimetres(pub i64);
+
+/// Shortcut to create an instance of [`Centimetres`].
+#[macro_export]
+macro_rules! cm {
+    { $val:expr } => {
+        $crate::types::Centimetres($val)
+    }
+}
+
+impl std::ops::Add<Centimetres> for Centimetres {
+    type Output = Self;
+    fn add(self, other: Centimetres) -> Self::Output {
+        Self(self.0 + other.0)
+    }
+}
+impl std::ops::AddAssign<Centimetres> for Centimetres {
+    fn add_assign(&mut self, other: Centimetres) {
+        self.0 += other.0;
+    }
+}
+impl std::ops::Sub<Centimetres> for Centimetres {
+    type Output = Self;
+    fn sub(self, other: Centimetres) -> Self::Output {
+        Self(self.0 - other.0)
+    }
+}
+impl std::ops::SubAssign<Centimetres> for Centimetres {
+    fn sub_assign(&mut self, other: Centimetres) {
+        self.0 -= other.0;
+    }
+}
+impl std::ops::Div<i64> for Centimetres {
+    type Output = Self;
+    fn div(self, other: i64) -> Self::Output {
+        Self(self.0 / other)
+    }
+}
+impl std::ops::Neg for Centimetres {
+    type Output = Self;
+    fn neg(self) -> Self::Output {
+        Self(-self.0)
+    }
+}
+
+impl Display for Centimetres {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.0)
     }
 }
 
@@ -192,26 +324,29 @@ impl TryFrom<u32> for JumpCount {
     }
 }
 
-/// Helper macro to create [`Position`] instance.
+/// Helper macro to create [`Position`] instance from bare integers.
 #[macro_export]
 macro_rules! pos {
     { $x:expr, $y:expr} => {
-        Position { x: $x, y: $y }
+        Position { x: $crate::types::Centimetres($x), y: $crate::types::Centimetres($y) }
     }
 }
 
-/// Position, in centimetres.
+/// The origin.
+pub const ORIGIN: Position = pos!(0, 0);
+
+/// Position.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct Position {
     /// X coordinate.
-    pub x: i64,
+    pub x: Centimetres,
     /// Y coordinate.
-    pub y: i64,
+    pub y: Centimetres,
 }
 
 impl Display for Position {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "({},{})", self.x, self.y)
+        write!(f, "({},{})", self.x.0, self.y.0)
     }
 }
 
@@ -223,26 +358,25 @@ impl Position {
         pos: TextPosition,
     ) -> Result<Self, ParseError> {
         Ok(Self {
-            x: x.value.as_i32(pos)? as i64,
-            y: y.value.as_i32(pos)? as i64,
+            x: x.value.as_cm(pos)?,
+            y: y.value.as_cm(pos)?,
         })
     }
 
     /// Add the `delta` to a `Position`, but rotated by `dir`.
     pub fn add_rotated(self, dir: Direction, delta: Position) -> Self {
         // Start position
-        let start_x = self.x as f64;
-        let start_y = self.y as f64;
+        let start_x = self.x.0 as f64;
+        let start_y = self.y.0 as f64;
 
         // Delta in coords if we were aligned with `Direction(0)` ...
-        let delta_x = delta.x as f64;
-        let delta_y = delta.y as f64;
+        let delta_x = delta.x.0 as f64;
+        let delta_y = delta.y.0 as f64;
 
         // ... but we're not, we're moving at an angle:
-        let angle = dir.0 as f64 * std::f64::consts::PI / 180.0;
-        let dx = delta_x * angle.cos() - delta_y * angle.sin();
-        let dy = delta_y * angle.cos() + delta_x * angle.sin();
-        trace!("  ({delta_x:+.1},{delta_y:+.1}) at {angle} radians => move ({dx:+.1},{dy:+.1})");
+        let dx = delta_x * dir.cos() - delta_y * dir.sin();
+        let dy = delta_y * dir.cos() + delta_x * dir.sin();
+        trace!("  ({delta_x:+.1},{delta_y:+.1}) at {dir:?} => move ({dx:+.1},{dy:+.1})");
 
         let new_x = start_x + dx;
         let new_y = start_y + dy;
@@ -319,25 +453,25 @@ impl Bounds {
         self.encompass(&other.bottom_right);
     }
     /// Translate the bounds by the given amounts.
-    pub fn translate(&mut self, dx: i64, dy: i64) {
+    pub fn translate(&mut self, dx: Centimetres, dy: Centimetres) {
         self.top_left.x += dx;
         self.top_left.y += dy;
         self.bottom_right.x += dx;
         self.bottom_right.y += dy;
     }
     /// Expand bounds by the given `margin`.
-    pub fn add_margin(&mut self, margin_x: i64, margin_y: i64) {
+    pub fn add_margin(&mut self, margin_x: Centimetres, margin_y: Centimetres) {
         self.top_left.x -= margin_x;
         self.top_left.y -= margin_y;
         self.bottom_right.x += margin_x;
         self.bottom_right.y += margin_y;
     }
     /// Current width of bounds.
-    pub fn width(&self) -> i64 {
+    pub fn width(&self) -> Centimetres {
         self.bottom_right.x - self.top_left.x
     }
     /// Current height of bounds.
-    pub fn height(&self) -> i64 {
+    pub fn height(&self) -> Centimetres {
         self.bottom_right.y - self.top_left.y
     }
     /// Midpoint of bounds.
@@ -354,8 +488,8 @@ impl Bounds {
 macro_rules! bounds {
     { $x1:expr, $y1:expr => $x2:expr, $y2:expr } => {
         Bounds {
-            top_left: Position { x: $x1, y: $y1 },
-            bottom_right: Position { x: $x2, y: $y2 },
+            top_left: Position { x: $crate::cm!($x1), y: $crate::cm!($y1) },
+            bottom_right: Position { x: $crate::cm!($x2), y: $crate::cm!($y2) },
         }
     }
 }
@@ -674,14 +808,14 @@ mod tests {
             top_left: pos!(10, 20),
             bottom_right: pos!(110, 120),
         };
-        assert_eq!(bounds.width(), 100);
-        assert_eq!(bounds.height(), 100);
+        assert_eq!(bounds.width().0, 100);
+        assert_eq!(bounds.height().0, 100);
 
-        bounds.add_margin(5, 5);
+        bounds.add_margin(cm!(5), cm!(5));
         assert_eq!(bounds.top_left, pos!(5, 15));
         assert_eq!(bounds.bottom_right, pos!(115, 125));
-        assert_eq!(bounds.width(), 110);
-        assert_eq!(bounds.height(), 110);
+        assert_eq!(bounds.width().0, 110);
+        assert_eq!(bounds.height().0, 110);
     }
 
     #[test]

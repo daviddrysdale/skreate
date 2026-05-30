@@ -18,7 +18,7 @@ pub struct Label {
     text: String,
     delta: Position,
     font_size: Option<u32>,
-    rotate: i32,
+    rotate: Rotation,
 }
 
 impl Label {
@@ -93,7 +93,7 @@ impl Label {
             } else {
                 None
             },
-            rotate: params[4].value.as_i32(text_pos)?,
+            rotate: params[4].value.as_rotation(text_pos)?,
         })
     }
 
@@ -109,10 +109,10 @@ impl Move for Label {
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),
-            param!("fwd" = (self.delta.y as i32)),
-            param!("side" = (self.delta.x as i32)),
+            param!("fwd" = (self.delta.y.0 as i32)),
+            param!("side" = (self.delta.x.0 as i32)),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
-            param!(self.rotate),
+            param!("rotate" = self.rotate.0),
         ]
     }
     fn text(&self) -> String {
@@ -145,8 +145,8 @@ impl Move for Label {
         };
         let pos = *start + delta;
         let mut text = Text::new(self.text.clone())
-            .set("x", pos.pos.x)
-            .set("y", pos.pos.y)
+            .set("x", pos.pos.x.0)
+            .set("y", pos.pos.y.0)
             .set(
                 "style",
                 format!(
@@ -154,10 +154,10 @@ impl Move for Label {
                     self.font_size(opts)
                 ),
             );
-        if self.rotate != 0 {
+        if self.rotate.0 != 0 {
             text = text.set(
                 "transform",
-                format!("rotate({},{},{})", self.rotate, pos.pos.x, pos.pos.y),
+                format!("rotate({},{},{})", self.rotate, pos.pos.x.0, pos.pos.y.0),
             )
         }
         if let Some(pos) = self.text_pos() {

@@ -6,7 +6,8 @@ use super::{
     compound::Compound, edge::Curve, edge_err, label::Label, shift::Shift, MoveId, SkatingMoveId,
 };
 use crate::{
-    code, moves, params, params::Value, Code, MoveParam, ParseError, PreTransition, TextPosition,
+    code, moves, params, params::Value, Centimetres, Code, MoveParam, ParseError, PreTransition,
+    TextPosition,
 };
 use std::borrow::Cow;
 
@@ -115,20 +116,20 @@ impl Twizzle {
         };
         ctx.prev_label = None;
 
-        let angle = params[0].value.as_i32(text_pos)?;
-        let len = params[1].value.as_i32(text_pos)?;
-        let pre_len = params[2].value.as_i32(text_pos)?;
-        let pre_angle = params[3].value.as_i32(text_pos)?;
-        let post_len = params[4].value.as_i32(text_pos)?;
-        let post_angle = params[5].value.as_i32(text_pos)?;
+        let angle = params[0].value.as_rotation(text_pos)?;
+        let len = params[1].value.as_cm(text_pos)?;
+        let pre_len = params[2].value.as_cm(text_pos)?;
+        let pre_angle = params[3].value.as_rotation(text_pos)?;
+        let post_len = params[4].value.as_cm(text_pos)?;
+        let post_angle = params[5].value.as_rotation(text_pos)?;
         let style = params[6].value.as_str(text_pos)?;
         let transition_label = params[7].value.as_str(text_pos)?;
 
-        let len_a = len * 75 / 100;
+        let len_a = Centimetres(len.0 * 75 / 100);
         let len_b = len - len_a;
-        let angle_b = angle * 60 / 100;
+        let angle_b = angle.fraction_of(60, 100);
         let angle_a = angle - angle_b;
-        let mid_angle = 2 * angle;
+        let mid_angle = angle.fraction_of(2, 1);
 
         let prefix = pre_transition.prefix();
         let label_text = format!(

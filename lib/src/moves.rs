@@ -3,8 +3,8 @@
 //! Skating move definitions.
 
 use crate::{
-    pos, Code, Foot, JumpCount, Move, MoveParam, ParseError, Position, PreTransition, Rotation,
-    SkatingDirection::*, SpatialTransition, TextPosition, Transition,
+    cm, Centimetres, Code, Foot, JumpCount, Move, MoveParam, ParseError, Position, PreTransition,
+    Rotation, SkatingDirection::*, SpatialTransition, TextPosition, Transition,
 };
 use log::warn;
 use serde::Serialize;
@@ -360,9 +360,9 @@ impl Context {
 }
 
 /// Half-width of a standard stance.
-const HW: i64 = 15; // cm
+const HW: Centimetres = cm!(15);
 /// Length of skate.
-const SL: i64 = 30; // cm
+const SL: Centimetres = cm!(30);
 
 /// Standard pre-transition with plain step.
 pub fn pre_transition(from: Code, to: Code) -> Transition {
@@ -371,105 +371,106 @@ pub fn pre_transition(from: Code, to: Code) -> Transition {
 
 /// Pre-transition with wide step.
 pub fn wide_transition(from: Code, to: Code) -> Transition {
-    standard_transition(from, to, 2 * HW)
+    standard_transition(from, to, Centimetres(2 * HW.0))
 }
 
-fn standard_transition(from: Code, to: Code, half_width: i64) -> Transition {
-    let mut x = 0;
-    let mut y = 0;
-    let mut rotation = 0;
+fn standard_transition(from: Code, to: Code, half_width: Centimetres) -> Transition {
+    let full_width = Centimetres(2 * half_width.0);
+    let mut x = Centimetres(0);
+    let mut y = Centimetres(0);
+    let mut rotation = Rotation(0);
     match (from.dir, to.dir) {
         (Forward, Forward) => match (from.foot, to.foot) {
-            (Foot::Left, Foot::Right) => x = -(2 * half_width),
+            (Foot::Left, Foot::Right) => x = -full_width,
             (Foot::Left, Foot::Both) => x = -half_width,
             (Foot::Both, Foot::Left) => x = half_width,
             (Foot::Both, Foot::Right) => x = -half_width,
-            (Foot::Right, Foot::Left) => x = 2 * half_width,
+            (Foot::Right, Foot::Left) => x = full_width,
             (Foot::Right, Foot::Both) => x = half_width,
             _ => {}
         },
         (Backward, Backward) => match (from.foot, to.foot) {
-            (Foot::Left, Foot::Right) => x = 2 * half_width,
+            (Foot::Left, Foot::Right) => x = full_width,
             (Foot::Left, Foot::Both) => x = half_width,
             (Foot::Both, Foot::Left) => x = -half_width,
             (Foot::Both, Foot::Right) => x = half_width,
-            (Foot::Right, Foot::Left) => x = -(2 * half_width),
+            (Foot::Right, Foot::Left) => x = -full_width,
             (Foot::Right, Foot::Both) => x = -half_width,
             _ => {}
         },
         (Forward, Backward) => match (from.foot, to.foot) {
-            (Foot::Left, Foot::Left) => rotation = 180,
+            (Foot::Left, Foot::Left) => rotation = Rotation(180),
             (Foot::Left, Foot::Right) => {
                 x = -half_width;
                 y = half_width;
-                rotation = 90;
+                rotation = Rotation(90);
             }
             (Foot::Left, Foot::Both) => {
                 x = -half_width;
                 y = half_width / 2;
-                rotation = 90;
+                rotation = Rotation(90);
             }
             (Foot::Both, Foot::Left) => {
                 x = half_width;
-                rotation = -90;
+                rotation = Rotation(-90);
             }
             (Foot::Both, Foot::Right) => {
                 x = -half_width;
-                rotation = 90;
+                rotation = Rotation(90);
             }
-            (Foot::Both, Foot::Both) => rotation = 180,
+            (Foot::Both, Foot::Both) => rotation = Rotation(180),
             (Foot::Right, Foot::Left) => {
                 x = half_width;
                 y = half_width;
-                rotation = -90;
+                rotation = Rotation(-90);
             }
-            (Foot::Right, Foot::Right) => rotation = 180,
+            (Foot::Right, Foot::Right) => rotation = Rotation(180),
             (Foot::Right, Foot::Both) => {
                 x = half_width;
                 y = half_width / 2;
-                rotation = -90;
+                rotation = Rotation(-90);
             }
         },
         (Backward, Forward) => {
             match (from.foot, to.foot) {
-                (Foot::Left, Foot::Left) => rotation = 180, // reverse direction
+                (Foot::Left, Foot::Left) => rotation = Rotation(180), // reverse direction
                 (Foot::Left, Foot::Right) => {
                     x = half_width;
                     y = half_width;
-                    rotation = -90;
+                    rotation = Rotation(-90);
                 }
                 (Foot::Left, Foot::Both) => {
                     x = half_width;
                     y = half_width / 2;
-                    rotation = 90;
+                    rotation = Rotation(90);
                 }
                 (Foot::Both, Foot::Left) => {
                     x = -half_width;
-                    rotation = 90;
+                    rotation = Rotation(90);
                 }
                 (Foot::Both, Foot::Right) => {
                     x = half_width;
-                    rotation = -90;
+                    rotation = Rotation(-90);
                 }
-                (Foot::Both, Foot::Both) => rotation = 90,
+                (Foot::Both, Foot::Both) => rotation = Rotation(90),
                 (Foot::Right, Foot::Left) => {
                     x = -half_width;
                     y = half_width;
-                    rotation = 90;
+                    rotation = Rotation(90);
                 }
-                (Foot::Right, Foot::Right) => rotation = 180, // reverse direction
+                (Foot::Right, Foot::Right) => rotation = Rotation(180), // reverse direction
                 (Foot::Right, Foot::Both) => {
                     x = -half_width;
                     y = half_width / 2;
-                    rotation = -90;
+                    rotation = Rotation(-90);
                 }
             }
         }
     }
     Transition {
         spatial: SpatialTransition::Relative {
-            delta: pos!(x, y),
-            rotate: Rotation(rotation),
+            delta: Position { x, y },
+            rotate: rotation,
         },
         code: Some(to),
     }
@@ -477,8 +478,8 @@ fn standard_transition(from: Code, to: Code, half_width: i64) -> Transition {
 
 /// Pre-transition with feet crossing over.
 pub fn cross_transition(from: Code, to: Code) -> Transition {
-    let mut x = 0;
-    let mut y = 0;
+    let mut x = Centimetres(0);
+    let mut y = Centimetres(0);
     match (from.dir, to.dir) {
         (Forward, Forward) => {
             // Cross in front.
@@ -540,7 +541,7 @@ pub fn cross_transition(from: Code, to: Code) -> Transition {
     }
     Transition {
         spatial: SpatialTransition::Relative {
-            delta: pos!(x, y),
+            delta: Position { x, y },
             rotate: Rotation(0),
         },
         code: Some(to),

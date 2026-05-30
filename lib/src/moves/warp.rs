@@ -84,8 +84,8 @@ impl Move for Warp {
     }
     fn params(&self) -> Vec<MoveParam> {
         vec![
-            param!("x" = (self.pos.x as i32)),
-            param!("y" = (self.pos.y as i32)),
+            param!("x" = (self.pos.x.0 as i32)),
+            param!("y" = (self.pos.y.0 as i32)),
             param!("dir" = (self.dir.0 as i32)),
             param!(
                 "code" = (match &self.code {

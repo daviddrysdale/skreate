@@ -45,15 +45,15 @@ impl OpenMohawk {
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let angle1 = params[0].value.as_i32(text_pos)?;
-        let len1 = params[1].value.as_i32(text_pos)?;
-        let delta_angle = params[2].value.as_i32(text_pos)?;
-        let delta_len = params[3].value.as_i32(text_pos)?;
+        let angle1 = params[0].value.as_rotation(text_pos)?;
+        let len1 = params[1].value.as_cm(text_pos)?;
+        let delta_angle = params[2].value.as_rotation(text_pos)?;
+        let delta_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let transition_label = params[5].value.as_str(text_pos)?;
         let label1 = params[6].value.as_str(text_pos)?;
         let label2 = params[7].value.as_str(text_pos)?;
-        let label_offset = params[8].value.as_i32(text_pos)?;
+        let label_offset = params[8].value.as_percent(text_pos)?;
 
         let angle2 = add_angle(angle1, delta_angle, text_pos)?;
         let len2 = add_len(len1, delta_len, text_pos)?;
@@ -131,15 +131,15 @@ impl ClosedMohawk {
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let angle1 = params[0].value.as_i32(text_pos)?;
-        let len1 = params[1].value.as_i32(text_pos)?;
-        let delta_angle = params[2].value.as_i32(text_pos)?;
-        let delta_len = params[3].value.as_i32(text_pos)?;
+        let angle1 = params[0].value.as_rotation(text_pos)?;
+        let len1 = params[1].value.as_cm(text_pos)?;
+        let delta_angle = params[2].value.as_rotation(text_pos)?;
+        let delta_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let transition_label = params[5].value.as_str(text_pos)?;
         let label1 = params[6].value.as_str(text_pos)?;
         let label2 = params[7].value.as_str(text_pos)?;
-        let label_offset = params[8].value.as_i32(text_pos)?;
+        let label_offset = params[8].value.as_percent(text_pos)?;
 
         let angle2 = add_angle(angle1, delta_angle, text_pos)?;
         let len2 = add_len(len1, delta_len, text_pos)?;

@@ -6,7 +6,7 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    path, Bounds, Count, Document, Move, MoveParam, ParseError, Percentage, Position,
+    path, Bounds, Centimetres, Count, Document, Move, MoveParam, ParseError, Percentage, Position,
     RenderOptions, Skater, SvgId, TextPosition,
 };
 use svg::node::element::Group;
@@ -16,7 +16,7 @@ pub struct Info {
     text_pos: TextPosition,
     markers: bool,
     bounds: bool,
-    grid: Option<i32>,
+    grid: Option<Centimetres>,
     margin: Position,
     move_bounds: bool,
     font_size: Option<u32>,
@@ -59,14 +59,14 @@ impl Info {
             params::Info {
                 name: "margin-x",
                 doc: "Horizontal margin",
-                default: Value::Number(crate::MARGIN as i32),
+                default: Value::Number(crate::MARGIN.0 as i32),
                 range: params::Range::Positive,
                 short: None,
             },
             params::Info {
                 name: "margin-y",
                 doc: "Vertical margin",
-                default: Value::Number(crate::MARGIN as i32),
+                default: Value::Number(crate::MARGIN.0 as i32),
                 range: params::Range::Positive,
                 short: None,
             },
@@ -110,7 +110,7 @@ impl Info {
 
     pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let grid = params[2].value.as_i32(text_pos)?;
+        let grid = params[2].value.as_cm(text_pos)?;
         let font_size = params[6].value.as_i32(text_pos)?;
         let stroke_width = params[7].value.as_i32(text_pos)?;
 
@@ -118,7 +118,7 @@ impl Info {
             text_pos,
             markers: params[0].value.as_bool(text_pos)?,
             bounds: params[1].value.as_bool(text_pos)?,
-            grid: if grid > 0 { Some(grid) } else { None },
+            grid: if grid.0 > 0 { Some(grid) } else { None },
             margin: Position::from_params(&params[3], &params[4], text_pos)?,
             move_bounds: params[5].value.as_bool(text_pos)?,
             font_size: if font_size >= 0 {
@@ -131,7 +131,7 @@ impl Info {
             } else {
                 None
             },
-            label_offset: Percentage(params[8].value.as_i32(text_pos)?),
+            label_offset: params[8].value.as_percent(text_pos)?,
             auto_count: params[9].value.as_bool(text_pos)?,
         })
     }
@@ -145,9 +145,9 @@ impl Move for Info {
         vec![
             param!(self.markers),
             param!(self.bounds),
-            param!("grid" = (self.grid.unwrap_or(0))),
-            param!("margin-x" = (self.margin.x as i32)),
-            param!("margin-y" = (self.margin.y as i32)),
+            param!("grid" = (self.grid.map(|v| v.0 as i32).unwrap_or(0))),
+            param!("margin-x" = (self.margin.x.0 as i32)),
+            param!("margin-y" = (self.margin.y.0 as i32)),
             param!("move-bounds" = self.move_bounds),
             param!("font-size" = (self.font_size.map(|v| v as i32).unwrap_or(-1))),
             param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
@@ -172,7 +172,7 @@ impl Move for Info {
     fn defs(&self, opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         // Change some options once and for all in the prelude.
         opts.show_bounds = self.bounds;
-        opts.grid = self.grid.map(|g| g as usize);
+        opts.grid = self.grid.map(|g| g.0 as usize);
         opts.show_move_bounds = self.move_bounds;
 
         let mut grp = Group::new();

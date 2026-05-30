@@ -116,13 +116,13 @@ impl Salchow {
         };
         ctx.prev_label = None;
 
-        let entry_angle = params[0].value.as_i32(text_pos)?;
-        let entry_len = params[1].value.as_i32(text_pos)?;
-        let exit_angle = params[2].value.as_i32(text_pos)?;
-        let exit_len = params[3].value.as_i32(text_pos)?;
+        let entry_angle = params[0].value.as_rotation(text_pos)?;
+        let entry_len = params[1].value.as_cm(text_pos)?;
+        let exit_angle = params[2].value.as_rotation(text_pos)?;
+        let exit_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let jump_label = params[5].value.as_str(text_pos)?;
-        let label_offset = params[6].value.as_i32(text_pos)?;
+        let label_offset = params[6].value.as_percent(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -133,10 +133,10 @@ impl Salchow {
         let entry_len3 = entry_len / 6;
         let entry_len4 = entry_len / 12;
 
-        let entry_angle1 = 2 * entry_angle / 3;
+        let entry_angle1 = entry_angle.fraction_of(2, 3);
         let entry_angle2 = entry_angle;
-        let entry_angle3 = 5 * entry_angle / 3;
-        let entry_angle4 = 7 * entry_angle / 3;
+        let entry_angle3 = entry_angle.fraction_of(5, 3);
+        let entry_angle4 = entry_angle.fraction_of(7, 3);
 
         let entry1 = format!("{prefix}{entry_code}[angle={entry_angle1},len={entry_len1},style=\"{style}\",label-offset={label_offset}]");
         let entry2 = format!(
@@ -225,13 +225,13 @@ impl Loop {
         };
         ctx.prev_label = None;
 
-        let entry_angle = params[0].value.as_i32(text_pos)?;
-        let entry_len = params[1].value.as_i32(text_pos)?;
-        let exit_angle = params[2].value.as_i32(text_pos)?;
-        let exit_len = params[3].value.as_i32(text_pos)?;
+        let entry_angle = params[0].value.as_rotation(text_pos)?;
+        let entry_len = params[1].value.as_cm(text_pos)?;
+        let exit_angle = params[2].value.as_rotation(text_pos)?;
+        let exit_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let jump_label = params[5].value.as_str(text_pos)?;
-        let label_offset = params[6].value.as_i32(text_pos)?;
+        let label_offset = params[6].value.as_percent(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -242,10 +242,10 @@ impl Loop {
         let entry_len3 = entry_len / 6;
         let entry_len4 = entry_len / 12;
 
-        let entry_angle1 = 2 * entry_angle / 3;
+        let entry_angle1 = entry_angle.fraction_of(2, 3);
         let entry_angle2 = entry_angle;
-        let entry_angle3 = 5 * entry_angle / 3;
-        let entry_angle4 = 7 * entry_angle / 3;
+        let entry_angle3 = entry_angle.fraction_of(5, 3);
+        let entry_angle4 = entry_angle.fraction_of(7, 3);
 
         let entry1 = format!("{prefix}{entry_code}[angle={entry_angle1},len={entry_len1},style=\"{style}\",label-offset={label_offset}]");
         let entry2 = format!(
@@ -334,13 +334,13 @@ impl Axel {
         };
         ctx.prev_label = None;
 
-        let entry_angle = params[0].value.as_i32(text_pos)?;
-        let entry_len = params[1].value.as_i32(text_pos)?;
-        let exit_angle = params[2].value.as_i32(text_pos)?;
-        let exit_len = params[3].value.as_i32(text_pos)?;
+        let entry_angle = params[0].value.as_rotation(text_pos)?;
+        let entry_len = params[1].value.as_cm(text_pos)?;
+        let exit_angle = params[2].value.as_rotation(text_pos)?;
+        let exit_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let jump_label = params[5].value.as_str(text_pos)?;
-        let label_offset = params[6].value.as_i32(text_pos)?;
+        let label_offset = params[6].value.as_percent(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -350,9 +350,9 @@ impl Axel {
         let entry_len2 = entry_len / 3;
         let entry_len3 = entry_len / 6;
 
-        let entry_angle1 = 2 * entry_angle / 3;
+        let entry_angle1 = entry_angle.fraction_of(2, 3);
         let entry_angle2 = entry_angle;
-        let entry_angle3 = 5 * entry_angle / 3;
+        let entry_angle3 = entry_angle.fraction_of(5, 3);
 
         let entry1 = format!("{prefix}{entry_code}[angle={entry_angle1},len={entry_len1},style=\"{style}\",label-offset={label_offset}]");
         let entry2 = format!(
@@ -435,13 +435,13 @@ impl ToeLoop {
         };
         ctx.prev_label = None;
 
-        let entry_angle = params[0].value.as_i32(text_pos)?;
-        let entry_len = params[1].value.as_i32(text_pos)?;
-        let exit_angle = params[2].value.as_i32(text_pos)?;
-        let exit_len = params[3].value.as_i32(text_pos)?;
+        let entry_angle = params[0].value.as_rotation(text_pos)?;
+        let entry_len = params[1].value.as_cm(text_pos)?;
+        let exit_angle = params[2].value.as_rotation(text_pos)?;
+        let exit_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let jump_label = params[5].value.as_str(text_pos)?;
-        let label_offset = params[6].value.as_i32(text_pos)?;
+        let label_offset = params[6].value.as_percent(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -528,13 +528,13 @@ impl Flip {
         };
         ctx.prev_label = None;
 
-        let entry_angle = params[0].value.as_i32(text_pos)?;
-        let entry_len = params[1].value.as_i32(text_pos)?;
-        let exit_angle = params[2].value.as_i32(text_pos)?;
-        let exit_len = params[3].value.as_i32(text_pos)?;
+        let entry_angle = params[0].value.as_rotation(text_pos)?;
+        let entry_len = params[1].value.as_cm(text_pos)?;
+        let exit_angle = params[2].value.as_rotation(text_pos)?;
+        let exit_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let jump_label = params[5].value.as_str(text_pos)?;
-        let label_offset = params[6].value.as_i32(text_pos)?;
+        let label_offset = params[6].value.as_percent(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };
@@ -621,13 +621,13 @@ impl Lutz {
         };
         ctx.prev_label = None;
 
-        let entry_angle = params[0].value.as_i32(text_pos)?;
-        let entry_len = params[1].value.as_i32(text_pos)?;
-        let exit_angle = params[2].value.as_i32(text_pos)?;
-        let exit_len = params[3].value.as_i32(text_pos)?;
+        let entry_angle = params[0].value.as_rotation(text_pos)?;
+        let entry_len = params[1].value.as_cm(text_pos)?;
+        let exit_angle = params[2].value.as_rotation(text_pos)?;
+        let exit_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let jump_label = params[5].value.as_str(text_pos)?;
-        let label_offset = params[6].value.as_i32(text_pos)?;
+        let label_offset = params[6].value.as_percent(text_pos)?;
 
         let prefix = pre_transition.prefix();
         let out_code = if regular { code!(RBO) } else { code!(LBO) };

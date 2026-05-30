@@ -7,7 +7,7 @@ use super::{
     edge::Curve,
     edge_err,
     shift::Shift,
-    MoveId, ParseError, SkatingMoveId,
+    Centimetres, MoveId, ParseError, SkatingMoveId,
 };
 use crate::{code, moves, params, Code, MoveParam, PreTransition, TextPosition};
 
@@ -46,15 +46,15 @@ impl ThreeTurn {
             _ => return Err(edge_err(text_pos, entry_code, Self::INFO)),
         };
 
-        let angle1 = params[0].value.as_i32(text_pos)?;
-        let len1 = params[1].value.as_i32(text_pos)?;
-        let delta_angle = params[2].value.as_i32(text_pos)?;
-        let delta_len = params[3].value.as_i32(text_pos)?;
+        let angle1 = params[0].value.as_rotation(text_pos)?;
+        let len1 = params[1].value.as_cm(text_pos)?;
+        let delta_angle = params[2].value.as_rotation(text_pos)?;
+        let delta_len = params[3].value.as_cm(text_pos)?;
         let style = params[4].value.as_str(text_pos)?;
         let transition_label = params[5].value.as_str(text_pos)?;
         let label1 = params[6].value.as_str(text_pos)?;
         let label2 = params[7].value.as_str(text_pos)?;
-        let label_offset = params[8].value.as_i32(text_pos)?;
+        let label_offset = params[8].value.as_percent(text_pos)?;
 
         let angle2 = add_angle(angle1, delta_angle, text_pos)?;
         let len2 = add_len(len1, delta_len, text_pos)?;
@@ -67,14 +67,14 @@ impl ThreeTurn {
             edge: entry_code.edge.opposite(),
         };
 
-        let len1a = len1 * 75 / 100;
+        let len1a = Centimetres(len1.0 * 75 / 100);
         let len1b = len1 - len1a;
-        let angle1b = angle1 * 60 / 100;
+        let angle1b = angle1.fraction_of(60, 100);
         let angle1a = angle1 - angle1b;
 
-        let len2a = len2 * 75 / 100;
+        let len2a = Centimetres(len2.0 * 75 / 100);
         let len2b = len2 - len2a;
-        let angle2b = angle2 * 60 / 100;
+        let angle2b = angle2.fraction_of(60, 100);
         let angle2a = angle2 - angle2b;
 
         let entry_label = if label1.is_empty() {

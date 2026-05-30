@@ -4,12 +4,13 @@
 
 use super::{MoveId, SkatingMoveId, HW};
 use crate::{
-    apply_style,
+    apply_style, cm,
     moves::{self, parse_code, parse_pre_transition},
     param, params,
     params::Value,
-    path, pos, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Position, PreTransition,
-    RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId, TextPosition, Transition,
+    path, pos, Centimetres, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Position,
+    PreTransition, RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId,
+    TextPosition, Transition,
 };
 use std::borrow::Cow;
 use svg::node::element::Group;
@@ -21,7 +22,7 @@ pub struct StraightEdge {
     pre_transition: PreTransition,
     foot: Foot,
     dir: SkatingDirection,
-    len: i32,
+    len: Centimetres,
     label: Option<String>,
     style: String,
 }
@@ -101,7 +102,7 @@ impl StraightEdge {
             pre_transition,
             foot: entry_code.foot,
             dir: entry_code.dir,
-            len: params[0].value.as_i32(text_pos)?,
+            len: params[0].value.as_cm(text_pos)?,
             label: if label.is_empty() {
                 ctx.prev_label = None;
                 None
@@ -127,7 +128,7 @@ impl Move for StraightEdge {
     }
     fn params(&self) -> Vec<MoveParam> {
         vec![
-            param!(self.len),
+            param!("len" = self.len.0 as i32),
             param!("label" = (self.label.clone().unwrap_or("".to_string()))),
             param!(self.style),
         ]
@@ -154,7 +155,10 @@ impl Move for StraightEdge {
     fn transition(&self) -> Transition {
         Transition {
             spatial: SpatialTransition::Relative {
-                delta: pos!(0, self.len as i64),
+                delta: Position {
+                    x: cm!(0),
+                    y: self.len,
+                },
                 rotate: Rotation(0),
             },
             code: self.end(),
@@ -181,7 +185,7 @@ impl Move for StraightEdge {
             vec![Label {
                 display: !text.trim().is_empty(),
                 text: SvgText::new(text),
-                pos: pos!(30, self.len as i64 / 2),
+                pos: pos!(30, self.len.0 / 2),
             }]
         }
     }

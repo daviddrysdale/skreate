@@ -15,7 +15,7 @@ use std::borrow::Cow;
 pub struct Shift {
     text_pos: TextPosition,
     delta: Position,
-    rotate: i32,
+    rotate: Rotation,
     code: Option<Code>,
 }
 
@@ -88,7 +88,7 @@ impl Shift {
             text_pos,
             // Note that `fwd` is first, and is in (relative) y-direction.
             delta: Position::from_params(&params[1], &params[0], text_pos)?,
-            rotate: params[2].value.as_i32(text_pos)?,
+            rotate: params[2].value.as_rotation(text_pos)?,
             code,
         })
     }
@@ -100,9 +100,9 @@ impl Move for Shift {
     }
     fn params(&self) -> Vec<MoveParam> {
         vec![
-            param!("fwd" = (self.delta.y as i32)),
-            param!("side" = (self.delta.x as i32)),
-            param!(self.rotate),
+            param!("fwd" = (self.delta.y.0 as i32)),
+            param!("side" = (self.delta.x.0 as i32)),
+            param!("rotate" = self.rotate.0),
             param!(
                 "code" = (match &self.code {
                     Some(code) => format!("{code}"),
@@ -126,7 +126,7 @@ impl Move for Shift {
         Transition {
             spatial: SpatialTransition::Relative {
                 delta: self.delta,
-                rotate: Rotation(self.rotate),
+                rotate: self.rotate,
             },
             code: self.code,
         }
@@ -188,7 +188,7 @@ mod tests {
             let want = Shift {
                 text_pos,
                 delta,
-                rotate,
+                rotate: Rotation(rotate),
                 code,
             };
             let got = Shift::new(text, text_pos).unwrap();

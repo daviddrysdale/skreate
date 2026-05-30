@@ -6,7 +6,7 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    path, pos, Bounds, Move, MoveParam, ParseError, Position, RenderOptions, Skater, SvgId,
+    path, Bounds, Centimetres, Move, MoveParam, ParseError, Position, RenderOptions, Skater, SvgId,
     TextPosition,
 };
 use svg::node::element::{Circle, ClipPath, Group, Rectangle};
@@ -14,13 +14,13 @@ use svg::node::element::{Circle, ClipPath, Group, Rectangle};
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Rink {
     text_pos: TextPosition,
-    width: i32,
-    length: i32,
+    width: Centimetres,
+    length: Centimetres,
     centre_line: bool,
-    centre_circle: Option<i32>,
+    centre_circle: Option<Centimetres>,
     centre_faceoff: bool,
-    mid_lines: Option<i32>,
-    goal_lines: Option<i32>,
+    mid_lines: Option<Centimetres>,
+    goal_lines: Option<Centimetres>,
     show_goals: bool,
     show_faceoffs: bool,
 }
@@ -102,31 +102,31 @@ impl Rink {
 
     pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let to_opt_i32 = |param: &MoveParam| {
+        let to_opt_cm = |param: &MoveParam| {
             let val = param.value.as_i32(text_pos).unwrap();
             if val > 0 {
-                Some(val)
+                Some(Centimetres(val as i64))
             } else {
                 None
             }
         };
         Ok(Self {
             text_pos,
-            width: params[0].value.as_i32(text_pos)?,
-            length: params[1].value.as_i32(text_pos)?,
+            width: params[0].value.as_cm(text_pos)?,
+            length: params[1].value.as_cm(text_pos)?,
             centre_line: params[2].value.as_bool(text_pos)?,
-            centre_circle: to_opt_i32(&params[3]),
+            centre_circle: to_opt_cm(&params[3]),
             centre_faceoff: params[4].value.as_bool(text_pos)?,
-            mid_lines: to_opt_i32(&params[5]),
-            goal_lines: to_opt_i32(&params[6]),
+            mid_lines: to_opt_cm(&params[5]),
+            goal_lines: to_opt_cm(&params[6]),
             show_goals: params[7].value.as_bool(text_pos)?,
             show_faceoffs: params[8].value.as_bool(text_pos)?,
         })
     }
 
-    fn rounding(&self) -> i32 {
+    fn rounding(&self) -> Centimetres {
         let dim = std::cmp::min(self.width, self.length);
-        std::cmp::min(dim / 4, 850)
+        std::cmp::min(dim / 4, Centimetres(850))
     }
     fn portrait(&self) -> bool {
         self.width < self.length
@@ -142,15 +142,15 @@ impl Move for Rink {
         MoveId::Pseudo(PseudoMoveId::Rink)
     }
     fn params(&self) -> Vec<MoveParam> {
-        let from_opt_i32 = |val: Option<i32>| val.unwrap_or(0);
+        let from_opt_cm = |val: Option<Centimetres>| val.map(|v| v.0 as i32).unwrap_or(0);
         vec![
-            param!(self.width),
-            param!(self.length),
+            param!("width" = self.width.0 as i32),
+            param!("length" = self.length.0 as i32),
             param!("centre-line" = self.centre_line),
-            param!("centre-circle" = from_opt_i32(self.centre_circle)),
+            param!("centre-circle" = from_opt_cm(self.centre_circle)),
             param!("centre-faceoff" = self.centre_faceoff),
-            param!("mid-lines" = from_opt_i32(self.mid_lines)),
-            param!("goal-lines" = from_opt_i32(self.goal_lines)),
+            param!("mid-lines" = from_opt_cm(self.mid_lines)),
+            param!("goal-lines" = from_opt_cm(self.goal_lines)),
             param!("goals" = self.show_goals),
             param!("faceoffs" = self.show_faceoffs),
         ]
@@ -168,18 +168,21 @@ impl Move for Rink {
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         Some(Bounds {
-            top_left: pos!(0, 0),
-            bottom_right: pos!(self.width as i64, self.length as i64),
+            top_left: crate::ORIGIN,
+            bottom_right: Position {
+                x: self.width,
+                y: self.length,
+            },
         })
     }
     fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let rink_rect = Rectangle::new()
             .set("x", 0)
             .set("y", 0)
-            .set("width", self.width)
-            .set("height", self.length)
-            .set("rx", self.rounding())
-            .set("ry", self.rounding());
+            .set("width", self.width.0)
+            .set("height", self.length.0)
+            .set("rx", self.rounding().0)
+            .set("ry", self.rounding().0);
         let clip_path = ClipPath::new() // TODO fix clip-path
             .set("id", "clip-rink")
             .add(rink_rect.clone());
@@ -203,17 +206,17 @@ impl Move for Rink {
         if let Some(radius) = self.centre_circle {
             grp = grp.add(
                 Circle::new()
-                    .set("cx", self.width / 2)
-                    .set("cy", self.length / 2)
-                    .set("r", radius)
+                    .set("cx", self.width.0 / 2)
+                    .set("cy", self.length.0 / 2)
+                    .set("r", radius.0)
                     .set("style", "stroke:red;"),
             )
         }
         if self.centre_faceoff {
             grp = grp.add(
                 Circle::new()
-                    .set("cx", self.width / 2)
-                    .set("cy", self.length / 2)
+                    .set("cx", self.width.0 / 2)
+                    .set("cy", self.length.0 / 2)
                     .set("r", 2)
                     .set("style", "fill: black;"),
             )

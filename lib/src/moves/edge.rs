@@ -3,13 +3,13 @@
 //! Move definition for simple curved edges.
 
 use crate::{
-    apply_style, bounds, code,
+    apply_style, code,
     moves::{self, parse_code, parse_pre_transition, MoveId, SkatingMoveId},
     param, params,
     params::Value,
-    path, pos, Bounds, Code, Label, Move, MoveParam, ParseError, Percentage, Position,
-    PreTransition, RenderOptions, Rotation, Skater, SpatialTransition, SvgId, TextPosition,
-    Transition,
+    path, pos, Bounds, Centimetres, Code, Label, Move, MoveParam, ParseError, Percentage, Position,
+    PreTransition, RenderOptions, Rotation, RotationDirection, Skater, SpatialTransition, SvgId,
+    TextPosition, Transition,
 };
 use std::borrow::Cow;
 use std::f64::consts::PI;
@@ -23,8 +23,8 @@ pub struct Curve {
     text_pos: TextPosition,
     pre_transition: PreTransition,
     code: Code,
-    angle: i32,
-    len: i32,
+    angle: Rotation,
+    len: Centimetres,
     label: Option<String>,
     transition_label: Option<String>,
     style: String,
@@ -147,8 +147,8 @@ impl Curve {
             text_pos,
             pre_transition,
             code: entry_code,
-            angle: params[0].value.as_i32(text_pos)?,
-            len: params[1].value.as_i32(text_pos)?,
+            angle: params[0].value.as_rotation(text_pos)?,
+            len: params[1].value.as_cm(text_pos)?,
             label: if label.is_empty() {
                 ctx.prev_label = Some(format!("{entry_code}"));
                 None
@@ -162,15 +162,15 @@ impl Curve {
                 Some(transition_label.to_string())
             },
             style: params[3].value.as_str(text_pos)?.to_string(),
-            label_offset: Percentage(params[5].value.as_i32(text_pos)?),
+            label_offset: params[5].value.as_percent(text_pos)?,
         })
     }
 
     /// Direction of increasing angle.
-    fn sign(&self) -> i32 {
+    fn sign(&self) -> RotationDirection {
         match &self.code {
-            code!(LFO) | code!(RFI) | code!(LBI) | code!(RBO) => -1,
-            code!(RFO) | code!(LFI) | code!(RBI) | code!(LBO) => 1,
+            code!(LFO) | code!(RFI) | code!(LBI) | code!(RBO) => RotationDirection::AntiClockwise,
+            code!(RFO) | code!(LFI) | code!(RBI) | code!(LBO) => RotationDirection::Clockwise,
             _ => unreachable!("sign for {:?} hit despite constructor check", self.code),
         }
     }
@@ -181,7 +181,7 @@ impl Curve {
     }
 
     /// Point of the arc some percentage along the way, starting at 0,0 facing 0.
-    fn percent_point(&self, percent: i32) -> Position {
+    fn percent_point(&self, percent: Percentage) -> Position {
         percent_point(self.len, self.angle, self.sign(), percent)
     }
 
@@ -197,8 +197,8 @@ impl Move for Curve {
     }
     fn params(&self) -> Vec<MoveParam> {
         vec![
-            param!(self.angle),
-            param!(self.len),
+            param!("angle" = self.angle.0),
+            param!("len" = self.len.0 as i32),
             param!("label" = (self.label.clone().unwrap_or("".to_string()))),
             param!(self.style),
             param!("transition-label" = (self.transition_label.clone().unwrap_or("".to_string()))),
@@ -232,19 +232,22 @@ impl Move for Curve {
         Transition {
             spatial: SpatialTransition::Relative {
                 delta: self.endpoint(),
-                rotate: Rotation(self.angle * self.sign()),
+                rotate: self.angle * self.sign(),
             },
             code: Some(self.code),
         }
     }
     fn bounds(&self, before: &Skater) -> Option<Bounds> {
-        let mut bounds = bounds!(before.pos.x, before.pos.y => before.pos.x, before.pos.y);
+        let mut bounds = Bounds {
+            top_left: before.pos,
+            bottom_right: before.pos,
+        };
 
         // Calculate 100 points on the curve and ensure they're all included in the bounds.
         // TODO: replace this with some cunning trigonometry.
         for percent in 0..=100 {
             // Figure a point some way along the curve starting from 0,0 direction 0.
-            let curve_pt = self.percent_point(percent);
+            let curve_pt = self.percent_point(Percentage(percent));
 
             // Translate and rotate relative to the actual start point.
             let mid = *before + curve_pt;
@@ -255,8 +258,12 @@ impl Move for Curve {
     }
     fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let r = self.radius() as i64;
-        let big = if self.angle >= 180 { 1 } else { 0 };
-        let sweep = if self.sign() == -1 { 0 } else { 1 };
+        let big = if self.angle.0 >= 180 { 1 } else { 0 };
+        let sweep = if self.sign() == RotationDirection::AntiClockwise {
+            0
+        } else {
+            1
+        };
         let Position { x, y } = self.endpoint();
 
         let mut path = path!("M 0,0 a {r},{r} 0 {big} {sweep} {x},{y}");
@@ -266,9 +273,12 @@ impl Move for Curve {
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
         let font_size = opts.font_size() as i64;
 
-        let mid_pt = self.percent_point(50);
-        let half_theta = (self.sign() * self.angle) as f64 * PI / (2.0 * 180.0); // radians
-        let distance = (-3 * font_size) as f64 * self.sign() as f64;
+        let mid_pt = self.percent_point(Percentage(50));
+        let half_theta = (self.angle * self.sign()).0 as f64 * PI / (2.0 * 180.0); // radians
+        let distance = match self.sign() {
+            RotationDirection::AntiClockwise => 3 * font_size,
+            RotationDirection::Clockwise => -3 * font_size,
+        } as f64;
 
         let text = match &self.label {
             Some(label) => label.to_string(),
@@ -281,15 +291,15 @@ impl Move for Curve {
         } else {
             SvgText::new(text)
         };
-        let label_offset = self.label_offset.for_opts(opts);
+        let label_offset_fraction = self.label_offset.for_opts(opts);
 
         let mut labels = vec![Label {
             display,
             text: svg_text,
             pos: mid_pt
                 + pos!(
-                    (distance * label_offset * half_theta.cos()) as i64,
-                    (distance * label_offset * half_theta.sin()) as i64
+                    (distance * label_offset_fraction * half_theta.cos()) as i64,
+                    (distance * label_offset_fraction * half_theta.sin()) as i64
                 ),
         }];
         if let Some(duration) = opts.duration {
@@ -298,8 +308,8 @@ impl Move for Curve {
                 text: timing_text(duration.0),
                 pos: mid_pt
                     + pos!(
-                        (-distance * label_offset * half_theta.cos()) as i64,
-                        (-distance * label_offset * half_theta.sin()) as i64
+                        (-distance * label_offset_fraction * half_theta.cos()) as i64,
+                        (-distance * label_offset_fraction * half_theta.sin()) as i64
                     ),
             });
         }
@@ -313,12 +323,16 @@ impl Move for Curve {
         if let Some(transition) = transition {
             // Assume that 5% along the curve is still pretty much vertical,
             // so the pre-transition label can just be inset horizontally.
-            let early_pt = self.percent_point(5);
+            let early_pt = self.percent_point(Percentage(5));
             let text = transition.to_string();
+            let x_offset = match self.sign() {
+                RotationDirection::Clockwise => 2 * font_size,
+                RotationDirection::AntiClockwise => -2 * font_size,
+            };
             labels.push(Label {
                 display: !text.trim().is_empty(),
                 text: SvgText::new(text),
-                pos: early_pt + pos!(self.sign() as i64 * 2 * font_size, 0),
+                pos: early_pt + pos!(x_offset, 0),
             });
         }
         labels
@@ -337,20 +351,25 @@ impl Move for Curve {
     }
 }
 
-/// Radius of the circle for which this is an arc.
-pub(crate) fn radius(len: i32, angle: i32) -> f64 {
+/// Radius of the circle for which this is an arc, in centimetres.
+pub(crate) fn radius(len: Centimetres, angle: Rotation) -> f64 {
     // If `angle` were 360, arc `len` would be 2πr.
     // For general angle, arc `len` == (angle/360)*2πr.
     // Therefore r == len * 360  / (angle * 2π).
-    len as f64 * 180.0 / (angle as f64 * PI)
+    len.0 as f64 * 180.0 / (angle.0 as f64 * PI)
 }
 
 /// Point of the arc some percentage along the way, starting at 0,0 facing 0.
-pub(crate) fn percent_point(len: i32, angle: i32, sign: i32, percent: i32) -> Position {
+pub(crate) fn percent_point(
+    len: Centimetres,
+    angle: Rotation,
+    sign: RotationDirection,
+    percent: Percentage,
+) -> Position {
     let r = radius(len, angle);
-    let theta = angle as f64 * PI / 180.0; // radians
-    let theta = (percent as f64 / 100.0) * theta;
-    let (x, y) = if sign == 1 {
+    let theta = angle.0 as f64 * PI / 180.0; // radians
+    let theta = percent.as_f64() * theta;
+    let (x, y) = if sign == RotationDirection::Clockwise {
         (r * theta.cos() - r, r * theta.sin())
     } else {
         (r - r * theta.cos(), r * theta.sin())
@@ -359,10 +378,10 @@ pub(crate) fn percent_point(len: i32, angle: i32, sign: i32, percent: i32) -> Po
 }
 
 /// End point of the arc, starting at 0,0 facing 0.
-pub(crate) fn endpoint(len: i32, angle: i32, sign: i32) -> Position {
+pub(crate) fn endpoint(len: Centimetres, angle: Rotation, sign: RotationDirection) -> Position {
     let r = radius(len, angle);
-    let theta = angle as f64 * PI / 180.0; // radians
-    let (x, y) = if sign == 1 {
+    let theta = angle.0 as f64 * PI / 180.0; // radians
+    let (x, y) = if sign == RotationDirection::Clockwise {
         (r * theta.cos() - r, r * theta.sin())
     } else {
         (r - r * theta.cos(), r * theta.sin())

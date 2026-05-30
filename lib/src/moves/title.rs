@@ -12,6 +12,9 @@ use crate::{
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
 
+/// Sentinel value used to indicate auto-centering.
+const AUTO_CENTRE: i64 = -1;
+
 #[derive(Debug, Clone)]
 pub struct Title {
     text_pos: TextPosition,
@@ -39,7 +42,7 @@ impl Title {
             params::Info {
                 name: "x",
                 doc: "Horizontal location of title; -1 indicates automatic centering",
-                default: Value::Number(-1),
+                default: Value::Number(AUTO_CENTRE as i32),
                 range: params::Range::Any,
                 short: None,
             },
@@ -88,8 +91,8 @@ impl Move for Title {
     fn params(&self) -> Vec<MoveParam> {
         vec![
             param!(self.text),
-            param!("x" = (self.pos.x as i32)),
-            param!("y" = (self.pos.y as i32)),
+            param!("x" = (self.pos.x.0 as i32)),
+            param!("y" = (self.pos.y.0 as i32)),
             param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
         ]
     }
@@ -109,7 +112,7 @@ impl Move for Title {
         Vec::new()
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
-        if self.pos.x != -1 {
+        if self.pos.x.0 != AUTO_CENTRE {
             // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 20).
             let font_size = self.font_size.unwrap_or(20) as i64;
             Some(Bounds::for_text_at(
@@ -130,14 +133,14 @@ impl Move for Title {
         opts: &mut RenderOptions,
         _ns: Option<&SvgId>,
     ) -> Document {
-        let x = if self.pos.x != -1 {
+        let x = if self.pos.x.0 != AUTO_CENTRE {
             self.pos.x
         } else {
             opts.bounds.midpoint().x
         };
         let mut text = Text::new(self.text.clone())
-            .set("x", x)
-            .set("y", self.pos.y)
+            .set("x", x.0)
+            .set("y", self.pos.y.0)
             .set(
                 "style",
                 format!(

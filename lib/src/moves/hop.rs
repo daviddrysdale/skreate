@@ -4,11 +4,12 @@
 
 use super::{MoveId, SkatingMoveId};
 use crate::{
+    cm,
     moves::{self, parse_code, parse_pre_transition},
     param,
     params::{self, Value},
-    parser, pos, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Percentage, Position,
-    PreTransition, RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId,
+    parser, Centimetres, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Percentage,
+    Position, PreTransition, RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId,
     TextPosition, Transition,
 };
 use nom::bytes::complete::tag;
@@ -22,7 +23,7 @@ pub struct Hop {
     pre_transition: PreTransition,
     foot: Foot,
     dir: SkatingDirection,
-    size: i32,
+    size: Centimetres,
     label: Option<String>,
     label_offset: Percentage,
 }
@@ -103,13 +104,13 @@ impl Hop {
             pre_transition,
             foot: entry_code.foot,
             dir: entry_code.dir,
-            size: params[0].value.as_i32(text_pos)?,
+            size: params[0].value.as_cm(text_pos)?,
             label: if label.is_empty() {
                 None
             } else {
                 Some(label.to_string())
             },
-            label_offset: Percentage(params[2].value.as_i32(text_pos)?),
+            label_offset: params[2].value.as_percent(text_pos)?,
         })
     }
     fn code(&self) -> Code {
@@ -127,7 +128,7 @@ impl Move for Hop {
     }
     fn params(&self) -> Vec<MoveParam> {
         vec![
-            param!(self.size),
+            param!("size" = self.size.0 as i32),
             param!("label" = (self.label.clone().unwrap_or("".to_string()))),
             param!("label-offset" = self.label_offset.0),
         ]
@@ -161,7 +162,7 @@ impl Move for Hop {
     fn defs(&self, _opts: &mut RenderOptions) -> Vec<(SvgId, Group)> {
         let grp = Group::new().add(
             Circle::new()
-                .set("r", self.size)
+                .set("r", self.size.0)
                 .set("style", "fill: black;"),
         );
         vec![(SvgId(self.text()), grp)]
@@ -171,12 +172,15 @@ impl Move for Hop {
             Some(label) => label.clone(),
             None => "Hop".to_string(),
         };
-        let label_offset = self.label_offset.for_opts(opts);
-        let dist = (30.0 * label_offset) as i64;
+        let label_offset_fraction = self.label_offset.for_opts(opts);
+        let dist = cm!((30.0 * label_offset_fraction) as i64);
         vec![Label {
             display: !text.trim().is_empty(),
             text: SvgText::new(text),
-            pos: pos!(dist, 0),
+            pos: Position {
+                x: dist,
+                y: Centimetres(0),
+            },
         }]
     }
     fn opposite(&self, repeat: Option<usize>) -> Box<dyn Move> {
