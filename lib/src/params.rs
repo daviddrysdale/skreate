@@ -2,7 +2,7 @@
 
 //! Functionality for parsing and formatting parameters.
 
-use crate::{Centimetres, ParseError, Percentage, Rotation, TextPosition};
+use crate::{Centimetres, FontSize, ParseError, Percentage, Rotation, TextPosition};
 use log::{error, trace};
 use serde::Serialize;
 use std::borrow::Cow;
@@ -66,6 +66,14 @@ impl Value {
     /// Extract the numeric value as a percentage.
     pub fn as_percent(&self, pos: TextPosition) -> Result<Percentage, ParseError> {
         self.as_i32(pos).map(Percentage)
+    }
+    /// Extract the numeric value as a font size.  Must be >= 0.
+    pub fn as_font_size(&self, pos: TextPosition) -> Result<FontSize, ParseError> {
+        let val = self.as_i32(pos)?;
+        Ok(FontSize(val.try_into().map_err(|_e| ParseError {
+            pos,
+            msg: format!("Found negative font size {val}"),
+        })?))
     }
     /// Extract the numeric value.
     pub fn as_i32(&self, pos: TextPosition) -> Result<i32, ParseError> {

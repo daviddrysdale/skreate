@@ -185,6 +185,10 @@ impl Display for Centimetres {
     }
 }
 
+/// Font size in points
+#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
+pub struct FontSize(pub u32);
+
 /// Position in input text.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default, Hash)]
 pub struct TextPosition {
@@ -413,18 +417,18 @@ impl Display for Bounds {
 impl Bounds {
     /// Create bounds that (roughly) encompass `text` of the given `font_size, centred at `pos` but oriented according
     /// to `dir`.
-    pub fn for_text_at(text: &str, pos: Position, font_size: i64, dir: Direction) -> Bounds {
+    pub fn for_text_at(text: &str, pos: Position, font_size: FontSize, dir: Direction) -> Bounds {
         // Make sure the bounds include the centre of the text.
         let mut bounds = Bounds {
             top_left: pos,
             bottom_right: pos,
         };
         // And also the full height of the text.
-        let top = pos.add_rotated(dir, pos!(0, -font_size));
+        let top = pos.add_rotated(dir, pos!(0, -(font_size.0 as i64)));
         bounds.encompass(&top);
 
         // Make a guess at x-extent for the text.
-        let hw = text.len() as i64 * font_size / 3;
+        let hw = text.len() as i64 * font_size.0 as i64 / 3;
         let left = pos.add_rotated(dir, pos!(-hw, 0));
         bounds.encompass(&left);
         let right = pos.add_rotated(dir, pos!(hw, 0));

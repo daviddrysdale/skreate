@@ -6,7 +6,7 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    Bounds, Move, MoveParam, ParseError, Position, RenderOptions, Rotation, Skater,
+    Bounds, FontSize, Move, MoveParam, ParseError, Position, RenderOptions, Rotation, Skater,
     SpatialTransition, SvgId, TextPosition, Transition,
 };
 use std::borrow::Cow;
@@ -17,7 +17,7 @@ pub struct Label {
     text_pos: TextPosition,
     text: String,
     delta: Position,
-    font_size: Option<u32>,
+    font_size: Option<FontSize>,
     rotate: Rotation,
 }
 
@@ -82,14 +82,14 @@ impl Label {
 
     pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32(text_pos)?;
+        let font_size = params[3].value.as_font_size(text_pos)?;
 
         Ok(Self {
             text_pos,
             text: params[0].value.as_str(text_pos)?.to_string(),
             delta: Position::from_params(&params[2], &params[1], text_pos)?,
-            font_size: if font_size > 0 {
-                Some(font_size as u32)
+            font_size: if font_size > FontSize(0) {
+                Some(font_size)
             } else {
                 None
             },
@@ -97,7 +97,7 @@ impl Label {
         })
     }
 
-    fn font_size(&self, opts: &RenderOptions) -> u32 {
+    fn font_size(&self, opts: &RenderOptions) -> FontSize {
         self.font_size.unwrap_or_else(|| opts.font_size())
     }
 }
@@ -111,7 +111,7 @@ impl Move for Label {
             param!(self.text),
             param!("fwd" = (self.delta.y.0 as i32)),
             param!("side" = (self.delta.x.0 as i32)),
-            param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
+            param!("font-size" = (self.font_size.map(|v| v.0 as i32).unwrap_or(0))),
             param!("rotate" = self.rotate.0),
         ]
     }
@@ -151,7 +151,7 @@ impl Move for Label {
                 "style",
                 format!(
                     "stroke:black; fill:black; font-size:{}pt;",
-                    self.font_size(opts)
+                    self.font_size(opts).0
                 ),
             );
         if self.rotate.0 != 0 {

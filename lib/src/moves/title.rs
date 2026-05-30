@@ -6,8 +6,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    Bounds, Direction, Group, Move, MoveParam, ParseError, Position, RenderOptions, Skater, SvgId,
-    TextPosition,
+    Bounds, Direction, FontSize, Group, Move, MoveParam, ParseError, Position, RenderOptions,
+    Skater, SvgId, TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text, Document};
@@ -20,7 +20,7 @@ pub struct Title {
     text_pos: TextPosition,
     text: String,
     pos: Position,
-    font_size: Option<u32>,
+    font_size: Option<FontSize>,
 }
 
 impl Title {
@@ -65,22 +65,23 @@ impl Title {
 
     pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32(text_pos)?;
+        let font_size = params[3].value.as_font_size(text_pos)?;
 
         Ok(Self {
             text_pos,
             text: params[0].value.as_str(text_pos)?.to_string(),
             pos: Position::from_params(&params[1], &params[2], text_pos)?,
-            font_size: if font_size > 0 {
-                Some(font_size as u32)
+            font_size: if font_size > FontSize(0) {
+                Some(font_size)
             } else {
                 None
             },
         })
     }
 
-    fn font_size(&self, opts: &RenderOptions) -> u32 {
-        self.font_size.unwrap_or_else(|| opts.font_size() * 2)
+    fn font_size(&self, opts: &RenderOptions) -> FontSize {
+        self.font_size
+            .unwrap_or_else(|| FontSize(2 * opts.font_size().0))
     }
 }
 
@@ -93,7 +94,7 @@ impl Move for Title {
             param!(self.text),
             param!("x" = (self.pos.x.0 as i32)),
             param!("y" = (self.pos.y.0 as i32)),
-            param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
+            param!("font-size" = (self.font_size.map(|v| v.0 as i32).unwrap_or(0))),
         ]
     }
     fn text(&self) -> String {
@@ -114,7 +115,7 @@ impl Move for Title {
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         if self.pos.x.0 != AUTO_CENTRE {
             // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 20).
-            let font_size = self.font_size.unwrap_or(20) as i64;
+            let font_size = self.font_size.unwrap_or(FontSize(20));
             Some(Bounds::for_text_at(
                 &self.text,
                 self.pos,
@@ -145,7 +146,7 @@ impl Move for Title {
                 "style",
                 format!(
                     "stroke:black; fill:black; font-size: {}pt;",
-                    self.font_size(opts)
+                    self.font_size(opts).0
                 ),
             );
         if let Some(pos) = self.text_pos() {

@@ -271,7 +271,7 @@ impl Move for Curve {
         vec![(SvgId(self.text()), Group::new().add(path))]
     }
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
-        let font_size = opts.font_size() as i64;
+        let font_size = opts.font_size().0 as i64;
 
         let mid_pt = self.percent_point(Percentage(50));
         let half_theta = (self.angle * self.sign()).0 as f64 * PI / (2.0 * 180.0); // radians

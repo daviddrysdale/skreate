@@ -127,6 +127,28 @@ impl Percentage {
     }
 }
 
+/// Overall font size for the output document.
+#[derive(Debug, Copy, Clone, PartialEq, Eq, Default)]
+pub enum MainFontSize {
+    /// Auto-scale the font according to diagram size.
+    #[default]
+    AutoScale,
+    /// Font of specific size.
+    Size(FontSize),
+    /// No font.
+    None,
+}
+
+impl MainFontSize {
+    fn as_param_value(&self) -> i32 {
+        match self {
+            MainFontSize::None => 0,
+            MainFontSize::Size(font_size) => font_size.0 as i32,
+            MainFontSize::AutoScale => -1,
+        }
+    }
+}
+
 /// Options for how to render the diagram's next move.
 #[derive(Debug, Clone, Default)]
 struct RenderOptions {
@@ -142,8 +164,8 @@ struct RenderOptions {
     show_move_bounds: bool,
     /// Calculated bounds.
     bounds: Bounds,
-    /// Font size; auto-scale to bounds if [`None`].
-    font_size: Option<u32>,
+    /// Font size.
+    font_size: MainFontSize,
     /// Stroke width; auto-scale with bounds if [`None`].
     stroke_width: Option<u32>,
     /// Next unique ID associated with a particular [`TextPosition`].
@@ -179,30 +201,32 @@ impl RenderOptions {
     }
 
     /// Return the effective font-size in points.
-    pub fn font_size(&self) -> u32 {
-        if let Some(font_size) = &self.font_size {
-            *font_size
-        } else {
-            let diagonal = self.bounds_diag();
-            let pts = if diagonal < 500.0 {
-                10
-            } else if diagonal < 800.0 {
-                12
-            } else if diagonal < 933.0 {
-                14
-            } else if diagonal < 1067.0 {
-                16
-            } else if diagonal < 1200.0 {
-                18
-            } else if diagonal < 1600.0 {
-                20
-            } else if diagonal < 2400.0 {
-                22
-            } else {
-                24
-            };
-            debug!("diagonal dimension {diagonal} => {pts}pts text");
-            pts
+    pub fn font_size(&self) -> FontSize {
+        match &self.font_size {
+            MainFontSize::Size(font_size) => *font_size,
+            MainFontSize::None => FontSize(0),
+            MainFontSize::AutoScale => {
+                let diagonal = self.bounds_diag();
+                let pts = if diagonal < 500.0 {
+                    FontSize(10)
+                } else if diagonal < 800.0 {
+                    FontSize(12)
+                } else if diagonal < 933.0 {
+                    FontSize(14)
+                } else if diagonal < 1067.0 {
+                    FontSize(16)
+                } else if diagonal < 1200.0 {
+                    FontSize(18)
+                } else if diagonal < 1600.0 {
+                    FontSize(20)
+                } else if diagonal < 2400.0 {
+                    FontSize(22)
+                } else {
+                    FontSize(24)
+                };
+                debug!("diagonal dimension {diagonal} => {pts:?} text");
+                pts
+            }
         }
     }
     /// Return the effective stroke-width.
@@ -410,7 +434,7 @@ trait Move {
                     "style",
                     format!(
                         "stroke:black; fill:black; font-size:{}pt;",
-                        opts.font_size()
+                        opts.font_size().0
                     ),
                 );
             if let Some(pos) = self.text_pos() {

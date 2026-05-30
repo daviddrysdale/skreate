@@ -6,8 +6,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    Bounds, Direction, Move, MoveParam, ParseError, Position, RenderOptions, Rotation, Skater,
-    SvgId, TextPosition,
+    Bounds, Direction, FontSize, Move, MoveParam, ParseError, Position, RenderOptions, Rotation,
+    Skater, SvgId, TextPosition,
 };
 use std::borrow::Cow;
 use svg::{node::element::Text as SvgText, Document};
@@ -17,7 +17,7 @@ pub struct Text {
     text_pos: TextPosition,
     text: String,
     pos: Position,
-    font_size: Option<u32>,
+    font_size: Option<FontSize>,
     rotate: Rotation,
 }
 
@@ -70,14 +70,14 @@ impl Text {
 
     pub fn from_params(text_pos: TextPosition, params: Vec<MoveParam>) -> Result<Self, ParseError> {
         assert!(params::compatible(Self::INFO.params, &params));
-        let font_size = params[3].value.as_i32(text_pos)?;
+        let font_size = params[3].value.as_font_size(text_pos)?;
 
         Ok(Self {
             text_pos,
             text: params[0].value.as_str(text_pos)?.to_string(),
             pos: Position::from_params(&params[1], &params[2], text_pos)?,
-            font_size: if font_size > 0 {
-                Some(font_size as u32)
+            font_size: if font_size > FontSize(0) {
+                Some(font_size)
             } else {
                 None
             },
@@ -85,7 +85,7 @@ impl Text {
         })
     }
 
-    fn font_size(&self, opts: &RenderOptions) -> u32 {
+    fn font_size(&self, opts: &RenderOptions) -> FontSize {
         self.font_size.unwrap_or_else(|| opts.font_size())
     }
 }
@@ -99,7 +99,7 @@ impl Move for Text {
             param!(self.text),
             param!("x" = (self.pos.x.0 as i32)),
             param!("y" = (self.pos.y.0 as i32)),
-            param!("font-size" = (self.font_size.unwrap_or(0) as i32)),
+            param!("font-size" = (self.font_size.map(|v| v.0 as i32).unwrap_or(0))),
             param!("rotate" = self.rotate.0),
         ]
     }
@@ -116,7 +116,7 @@ impl Move for Text {
     }
     fn bounds(&self, _before: &Skater) -> Option<Bounds> {
         // TODO: cope with a `RenderOptions`-specified font size (rather than just guessing 10).
-        let font_size = self.font_size.unwrap_or(10) as i64;
+        let font_size = self.font_size.unwrap_or(FontSize(10));
         let dir = Direction::new(0) + self.rotate;
         Some(Bounds::for_text_at(&self.text, self.pos, font_size, dir))
     }
@@ -134,7 +134,7 @@ impl Move for Text {
                 "style",
                 format!(
                     "stroke:black; fill:black; font-size:{}pt;",
-                    self.font_size(opts)
+                    self.font_size(opts).0
                 ),
             );
         if self.rotate != Rotation(0) {

@@ -6,8 +6,8 @@ use crate::{
     moves::{self, MoveId, PseudoMoveId},
     param, params,
     params::Value,
-    path, Bounds, Centimetres, Count, Document, Move, MoveParam, ParseError, Percentage, Position,
-    RenderOptions, Skater, SvgId, TextPosition,
+    path, Bounds, Centimetres, Count, Document, FontSize, MainFontSize, Move, MoveParam,
+    ParseError, Percentage, Position, RenderOptions, Skater, SvgId, TextPosition,
 };
 use svg::node::element::Group;
 
@@ -19,7 +19,7 @@ pub struct Info {
     grid: Option<Centimetres>,
     margin: Position,
     move_bounds: bool,
-    font_size: Option<u32>,
+    font_size: MainFontSize,
     stroke_width: Option<u32>,
     label_offset: Percentage,
     auto_count: bool,
@@ -121,10 +121,12 @@ impl Info {
             grid: if grid.0 > 0 { Some(grid) } else { None },
             margin: Position::from_params(&params[3], &params[4], text_pos)?,
             move_bounds: params[5].value.as_bool(text_pos)?,
-            font_size: if font_size >= 0 {
-                Some(font_size as u32)
+            font_size: if font_size > 0 {
+                MainFontSize::Size(FontSize(font_size as u32))
+            } else if font_size == 0 {
+                MainFontSize::None
             } else {
-                None
+                MainFontSize::AutoScale
             },
             stroke_width: if stroke_width > 0 {
                 Some(stroke_width as u32)
@@ -149,7 +151,7 @@ impl Move for Info {
             param!("margin-x" = (self.margin.x.0 as i32)),
             param!("margin-y" = (self.margin.y.0 as i32)),
             param!("move-bounds" = self.move_bounds),
-            param!("font-size" = (self.font_size.map(|v| v as i32).unwrap_or(-1))),
+            param!("font-size" = self.font_size.as_param_value()),
             param!("stroke-width" = (self.stroke_width.unwrap_or(0) as i32)),
             param!("label-offset" = self.label_offset.0),
             param!("auto-count" = self.auto_count),
