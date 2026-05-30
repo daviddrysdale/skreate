@@ -273,12 +273,23 @@ impl Move for Curve {
     fn labels(&self, opts: &RenderOptions) -> Vec<Label> {
         let font_size = opts.font_size().0 as i64;
 
+        // Calculate the position and direction of the mid-point of the edge.
         let mid_pt = self.percent_point(Percentage(50));
-        let half_theta = (self.angle * self.sign()).0 as f64 * PI / (2.0 * 180.0); // radians
+        let half_theta = (self.angle * self.sign()).radians() / 2.0;
+
+        // How far to the side should the label be?
         let distance = match self.sign() {
             RotationDirection::AntiClockwise => 3 * font_size,
             RotationDirection::Clockwise => -3 * font_size,
         } as f64;
+        let label_offset_fraction = self.label_offset.for_opts(opts);
+        let distance = label_offset_fraction * distance;
+
+        // Calculate the label offset from the mid-point.
+        let label_offset = pos!(
+            (distance * half_theta.cos()) as i64,
+            (distance * half_theta.sin()) as i64
+        );
 
         let text = match &self.label {
             Some(label) => label.to_string(),
@@ -291,26 +302,18 @@ impl Move for Curve {
         } else {
             SvgText::new(text)
         };
-        let label_offset_fraction = self.label_offset.for_opts(opts);
 
         let mut labels = vec![Label {
             display,
             text: svg_text,
-            pos: mid_pt
-                + pos!(
-                    (distance * label_offset_fraction * half_theta.cos()) as i64,
-                    (distance * label_offset_fraction * half_theta.sin()) as i64
-                ),
+            pos: mid_pt + label_offset,
         }];
         if let Some(duration) = opts.duration {
+            // Put the duration label on the opposite side to the main label.
             labels.push(Label {
                 display: true,
                 text: timing_text(duration.0),
-                pos: mid_pt
-                    + pos!(
-                        (-distance * label_offset_fraction * half_theta.cos()) as i64,
-                        (-distance * label_offset_fraction * half_theta.sin()) as i64
-                    ),
+                pos: mid_pt - label_offset,
             });
         }
 
@@ -367,11 +370,12 @@ pub(crate) fn percent_point(
     percent: Percentage,
 ) -> Position {
     let r = radius(len, angle);
-    let theta = angle.0 as f64 * PI / 180.0; // radians
-    let theta = percent.as_f64() * theta;
+    let theta = percent.as_f64() * angle.radians();
     let (x, y) = if sign == RotationDirection::Clockwise {
+        // Centre of arc is at (-r,0)
         (r * theta.cos() - r, r * theta.sin())
     } else {
+        // Centre of arc is at (+r,0)
         (r - r * theta.cos(), r * theta.sin())
     };
     pos!(x as i64, y as i64)
@@ -380,10 +384,12 @@ pub(crate) fn percent_point(
 /// End point of the arc, starting at 0,0 facing 0.
 pub(crate) fn endpoint(len: Centimetres, angle: Rotation, sign: RotationDirection) -> Position {
     let r = radius(len, angle);
-    let theta = angle.0 as f64 * PI / 180.0; // radians
+    let theta = angle.radians();
     let (x, y) = if sign == RotationDirection::Clockwise {
+        // Centre of arc is at (-r,0)
         (r * theta.cos() - r, r * theta.sin())
     } else {
+        // Centre of arc is at (+r,0)
         (r - r * theta.cos(), r * theta.sin())
     };
     pos!(x as i64, y as i64)

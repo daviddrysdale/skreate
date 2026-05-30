@@ -8,7 +8,7 @@ use crate::{
     moves::{self, parse_code, parse_pre_transition},
     param, params,
     params::Value,
-    path, pos, Centimetres, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Position,
+    path, Centimetres, Code, Edge, Foot, Label, Move, MoveParam, ParseError, Position,
     PreTransition, RenderOptions, Rotation, SkatingDirection, SpatialTransition, SvgId,
     TextPosition, Transition,
 };
@@ -185,7 +185,10 @@ impl Move for StraightEdge {
             vec![Label {
                 display: !text.trim().is_empty(),
                 text: SvgText::new(text),
-                pos: pos!(30, self.len.0 / 2),
+                pos: Position {
+                    x: cm!(30),
+                    y: self.len / 2,
+                },
             }]
         }
     }

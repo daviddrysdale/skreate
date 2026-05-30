@@ -28,6 +28,11 @@ pub enum RotationDirection {
 pub struct Rotation(pub i32);
 
 impl Rotation {
+    /// Return the rotation in radians.
+    pub fn radians(&self) -> f64 {
+        self.0 as f64 * std::f64::consts::PI / 180.0
+    }
+
     /// Generate a rotation that is a fraction of the given rotation.
     pub fn fraction_of(&self, num: i32, denom: i32) -> Self {
         Self(self.0 * num / denom)
@@ -399,6 +404,24 @@ impl std::ops::Add<Position> for Position {
         Self {
             x: self.x + other.x,
             y: self.y + other.y,
+        }
+    }
+}
+impl std::ops::Sub<Position> for Position {
+    type Output = Self;
+    fn sub(self, other: Position) -> Self {
+        Self {
+            x: self.x - other.x,
+            y: self.y - other.y,
+        }
+    }
+}
+impl std::ops::Neg for Position {
+    type Output = Self;
+    fn neg(self) -> Self::Output {
+        Self {
+            x: -self.x,
+            y: -self.y,
         }
     }
 }
